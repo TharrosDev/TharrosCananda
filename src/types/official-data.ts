@@ -19,7 +19,8 @@ export type TradeExplorerResponse = {
   source: {
     publisher: "Statistics Canada";
     tableId: "12-10-0174-01";
-    productId: 1210017401;
+    productId: 12100174;
+    catalogueId: 1210017401;
     title: string;
     url: string;
     licenceUrl: string;
