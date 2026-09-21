@@ -1,31 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
-import { MarketExplorer } from "@/components/market-explorer";
+import { LiveMarketExplorer } from "@/components/live-market-explorer";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
-  title: "Data: Market Explorer",
-  description: "A sample of how Tharros presents trade data: trend, provincial concentration, routes to market and sources, using clearly labelled synthetic values.",
+  title: "Canada–CETA Market Data",
+  description: "Explore live Statistics Canada customs-basis merchandise trade under CETA, with source provenance and related Government of Canada datasets.",
   alternates: { canonical: "/market-explorer" },
 };
 
-export default async function MarketExplorerPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const { sample } = await searchParams;
+export default function MarketExplorerPage() {
   return (
     <>
       <PageHero
         variant="task"
-        title="Market Explorer."
-        description="Explore sample market evidence, provincial concentration, routes and provenance. Demonstration values are synthetic."
+        title="Canada–CETA market data."
+        description="A narrow, source-first explorer using current Statistics Canada merchandise-trade data. It shows official series and their limits; it does not manufacture market estimates."
       />
-      <div className="page-shell explorer-page"><MarketExplorer key={typeof sample === "string" ? sample : "default"} initialSample={typeof sample === "string" ? sample : undefined} /></div>
+      <div className="page-shell explorer-page"><LiveMarketExplorer /></div>
       <section className="closing-cta">
-        <h2>Need this for a real product?</h2>
+        <h2>Need the data interpreted for a commercial decision?</h2>
         <Link className="button-primary" href="/request-research?service=market-scan">Request a market scan <ArrowIcon /></Link>
       </section>
     </>
