@@ -6,7 +6,7 @@ The public Market Data interface uses **real Statistics Canada data**. It does n
 
 ### Statistics Canada — Table 12-10-0174-01
 
-- **Product ID:** 1210017401
+- **WDS Product ID:** 12100174\n- **Catalogue/issue ID:** 1210017401
 - **Table:** 12-10-0174-01
 - **Title:** Merchandise imports and exports, customs-based, by free trade agreement and by commodity
 - **Frequency:** monthly
@@ -18,7 +18,7 @@ The public Market Data interface uses **real Statistics Canada data**. It does n
 
 Implementation: `src/lib/statcan.ts`.
 
-The adapter calls `getCubeMetadata`, `getSeriesInfoFromCubePidCoord`, and `getDataFromCubePidCoordAndLatestNPeriods`. Coordinates are built from the publisher's dimension/member metadata rather than relying on undocumented hard-coded coordinates.
+The adapter calls `getCubeMetadata`, `getSeriesInfoFromCubePidCoord`, and `getDataFromCubePidCoordAndLatestNPeriods`. Coordinates are built from the publisher's dimension/member metadata rather than relying on undocumented hard-coded coordinates. The WDS base PID is used for metadata/series calls; the public table view and DOI use the catalogue/issue identifier ending in `01`.
 
 The table publishes values with scalar-factor metadata. The adapter applies `10 ** scalarFactorCode` before presenting Canadian-dollar values.
 
