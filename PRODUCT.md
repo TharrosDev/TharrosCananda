@@ -12,25 +12,25 @@ Delegated: current stable Next.js with the App Router, React, TypeScript, and a 
 
 ## Users
 
-The primary users are owners and commercial leads at European small and medium-sized businesses evaluating whether and how to sell products into Canada. They need to investigate demand, buyers, competitors, provinces, channels, and commercial routes before committing significant money or establishing Canadian operations.
+The primary users are businesses and organizations operating across the Canada–Europe relationship: European companies evaluating Canada, Canadian companies evaluating Europe, and organizations needing sourced intelligence on trade, defence-industrial links, energy and critical minerals, supply chains, industrial policy and technology.
 
 Secondary evaluators include mentors, incubators, employers, and potential commercial partners assessing the quality and credibility of the venture.
 
 ## Product Purpose
 
-Tharros Canada makes Canadian commercial information easier for European companies to access, interpret, and act on. Version 1 must let visitors independently explore a believable preview of Canadian market intelligence, understand the provenance and limitations of the information, compare human research offers, and request scoped research asynchronously.
+Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, while providing commissioned research and commercial intelligence to businesses and organizations operating across that relationship. The site must establish the subjects Tharros researches, the four research areas, examples of commissioned services, independent research, and a clear path to commission custom research asynchronously.
 
-Success means visitors use the Market Explorer, understand what a deeper research engagement would contain, and submit qualified research requests. The product is deliberately designed to learn which services and data users value before heavier infrastructure is built.
+Success means visitors understand the scope quickly, read the research, and submit qualified commissions. The product is deliberately designed to learn which services and data users value before heavier infrastructure is built.
 
 ## Positioning
 
-Tharros Canada is an independent Canadian market-intelligence venture: a public-data-oriented commercial intelligence platform combined with human-verified research. Its credibility comes from source traceability, clear methodology, useful tools, professional presentation, and honest limitations—not implied scale or invented social proof.
+Tharros Canada is an independent commercial research and intelligence company focused on Canada–Europe relations. It is not a consultancy, think tank, blog or government body, and it does not provide legal, tax, regulatory, lobbying or investment advice. Its credibility comes from source traceability, clear methodology, useful tools, professional presentation, and honest limitations—not implied scale or invented social proof.
 
 ## Operating Context
 
-The visitor journey is Explore → Understand → Decide → Request deeper research. Users should be able to research independently without creating an account or booking a call. Human involvement becomes available where commercial judgment, verification, and contextual research are valuable.
+The visitor journey is Understand the scope → Read the research → Commission focused research. Users should be able to research independently without creating an account or booking a call. Human involvement becomes available where commercial judgment, verification, and contextual research are valuable.
 
-The business has three planned layers: a free self-service Market Explorer; a future low-touch Market Snapshot; and human-verified market, buyer/distributor, and competitor research.
+The business has two public layers: independent research published by Tharros (Intelligence Briefs, Research Reports, Market Notes, Data Notes, Sector Analyses) and commissioned research (standard market-entry products plus custom commissions). A sample data view demonstrates presentation standards.
 
 ## Capabilities and Constraints
 

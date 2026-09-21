@@ -3,50 +3,54 @@ export const services = [
   {
     slug: "market-scan",
     name: "Canada Market Scan",
-    priceLabel: "C$250–400",
+    priceLabel: "Indicative C$250–400",
     question: "Is there a Canadian market worth investigating for this product, and how is it structured?",
-    description:
-      "A focused picture of market structure, trade signals, customer segments, geography, channels and commercial considerations.",
     outputs: [
       "Market structure and trade indicators from official sources where available",
       "Customer segments and geographic concentration",
       "Channel, competitor and commercial observations, with open questions",
     ],
-    verification: "The HS reference is checked against your product description (not a customs ruling), and each figure is dated and linked to its publisher.",
     excludes: "Tariff rulings, regulatory or compliance determinations, and demand forecasts.",
     formSummary: "Structure, demand signals, geography, channels and commercial context.",
   },
   {
     slug: "buyer-distributor",
     name: "Buyer & Distributor Intelligence",
-    priceLabel: "C$300–750",
+    priceLabel: "Indicative C$300–750",
     question: "Which Canadian organizations could buy, import or distribute this product?",
-    description:
-      "A manually researched set of Canadian buyers, importers, distributors, retailers or partners relevant to your offer.",
     outputs: [
       "Company, location, website and business type",
       "Why each organization may be relevant",
       "Public evidence and decision-maker information where publicly available",
     ],
-    verification: "Each organization is checked by hand against its own public presence before it is included.",
     excludes: "Introductions, outreach on your behalf, guaranteed interest or purchased contact lists.",
     formSummary: "A manually verified set of relevant Canadian organizations.",
   },
   {
     slug: "competitor-intelligence",
     name: "Competitor Intelligence",
-    priceLabel: "C$300–600",
+    priceLabel: "Indicative C$300–600",
     question: "Who already sells a comparable offer in Canada, and how do they position it?",
-    description:
-      "A sourced review of Canadian competitors, offerings, positioning, channels, geography and observable commercial signals.",
     outputs: [
       "Competitor and offer landscape",
       "Channel, geography and pricing indicators",
       "Supporting sources, with observations and inferences labelled separately",
     ],
-    verification: "Claims are tied to a public source; anything inferred is marked as an inference.",
     excludes: "Non-public information, market-share estimates presented as fact, and legal assessments.",
     formSummary: "Offerings, positioning, geography, channels and evidence.",
+  },
+  {
+    slug: "commissioned-research",
+    name: "Commissioned Research",
+    priceLabel: "Quoted per scope",
+    question: "Any commercially relevant Canada–Europe question outside the standard products.",
+    outputs: [
+      "A written scope agreed before work starts",
+      "Sourced findings, with observation and inference kept separate",
+      "Stated limitations and the questions that remain open",
+    ],
+    excludes: "Legal, tax, regulatory, lobbying or investment advice.",
+    formSummary: "A custom question in any of the four research areas.",
   },
 ] as const;
 

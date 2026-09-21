@@ -11,24 +11,24 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Tharros Canada | Canadian market intelligence for European businesses",
+    default: "Tharros Canada | Commercial research and intelligence connecting Canada and Europe",
     template: "%s | Tharros Canada",
   },
   description:
-    "Canadian market research for European companies: demand, market structure, buyers, distributors, competitors and routes to market, researched before you commit.",
+    "Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, and provides commissioned research and commercial intelligence.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_CA",
     url: siteUrl,
     siteName: "Tharros Canada",
-    title: "Understand the Canadian market before you enter it.",
-    description: "Canadian market intelligence and commercial research for European companies evaluating Canada.",
+    title: "Commercial research and intelligence connecting Canada and Europe.",
+    description: "Independent research and commissioned intelligence on trade, defence, energy, industry and technology between Canada and Europe.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Tharros Canada",
-    description: "Canadian market intelligence for European companies evaluating Canada.",
+    description: "Commercial research and intelligence connecting Canada and Europe.",
   },
   robots: { index: true, follow: true },
 };
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@type": "Organization",
     name: "Tharros Canada",
     url: siteUrl,
-    description: "Independent Canadian market research for European companies evaluating Canada.",
+    description: "Commercial research and intelligence company focused on Canada–Europe relations.",
     ...(email ? { email } : {}),
   };
 

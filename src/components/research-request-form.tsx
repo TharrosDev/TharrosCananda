@@ -170,9 +170,9 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
 
       {step === 0 && (
         <fieldset>
-          <legend tabIndex={-1}>Tell us about the company.</legend>
-          <p className="field-intro">Enough context to understand who is exploring Canada. No account is created.</p>
-          <FormField id="company-name" label="Company name" error={errors.companyName} required>
+          <legend tabIndex={-1}>Who is the research for?</legend>
+          <p className="field-intro">No account is created.</p>
+          <FormField id="company-name" label="Organization" error={errors.companyName} required>
             <input value={values.companyName} onChange={(e) => update("companyName", e.target.value)} autoComplete="organization" maxLength={maxLengths.companyName} />
           </FormField>
           <FormField id="company-country" label="Country" error={errors.country} required>
@@ -189,18 +189,18 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
 
       {step === 1 && (
         <fieldset>
-          <legend tabIndex={-1}>What do you sell?</legend>
-          <p className="field-intro">Plain language is useful. Add an HS code only if you already know it.</p>
-          <FormField id="product-service" label="Product or service" error={errors.product} required>
-            <input value={values.product} onChange={(e) => update("product", e.target.value)} placeholder="e.g. Industrial LED lighting" maxLength={maxLengths.product} />
+          <legend tabIndex={-1}>What should we research?</legend>
+          <p className="field-intro">Plain language is fine.</p>
+          <FormField id="product-service" label="Subject, product or sector" error={errors.product} required>
+            <input value={values.product} onChange={(e) => update("product", e.target.value)} placeholder="e.g. Critical-mineral offtake in Quebec" maxLength={maxLengths.product} />
           </FormField>
           <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}>
             <input value={values.industry} onChange={(e) => update("industry", e.target.value)} placeholder="e.g. Commercial construction" maxLength={maxLengths.industry} />
           </FormField>
-          <FormField id="product-description" label="Brief description" hint="Optional" error={errors.description}>
-            <textarea rows={4} value={values.description} onChange={(e) => update("description", e.target.value)} placeholder="What makes the offer distinct, and who buys it today?" maxLength={maxLengths.description} />
+          <FormField id="product-description" label="The question in a sentence or two" hint="Optional" error={errors.description}>
+            <textarea rows={4} value={values.description} onChange={(e) => update("description", e.target.value)} placeholder="What do you need to know, and what decision does it support?" maxLength={maxLengths.description} />
           </FormField>
-          <FormField id="hs-code" label="HS code" hint="Optional; it will be checked before use" error={errors.hsCode}>
+          <FormField id="hs-code" label="HS code" hint="Optional, for product research" error={errors.hsCode}>
             <input value={values.hsCode} onChange={(e) => update("hsCode", e.target.value)} inputMode="decimal" placeholder="e.g. 9405.11" maxLength={maxLengths.hsCode} />
           </FormField>
         </fieldset>
@@ -208,8 +208,8 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
 
       {step === 2 && (
         <fieldset aria-describedby={errors.objectives ? "objectives-error" : undefined}>
-          <legend tabIndex={-1}>What are you trying to do in Canada?</legend>
-          <p className="field-intro">Choose every objective that is relevant.</p>
+          <legend tabIndex={-1}>What is the research for?</legend>
+          <p className="field-intro">Choose all that apply.</p>
           <div className="choice-grid">
             {objectives.map((objective) => (
               <label key={objective} className={values.objectives.includes(objective) ? "choice is-selected" : "choice"}>
@@ -231,7 +231,7 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
 
       {step === 3 && (
         <fieldset aria-describedby={errors.researchNeed ? "research-error" : undefined}>
-          <legend tabIndex={-1}>What kind of research would help?</legend>
+          <legend tabIndex={-1}>Which kind of research fits?</legend>
           <p className="field-intro">
             {preselectedNeed
               ? `${preselectedNeed} is preselected from the page you came from. You can change it.`
@@ -257,15 +257,15 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
 
       {step === 4 && (
         <fieldset>
-          <legend tabIndex={-1}>Review and add context.</legend>
-          <p className="field-intro">Next: Tharros reviews the request and replies in writing with a proposed scope, price and timeline.</p>
+          <legend tabIndex={-1}>Review and send.</legend>
+          <p className="field-intro">Tharros replies in writing with a proposed scope, price and timeline.</p>
           <div className="request-summary">
-            <div><span>Company</span><strong>{values.companyName}</strong><small>{values.country}</small></div>
-            <div><span>Offer</span><strong>{values.product}</strong><small>{values.hsCode || "HS code not supplied"}</small></div>
+            <div><span>Organization</span><strong>{values.companyName}</strong><small>{values.country}</small></div>
+            <div><span>Subject</span><strong>{values.product}</strong><small>{values.hsCode || "HS code not supplied"}</small></div>
             <div><span>Research</span><strong>{values.researchNeed}</strong><small>{values.objectives.join(" · ")}</small></div>
           </div>
           <FormField id="additional-context" label="Additional context" hint="Optional" error={errors.context}>
-            <textarea rows={5} value={values.context} onChange={(e) => update("context", e.target.value)} placeholder="Timing, target province, existing sales, constraints, or the decision this research needs to support." maxLength={maxLengths.context} />
+            <textarea rows={5} value={values.context} onChange={(e) => update("context", e.target.value)} placeholder="Timing, geography, constraints, or anything already known." maxLength={maxLengths.context} />
           </FormField>
           <label className="consent-row">
             <input

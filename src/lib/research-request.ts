@@ -3,14 +3,14 @@ import { researchNeeds, serviceBySlug, type ResearchNeed } from "@/lib/services"
 export { researchNeeds, type ResearchNeed };
 
 export const objectives = [
-  "Sell direct online",
+  "Enter the Canadian market",
+  "Enter the European market",
   "Find buyers",
-  "Find a distributor",
-  "Sell wholesale",
+  "Find a distributor or partner",
   "Understand competitors",
   "Validate demand",
-  "Investigate the market",
-  "Plan a physical expansion",
+  "Map a sector or supply chain",
+  "Understand a policy or industrial development",
 ] as const;
 
 export type Objective = (typeof objectives)[number];
@@ -94,14 +94,14 @@ export function validateResearchRequest(payload: Partial<ResearchRequestPayload>
   if (value("website") && normalizeWebsite(value("website")) === null) {
     errors.website = "Enter a website address such as example.com, or leave this empty.";
   }
-  if (!value("product")) errors.product = "Describe the product or service.";
+  if (!value("product")) errors.product = "Describe the subject, product or sector.";
   if (value("hsCode") && !hsPattern.test(value("hsCode"))) errors.hsCode = "Use digits and dots only, e.g. 9405.11.";
   for (const key of textFields) {
     if (!errors[key] && value(key).length > maxLengths[key]) {
       errors[key] = `Keep this under ${maxLengths[key]} characters.`;
     }
   }
-  if (!payload.objectives?.length) errors.objectives = "Choose at least one Canadian objective.";
+  if (!payload.objectives?.length) errors.objectives = "Choose at least one purpose.";
   else if (payload.objectives.some((item) => !objectives.includes(item))) errors.objectives = "Choose from the listed objectives.";
   if (!payload.researchNeed || !researchNeeds.includes(payload.researchNeed)) {
     errors.researchNeed = "Choose a research option or select “Not sure yet”.";
@@ -182,7 +182,7 @@ export function requestAsEmailBody(values: ResearchRequestPayload) {
     `Company: ${values.companyName} (${values.country})`,
     values.website && `Website: ${values.website}`,
     `Email: ${values.email}`,
-    `Product or service: ${values.product}`,
+    `Subject: ${values.product}`,
     values.industry && `Industry: ${values.industry}`,
     values.hsCode && `HS code: ${values.hsCode}`,
     values.description && `Description: ${values.description}`,

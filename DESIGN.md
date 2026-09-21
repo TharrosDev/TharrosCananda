@@ -66,7 +66,7 @@ spacing:
   hairline: "1px"
   gutter: "clamp(20px, 4.2vw, 64px)"
   col-gap: "clamp(16px, 2vw, 32px)"
-  section: "clamp(88px, 10vw, 152px)"
+  section: "clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them"
 components:
   button-primary:
     backgroundColor: "{colors.red}"
@@ -184,9 +184,9 @@ A warm paper-and-ink palette with one action colour and two data channels. Contr
 
 ## Layout
 
-Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. The home hero runs six and six: proposition on the left, Explorer entry on the right. Vertical rhythm is set by the section token, clamp(88px, 10vw, 152px).
+Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. The home hero sets the proposition across eleven columns with the description and actions offset to columns 7–11 beneath it; the Explorer lives only on the Data page. Vertical rhythm is set by the section token, clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them.
 
-Under 1180px the hero shifts to five and seven. Under 980px every split collapses to a single full-width column and the navigation becomes a toggled sheet. Under 640px, multi-column entries (result meta, provenance, service terms, choice grids) stack, and actions stretch to full width in forms.
+Under 1180px the hero description and actions widen to columns 6–12. Under 980px every split collapses to a single full-width column and the navigation becomes a toggled sheet. Under 640px, multi-column entries (result meta, provenance, service terms, choice grids) stack, and actions stretch to full width in forms.
 
 **The One Rule Per Boundary Rule.** Each boundary gets exactly one rule. A strong 1px ink (or 2px on entry heads and sidebars) opens a list or entry, and hairline rules divide its rows. Never double a rule with padding boxes or borders on both sides.
 

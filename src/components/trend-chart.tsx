@@ -1,10 +1,10 @@
 import { useId } from "react";
 import type { TrendPoint } from "@/types/market";
 
-export function TrendChart({ data, compact = false }: { data: TrendPoint[]; compact?: boolean }) {
+export function TrendChart({ data }: { data: TrendPoint[] }) {
   const id = useId();
-  const width = compact ? 400 : 620;
-  const height = compact ? 190 : 250;
+  const width = 620;
+  const height = 250;
   const padding = { top: 16, right: 12, bottom: 32, left: 44 };
   const values = data.map((point) => point.value);
   // Graticule snaps to round divisions so the readouts are measured values, not arbitrary pixels.

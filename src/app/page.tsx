@@ -1,119 +1,89 @@
 import Link from "next/link";
-import { ArrowIcon, CheckIcon } from "@/components/icons";
-import { MarketExplorer } from "@/components/market-explorer";
-import { SectionHeading } from "@/components/section-heading";
-import { ServiceList } from "@/components/service-list";
-import { SourceRail } from "@/components/source-rail";
-import { pricingTerms, services } from "@/lib/services";
+import { ArrowIcon } from "@/components/icons";
+import { publicationTypes } from "@/data/publications";
+import { researchAreas } from "@/lib/research-areas";
+import { services } from "@/lib/services";
 
-const [marketScan, buyerIntel, competitorIntel] = services;
-
-// The five questions a European company has to answer before entering Canada, and which offer addresses each.
-const questions = [
-  { name: "Demand", question: "Is there measurable Canadian activity for this product?", service: marketScan },
-  { name: "Market structure", question: "How is the market organized across segments, provinces and channels?", service: marketScan },
-  { name: "Buyers & distributors", question: "Which Canadian organizations could buy, import or distribute it?", service: buyerIntel },
-  { name: "Competitors", question: "Who already sells a comparable offer, and how is it positioned?", service: competitorIntel },
-  { name: "Routes to market", question: "Which route is realistic: distributor, direct B2B, wholesale or online?", service: marketScan },
-] as const;
+const commissionExamples = [
+  "Canadian market opportunities for European companies",
+  "European opportunities for Canadian companies",
+  "Defence-industrial integration",
+  "CETA, trade and market access",
+  "Critical minerals and energy",
+  "Supply chains and industrial policy",
+  "AI, cyber and digital policy",
+  "Aerospace and strategic industries",
+];
 
 export default function HomePage() {
   return (
     <>
       <section className="home-hero">
-        <div className="hero-copy">
-          <h1>Understand the Canadian market before you enter it.</h1>
+        <h1>Commercial research and intelligence connecting Canada and Europe.</h1>
+        <div className="hero-side">
           <p className="hero-description">
-            Canadian market research for European companies evaluating Canada. Human-verified findings on demand, market
-            structure, buyers and distributors, competitors and routes to market, before you commit money or people.
+            Tharros Canada researches the commercial, economic, industrial, technological and strategic developments that
+            link the two, and takes commissions from organizations working across that relationship.
           </p>
           <div className="hero-actions">
-            <Link className="button-primary" href="/request-research">Request research <ArrowIcon /></Link>
-            <Link className="text-link" href="/market-explorer">See a sample analysis <ArrowIcon /></Link>
+            <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
+            <Link className="text-link" href="/research-areas">Research areas <ArrowIcon /></Link>
           </div>
-          <p className="hero-boundary">Commercial intelligence only; not legal, tax, customs or compliance advice.</p>
         </div>
-        <div className="hero-explorer"><MarketExplorer variant="hero" /></div>
       </section>
 
-      <section className="band band-dark question-index" aria-labelledby="question-index-title">
+      <section className="band band-dark area-index" aria-labelledby="areas-title">
         <div className="band-inner">
-          <div className="band-heading">
-            <h2 id="question-index-title">Five questions to answer before entering Canada.</h2>
-            <p>Each is researched from official public sources and verified by hand. The column on the right shows which offer addresses it.</p>
-          </div>
+          <h2 id="areas-title">Four research areas</h2>
           <ol className="index-list">
-            {questions.map((item, index) => (
-              <li key={item.name}>
+            {researchAreas.map((area, index) => (
+              <li key={area.slug}>
                 <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
                 <div className="index-body">
-                  <h3>{item.name}</h3>
-                  <p>{item.question}</p>
+                  <h3><Link href={`/research-areas#${area.slug}`}>{area.name}</Link></h3>
+                  <p>{area.scope}</p>
                 </div>
-                <Link className="index-service" href={`/research-services#${item.service.slug}`}>
-                  {item.service.name} <ArrowIcon />
-                </Link>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <SourceRail />
-
-      <section className="section section-problem">
-        <SectionHeading title="A market question is rarely answered by one number." align="split">
-          <p>
-            Import values can show movement. They cannot tell you, on their own, whether your product fits the channel,
-            which organizations matter, or where the commercial friction sits.
-          </p>
-        </SectionHeading>
-        <div className="evidence-sequence">
-          <div><h3>Signal: is there measurable activity?</h3><p>Trade direction, HS classification, country share and geographic concentration.</p></div>
-          <div><h3>Structure: how does the market work?</h3><p>Channels, buyers, importers, competitors, associations and commercial norms.</p></div>
-          <div><h3>Decision: what deserves the next euro?</h3><p>A bounded research question, source trail and clear account of what remains uncertain.</p></div>
+      <section className="section commission">
+        <div className="commission-intro">
+          <h2>Commission focused research.</h2>
+          <p>Bring almost any commercially relevant Canada–Europe question. Scope, price and timeline are agreed in writing before work starts.</p>
+          <Link className="text-link" href="/research-services">Services and indicative prices <ArrowIcon /></Link>
         </div>
+        <ul className="topic-list" aria-label="Examples of commissioned subjects">
+          {commissionExamples.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+        <ul className="product-list" aria-label="Standard research products">
+          {services.map((service) => (
+            <li key={service.slug}>
+              <Link href={`/research-services#${service.slug}`}>
+                <strong>{service.name}</strong>
+                <span>{service.priceLabel}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <section className="section section-services">
-        <SectionHeading title="Research that starts where public data stops." align="split">
-          <div><p>Three scoped research products, each with a defined question, concrete outputs and an indicative price.</p><p className="section-note">{pricingTerms}</p></div>
-        </SectionHeading>
-        <ServiceList compact />
-      </section>
-
-      <section className="section decision-path">
-        <div className="decision-copy">
-          <h2>Explore first. Ask for judgment when it matters.</h2>
-          <p>
-            You can review how Tharros works without a sales conversation. Look at a sample analysis, inspect the source model,
-            then request research when the next decision needs verified Canadian context.
-          </p>
-          <Link className="button-secondary" href="/how-it-works">See how research works <ArrowIcon /></Link>
+      <section className="section own-research">
+        <div>
+          <h2>Independent research by Tharros Canada.</h2>
+          <p>Alongside commissioned work, Tharros publishes its own research across the four areas. The first publications are in preparation.</p>
+          <Link className="text-link" href="/research">About our research <ArrowIcon /></Link>
         </div>
-        <ol className="decision-steps">
-          <li><span>1</span><div><strong>Frame the question</strong><p>Product, HS code if known, and the commercial objective in Canada.</p></div></li>
-          <li><span>2</span><div><strong>Inspect public signals</strong><p>Understand the source, period, method and limitation.</p></div></li>
-          <li><span>3</span><div><strong>Choose the next evidence</strong><p>Market, buyer or competitor research—not a mandatory call.</p></div></li>
-        </ol>
-      </section>
-
-      <section className="band ecommerce-band">
-        <div className="band-inner">
-          <div>
-            <h2>Selling into Canada without a Canadian company?</h2>
-            <p>Compare cross-border e-commerce, marketplace, wholesale and distributor routes, and see which questions need qualified advice.</p>
-          </div>
-          <ul>
-            {["GST/HST", "Importer arrangements", "CARM", "HS classification", "CETA", "Product requirements"].map((item) => <li key={item}><CheckIcon />{item}</li>)}
-          </ul>
-          <Link href="/ecommerce-readiness">Review cross-border route questions <ArrowIcon /></Link>
-        </div>
+        <ul className="type-list">
+          {publicationTypes.map((type) => <li key={type.name}>{type.name}</li>)}
+        </ul>
       </section>
 
       <section className="closing-cta">
-        <div><h2>A clearer Canadian market question starts here.</h2><p>Share the product, objective and decision. Tharros replies in writing with a proposed scope, price and timeline. Nothing starts until you approve it.</p></div>
-        <Link className="button-primary" href="/request-research">Request research <ArrowIcon /></Link>
+        <h2>Have a Canada–Europe question?</h2>
+        <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
       </section>
     </>
   );

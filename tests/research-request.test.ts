@@ -11,7 +11,7 @@ const valid = {
   country: "Germany",
   email: "market@example.com",
   product: "Industrial LED lighting",
-  objectives: ["Find a distributor"],
+  objectives: ["Find a distributor or partner"],
   researchNeed: "Canada Market Scan",
   consent: true,
 };

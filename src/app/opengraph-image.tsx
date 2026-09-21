@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Tharros Canada: Canadian market research for European companies";
+export const alt = "Tharros Canada: commercial research and intelligence connecting Canada and Europe";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -12,8 +12,8 @@ export default function OpenGraphImage() {
           THARROS<span style={{ color: "#9e3a35", margin: "0 14px" }}>/</span>CANADA
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 78, lineHeight: 1.02, letterSpacing: -2, maxWidth: 960 }}>Understand the Canadian market before you enter it.</div>
-          <div style={{ marginTop: 28, fontSize: 30, color: "#45484d" }}>Market research for European companies evaluating Canada</div>
+          <div style={{ fontSize: 78, lineHeight: 1.02, letterSpacing: -2, maxWidth: 960 }}>Commercial research and intelligence connecting Canada and Europe.</div>
+          <div style={{ marginTop: 28, fontSize: 30, color: "#45484d" }}>Trade · Defence · Energy & industry · Technology</div>
         </div>
       </div>
     ),

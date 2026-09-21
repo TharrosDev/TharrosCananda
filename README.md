@@ -1,14 +1,19 @@
 # Tharros Canada
 
-Tharros Canada provides Canadian market intelligence and human-verified commercial research for European SMEs evaluating Canada: demand, market structure, buyers and distributors, competitors and routes to market, investigated before the company commits resources. The commercial V1 is human research; the site supports it with a bounded sample-mode Market Explorer and an asynchronous request workflow.
+Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, while providing commissioned research and commercial intelligence to businesses and organizations operating across that relationship.
+
+Four research areas organize the work: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; Technology & Strategic Industries (defined once in `src/lib/research-areas.ts`). Commissioned human research is the commercial core; Canada market entry (market scan, buyer and distributor intelligence, competitor intelligence) is one major use case alongside custom commissioned research. Tharros also publishes independent research, labelled "Independent research by Tharros Canada" and never presented as commissioned.
 
 The production domain is intended to be [tharros.ca](https://tharros.ca).
 
 ## Version 1 scope
 
-- A homepage that names the buyer (European companies evaluating Canada) and the commercial boundary.
-- A **sample-mode** Market Explorer: two synthetic scenarios behind a `MarketDataProvider` boundary, with sources, provenance and limitations shown. It is not a self-service search over Canadian data; unmatched products are carried into a research request.
-- Research service pages for market, buyer/distributor and competitor intelligence, defined once in `src/lib/services.ts`; service links preselect the matching need in the request form.
+- A five-section homepage: identity, the four research areas, commissioned research (example subjects plus the four products), independent research, and a commission call to action.
+- `/research`: the independent-research index. Publication types and entries live in `src/data/publications.ts`; the list is empty until the first piece ships and the page shows an honest in-preparation state.
+- `/research-areas`: one page with an anchored section per area, each with example questions and a prefilled commission link.
+- Navigation: Research · Research Areas · Services · Data · About, with Commission research as the single filled action.
+- A **sample-mode** Market Explorer (nav label "Data", no longer on the homepage): two synthetic scenarios behind a `MarketDataProvider` boundary, with sources, provenance and limitations shown. It is not a self-service search over Canadian data; unmatched products are carried into a research request.
+- Commissioned-research services (Canada Market Scan, Buyer & Distributor Intelligence, Competitor Intelligence with their existing indicative prices, plus Commissioned Research quoted per scope), defined once in `src/lib/services.ts`; service links preselect the matching need in the request form.
 - A progressive, asynchronous research-request workflow with strict server-side validation, a honeypot and an optional email fallback.
 - A cross-border route-questions checklist (channel-driven only; no product- or country-specific determinations).
 - Dedicated Sources & Methodology, How It Works and About pages.

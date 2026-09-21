@@ -1,8 +1,8 @@
 import type { ProvinceShare } from "@/types/market";
 
-export function ProvinceBars({ data, compact = false }: { data: ProvinceShare[]; compact?: boolean }) {
+export function ProvinceBars({ data }: { data: ProvinceShare[] }) {
   return (
-    <div className={compact ? "province-bars province-bars-compact" : "province-bars"}>
+    <div className="province-bars">
       {data.map((item) => (
         <div className="province-row" key={item.province}>
           <span>{item.province}</span>

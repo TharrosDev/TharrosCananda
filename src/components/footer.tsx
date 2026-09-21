@@ -10,34 +10,34 @@ export function Footer() {
             <span className="wordmark-slash">/</span>
             <span>CANADA</span>
           </Link>
-          <p>Canadian market intelligence for European businesses.</p>
+          <p>Commercial research and intelligence connecting Canada and Europe.</p>
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>
-            <p className="footer-heading">Explore</p>
-            <Link href="/market-explorer">Market Explorer</Link>
-            <Link href="/ecommerce-readiness">Cross-border route questions</Link>
-            <Link href="/research-services">Research services</Link>
+            <p className="footer-heading">Research</p>
+            <Link href="/research">Publications</Link>
+            <Link href="/research-areas">Research areas</Link>
+            <Link href="/market-explorer">Data</Link>
           </div>
           <div>
-            <p className="footer-heading">Organization</p>
-            <Link href="/methodology">Sources & methodology</Link>
+            <p className="footer-heading">Commission</p>
+            <Link href="/research-services">Services</Link>
             <Link href="/how-it-works">How it works</Link>
-            <Link href="/about">About</Link>
+            <Link href="/ecommerce-readiness">Cross-border route questions</Link>
+            <Link href="/request-research">Commission research</Link>
           </div>
           <div>
-            <p className="footer-heading">Start</p>
-            <Link href="/request-research">Request research</Link>
+            <p className="footer-heading">Company</p>
+            <Link href="/about">About</Link>
+            <Link href="/methodology">Methodology</Link>
             <Link href="/about#privacy">Privacy</Link>
             <Link href="/about#accessibility">Accessibility</Link>
           </div>
         </nav>
       </div>
       <div className="footer-legal">
-        <p>© {new Date().getFullYear()} Tharros Canada. Independent Canadian market intelligence.</p>
-        <p>
-          Commercial information only. Not legal, tax, customs, financial, immigration, or regulatory advice.
-        </p>
+        <p>© {new Date().getFullYear()} Tharros Canada. Independent commercial research.</p>
+        <p>Not legal, tax, regulatory, lobbying or investment advice.</p>
       </div>
     </footer>
   );

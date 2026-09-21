@@ -5,8 +5,8 @@ import { MarketExplorer } from "@/components/market-explorer";
 import { PageHero } from "@/components/page-hero";
 
 export const metadata: Metadata = {
-  title: "Market Explorer",
-  description: "Sample scenarios showing how Tharros connects Canadian trade signals, provinces, routes to market and official sources.",
+  title: "Data: Market Explorer",
+  description: "A sample of how Tharros presents trade data: trend, provincial concentration, routes to market and sources, using clearly labelled synthetic values.",
   alternates: { canonical: "/market-explorer" },
 };
 
@@ -19,13 +19,12 @@ export default async function MarketExplorerPage({
   return (
     <>
       <PageHero
-        title="See how a Canadian market question is assembled."
-        description="Two sample scenarios show how trade signals, geographic concentration, routes to market and official resources fit into one inspectable view, with every source and limitation visible."
-        aside={<div className="hero-aside"><strong>Sample scenarios, synthetic values</strong><p>Nothing here is a live Canadian statistic. Real products are researched on request.</p></div>}
+        title="How Tharros presents data."
+        description="Two sample scenarios show a trade signal, its provincial concentration, possible routes to market and every source and limitation. The values are synthetic."
       />
       <div className="page-shell explorer-page"><MarketExplorer initialSample={typeof sample === "string" ? sample : undefined} /></div>
-      <section className="section explorer-next">
-        <div><h2>Need evidence for a real product?</h2><p>A human-verified scan can test the classification, source current data and add the market context a metric cannot supply.</p></div>
+      <section className="closing-cta">
+        <h2>Need this for a real product?</h2>
         <Link className="button-primary" href="/request-research?service=market-scan">Request a market scan <ArrowIcon /></Link>
       </section>
     </>

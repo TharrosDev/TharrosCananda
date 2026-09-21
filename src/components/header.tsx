@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
 const links = [
-  { href: "/market-explorer", label: "Market Explorer" },
-  { href: "/research-services", label: "Research Services" },
-  { href: "/how-it-works", label: "How It Works" },
-  { href: "/methodology", label: "Methodology" },
+  { href: "/research", label: "Research" },
+  { href: "/research-areas", label: "Research Areas" },
+  { href: "/research-services", label: "Services" },
+  { href: "/market-explorer", label: "Data" },
   { href: "/about", label: "About" },
 ];
 
@@ -63,7 +63,7 @@ export function Header() {
             ))}
           </div>
           <Link className="nav-action" href="/request-research" onClick={() => setOpen(false)}>
-            Request research
+            Commission research
           </Link>
         </nav>
       </div>

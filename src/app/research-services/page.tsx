@@ -7,8 +7,8 @@ import { ServiceList } from "@/components/service-list";
 import { pricingTerms } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "Research Services",
-  description: "Human-verified Canadian market, buyer, distributor and competitor research for European companies evaluating Canada.",
+  title: "Commissioned Research",
+  description: "Commissioned Canada–Europe research: market scans, buyer and distributor intelligence, competitor intelligence and custom research, with indicative prices.",
   alternates: { canonical: "/research-services" },
 };
 
@@ -17,24 +17,16 @@ export default function ResearchServicesPage() {
     <>
       <AnalyticsBeacon event="research_service_viewed" />
       <PageHero
-        title="Research scoped around the decision—not a generic report."
-        description="When public data is not enough, Tharros adds manual verification, commercial context and a source trail you can inspect."
-        aside={<div className="hero-aside"><strong>Asynchronous by default</strong><p>Written scope, price and timeline before work begins. A call is optional.</p></div>}
+        title="Commissioned research, scoped to the decision."
+        description="Three standard products for market work in Canada, and custom research for any other Canada–Europe question. Everything is agreed in writing; a call is optional."
       />
       <section className="section services-page">
-        <div className="pricing-note">
-          <strong>How pricing works</strong>
-          <p>The ranges below let you budget before asking. The final price depends on scope, geography, sector complexity and the level of verification required. {pricingTerms}</p>
-        </div>
+        <p className="pricing-note">{pricingTerms}</p>
         <ServiceList />
       </section>
-      <section className="section deliverable-band">
-        <div><h2>Every research output should answer four things.</h2><p>What we found, where it came from, what it could mean, and what remains uncertain.</p></div>
-        <ol><li><strong>Evidence</strong><span>Linked public sources</span></li><li><strong>Interpretation</strong><span>Commercial meaning</span></li><li><strong>Limits</strong><span>Unknowns and caveats</span></li><li><strong>Next step</strong><span>Decision-oriented action</span></li></ol>
-      </section>
       <section className="closing-cta">
-        <div><h2>Not sure which research product fits?</h2><p>Describe the decision you need to make. “Not sure yet” is a valid selection.</p></div>
-        <Link className="button-primary" href="/request-research">Describe your question <ArrowIcon /></Link>
+        <h2>Not sure which fits? Describe the question.</h2>
+        <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
       </section>
     </>
   );

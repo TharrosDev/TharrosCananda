@@ -2,9 +2,16 @@
 
 ## Target user
 
-The primary user is an owner or commercial lead at a European SME considering Canadian sales. They may be comparing direct B2B, distributor, wholesale, retail, own-store, marketplace or longer-term physical expansion routes. They need enough evidence to decide whether the next investment is justified and which uncertainty to investigate first.
+Businesses and organizations operating across the Canada–Europe relationship: European companies assessing Canada, Canadian companies assessing Europe, and organizations that need sourced intelligence on trade, defence-industrial links, energy and critical minerals, supply chains, industrial policy or technology. They need focused, sourced answers to support a commercial or strategic decision.
+
+Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, while providing commissioned research and commercial intelligence to businesses and organizations operating across that relationship.
+
+Four research areas organize the work: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; Technology & Strategic Industries (defined once in `src/lib/research-areas.ts`).
 
 ## Jobs to be done
+
+- Commission focused research on a commercially relevant Canada–Europe question.
+- Read independent Tharros research to judge its quality before commissioning.
 
 - Understand whether measurable Canadian trade activity exists for a product or classification.
 - See where commercial activity may be concentrated and which route to market could fit.
@@ -15,7 +22,7 @@ The primary user is an owner or commercial lead at a European SME considering Ca
 
 ## Core funnel
 
-1. **Explore:** view a sample analysis or the cross-border route checklist without an account.
+1. **Explore:** read the research areas, independent research or the sample data view without an account.
 2. **Understand:** inspect sources, dates, methods and limitations.
 3. **Decide:** choose whether the evidence is sufficient or a human-verified question remains.
 4. **Request:** submit a concise brief and receive a written scope, price and timeline.
@@ -37,6 +44,7 @@ Manually scoped work that adds verification, context and judgment:
 - Canada Market Scan: indicative C$250–400.
 - Buyer & Distributor Intelligence: indicative C$300–750.
 - Competitor Intelligence: indicative C$300–600.
+- Commissioned Research: any other Canada–Europe question, quoted per scope.
 
 Prices are indicative and defined in `src/lib/services.ts`. Scope, price and timeline are confirmed in writing before work starts. Internally these ranges are still being tested against real requests; that is not customer-facing language.
 

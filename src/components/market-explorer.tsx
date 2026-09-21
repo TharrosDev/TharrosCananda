@@ -17,23 +17,21 @@ const provider = demoProvider;
 const samples = provider.listSamples();
 
 type ExplorerProps = {
-  variant?: "hero" | "full";
   /** Sample slug from the URL (?sample=), so a shared link opens the same entry. */
   initialSample?: string;
 };
 
-export function MarketExplorer({ variant = "full", initialSample }: ExplorerProps) {
+export function MarketExplorer({ initialSample }: ExplorerProps) {
   const [result, setResult] = useState<MarketResult>(samples.find((sample) => sample.slug === initialSample) ?? samples[0]);
   const [query, setQuery] = useState("");
   const [unmatched, setUnmatched] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const full = variant === "full";
   const isSample = result.status === "demo";
 
   function selectSample(sample: MarketResult) {
     setResult(sample);
     setUnmatched(null);
-    if (full) window.history.replaceState(null, "", `?sample=${sample.slug}`);
+    window.history.replaceState(null, "", `?sample=${sample.slug}`);
     track("market_explorer_completed", { result: sample.slug });
   }
 
@@ -60,17 +58,17 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
   });
 
   return (
-    <section className={`explorer explorer-${variant}`} aria-labelledby={`explorer-title-${variant}`}>
+    <section className="explorer" aria-labelledby="explorer-title">
       <div className="explorer-topline">
         <div>
-          <h2 id={`explorer-title-${variant}`}>Tharros Market Explorer</h2>
+          <h2 id="explorer-title">Tharros Market Explorer</h2>
           <p>Sample scenarios showing how Canadian market evidence is assembled.</p>
         </div>
-        <DemoStamp compact={!full} />
+        <DemoStamp />
       </div>
 
-      <div className="sample-picker" role="group" aria-labelledby={`sample-label-${variant}`}>
-        <span id={`sample-label-${variant}`} className="sr-only">Sample scenarios (public preview)</span>
+      <div className="sample-picker" role="group" aria-labelledby="sample-label">
+        <span id="sample-label" className="sr-only">Sample scenarios (public preview)</span>
         <div>
           {samples.map((sample) => (
             <button
@@ -95,7 +93,7 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
           <div className="entry-description">
             <span>Sample product</span>
             <strong>{result.query}</strong>
-            {full && <small>{result.hsDescription}</small>}
+            <small>{result.hsDescription}</small>
           </div>
           <div>
             <span>Data status</span>
@@ -112,7 +110,7 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
               </div>
               <span className="trend-change">{formatDelta(trendDelta(result), "index pts")}</span>
             </div>
-            <TrendChart data={result.trend.points} compact={!full} />
+            <TrendChart data={result.trend.points} />
           </div>
           <div className="province-panel">
             <div className="result-heading">
@@ -121,12 +119,11 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
                 <p>{result.provinces.unit}</p>
               </div>
             </div>
-            <ProvinceBars data={result.provinces.shares} compact={!full} />
+            <ProvinceBars data={result.provinces.shares} />
           </div>
         </div>
 
-        {full && (
-          <>
+        <>
             <div className="result-interpretation">
               <p>{result.interpretation}</p>
             </div>
@@ -198,8 +195,7 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
                 )}
               </div>
             </div>
-          </>
-        )}
+        </>
 
         <div className="source-strip">
           <div>
@@ -207,11 +203,7 @@ export function MarketExplorer({ variant = "full", initialSample }: ExplorerProp
             <strong>{isSample ? "Synthetic sample values" : result.sources.map((source) => source.publisher).join(", ")}</strong>
           </div>
           <p>{result.sources[0]?.notes}</p>
-          {full ? (
-            <Link href={sampleRequestHref}>Research a real product like this</Link>
-          ) : (
-            <Link href="/market-explorer">See sources and limitations</Link>
-          )}
+          <Link href={sampleRequestHref}>Research a real product like this</Link>
         </div>
       </div>
     </section>
