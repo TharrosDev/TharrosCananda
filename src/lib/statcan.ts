@@ -1,6 +1,7 @@
 import type { TradeExplorerResponse, TradeFlow, TradeOption } from "@/types/official-data";
 
-const PRODUCT_ID = 1210017401 as const;
+const PRODUCT_ID = 12100174 as const;
+const CATALOGUE_ID = 1210017401 as const;
 const TABLE_ID = "12-10-0174-01" as const;
 const TABLE_URL = "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210017401";
 const LICENCE_URL = "https://www.statcan.gc.ca/en/terms-conditions/open-licence";
@@ -241,6 +242,7 @@ export async function getCetaTradeSeries(input: {
       publisher: "Statistics Canada",
       tableId: TABLE_ID,
       productId: PRODUCT_ID,
+      catalogueId: CATALOGUE_ID,
       title:
         metadata.cubeTitleEn ||
         "Merchandise imports and exports, customs-based, by free trade agreement and by commodity",
