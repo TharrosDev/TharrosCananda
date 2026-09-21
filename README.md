@@ -38,7 +38,7 @@ The archive UI in `src/components/research-archive.tsx` already supports:
 - expertise-area filtering;
 - publication-type filtering;
 - stable publication URLs;
-- author/tags/PDF metadata when supplied.
+- author/tags/PDF metadata when supplied;\n- a reusable `/research/[slug]` article template for executive summary, findings, methodology, sources and limitations.
 
 When a real publication is added, build its article/report page with the actual title, authorship, publication date, executive summary, methodology, sources, limitations and any real visual assets. Do not create dummy entries to make the archive look populated.
 
@@ -46,7 +46,7 @@ When a real publication is added, build its article/report page with the actual 
 
 ### Statistics Canada
 
-`src/lib/statcan.ts` integrates Statistics Canada WDS using Product ID **1210017401**, Table **12-10-0174-01**, *Merchandise imports and exports, customs-based, by free trade agreement and by commodity*.
+`src/lib/statcan.ts` integrates Statistics Canada WDS using WDS Product ID **12100174** and public table/issue **12-10-0174-01** (catalogue/DOI identifier **1210017401**), *Merchandise imports and exports, customs-based, by free trade agreement and by commodity*.
 
 The public interface:
 
