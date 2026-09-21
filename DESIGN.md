@@ -168,7 +168,7 @@ A warm paper-and-ink palette with one action colour and two data channels. Contr
 **Character:** The serif speaks for the headings, entry names and interpretive sentences. The grotesk runs the schedule: body, controls, labels and tabular readouts.
 
 ### Hierarchy
-- **Display** (380, clamp(52px, 6.6vw, 96px), 0.98, max 12ch): home hero h1. Inner-page h1 uses clamp(46px, 5.6vw, 84px) at weight 380.
+- **Display** (380, clamp(52px, 6.6vw, 96px), 0.98, max 12ch): home hero h1. Inner-page h1 uses clamp(46px, 5.6vw, 84px) at weight 380 in columns 1–7, with the lede bottom-aligned in columns 8–12 under an ink rule (stacked below 980px).
 - **Headline** (400, clamp(36px, 3.6vw, 56px), 1.05): section and band h2s. Secondary section h2s step down to clamp(34px, 3.2vw, 48px).
 - **Title** (500, 28px, 1.15): service names, process steps (32px) and policy headings (30px). Index entries use 26px, and sub-headings 20–24px.
 - **Entry Figure** (400, 30px, tabular lining numerals): the HS heading readout in the Explorer.

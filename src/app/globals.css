@@ -285,10 +285,11 @@ p { text-wrap: pretty; }
 .closing-cta .button-primary { flex: 0 0 auto; }
 
 /* ---------- Inner page hero ---------- */
-.page-hero { width: var(--shell); margin: 0 auto; padding: clamp(72px, 9vw, 136px) 0 clamp(8px, 2vw, 24px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 48px; align-items: end; }
-.page-hero > div { grid-column: 1 / span 9; }
-.page-hero h1 { max-width: 16ch; margin-bottom: 28px; font-size: clamp(46px, 5.6vw, 84px); font-weight: 380; letter-spacing: -.026em; line-height: 1; }
-.page-hero > div > p { max-width: 36em; margin: 0; color: var(--ink-soft); font-size: clamp(18px, 1.3vw, 20px); }
+.page-hero { width: var(--shell); margin: 0 auto; padding: clamp(72px, 9vw, 136px) 0 clamp(8px, 2vw, 24px); }
+/* Split: headline left, lede bottom-aligned right, so the hero fills its width. */
+.page-hero > div { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 28px; align-items: end; }
+.page-hero h1 { grid-column: 1 / span 7; max-width: 14ch; margin: 0; font-size: clamp(46px, 5.6vw, 84px); font-weight: 380; letter-spacing: -.026em; line-height: 1; }
+.page-hero > div > p { grid-column: 8 / span 5; max-width: 30em; margin: 0 0 8px; padding-top: 18px; border-top: 1px solid var(--ink); color: var(--ink-soft); font-size: clamp(18px, 1.3vw, 20px); }
 .page-shell { width: var(--shell); margin: 0 auto; }
 
 /* ---------- Services page ---------- */
@@ -480,6 +481,7 @@ legend:focus:not(:focus-visible) { outline: none; }
   .home-hero { row-gap: 40px; }
   .product-list { grid-template-columns: 1fr 1fr; row-gap: 24px; }
   .area-section > .index-number { grid-column: 1 / -1; padding: 0; }
+  .page-hero h1, .page-hero > div > p,
   .home-hero h1, .hero-side, .area-index h2, .index-list, .commission-intro, .topic-list, .own-research > div, .type-list,
   .empty-state, .publication-list, .type-register, .area-section > div:nth-of-type(1), .area-section > div:nth-of-type(2),
   .process-list, .about-story > div, .about-story aside,
