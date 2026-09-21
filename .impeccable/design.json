@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-21T16:28:00.6428091-04:00",
+  "title": "Design System: Tharros Canada",
+  "extensions": {
+    "colorMeta": {
+      "report-paper": {
+        "role": "neutral",
+        "displayName": "Warm Report Paper",
+        "canonical": "#f3f0e8",
+        "tonalRamp": ["oklch(18% 0.012 88)", "oklch(29% 0.014 88)", "oklch(40% 0.015 88)", "oklch(52% 0.016 88)", "oklch(64% 0.017 88)", "oklch(76% 0.018 88)", "oklch(87% 0.019 88)", "#f3f0e8"]
+      },
+      "report-paper-deep": {
+        "role": "neutral",
+        "displayName": "Deep Report Paper",
+        "canonical": "#e8e3d7",
+        "tonalRamp": ["oklch(18% 0.014 84)", "oklch(29% 0.015 84)", "oklch(40% 0.017 84)", "oklch(52% 0.019 84)", "oklch(64% 0.020 84)", "oklch(76% 0.021 84)", "#e8e3d7", "oklch(95% 0.022 84)"]
+      },
+      "report-paper-light": {
+        "role": "neutral",
+        "displayName": "Light Report Paper",
+        "canonical": "#faf8f2",
+        "tonalRamp": ["oklch(18% 0.009 88)", "oklch(29% 0.010 88)", "oklch(40% 0.011 88)", "oklch(52% 0.012 88)", "oklch(64% 0.013 88)", "oklch(76% 0.014 88)", "oklch(87% 0.015 88)", "#faf8f2"]
+      },
+      "canadian-ink": {
+        "role": "neutral",
+        "displayName": "Deep Canadian Ink",
+        "canonical": "#11233b",
+        "tonalRamp": ["#11233b", "oklch(27% 0.050 252)", "oklch(38% 0.047 252)", "oklch(50% 0.043 252)", "oklch(62% 0.038 252)", "oklch(74% 0.032 252)", "oklch(86% 0.022 252)", "oklch(95% 0.010 252)"]
+      },
+      "softened-ink": {
+        "role": "neutral",
+        "displayName": "Softened Ink",
+        "canonical": "#415067",
+        "tonalRamp": ["oklch(15% 0.036 252)", "#415067", "oklch(39% 0.036 252)", "oklch(51% 0.033 252)", "oklch(63% 0.029 252)", "oklch(75% 0.024 252)", "oklch(87% 0.016 252)", "oklch(95% 0.008 252)"]
+      },
+      "annotation-slate": {
+        "role": "neutral",
+        "displayName": "Annotation Slate",
+        "canonical": "#677384",
+        "tonalRamp": ["oklch(15% 0.025 250)", "oklch(27% 0.026 250)", "#677384", "oklch(51% 0.025 250)", "oklch(63% 0.022 250)", "oklch(75% 0.018 250)", "oklch(87% 0.012 250)", "oklch(95% 0.006 250)"]
+      },
+      "ledger-line": {
+        "role": "neutral",
+        "displayName": "Ledger Line",
+        "canonical": "#b7b6b0",
+        "tonalRamp": ["oklch(15% 0.008 85)", "oklch(27% 0.009 85)", "oklch(39% 0.010 85)", "oklch(51% 0.011 85)", "oklch(63% 0.011 85)", "#b7b6b0", "oklch(87% 0.010 85)", "oklch(95% 0.006 85)"]
+      },
+      "ledger-line-dark": {
+        "role": "neutral",
+        "displayName": "Dark Ledger Line",
+        "canonical": "#7e8791",
+        "tonalRamp": ["oklch(15% 0.015 248)", "oklch(27% 0.016 248)", "oklch(39% 0.017 248)", "#7e8791", "oklch(63% 0.016 248)", "oklch(75% 0.014 248)", "oklch(87% 0.009 248)", "oklch(95% 0.005 248)"]
+      },
+      "signal-red": {
+        "role": "primary",
+        "displayName": "Signal Canadian Red",
+        "canonical": "#ad303a",
+        "tonalRamp": ["oklch(15% 0.110 23)", "oklch(27% 0.145 23)", "#84252d", "#ad303a", "oklch(63% 0.155 23)", "oklch(75% 0.110 23)", "oklch(87% 0.060 23)", "oklch(95% 0.025 23)"]
+      },
+      "signal-red-dark": {
+        "role": "primary",
+        "displayName": "Deep Signal Red",
+        "canonical": "#84252d",
+        "tonalRamp": ["oklch(15% 0.105 23)", "oklch(27% 0.135 23)", "#84252d", "oklch(51% 0.145 23)", "oklch(63% 0.130 23)", "oklch(75% 0.095 23)", "oklch(87% 0.052 23)", "oklch(95% 0.022 23)"]
+      },
+      "data-blue": {
+        "role": "secondary",
+        "displayName": "Measured Data Blue",
+        "canonical": "#2f6690",
+        "tonalRamp": ["oklch(15% 0.070 245)", "oklch(27% 0.090 245)", "#2f6690", "oklch(51% 0.105 245)", "oklch(63% 0.092 245)", "oklch(75% 0.068 245)", "oklch(87% 0.038 245)", "oklch(95% 0.016 245)"]
+      },
+      "verified-green": {
+        "role": "tertiary",
+        "displayName": "Verified Green",
+        "canonical": "#4f735e",
+        "tonalRamp": ["oklch(15% 0.055 150)", "oklch(27% 0.070 150)", "#4f735e", "oklch(51% 0.080 150)", "oklch(63% 0.071 150)", "oklch(75% 0.052 150)", "oklch(87% 0.030 150)", "oklch(95% 0.014 150)"]
+      },
+      "focus-blue": {
+        "role": "secondary",
+        "displayName": "Accessible Focus Blue",
+        "canonical": "#176fab",
+        "tonalRamp": ["oklch(15% 0.085 245)", "oklch(27% 0.115 245)", "#176fab", "oklch(51% 0.135 245)", "oklch(63% 0.115 245)", "oklch(75% 0.080 245)", "oklch(87% 0.043 245)", "oklch(95% 0.018 245)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Editorial Display", "purpose": "Page propositions and major hero statements only." },
+      "headline": { "displayName": "Section Headline", "purpose": "Large section arguments and decision prompts." },
+      "title": { "displayName": "Evidence Title", "purpose": "Services, modules, and compact editorial subheads." },
+      "body": { "displayName": "Interface Body", "purpose": "Reading copy, controls, and explanatory content." },
+      "label": { "displayName": "Evidence Label", "purpose": "Provenance, sequence, status, and field metadata." }
+    },
+    "shadows": [
+      { "name": "explorer-lift", "value": "0 18px 44px rgba(17, 35, 59, .08)", "purpose": "The compact working Explorer in the first viewport." },
+      { "name": "workspace-lift", "value": "0 22px 54px rgba(17, 35, 59, .08)", "purpose": "Full Explorer pages and primary working surfaces." },
+      { "name": "form-lift", "value": "0 22px 54px rgba(17, 35, 59, .07)", "purpose": "The progressive research request form." },
+      { "name": "menu-lift", "value": "0 18px 30px rgba(17, 35, 59, .12)", "purpose": "Temporary mobile navigation only." }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "160ms ease-out", "purpose": "Button, icon, loading-opacity, and compact state transitions." },
+      { "name": "rule-reveal", "value": "180ms ease-out", "purpose": "Navigation underline reveal." },
+      { "name": "progress", "value": "240ms ease-out", "purpose": "Research-request progress movement." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Effectively removes animation when reduced motion is requested." }
+    ],
+    "breakpoints": [
+      { "name": "wide-compress", "value": "1220px" },
+      { "name": "stack-and-menu", "value": "980px" },
+      { "name": "mobile-ledger", "value": "700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The scarce signal-red action for the single clearest next step.",
+      "html": "<button class=\"ds-btn-primary\">Explore market <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"/></svg></button>",
+      "css": ".ds-btn-primary { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 18px; border: 1px solid var(--red, #ad303a); border-radius: 0; color: #fff; background: var(--red, #ad303a); font: 750 16px/1.25 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; transition: background 160ms ease-out, border-color 160ms ease-out; } .ds-btn-primary svg { width: 20px; height: 20px; transition: transform 160ms ease-out; } .ds-btn-primary:hover { background: var(--red-dark, #84252d); border-color: var(--red-dark, #84252d); } .ds-btn-primary:hover svg { transform: translateX(4px); } .ds-btn-primary:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A flat ink-bound action for important alternatives.",
+      "html": "<button class=\"ds-btn-secondary\">See how research works <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg></button>",
+      "css": ".ds-btn-secondary { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 18px; border: 1px solid var(--ink, #11233b); border-radius: 0; color: var(--ink, #11233b); background: transparent; font: 750 16px/1.25 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; transition: color 160ms ease-out, background 160ms ease-out; } .ds-btn-secondary svg { width: 20px; height: 20px; transition: transform 160ms ease-out; } .ds-btn-secondary:hover { color: #fff; background: var(--ink, #11233b); } .ds-btn-secondary:hover svg { transform: translateX(4px); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-btn-secondary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Ledger Input",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A square white field that reads as a precise entry in the report grid.",
+      "html": "<label class=\"ds-field\"><span>Product description or HS code</span><input type=\"text\" value=\"Industrial LED lighting\" /></label>",
+      "css": ".ds-field { display: grid; gap: 8px; color: var(--ink, #11233b); font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-field > span { font-size: 13px; font-weight: 800; } .ds-field input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid var(--line-dark, #7e8791); border-radius: 0; color: var(--ink, #11233b); background: #fff; font: 400 16px/1.65 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-field input:hover { border-color: var(--ink-soft, #415067); } .ds-field input:focus-visible { border-color: var(--focus, #176fab); outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "nav-action",
+      "description": "Quiet editorial links with one filled commercial action.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary example\"><a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Market Explorer</a><a class=\"ds-nav-link\" href=\"#\">Methodology</a><a class=\"ds-nav-action\" href=\"#\">Request research</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 26px; font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-nav-link { position: relative; padding: 14px 0 11px; color: var(--ink-soft, #415067); font-size: 13px; font-weight: 650; text-decoration: none; } .ds-nav-link::after { content: ''; position: absolute; right: 0; bottom: 5px; left: 0; height: 1px; background: var(--red, #ad303a); transform: scaleX(0); transform-origin: left; transition: transform 180ms ease-out; } .ds-nav-link:hover::after, .ds-nav-link-active::after { transform: scaleX(1); } .ds-nav-link:focus-visible, .ds-nav-action:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-nav-action { padding: 11px 16px; color: #fff; background: var(--red, #ad303a); font-size: 13px; font-weight: 700; text-decoration: none; transition: background 160ms ease-out, transform 160ms ease-out; } .ds-nav-action:hover { background: var(--red-dark, #84252d); transform: translateY(-1px); } .ds-nav-action:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Evidence Ledger",
+      "kind": "card",
+      "refersTo": "ledger-surface",
+      "description": "A rule-divided evidence surface that replaces the generic card pattern.",
+      "html": "<section class=\"ds-ledger\"><header><div><h3>Illustrative five-year signal</h3><p>Demo index, not live statistics</p></div><strong>+24 index pts</strong></header><dl><div><dt>Product</dt><dd>Industrial LED lighting</dd></div><div><dt>HS reference</dt><dd>9405.11</dd></div></dl><footer><span>Source status</span><b>Synthetic demonstration dataset</b></footer></section>",
+      "css": ".ds-ledger { border-top: 1px solid var(--line-dark, #7e8791); border-bottom: 1px solid var(--line-dark, #7e8791); color: var(--ink, #11233b); background: var(--paper-light, #faf8f2); box-shadow: 0 18px 44px rgba(17,35,59,.08); font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-ledger header { padding: 18px; display: flex; align-items: start; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--line, #b7b6b0); } .ds-ledger h3 { margin: 0; font: 620 19px/1.2 var(--display, 'Newsreader Variable', Georgia, serif); } .ds-ledger p { margin: 2px 0 0; color: var(--slate, #677384); font-size: 10px; } .ds-ledger header > strong { color: var(--green, #4f735e); font-size: 11px; white-space: nowrap; } .ds-ledger dl { margin: 0; display: grid; grid-template-columns: 1.5fr 1fr; } .ds-ledger dl > div { padding: 13px 18px; border-right: 1px solid var(--line, #b7b6b0); } .ds-ledger dl > div:last-child { border-right: 0; } .ds-ledger dt, .ds-ledger footer span { color: var(--slate, #677384); font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; } .ds-ledger dd { margin: 2px 0 0; font: 600 16px/1.3 var(--display, 'Newsreader Variable', Georgia, serif); } .ds-ledger footer { padding: 11px 18px; border-top: 1px solid var(--line-dark, #7e8791); } .ds-ledger footer b { display: block; margin-top: 2px; font-size: 11px; } .ds-ledger:focus-within { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
+    },
+    {
+      "name": "Selected Research Choice",
+      "kind": "chip",
+      "refersTo": "ledger-surface",
+      "description": "A full-width selected row for objectives and research routes.",
+      "html": "<label class=\"ds-choice\"><input type=\"checkbox\" checked /><span class=\"ds-choice-check\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m5 12 4 4L19 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></span><strong>Buyer and distributor intelligence</strong></label>",
+      "css": ".ds-choice { min-height: 62px; padding: 12px 14px; border: 1px solid var(--ink, #11233b); display: flex; align-items: center; gap: 12px; color: var(--ink, #11233b); background: var(--paper-deep, #e8e3d7); font: 600 14px/1.4 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; } .ds-choice input { position: absolute; opacity: 0; pointer-events: none; } .ds-choice-check { width: 22px; height: 22px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; background: var(--green, #4f735e); border: 1px solid var(--green, #4f735e); } .ds-choice-check svg { width: 15px; } .ds-choice:hover { border-color: var(--red, #ad303a); } .ds-choice:has(input:focus-visible) { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-choice:active { background: var(--paper, #f3f0e8); }"
+    },
+    {
+      "name": "Demo Status Stamp",
+      "kind": "custom",
+      "refersTo": "ledger-surface",
+      "description": "A compact, non-optional disclosure that prevents demo data from reading as live statistics.",
+      "html": "<div class=\"ds-demo-stamp\" role=\"note\"><span>Demonstration data</span><p>Illustrative values only — not current Canadian statistics.</p></div>",
+      "css": ".ds-demo-stamp { max-width: 310px; padding: 7px 8px 5px; border: 1px solid var(--red, #ad303a); color: var(--ink, #11233b); background: transparent; font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-demo-stamp span { color: var(--red-dark, #84252d); font-size: 10px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; } .ds-demo-stamp p { margin: 3px 0 0; color: var(--ink-soft, #415067); font-size: 11px; line-height: 1.35; } .ds-demo-stamp:hover { background: var(--paper-deep, #e8e3d7); } .ds-demo-stamp:focus-within { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Evidence Ledger",
+    "overview": "Tharros Canada should feel like an exceptionally clear export dossier brought to life: editorial enough to establish authority, operational enough to interrogate, and restrained enough that evidence always outranks promotion. Warm uncoated report paper, deep Canadian ink, slate annotations, muted data colors, and a single signal red create an institutional world without drifting into a government portal.\n\nThe interface earns confidence through visible provenance and disciplined structure. Rules, registers, source strips, tabular numerals, and asymmetric editorial compositions organize the experience; decorative containers do not. The density is deliberate but breathable, with publication-scale headlines balanced by exact controls and compact evidence labels.",
+    "keyCharacteristics": [
+      "Editorial authority paired with precise interface control.",
+      "Warm paper surfaces subdivided by hairline ledger rules.",
+      "Asymmetric, evidence-forward compositions that become linear on small screens.",
+      "Restrained Canadian red used as a signal, never as atmosphere.",
+      "Honest status, source, limitation, and methodology treatments embedded in the visual hierarchy."
+    ],
+    "rules": [
+      { "name": "The Red Is a Signal Rule", "body": "Signal red marks action, status, or a meaningful editorial cue; it never becomes a large decorative field.", "section": "colors" },
+      { "name": "The Evidence Color Rule", "body": "Data blue and verified green communicate distinct evidence channels. Do not recolor data for visual variety.", "section": "colors" },
+      { "name": "The Paper, Not White Rule", "body": "Warm report paper is the environmental ground. Pure white belongs only inside exact input and control surfaces.", "section": "colors" },
+      { "name": "The Editorial-Control Pair Rule", "body": "Newsreader speaks for propositions and interpretation; Manrope speaks for actions, inputs, metadata, and factual scaffolding.", "section": "typography" },
+      { "name": "The Labels Are Evidence Rule", "body": "Uppercase labels identify a datum or state. They do not serve as ornamental eyebrow text.", "section": "typography" },
+      { "name": "The Evidence Before Ornament Rule", "body": "The layout allocates the most space to inspectable output, provenance, and next-step clarity—not to decorative brand staging.", "section": "layout" },
+      { "name": "The Mobile Reading Order Rule", "body": "On narrow screens, preserve proposition, action, then evidence. Do not merely squeeze the desktop split.", "section": "layout" },
+      { "name": "The Flat-by-Default Rule", "body": "Content remains on the report plane. Shadows identify active tools or temporary overlays, never generic cards.", "section": "elevation" },
+      { "name": "The Square Instrument Rule", "body": "Interactive geometry stays square. Do not import pill buttons, rounded cards, floating bubbles, or soft dashboard tiles.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do make sources, status, periods, limitations, and retrieval context visible within the evidence hierarchy.",
+      "Do use hairline rules and aligned fields to organize dense information.",
+      "Do preserve the Newsreader/Manrope division between editorial interpretation and interface control.",
+      "Do treat red as a scarce action or status signal and blue/green as stable data channels.",
+      "Do compose mobile screens deliberately around reading order, generous targets, and stacked evidence fields."
+    ],
+    "donts": [
+      "Don't introduce rounded cards, pill controls, glass effects, gradients, or floating dashboard tiles.",
+      "Don't use red as a broad background, decorative wash, or substitute for hierarchy.",
+      "Don't bury provenance in a footer, tooltip, or secondary disclosure when it qualifies a visible result.",
+      "Don't fabricate testimonials, partners, live-data claims, scale signals, or government affiliation.",
+      "Don't add ornamental imagery where a working query, chart, source register, or clear written boundary provides stronger proof."
+    ]
+  }
+}

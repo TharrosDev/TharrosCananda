@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+coverage/
+.env
+.env.local
+.env.*.local
+!.env.example
+.impeccable/review/
+.impeccable/mocks/
+*.tsbuildinfo
+npm-debug.log*
+outputs/
