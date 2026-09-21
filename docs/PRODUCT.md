@@ -35,7 +35,7 @@ Indicative prices are visible in service detail, not used as the lead brand prop
 
 ## Research archive
 
-The archive is infrastructure for real work, not content theatre. It remains empty until research is genuinely published.
+The archive is infrastructure for real work, not content theatre. It remains empty until research is genuinely published. A reusable `/research/[slug]` route renders complete structured publications as they are added.
 
 Publication registry: `src/data/publications.ts`.
 
@@ -45,9 +45,10 @@ Archive capabilities:
 - expertise filtering;
 - publication-format filtering;
 - stable URLs;
-- optional author/tags/PDF metadata.
+- structured executive summary, findings, methodology, limitations and source records;
+- optional tags/PDF metadata.
 
-A future research article/report template should include actual authorship, date, executive summary, key findings, evidence, methodology, sources and limitations. No placeholder publication may be represented as completed research.
+The research article template requires actual authorship, date, executive summary, key findings, methodology, sources and limitations. No placeholder publication may be represented as completed research.
 
 ## Market Data
 
