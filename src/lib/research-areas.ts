@@ -1,4 +1,4 @@
-/** The four research areas that organize both commissioned work and Tharros-produced research. */
+/** The four expertise areas that organize commissioned work and future Tharros-produced research. */
 export const researchAreas = [
   {
     slug: "trade-economic-integration",
@@ -9,6 +9,7 @@ export const researchAreas = [
       "How does CETA treatment affect a specific route to market?",
       "Which supply chains link Canadian and European producers?",
     ],
+    evidence: ["Official trade tables and classifications", "Tariff and market-access documentation", "Company and supply-chain evidence"],
   },
   {
     slug: "defence-security",
@@ -19,6 +20,7 @@ export const researchAreas = [
       "How are procurement frameworks on both sides evolving?",
       "Where do defence-industrial partnerships already exist?",
     ],
+    evidence: ["Procurement and award notices", "Programme and budget documentation", "Company and industrial-base records"],
   },
   {
     slug: "energy-resources-industry",
@@ -29,6 +31,7 @@ export const researchAreas = [
       "How do industrial policies on each side shape investment decisions?",
       "Who are the active buyers, processors and offtakers in a segment?",
     ],
+    evidence: ["Project and production data", "Industrial-policy and infrastructure records", "Corporate filings and commercial announcements"],
   },
   {
     slug: "technology-strategic-industries",
@@ -39,6 +42,7 @@ export const researchAreas = [
       "How do AI and digital policy differ in ways that affect market entry?",
       "Where is research cooperation turning into commercial activity?",
     ],
+    evidence: ["Public company and funding records", "Research and programme documentation", "Policy, procurement and ecosystem data"],
   },
 ] as const;
 

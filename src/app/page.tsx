@@ -1,67 +1,135 @@
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
-import { publicationTypes } from "@/data/publications";
+import { TradeSignalPreview } from "@/components/trade-signal-preview";
+import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
 
-const commissionExamples = [
-  "Canadian market opportunities for European companies",
-  "European opportunities for Canadian companies",
-  "Defence-industrial integration",
-  "CETA, trade and market access",
-  "Critical minerals and energy",
-  "Supply chains and industrial policy",
-  "AI, cyber and digital policy",
-  "Aerospace and strategic industries",
-];
+const clientQuestions = [
+  {
+    title: "Enter a market",
+    copy: "Understand market structure, trade signals, geography, routes to market and the questions that still require verification.",
+    href: "/research-services#market-scan",
+  },
+  {
+    title: "Find buyers or partners",
+    copy: "Build a sourced view of organizations that may buy, import, distribute or otherwise matter to a commercial route.",
+    href: "/research-services#buyer-distributor",
+  },
+  {
+    title: "Understand competitors",
+    copy: "Map comparable offers, positioning, geography, channels and public evidence without presenting estimates as fact.",
+    href: "/research-services#competitor-intelligence",
+  },
+  {
+    title: "Track a sector or policy shift",
+    copy: "Commission a focused answer when the commercial question crosses trade, defence, industry, energy or technology.",
+    href: "/research-services#commissioned-research",
+  },
+] as const;
 
 export default function HomePage() {
+  const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
+  const researchToShow = featuredResearch.length ? featuredResearch : publications.slice(0, 3);
+
   return (
     <>
       <PageHero
         variant="home"
         title="Commercial research and intelligence connecting Canada and Europe."
-        description="Tharros Canada researches the commercial, economic, industrial, technological and strategic developments that link the two, and takes commissions from organizations working across that relationship."
-        index={researchAreas.map((area) => ({ label: area.name, href: `/research-areas#${area.slug}`, note: area.scope }))}
-        indexLabel="Research areas"
+        description="Tharros Canada turns public data, procurement records, company evidence and policy material into focused research for organizations making decisions across the relationship."
+        index={clientQuestions.map((item) => ({ label: item.title, href: item.href }))}
+        indexLabel="What clients ask us to answer"
       >
         <div className="hero-actions">
           <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
-          <Link className="text-link" href="/research-areas">Research areas <ArrowIcon /></Link>
+          <Link className="text-link" href="/research-services">See services <ArrowIcon /></Link>
         </div>
       </PageHero>
 
-      <section className="section commission">
-        <div className="commission-intro">
-          <h2>Commission focused research.</h2>
-          <p>Bring almost any commercially relevant Canada–Europe question. Scope, price and timeline are agreed in writing before work starts.</p>
+      <section className="section decision-section">
+        <div className="section-intro">
+          <h2>Start with the decision.</h2>
+          <p>Services are organized around the question being answered, not around a generic consulting package.</p>
+        </div>
+        <ol className="decision-list">
+          {clientQuestions.map((item, index) => (
+            <li key={item.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div><h3><Link href={item.href}>{item.title}</Link></h3><p>{item.copy}</p></div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="section expertise-home">
+        <div className="section-intro">
+          <h2>Canada–Europe expertise.</h2>
+          <p>Four research areas organize the evidence. Commercial questions can sit across more than one.</p>
+          <Link className="text-link" href="/research-areas">Explore expertise <ArrowIcon /></Link>
+        </div>
+        <div className="expertise-register">
+          {researchAreas.map((area, index) => (
+            <Link key={area.slug} href={`/research-areas#${area.slug}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{area.name}</strong>
+              <small>{area.scope}</small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="band data-proof">
+        <div className="band-inner data-proof-inner">
+          <div>
+            <h2>Use the source before the story.</h2>
+            <p>The public data interface now reads official Statistics Canada CETA merchandise-trade series. If the source is unavailable, the interface says so instead of substituting synthetic values.</p>
+          </div>
+          <TradeSignalPreview />
+        </div>
+      </section>
+
+      <section className="section services-home">
+        <div className="section-intro">
+          <h2>Commissioned research.</h2>
+          <p>Three standardized starting points plus custom research. Indicative pricing stays visible in the service detail rather than defining the proposition.</p>
           <Link className="text-link" href="/research-services">Services and indicative prices <ArrowIcon /></Link>
         </div>
-        <ul className="topic-list" aria-label="Examples of commissioned subjects">
-          {commissionExamples.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-        <ul className="product-list" aria-label="Standard research products">
+        <ul className="product-list" aria-label="Research services">
           {services.map((service) => (
             <li key={service.slug}>
               <Link href={`/research-services#${service.slug}`}>
                 <strong>{service.name}</strong>
-                <span>{service.priceLabel}</span>
+                <span>{service.question}</span>
               </Link>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="section own-research">
+      <section className="section archive-home">
         <div>
-          <h2>Independent research by Tharros Canada.</h2>
-          <p>Alongside commissioned work, Tharros publishes its own research across the four areas. The first publications are in preparation.</p>
-          <Link className="text-link" href="/research">About our research <ArrowIcon /></Link>
+          <h2>{researchToShow.length ? "Selected research." : "Research archive."}</h2>
+          {researchToShow.length ? (
+            <p>Recent verified work from the Tharros Canada research archive.</p>
+          ) : (
+            <p>The archive is ready for real papers, briefs and data notes as they are published. It remains deliberately empty until that work exists.</p>
+          )}
         </div>
-        <ul className="type-list">
-          {publicationTypes.map((type) => <li key={type.name}>{type.name}</li>)}
-        </ul>
+        <div className={researchToShow.length ? "home-research-list" : undefined}>
+          {researchToShow.length ? researchToShow.map((publication) => (
+            <Link key={publication.slug} href={`/research/${publication.slug}`}>
+              <strong>{publication.title}</strong>
+              <span>{publication.type} · {new Date(publication.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "short", timeZone: "UTC" })}</span>
+            </Link>
+          )) : (
+            <>
+              <Link className="text-link" href="/research">Open research archive <ArrowIcon /></Link>
+              <Link className="text-link" href="/methodology">Sources & methodology <ArrowIcon /></Link>
+            </>
+          )}
+        </div>
       </section>
 
       <section className="closing-cta">

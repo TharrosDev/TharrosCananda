@@ -1,13 +1,15 @@
-# Quality bar — Tharros Canada V1
+# Quality bar — Tharros Canada
 
-- A visitor understands the Canada–Europe commercial research proposition and primary actions within five seconds.
-- The homepage carries the strongest brand hero; standard pages are shallower and task pages expose the working interface quickly.
-- Navigation stays visible until space actually requires collapse, uses specific destination labels, and never duplicates the page’s primary control.
-- Mobile preserves reading order, actions, data equivalents and keyboard accessibility without horizontal page scrolling or oversized opening sections.
-- Reading measures stay controlled; long-form prose does not sprawl across wide desktop columns.
-- Every anchored heading clears the sticky header, and sticky page furniture never sits beneath it.
-- Every synthetic value is unmistakably labelled as demonstration data.
-- Sources, periods, ownership and limitations are part of the information hierarchy.
-- The visual system reads as a serious financial publication and intelligence terminal without borrowing a competitor identity.
-- Warm paper, deep ink, disciplined rules and restrained signal red carry the entire site.
-- No fabricated social proof, hype, stock photography, decorative charting, glass or generic same-size card grid.
+- A visitor understands the Canada–Europe commercial research proposition and the Commission Research action within five seconds.
+- Services lead the information architecture; public research and data act as evidence of method and expertise.
+- No report, author, client, testimonial, partner, award, image or quantitative finding is fabricated.
+- The Research Archive remains honest when empty and scales without redesign when verified publications are added.
+- Market Data displays only official values retrieved through documented publisher paths; source failure never becomes a synthetic fallback.
+- Statistics Canada attribution, period, retrieval/release context and material limitations remain visible with the data.
+- Canadian and European public-source routes are both represented in Methodology.
+- Document pages use a lighter editorial hierarchy instead of repeating the dark commercial hero.
+- Mobile preserves reading order, actions, data equivalents and keyboard accessibility without horizontal scrolling.
+- Long prose stays near 64ch; tabular values use tabular numerals.
+- Sticky elements and anchor targets never obscure keyboard focus or headings.
+- Red means action; steel means data; green means positive state/change, not editorial approval.
+- The site looks like a rigorous commercial-intelligence house, not a government site, think tank, generic agency or SaaS dashboard.

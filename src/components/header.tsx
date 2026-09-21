@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
 const links = [
-  { href: "/research", label: "Research" },
-  { href: "/research-areas", label: "Areas" },
   { href: "/research-services", label: "Services" },
-  { href: "/market-explorer", label: "Market Explorer" },
+  { href: "/research-areas", label: "Expertise" },
+  { href: "/research", label: "Research" },
+  { href: "/market-explorer", label: "Market Data" },
   { href: "/about", label: "About" },
 ];
 
@@ -46,7 +46,7 @@ export function Header() {
           aria-controls="primary-navigation"
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="sr-only">{open ? "Close navigation" : "Open navigation"}</span>
+          <span className="menu-toggle-label">{open ? "Close" : "Menu"}</span>
           <MenuIcon open={open} />
         </button>
         <nav id="primary-navigation" className={open ? "main-nav is-open" : "main-nav"} aria-label="Primary">

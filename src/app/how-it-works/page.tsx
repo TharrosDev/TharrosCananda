@@ -19,7 +19,7 @@ const steps = [
 export default function HowItWorksPage() {
   return (
     <>
-      <PageHero title="A predictable process, in writing." description="No mandatory call. Nothing starts until you approve the scope." index={steps.map(([title], position) => ({ label: title, href: `#step-${position + 1}` }))} />
+      <PageHero variant="document" title="A predictable process, in writing." description="No mandatory call. Nothing starts until you approve the scope." index={steps.map(([title], position) => ({ label: title, href: `#step-${position + 1}` }))} />
       <section className="section process-page">
         <ol className="process-list">{steps.map(([title, copy], index) => <li key={title} id={`step-${index + 1}`}><span>{String(index + 1).padStart(2, "0")}</span><div><h2>{title}</h2><p>{copy}</p></div></li>)}</ol>
       </section>
