@@ -18,14 +18,20 @@ export default function AboutPage() {
       <PageHero
         title="An independent commercial research company."
         description="Tharros Canada researches the commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, and provides commissioned research to organizations working across that relationship."
+        index={[
+          { label: "How the work is done", href: "#method" },
+          { label: "Independence", href: "#independence" },
+          { label: "Privacy", href: "#privacy" },
+          { label: "Accessibility", href: "#accessibility" },
+        ]}
       />
       <section className="section about-story">
         <div>
-          <h2>How the work is done</h2>
+          <h2 id="method">How the work is done</h2>
           <p>Evidence on Canada–Europe questions is spread across trade tables, procurement notices, company filings, policy documents and sector sources on both sides of the Atlantic. Tharros assembles it, checks it by hand and reports what it does and does not establish.</p>
           <p>Commissioned work starts from a written scope you approve. Every material fact names its source and period; interpretation is labelled as interpretation.</p>
         </div>
-        <aside>
+        <aside id="independence">
           <strong>Independent of government.</strong>
           <p>Tharros Canada is a commercial company. It is not affiliated with or acting for any government, and it does not provide legal, tax, regulatory, lobbying or investment advice.</p>
         </aside>

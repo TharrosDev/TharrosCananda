@@ -184,7 +184,7 @@ A warm paper-and-ink palette with one action colour and two data channels. Contr
 
 ## Layout
 
-Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. The home hero sets the proposition across eleven columns with the description and actions offset to columns 7–11 beneath it; the Explorer lives only on the Data page. Vertical rhythm is set by the section token, clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them.
+Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. Every page, home included, opens with the shared PageHero: a full-bleed soft-black band with the ivory headline and lede (under a 56px red rule) in columns 1–7 and a numbered "on this page" index in columns 9–12 that links to sections (home: the four research areas). Faint column hairlines fade in toward the right of the band. The Explorer lives only on the Data page. Vertical rhythm is set by the section token, clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them.
 
 Under 1180px the hero description and actions widen to columns 6–12. Under 980px every split collapses to a single full-width column and the navigation becomes a toggled sheet. Under 640px, multi-column entries (result meta, provenance, service terms, choice grids) stack, and actions stretch to full width in forms.
 

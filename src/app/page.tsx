@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
+import { PageHero } from "@/components/page-hero";
 import { publicationTypes } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
@@ -18,36 +19,17 @@ const commissionExamples = [
 export default function HomePage() {
   return (
     <>
-      <section className="home-hero">
-        <h1>Commercial research and intelligence connecting Canada and Europe.</h1>
-        <div className="hero-side">
-          <p className="hero-description">
-            Tharros Canada researches the commercial, economic, industrial, technological and strategic developments that
-            link the two, and takes commissions from organizations working across that relationship.
-          </p>
-          <div className="hero-actions">
-            <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
-            <Link className="text-link" href="/research-areas">Research areas <ArrowIcon /></Link>
-          </div>
+      <PageHero
+        title="Commercial research and intelligence connecting Canada and Europe."
+        description="Tharros Canada researches the commercial, economic, industrial, technological and strategic developments that link the two, and takes commissions from organizations working across that relationship."
+        index={researchAreas.map((area) => ({ label: area.name, href: `/research-areas#${area.slug}`, note: area.scope }))}
+        indexLabel="Research areas"
+      >
+        <div className="hero-actions">
+          <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
+          <Link className="text-link" href="/research-areas">Research areas <ArrowIcon /></Link>
         </div>
-      </section>
-
-      <section className="band band-dark area-index" aria-labelledby="areas-title">
-        <div className="band-inner">
-          <h2 id="areas-title">Four research areas</h2>
-          <ol className="index-list">
-            {researchAreas.map((area, index) => (
-              <li key={area.slug}>
-                <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-                <div className="index-body">
-                  <h3><Link href={`/research-areas#${area.slug}`}>{area.name}</Link></h3>
-                  <p>{area.scope}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      </PageHero>
 
       <section className="section commission">
         <div className="commission-intro">

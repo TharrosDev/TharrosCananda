@@ -4,7 +4,7 @@ import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { ServiceList } from "@/components/service-list";
-import { pricingTerms } from "@/lib/services";
+import { pricingTerms, services } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Commissioned Research",
@@ -19,6 +19,7 @@ export default function ResearchServicesPage() {
       <PageHero
         title="Commissioned research, scoped to the decision."
         description="Three standard products for market work in Canada, and custom research for any other Canada–Europe question. Everything is agreed in writing; a call is optional."
+        index={services.map((service) => ({ label: service.name, href: `#${service.slug}`, note: service.priceLabel }))}
       />
       <section className="section services-page">
         <p className="pricing-note">{pricingTerms}</p>

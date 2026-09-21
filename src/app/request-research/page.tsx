@@ -20,7 +20,7 @@ export default async function RequestResearchPage({
 
   return (
     <>
-      <PageHero title="Commission research." description="Describe the question. Tharros replies in writing with a proposed scope, price and timeline. Submitting is a request for review, not a purchase." />
+      <PageHero title="Commission research." description="Describe the question. Tharros replies in writing with a proposed scope, price and timeline. Submitting is a request for review, not a purchase." index={[{ label: "Who the research is for" }, { label: "The subject" }, { label: "Its purpose" }, { label: "Type of research" }, { label: "Review and send" }]} indexLabel="Five short steps" />
       <section className="section request-layout">
         <ResearchRequestForm key={JSON.stringify(initial)} initial={initial} contactEmail={contactEmail} />
         <aside className="request-sidebar">

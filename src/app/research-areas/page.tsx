@@ -17,6 +17,7 @@ export default function ResearchAreasPage() {
       <PageHero
         title="Four areas, one relationship."
         description="These areas organize both commissioned work and Tharros’s own research. A question can sit across more than one."
+        index={researchAreas.map((area) => ({ label: area.name, href: `#${area.slug}` }))}
       />
       <div className="page-shell area-sections">
         {researchAreas.map((area, index) => (
