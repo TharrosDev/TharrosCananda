@@ -8,20 +8,42 @@ export const publicationTypes = [
   { name: "Sector Analyses", description: "Structure, actors and trends across a Canada–Europe sector." },
 ] as const;
 
+export type PublicationSource = {
+  publisher: string;
+  title: string;
+  url: string;
+  period?: string;
+  retrievedAt?: string;
+};
+
+export type PublicationSection = {
+  heading: string;
+  paragraphs: string[];
+};
+
 export type Publication = {
   slug: string;
   title: string;
   type: (typeof publicationTypes)[number]["name"];
   area: ResearchArea["slug"];
   publishedAt: string;
+  authors: string[];
   summary: string;
-  url: string;
-  author?: string;
+  executiveSummary: string;
+  keyFindings: string[];
+  methodology: string;
+  limitations: string[];
+  sources: PublicationSource[];
+  sections?: PublicationSection[];
   tags?: string[];
   pdfUrl?: string;
   featured?: boolean;
 };
 
-// This remains empty until verified Tharros Canada research is actually published.
-// Add real entries here; the archive UI will automatically expose search and filters.
+// Intentionally empty until verified Tharros Canada research is actually published.
+// Add complete real entries here. The archive and /research/[slug] article route update automatically.
 export const publications: Publication[] = [];
+
+export function publicationBySlug(slug: string) {
+  return publications.find((publication) => publication.slug === slug);
+}
