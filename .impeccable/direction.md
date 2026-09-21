@@ -4,20 +4,20 @@ FORM seed key: `86f14bb5`
 
 ## THESIS
 
-An evidence ledger for entering a market: a serious editorial report surface that lets a visitor interrogate a working Canadian market question before they encounter service marketing.
+A serious Canada–Europe commercial research company presented as an evidence ledger: authoritative enough for strategic buyers, clear enough to navigate quickly, and restrained enough that the research—not interface ornament—carries the weight.
 
 ## OWN-WORLD
 
-The world is built from European export dossiers, customs schedules, institutional research briefs and financial-publication data graphics. Warm uncoated report paper carries deep Canadian ink, slate annotations, muted data colours and a single signal red. Newsreader supplies editorial authority; Manrope supplies exact interface control. Rules, registers and source strips organize evidence without decorative containers.
+The world is built from commercial research briefs, customs schedules, industrial reports, procurement records and financial-publication data graphics. Warm uncoated report paper carries deep ink, slate annotations, muted data colours and a single signal red. Source Serif supplies editorial authority; Schibsted Grotesk supplies exact interface control. Rules, registers and source strips organize evidence without decorative containers.
 
 ## STORY
 
-The visitor moves from a concrete Canadian-market proposition to an inspectable demo, then through provenance, the limits of metrics, human research products, the research process and an asynchronous request. Proof comes from what the interface exposes: sources, status, synthetic-data labels, ranges, limitations and clear boundaries.
+The visitor should understand the Canada–Europe research proposition first, then move quickly into one of three paths: read Tharros research, understand commissioned services, or use/request research. Proof comes from exposed sources, status, ranges, limitations and clear commercial boundaries. Repeated summaries and duplicate navigation are removed when the underlying page already provides the interaction.
 
 ## FIRST VIEWPORT
 
-Desktop uses an asymmetric proposition/working-Explorer split. The headline occupies the left field at publication scale, while a functioning query, trend, province distribution and source-status ledger fill the right. The public-source register begins at the fold. Mobile intentionally becomes proposition-first: identity, proposition and both actions are visible before the Explorer follows in the document flow.
+The homepage is the strongest brand moment and may use the largest dark hero. Standard editorial pages use a shallower hero so substantive content begins quickly. Task pages such as Market Explorer and Commission Research use compact heroes and prioritize the working interface immediately below. Mobile preserves this hierarchy with materially reduced hero padding, shorter indexes and no unnecessary repeated notes.
 
 ## FORM
 
-Navigation is conventional and quiet. Explorer controls are rectangular ledger inputs with immediate state transitions. Dense data regions use hairline subdivision rather than stacked cards. Research intake is a single-column progressive sequence with explicit progress, recovery-oriented errors, no preselected consent and a written explanation of the next step.
+Navigation is conventional, visible for as long as the viewport can comfortably support it, and labels destinations specifically. Explorer controls are rectangular ledger inputs with immediate state transitions. Dense data regions use hairline subdivision rather than stacked cards. Research intake is a single-column progressive sequence with explicit progress, recovery-oriented errors, no preselected consent and a written explanation of the next step.
