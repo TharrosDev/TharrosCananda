@@ -19,8 +19,6 @@ export default function ResearchPage() {
       <PageHero
         title="Independent research by Tharros Canada."
         description="Research Tharros chooses to produce across the four areas, prepared to the same sourcing standard as commissioned work."
-        index={publicationTypes.map((type) => ({ label: type.name, note: type.description }))}
-        indexLabel="Publication types"
       />
       <section className="section research-index">
         {publications.length ? (
