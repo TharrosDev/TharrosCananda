@@ -1,5 +1,18 @@
 # Data source and provenance policy
 
+## Current state
+
+The public Market Explorer uses **synthetic sample data only** (`src/data/demo-markets.ts`, `status: "demo"`). No official source is queried by the site. The publishers below are what human research draws on and the candidates for a first adapter.
+
+## Adapter contract
+
+A new source is added by implementing `MarketDataProvider` from `src/types/market.ts` and selecting it in `src/components/market-explorer.tsx`:
+
+- return `status: "live"` results only when the retrieval path and freshness are observable;
+- list every publisher used in `sources` (with ISO `lastUpdated` / `retrievedAt`) and reference them from each evidence block's `sourceIds`;
+- attach block-level `limitations` where a caveat applies to one metric only;
+- return `{ kind: "not-found" }` for unsupported products and `{ kind: "error", message }` for retrieval failures, never a fabricated fallback.
+
 ## Initial integration candidates
 
 ### Statistics Canada Web Data Service

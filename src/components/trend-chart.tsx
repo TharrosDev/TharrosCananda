@@ -1,6 +1,8 @@
+import { useId } from "react";
 import type { TrendPoint } from "@/types/market";
 
 export function TrendChart({ data, compact = false }: { data: TrendPoint[]; compact?: boolean }) {
+  const id = useId();
   const width = 620;
   const height = compact ? 180 : 240;
   const padding = { top: 18, right: 16, bottom: 34, left: 42 };
@@ -21,12 +23,12 @@ export function TrendChart({ data, compact = false }: { data: TrendPoint[]; comp
       <svg
         className="trend-chart"
         role="img"
-        aria-labelledby="trend-title trend-description"
+        aria-labelledby={`${id}-title ${id}-desc`}
         viewBox={`0 0 ${width} ${height}`}
       >
-        <title id="trend-title">Illustrative five-year market trend</title>
-        <desc id="trend-description">
-          The demonstration index rises from {data[0].value} in {data[0].year} to {data.at(-1)?.value} in {data.at(-1)?.year}.
+        <title id={`${id}-title`}>Illustrative five-year market trend</title>
+        <desc id={`${id}-desc`}>
+          The illustrative index moves from {data[0].value} in {data[0].year} to {data.at(-1)?.value} in {data.at(-1)?.year}.
         </desc>
         {[0, 0.5, 1].map((fraction) => {
           const y = padding.top + fraction * usableHeight;

@@ -1,11 +1,19 @@
-export const researchNeeds = [
-  "Canada Market Scan",
-  "Buyer & Distributor Intelligence",
-  "Competitor Intelligence",
-  "Not sure yet",
+import { researchNeeds, serviceBySlug, type ResearchNeed } from "@/lib/services";
+
+export { researchNeeds, type ResearchNeed };
+
+export const objectives = [
+  "Sell direct online",
+  "Find buyers",
+  "Find a distributor",
+  "Sell wholesale",
+  "Understand competitors",
+  "Validate demand",
+  "Investigate the market",
+  "Plan a physical expansion",
 ] as const;
 
-export type ResearchNeed = (typeof researchNeeds)[number];
+export type Objective = (typeof objectives)[number];
 
 export type ResearchRequestPayload = {
   companyName: string;
@@ -16,22 +24,180 @@ export type ResearchRequestPayload = {
   industry: string;
   description: string;
   hsCode: string;
-  objectives: string[];
+  objectives: Objective[];
   researchNeed: ResearchNeed | "";
   context: string;
   consent: boolean;
 };
 
-export function validateResearchRequest(payload: Partial<ResearchRequestPayload>) {
-  const errors: Partial<Record<keyof ResearchRequestPayload, string>> = {};
-  if (!payload.companyName?.trim()) errors.companyName = "Enter the company name.";
-  if (!payload.country?.trim()) errors.country = "Enter the company’s country.";
-  if (!payload.email?.trim() || !/^\S+@\S+\.\S+$/.test(payload.email)) {
-    errors.email = "Enter a valid business email address.";
+export type ResearchRequestErrors = Partial<Record<keyof ResearchRequestPayload, string>>;
+
+type TextField = Exclude<keyof ResearchRequestPayload, "objectives" | "researchNeed" | "consent">;
+
+export const maxLengths: Record<TextField, number> = {
+  companyName: 160,
+  country: 80,
+  website: 300,
+  email: 254,
+  product: 200,
+  industry: 120,
+  description: 2000,
+  hsCode: 20,
+  context: 3000,
+};
+
+const textFields = Object.keys(maxLengths) as TextField[];
+
+/** Hidden field that people never see; bots that fill every input reveal themselves. */
+export const honeypotField = "fax";
+export const maxBodyBytes = 16_000;
+
+export const emptyRequest: ResearchRequestPayload = {
+  companyName: "",
+  country: "",
+  website: "",
+  email: "",
+  product: "",
+  industry: "",
+  description: "",
+  hsCode: "",
+  objectives: [],
+  researchNeed: "",
+  context: "",
+  consent: false,
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const hsPattern = /^[0-9][0-9.\s]*$/;
+
+/** Accepts "example.com" as well as full URLs; returns null for anything that is not http(s). */
+export function normalizeWebsite(value: string): string | null {
+  if (!value) return "";
+  try {
+    const url = new URL(/^[a-z][a-z0-9+.-]*:/i.test(value) ? value : `https://${value}`);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    if (!url.hostname.includes(".")) return null;
+    return url.toString();
+  } catch {
+    return null;
   }
-  if (!payload.product?.trim()) errors.product = "Describe the product or service.";
+}
+
+/** Field-level rules shared by the multi-step form and the API. Expects already-typed values. */
+export function validateResearchRequest(payload: Partial<ResearchRequestPayload>): ResearchRequestErrors {
+  const errors: ResearchRequestErrors = {};
+  const value = (key: TextField) => (payload[key] ?? "").trim();
+
+  if (!value("companyName")) errors.companyName = "Enter the company name.";
+  if (!value("country")) errors.country = "Enter the company’s country.";
+  if (!emailPattern.test(value("email"))) errors.email = "Enter a valid business email address.";
+  if (value("website") && normalizeWebsite(value("website")) === null) {
+    errors.website = "Enter a website address such as example.com, or leave this empty.";
+  }
+  if (!value("product")) errors.product = "Describe the product or service.";
+  if (value("hsCode") && !hsPattern.test(value("hsCode"))) errors.hsCode = "Use digits and dots only, e.g. 9405.11.";
+  for (const key of textFields) {
+    if (!errors[key] && value(key).length > maxLengths[key]) {
+      errors[key] = `Keep this under ${maxLengths[key]} characters.`;
+    }
+  }
   if (!payload.objectives?.length) errors.objectives = "Choose at least one Canadian objective.";
-  if (!payload.researchNeed) errors.researchNeed = "Choose a research option or select “Not sure yet”.";
-  if (!payload.consent) errors.consent = "Confirm that Tharros Canada may review this request.";
+  else if (payload.objectives.some((item) => !objectives.includes(item))) errors.objectives = "Choose from the listed objectives.";
+  if (!payload.researchNeed || !researchNeeds.includes(payload.researchNeed)) {
+    errors.researchNeed = "Choose a research option or select “Not sure yet”.";
+  }
+  if (payload.consent !== true) errors.consent = "Confirm that Tharros Canada may review this request.";
   return errors;
+}
+
+export type ParseResult =
+  | { ok: true; value: ResearchRequestPayload }
+  | { ok: false; errors: ResearchRequestErrors };
+
+/** Runtime parser for untrusted input: checks types, trims, drops unknown keys, then applies the field rules. */
+export function parseResearchRequest(input: unknown): ParseResult {
+  if (typeof input !== "object" || input === null || Array.isArray(input)) {
+    return { ok: false, errors: { companyName: "The request could not be read." } };
+  }
+  const raw = input as Record<string, unknown>;
+  const typeErrors: ResearchRequestErrors = {};
+  const value: ResearchRequestPayload = { ...emptyRequest, objectives: [] };
+
+  for (const key of textFields) {
+    const field = raw[key];
+    if (field === undefined || field === null) continue;
+    if (typeof field !== "string") typeErrors[key] = "Invalid value.";
+    else value[key] = field.trim();
+  }
+
+  if (Array.isArray(raw.objectives) && raw.objectives.every((item) => typeof item === "string")) {
+    value.objectives = [...new Set(raw.objectives as Objective[])];
+  } else if (raw.objectives !== undefined) {
+    typeErrors.objectives = "Invalid value.";
+  }
+
+  if (typeof raw.researchNeed === "string") value.researchNeed = raw.researchNeed as ResearchNeed;
+  else if (raw.researchNeed !== undefined) typeErrors.researchNeed = "Invalid value.";
+
+  if (typeof raw.consent === "boolean") value.consent = raw.consent;
+  else if (raw.consent !== undefined) typeErrors.consent = "Invalid value.";
+
+  const errors = { ...validateResearchRequest(value), ...typeErrors };
+  if (Object.keys(errors).length) return { ok: false, errors };
+
+  value.website = normalizeWebsite(value.website) ?? "";
+  return { ok: true, value };
+}
+
+type SearchParams = Record<string, string | string[] | undefined>;
+
+const prefillLimits = { product: maxLengths.product, hsCode: maxLengths.hsCode, context: 300 } as const;
+
+function cleanParam(value: string | string[] | undefined, max: number) {
+  if (typeof value !== "string") return "";
+  // Strip control characters; the value is only ever rendered as text or used as a form default.
+  return value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+/**
+ * Explicit, whitelisted URL prefill for the request form:
+ * `service` (slug) → research need, `product`, `hs`, `context` → matching fields.
+ */
+export function prefillFromSearchParams(params: SearchParams): Partial<ResearchRequestPayload> {
+  const prefill: Partial<ResearchRequestPayload> = {};
+  const service = serviceBySlug(params.service);
+  if (service) prefill.researchNeed = service.name;
+  const product = cleanParam(params.product, prefillLimits.product);
+  if (product) prefill.product = product;
+  const hs = cleanParam(params.hs, prefillLimits.hsCode);
+  if (hs && hsPattern.test(hs)) prefill.hsCode = hs;
+  const context = cleanParam(params.context, prefillLimits.context);
+  if (context) prefill.context = context;
+  return prefill;
+}
+
+/** Plain-text version of a request for the email fallback when online delivery fails. */
+export function requestAsEmailBody(values: ResearchRequestPayload) {
+  return [
+    `Company: ${values.companyName} (${values.country})`,
+    values.website && `Website: ${values.website}`,
+    `Email: ${values.email}`,
+    `Product or service: ${values.product}`,
+    values.industry && `Industry: ${values.industry}`,
+    values.hsCode && `HS code: ${values.hsCode}`,
+    values.description && `Description: ${values.description}`,
+    `Objectives: ${values.objectives.join(", ")}`,
+    `Research need: ${values.researchNeed}`,
+    values.context && `Context: ${values.context}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+/** Builds a /request-research link that prefillFromSearchParams understands. */
+export function requestResearchHref(prefill: { service?: string; product?: string; hs?: string; context?: string }) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(prefill)) if (value) params.set(key, value);
+  const query = params.toString();
+  return query ? `/request-research?${query}` : "/request-research";
 }

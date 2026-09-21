@@ -1,4 +1,4 @@
-# Tharros Canada — Version 1 Product Brief
+# Tharros Canada: Version 1 Product Brief
 
 ## Target user
 
@@ -10,12 +10,12 @@ The primary user is an owner or commercial lead at a European SME considering Ca
 - See where commercial activity may be concentrated and which route to market could fit.
 - Identify relevant Canadian buyers, importers, distributors, retailers or partners.
 - Understand competitors and observable positioning in Canada.
-- Find authoritative resources for tariff, tax, customs and market-access questions.
+- Find official resources for tariff, tax, customs and market-access questions.
 - Purchase focused research without sitting through a sales call.
 
 ## Core funnel
 
-1. **Explore:** use the Market Explorer or readiness checker without an account.
+1. **Explore:** view a sample analysis or the cross-border route checklist without an account.
 2. **Understand:** inspect sources, dates, methods and limitations.
 3. **Decide:** choose whether the evidence is sufficient or a human-verified question remains.
 4. **Request:** submit a concise brief and receive a written scope, price and timeline.
@@ -24,21 +24,21 @@ The primary user is an owner or commercial lead at a European SME considering Ca
 
 ### Layer 1 — Free self-service
 
-Tharros Market Explorer. Version 1 uses clearly labelled synthetic data behind a replaceable adapter. Future capabilities may include current Canadian import values, HS classification, origin comparisons, provincial breakdowns, importer indicators and official resource discovery.
+Tharros Market Explorer. In Version 1 it is a sample-mode demonstration: two synthetic scenarios behind a `MarketDataProvider` boundary, with provenance and limitations shown. It does not search Canadian data; a product that is not a sample becomes a prefilled research request. Real official-data integration comes only after research requests show which data actually matters.
 
 ### Layer 2 — Low-touch intelligence
 
-Tharros Market Snapshot. A future structured output in an approximate validation range of C$29–99. It is not sold or implemented in Version 1.
+Tharros Market Snapshot. A possible future structured output (internal working range C$29–99). It is not sold, shown or implemented in Version 1.
 
 ### Layer 3 — Human-verified research
 
 Manually scoped work that adds verification, context and judgment:
 
-- Canada Market Scan — validation range C$250–400.
-- Buyer & Distributor Intelligence — validation range C$300–750.
-- Competitor Intelligence — validation range C$300–600.
+- Canada Market Scan: indicative C$250–400.
+- Buyer & Distributor Intelligence: indicative C$300–750.
+- Competitor Intelligence: indicative C$300–600.
 
-These are editable validation ranges, not claims about industry-standard pricing.
+Prices are indicative and defined in `src/lib/services.ts`. Scope, price and timeline are confirmed in writing before work starts. Internally these ranges are still being tested against real requests; that is not customer-facing language.
 
 ## Research standards
 
@@ -55,11 +55,11 @@ Every material factual block should identify the publisher, dataset, URL, period
 
 ## Future roadmap
 
-1. Replace one high-value demo with a licensed, maintained official-data adapter.
-2. Add source-health monitoring and data-freshness displays.
-3. Validate research-service demand and refine scope/pricing.
+1. Validate research-service demand through human research and refine scope/pricing.
+2. Once requests show which data matters, add one licensed, maintained official-data adapter behind `MarketDataProvider`.
+3. Only then consider source-health monitoring and freshness displays.
 4. Prototype a generated Market Snapshot only after repeatable inputs are proven.
-5. Add an internal research operations view only when manual volume warrants it.
+5. Accounts, subscriptions, CRM, admin systems and report infrastructure stay deferred until manual volume warrants them.
 
 ## Intentionally excluded from Version 1
 

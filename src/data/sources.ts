@@ -24,13 +24,14 @@ export const publicSources = [
 ] as const;
 
 export const demoSource: SourceMetadata = {
+  id: "tharros-sample",
   publisher: "Tharros Canada",
-  dataset: "Market Explorer demonstration structure",
+  dataset: "Market Explorer sample scenario",
   url: "/methodology#demonstration-data",
-  period: "Illustrative five-year sequence",
-  lastUpdated: "Not applicable — demonstration values",
-  retrievedAt: "Not applicable",
-  licence: "Demonstration content",
+  period: "Illustrative five-year sequence (2020–2024 labels)",
+  lastUpdated: null,
+  retrievedAt: null,
+  licence: "Sample content for demonstration only; not for reuse as statistics",
   notes:
     "The figures in this preview are synthetic. They demonstrate the intended output structure and are not current Canadian trade statistics.",
 };

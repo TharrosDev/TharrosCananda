@@ -12,11 +12,11 @@ export function Footer() {
           </Link>
           <p>Canadian market intelligence for European businesses.</p>
         </div>
-        <div className="footer-links" aria-label="Footer">
+        <nav className="footer-links" aria-label="Footer">
           <div>
             <p className="footer-heading">Explore</p>
             <Link href="/market-explorer">Market Explorer</Link>
-            <Link href="/ecommerce-readiness">E-commerce readiness</Link>
+            <Link href="/ecommerce-readiness">Cross-border route questions</Link>
             <Link href="/research-services">Research services</Link>
           </div>
           <div>
@@ -31,10 +31,10 @@ export function Footer() {
             <Link href="/about#privacy">Privacy</Link>
             <Link href="/about#accessibility">Accessibility</Link>
           </div>
-        </div>
+        </nav>
       </div>
       <div className="footer-legal">
-        <p>© {new Date().getFullYear()} Tharros Canada. Independent market-intelligence venture.</p>
+        <p>© {new Date().getFullYear()} Tharros Canada. Independent Canadian market intelligence.</p>
         <p>
           Commercial information only. Not legal, tax, customs, financial, immigration, or regulatory advice.
         </p>

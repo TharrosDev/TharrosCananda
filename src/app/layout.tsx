@@ -4,6 +4,7 @@ import "@fontsource-variable/newsreader";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { researchEmail } from "@/lib/contact";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Tharros Canada",
   },
   description:
-    "Research Canadian demand, buyers, competitors and trade flows before committing to the market.",
+    "Canadian market research for European companies: demand, market structure, buyers, distributors, competitors and routes to market, researched before you commit.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -22,12 +23,12 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Tharros Canada",
     title: "Understand the Canadian market before you enter it.",
-    description: "Canadian trade data, market intelligence and commercial research for European companies.",
+    description: "Canadian market intelligence and commercial research for European companies evaluating Canada.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Tharros Canada",
-    description: "Canadian market intelligence for European businesses.",
+    description: "Canadian market intelligence for European companies evaluating Canada.",
   },
   robots: { index: true, follow: true },
 };
@@ -40,13 +41,14 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const email = researchEmail();
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Tharros Canada",
     url: siteUrl,
-    description: "An independent Canadian market-intelligence venture for European businesses.",
-    areaServed: "Canada",
+    description: "Independent Canadian market research for European companies evaluating Canada.",
+    ...(email ? { email } : {}),
   };
 
   return (

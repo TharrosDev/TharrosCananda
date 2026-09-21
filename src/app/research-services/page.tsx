@@ -4,10 +4,11 @@ import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { ServiceList } from "@/components/service-list";
+import { pricingTerms } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Research Services",
-  description: "Human-verified Canadian market, buyer, distributor and competitor research for European businesses.",
+  description: "Human-verified Canadian market, buyer, distributor and competitor research for European companies evaluating Canada.",
   alternates: { canonical: "/research-services" },
 };
 
@@ -22,8 +23,8 @@ export default function ResearchServicesPage() {
       />
       <section className="section services-page">
         <div className="pricing-note">
-          <strong>Early validation pricing</strong>
-          <p>The ranges below help make purchasing predictable. Final pricing depends on scope, geography, sector complexity and the level of verification required.</p>
+          <strong>How pricing works</strong>
+          <p>The ranges below are indicative so you can budget before asking. The final price depends on scope, geography, sector complexity and the level of verification required. {pricingTerms}</p>
         </div>
         <ServiceList />
       </section>

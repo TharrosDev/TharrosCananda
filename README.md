@@ -1,18 +1,19 @@
 # Tharros Canada
 
-Tharros Canada is an early-stage Canadian market-intelligence venture for European businesses. It combines a self-service commercial-intelligence interface with focused human research so companies can investigate Canadian demand, buyers, competitors, channels and trade signals before committing significant resources.
+Tharros Canada provides Canadian market intelligence and human-verified commercial research for European SMEs evaluating Canada: demand, market structure, buyers and distributors, competitors and routes to market, investigated before the company commits resources. The commercial V1 is human research; the site supports it with a bounded sample-mode Market Explorer and an asynchronous request workflow.
 
 The production domain is intended to be [tharros.ca](https://tharros.ca).
 
 ## Version 1 scope
 
-- A product-led homepage with an inspectable Market Explorer preview.
-- A clearly labelled demonstration dataset behind a replaceable data adapter.
-- Research service pages for market, buyer/distributor and competitor intelligence.
-- A progressive, asynchronous research-request workflow.
-- An informational Canada E-Commerce Readiness checker.
+- A homepage that names the buyer (European companies evaluating Canada) and the commercial boundary.
+- A **sample-mode** Market Explorer: two synthetic scenarios behind a `MarketDataProvider` boundary, with sources, provenance and limitations shown. It is not a self-service search over Canadian data; unmatched products are carried into a research request.
+- Research service pages for market, buyer/distributor and competitor intelligence, defined once in `src/lib/services.ts`; service links preselect the matching need in the request form.
+- A progressive, asynchronous research-request workflow with strict server-side validation, a honeypot and an optional email fallback.
+- A cross-border route-questions checklist (channel-driven only; no product- or country-specific determinations).
 - Dedicated Sources & Methodology, How It Works and About pages.
-- Sitemap, robots metadata, canonical metadata and structured organization data.
+- Sitemap, robots, canonical metadata, a generated Open Graph image, an SVG icon and factual organization data.
+- CI (`.github/workflows/ci.yml`): `npm ci`, lint, typecheck, tests and build on pull requests and pushes to `main`.
 - Privacy-conscious event hooks with no analytics vendor required.
 
 Version 1 intentionally excludes accounts, payments, subscriptions, a CRM, automated legal/customs analysis, a chatbot, a proprietary data warehouse and report-generation infrastructure.
@@ -32,7 +33,7 @@ The project avoids a component framework and runtime animation dependency. The i
 ## Local development
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -53,11 +54,11 @@ npm run build
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical origin used by metadata and the sitemap. Defaults to `https://tharros.ca`. |
-| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-side HTTPS endpoint that receives validated request JSON. |
+| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | **Server-only secret.** HTTPS endpoint that receives validated request JSON. Non-https values are treated as unset. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Same-origin or trusted endpoint for minimal business-event beacons. No events are sent when empty or when Global Privacy Control is enabled. |
-| `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Reserved for a confirmed public contact address. The site does not invent one. |
+| `NEXT_PUBLIC_RESEARCH_EMAIL` | Recommended | Verified public contact address. When set it appears on About/Request pages and in JSON-LD, and the form offers a prefilled email if online delivery fails. Inlined at build time. The site never invents one. |
 
-The request form deliberately returns a clear configuration error until a secure intake webhook is supplied. This avoids creating the appearance of a successful submission when no delivery destination exists.
+Without a valid webhook the API logs the problem server-side and returns a generic delivery error; the visitor keeps their answers and (if configured) gets the email fallback. It never shows a false success.
 
 ## Architecture
 
@@ -66,37 +67,41 @@ src/
   app/                 Routes, metadata, sitemap, robots and the intake API
   components/          Shared site, explorer, chart and workflow components
   data/                Demo adapter records and source registry
-  lib/                 Analytics boundary and request validation
-  types/               Provenance-aware market domain types
+  lib/                 Services (single source of truth), request parsing/prefill, formatting, analytics, contact
+  types/               Provider contract and provenance-aware market types
 docs/
   PRODUCT.md           Product model, funnel and roadmap
   DATA_SOURCES.md      Integration and provenance policy
+  PRE_LAUNCH.md        Open operational and legal items
 ```
 
 ### Market Explorer data boundary
 
-`src/types/market.ts` defines the view model. `src/data/demo-markets.ts` is the V1 adapter and contains only explicitly synthetic examples. UI components consume `DemoMarketResult`; a future Statistics Canada, ISED or Open Data adapter can return the same structure without changing the page hierarchy.
+`src/types/market.ts` defines the contract: `MarketDataProvider` (`listSamples()`, async `search()` returning a `found` / `not-found` / `error` outcome) and `MarketResult`. A result has a `status` (`demo` | `live`), evidence blocks (`trend`, `provinces`, `routes`, `resources`) that each reference one or more `sourceIds` and may carry their own `limitations`, a `sources` list and result-level limitations. `src/data/demo-markets.ts` exports `demoProvider`, the only implementation today. `MarketExplorer` selects the provider in one line; a Statistics Canada or ISED adapter implementing the same contract replaces it.
 
-Every result includes a `SourceMetadata` record:
+Each `SourceMetadata` record holds:
 
 - publisher;
 - dataset;
 - URL;
 - period;
-- last updated;
-- retrieved at;
+- `lastUpdated` / `retrievedAt` as ISO dates, or `null` when not applicable (formatted in the UI by `src/lib/format.ts`);
 - licence;
 - limitations/notes.
 
 ### Demo versus live data
 
-The V1 numbers are synthetic and labelled in the interface. They demonstrate trend, province and route-to-market output structures. They are not current Canadian statistics and must not be reused as evidence.
+The sample numbers are synthetic and labelled in the interface. They demonstrate trend, province and route-to-market output structures. They are not current Canadian statistics and must not be reused as evidence.
 
 Before a source is integrated, verify its API or download path, terms, attribution, update frequency, classification coverage and known limitations. See [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md).
 
 ### Research intake
 
-The client validates each progressive step and the server validates the complete payload again. The server forwards valid requests to `RESEARCH_INTAKE_WEBHOOK_URL` with an eight-second timeout. Authentication, rate limiting, anti-spam controls, retention policy and a privacy review should be added at the receiving endpoint before public launch.
+`parseResearchRequest` (`src/lib/research-request.ts`) is the runtime parser for untrusted input: it checks primitive types, whitelists research needs and objectives, validates email, optional website and HS code, enforces per-field maximum lengths, requires `consent === true`, trims strings and drops unknown keys. The route also rejects bodies over 16 KB and silently discards submissions that fill the hidden honeypot field. Valid requests are forwarded to the https webhook with an eight-second timeout.
+
+There is deliberately **no in-memory rate limiting**: it would give false security on serverless instances. Rate limiting and authentication belong at the platform (e.g. a firewall rule on `/api/research-request`) or the receiving endpoint. See [docs/PRE_LAUNCH.md](docs/PRE_LAUNCH.md).
+
+URL prefill is explicit: `/request-research?service=<slug>&product=&hs=&context=` (built with `requestResearchHref`, read with `prefillFromSearchParams`).
 
 ### Analytics
 
@@ -116,7 +121,7 @@ No third-party SDK, cookies or cross-site identifiers are installed.
 2. Set `NEXT_PUBLIC_SITE_URL=https://tharros.ca`.
 3. Configure a secure research-intake webhook and test success/failure delivery.
 4. Add the `tharros.ca` and `www.tharros.ca` domains and choose one canonical redirect.
-5. Confirm HTTPS, security headers, sitemap and robots output.
+5. Confirm HTTPS and the headers set in `next.config.ts` (HSTS, `X-Frame-Options: DENY`, `nosniff`, referrer and permissions policies; no CSP yet), sitemap and robots output.
 6. Run accessibility and performance checks against the deployed environment.
 
 The code does not assume Vercel. Any host supporting the current stable Next.js runtime and server route handlers is suitable.

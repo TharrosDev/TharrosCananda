@@ -38,7 +38,7 @@ The business has three planned layers: a free self-service Market Explorer; a fu
 - The Market Explorer accepts a product description or HS code and optional country, then presents a clearly labelled demonstration result behind a replaceable data-adapter boundary.
 - Demonstration values must never be presented as current Canadian statistics. Real factual modules require publisher, dataset, URL, period, last-updated or retrieved date, licence, and limitations where applicable.
 - The research request is a short progressive workflow with useful validation and a clear explanation of what happens after submission.
-- Research products are Canada Market Scan, Buyer & Distributor Intelligence, and Competitor Intelligence. Any prices shown are editable validation ranges, not industry benchmarks.
+- Research products are Canada Market Scan, Buyer & Distributor Intelligence, and Competitor Intelligence. Prices shown are indicative (see `src/lib/services.ts`); scope, price and timeline are confirmed in writing before work starts.
 - The site supports e-commerce, marketplace, wholesale, retail, distribution, and direct B2B scenarios, with informational signposting rather than automated legal, tax, customs, or regulatory advice.
 - No accounts, billing, complex authentication, CRM, chatbot, proprietary-data claims, automated legal/customs analysis, large database, or admin system in Version 1.
 - Privacy-conscious analytics must be separated from application logic and limited to meaningful funnel events.

@@ -4,20 +4,23 @@ import { MarketExplorer } from "@/components/market-explorer";
 import { SectionHeading } from "@/components/section-heading";
 import { ServiceList } from "@/components/service-list";
 import { SourceRail } from "@/components/source-rail";
+import { pricingTerms } from "@/lib/services";
 
 export default function HomePage() {
   return (
     <>
       <section className="home-hero">
         <div className="hero-copy">
+          <p className="hero-eyebrow">Canadian market research for European companies</p>
           <h1>Understand the Canadian market before you enter it.</h1>
           <p className="hero-description">
-            Research Canadian demand, buyers, competitors and trade flows before committing significant money or resources.
+            For European SMEs evaluating Canada: human-verified research into demand, market structure, buyers and distributors, competitors and routes to market, before you commit money or people.
           </p>
           <div className="hero-actions">
-            <Link className="button-primary" href="/market-explorer">Explore the Canadian market <ArrowIcon /></Link>
-            <Link className="text-link" href="/request-research">Request research <ArrowIcon /></Link>
+            <Link className="button-primary" href="/request-research">Request research <ArrowIcon /></Link>
+            <Link className="text-link" href="/market-explorer">See a sample analysis <ArrowIcon /></Link>
           </div>
+          <p className="hero-boundary">Commercial intelligence only; not legal, tax, customs or compliance advice.</p>
           <div className="hero-pillars" aria-label="What Tharros Canada combines">
             <div><span>Trade data</span><p>Official public sources</p></div>
             <div><span>Market intelligence</span><p>Decision-oriented context</p></div>
@@ -45,7 +48,7 @@ export default function HomePage() {
 
       <section className="section section-services">
         <SectionHeading title="Research that starts where public data stops." align="split">
-          <div><p>Three early-stage research products with concrete outputs and validation pricing.</p><p className="section-note">Ranges are starting points for validation, not industry-standard claims.</p></div>
+          <div><p>Three scoped research products, each with a defined question, concrete outputs and an indicative price.</p><p className="section-note">{pricingTerms}</p></div>
         </SectionHeading>
         <ServiceList compact />
       </section>
@@ -54,13 +57,13 @@ export default function HomePage() {
         <div className="decision-copy">
           <h2>Explore first. Ask for judgment when it matters.</h2>
           <p>
-            Tharros is designed for independent research before a sales conversation. Use the Explorer, inspect the source model,
-            then request a deeper review only when the next decision needs verified context.
+            You can review how Tharros works without a sales conversation. Look at a sample analysis, inspect the source model,
+            then request research when the next decision needs verified Canadian context.
           </p>
           <Link className="button-secondary" href="/how-it-works">See how research works <ArrowIcon /></Link>
         </div>
         <ol className="decision-steps">
-          <li><span>1</span><div><strong>Frame the question</strong><p>Product, HS code, country and commercial objective.</p></div></li>
+          <li><span>1</span><div><strong>Frame the question</strong><p>Product, HS code if known, and the commercial objective in Canada.</p></div></li>
           <li><span>2</span><div><strong>Inspect public signals</strong><p>Understand the source, period, method and limitation.</p></div></li>
           <li><span>3</span><div><strong>Choose the next evidence</strong><p>Market, buyer or competitor research—not a mandatory call.</p></div></li>
         </ol>
@@ -74,11 +77,11 @@ export default function HomePage() {
         <ul>
           {["GST/HST", "Importer arrangements", "CARM", "HS classification", "CETA", "Product requirements"].map((item) => <li key={item}><CheckIcon />{item}</li>)}
         </ul>
-        <Link href="/ecommerce-readiness">Check e-commerce readiness <ArrowIcon /></Link>
+        <Link href="/ecommerce-readiness">Review cross-border route questions <ArrowIcon /></Link>
       </section>
 
       <section className="closing-cta">
-        <div><h2>A clearer Canadian market question starts here.</h2><p>Share the product, objective and decision. Tharros will reply with a written scope, price and next step.</p></div>
+        <div><h2>A clearer Canadian market question starts here.</h2><p>Share the product, objective and decision. Tharros replies in writing with a proposed scope, price and timeline. Nothing starts until you approve it.</p></div>
         <Link className="button-primary" href="/request-research">Request research <ArrowIcon /></Link>
       </section>
     </>

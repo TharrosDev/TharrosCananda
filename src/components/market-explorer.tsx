@@ -1,199 +1,245 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
-import { ArrowIcon, SearchIcon } from "@/components/icons";
+import Link from "next/link";
+import { FormEvent, useState } from "react";
+import { ArrowIcon } from "@/components/icons";
 import { DemoStamp } from "@/components/demo-stamp";
 import { ProvinceBars } from "@/components/province-bars";
 import { TrendChart } from "@/components/trend-chart";
-import { demoMarkets, findDemoMarket } from "@/data/demo-markets";
+import { demoProvider } from "@/data/demo-markets";
 import { track } from "@/lib/analytics";
-import type { DemoMarketResult } from "@/types/market";
+import { collectLimitations, formatDelta, formatSourceDate, trendDelta } from "@/lib/format";
+import { requestResearchHref } from "@/lib/research-request";
+import type { MarketResult } from "@/types/market";
+
+// ponytail: the provider is chosen here; a live adapter implementing MarketDataProvider replaces this import.
+const provider = demoProvider;
+const samples = provider.listSamples();
 
 type ExplorerProps = {
   variant?: "hero" | "full";
 };
 
 export function MarketExplorer({ variant = "full" }: ExplorerProps) {
-  const [query, setQuery] = useState("Industrial LED lighting");
-  const [country, setCountry] = useState("Germany");
-  const [result, setResult] = useState<DemoMarketResult>(demoMarkets[0]);
-  const [status, setStatus] = useState<"idle" | "loading" | "empty">("idle");
+  const [result, setResult] = useState<MarketResult>(samples[0]);
+  const [query, setQuery] = useState("");
+  const [unmatched, setUnmatched] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const full = variant === "full";
+  const isSample = result.status === "demo";
 
-  const title = useMemo(() => `${result.query} · ${result.hsCode}`, [result]);
+  function selectSample(sample: MarketResult) {
+    setResult(sample);
+    setUnmatched(null);
+    track("market_explorer_completed", { result: sample.slug });
+  }
 
-  function runSearch(event: FormEvent<HTMLFormElement>) {
+  async function checkProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!query.trim()) {
+    const trimmed = query.trim();
+    if (!trimmed) {
       setMessage("Enter a product description or HS code.");
       return;
     }
-
     setMessage("");
-    setStatus("loading");
-    track("market_explorer_started", { query_type: /^\d/.test(query.trim()) ? "hs_code" : "product" });
-
-    window.setTimeout(() => {
-      const match = findDemoMarket(query);
-      if (!match) {
-        setStatus("empty");
-        return;
-      }
-      setResult({ ...match, country });
-      setStatus("idle");
-      track("market_explorer_completed", { result: match.slug });
-    }, 420);
+    track("market_explorer_started", { query_type: /^\d/.test(trimmed) ? "hs_code" : "product" });
+    const outcome = await provider.search(trimmed);
+    if (outcome.kind === "found") selectSample(outcome.result);
+    else if (outcome.kind === "not-found") setUnmatched(outcome.query);
+    else setMessage(outcome.message);
   }
 
-  function selectExample(market: DemoMarketResult) {
-    setQuery(market.query);
-    setCountry(market.country);
-    setResult(market);
-    setStatus("idle");
-    setMessage("");
-  }
+  const sampleRequestHref = requestResearchHref({
+    service: "market-scan",
+    product: result.query,
+    hs: result.hsCode,
+    context: `Seen in the Market Explorer sample: ${result.query}.`,
+  });
 
   return (
     <section className={`explorer explorer-${variant}`} aria-labelledby={`explorer-title-${variant}`}>
       <div className="explorer-topline">
         <div>
           <h2 id={`explorer-title-${variant}`}>Tharros Market Explorer</h2>
-          <p>Test the shape of a Canadian market question.</p>
+          <p>Sample scenarios showing how Canadian market evidence is assembled.</p>
         </div>
-        <DemoStamp compact={variant === "hero"} />
+        <DemoStamp compact={!full} />
       </div>
 
-      <form className="explorer-search" onSubmit={runSearch} noValidate>
-        <div className="explorer-query">
-          <SearchIcon />
-          <label htmlFor={`market-query-${variant}`}>Product description or HS code</label>
-          <input
-            id={`market-query-${variant}`}
-            name="query"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="e.g. Industrial LED lighting or 9405.11"
-            aria-describedby={message ? `query-message-${variant}` : undefined}
-          />
+      <div className="sample-picker" role="group" aria-labelledby={`sample-label-${variant}`}>
+        <span id={`sample-label-${variant}`}>Sample scenarios · public preview</span>
+        <div>
+          {samples.map((sample) => (
+            <button
+              key={sample.slug}
+              type="button"
+              aria-pressed={sample.slug === result.slug}
+              onClick={() => selectSample(sample)}
+            >
+              {sample.query}
+              <small>HS {sample.hsCode}</small>
+            </button>
+          ))}
         </div>
-        {variant === "full" && (
-          <div className="explorer-country">
-            <label htmlFor={`country-${variant}`}>Exporter country</label>
-            <select id={`country-${variant}`} value={country} onChange={(event) => setCountry(event.target.value)}>
-              <option>Germany</option>
-              <option>France</option>
-              <option>Italy</option>
-              <option>Poland</option>
-              <option>Netherlands</option>
-              <option>Estonia</option>
-              <option>Latvia</option>
-              <option>Lithuania</option>
-              <option>Other European country</option>
-            </select>
+      </div>
+
+      <div className="explorer-result">
+        <div className="result-meta">
+          <div>
+            <span>Sample product</span>
+            <strong>{result.query}</strong>
           </div>
+          <div>
+            <span>HS reference</span>
+            <strong>{result.hsCode}</strong>
+          </div>
+          <div>
+            <span>Data status</span>
+            <strong>{isSample ? "Synthetic sample" : "Official source"}</strong>
+          </div>
+        </div>
+
+        <div className="result-primary">
+          <div className="trend-panel">
+            <div className="result-heading">
+              <div>
+                <h3>{full ? `${result.query} · ${result.hsCode}` : "Illustrative five-year signal"}</h3>
+                <p>{result.trend.unit}</p>
+              </div>
+              <span className="trend-change">{formatDelta(trendDelta(result), "index pts")}</span>
+            </div>
+            <TrendChart data={result.trend.points} compact={!full} />
+          </div>
+          <div className="province-panel">
+            <div className="result-heading">
+              <div>
+                <h3>Leading provinces</h3>
+                <p>{result.provinces.unit}</p>
+              </div>
+            </div>
+            <ProvinceBars data={result.provinces.shares} compact={!full} />
+          </div>
+        </div>
+
+        {full && (
+          <>
+            <div className="result-interpretation">
+              <span>What this sample demonstrates</span>
+              <p>{result.interpretation}</p>
+            </div>
+            <div className="result-secondary">
+              <div>
+                <h3>Routes a real study would examine</h3>
+                <div className="route-list">
+                  {result.routes.items.map((route) => (
+                    <article key={route.name}>
+                      <strong>{route.name}</strong>
+                      <p>{route.question}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3>Relevant official resources</h3>
+                <div className="resource-list">
+                  {result.resources.items.map((resource) => (
+                    <a key={resource.label} href={resource.url} target="_blank" rel="noreferrer">
+                      <span>{resource.label}<span className="sr-only"> (opens in a new tab)</span></span>
+                      <small>{resource.publisher}</small>
+                      <ArrowIcon />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Provenance result={result} />
+
+            <div className="explorer-ask">
+              <form onSubmit={checkProduct} noValidate>
+                <label htmlFor="explorer-product">Have a different product?</label>
+                <p id="explorer-product-hint">
+                  This public preview contains {samples.length} sample scenarios only. Enter your product and we’ll show a matching
+                  sample, or carry it into a research request.
+                </p>
+                <div>
+                  <input
+                    id="explorer-product"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="e.g. Solar mounting systems or 7616.99"
+                    maxLength={200}
+                    aria-invalid={Boolean(message)}
+                    aria-describedby={message ? "explorer-product-hint explorer-product-error" : "explorer-product-hint"}
+                  />
+                  <button type="submit">Check samples</button>
+                </div>
+                {message && <p className="field-message is-error" id="explorer-product-error">{message}</p>}
+              </form>
+              <div aria-live="polite">
+                {unmatched && (
+                  <div className="explorer-unmatched">
+                    <p><strong>“{unmatched}” isn’t one of the sample scenarios.</strong></p>
+                    <p>A Canada Market Scan can research it using official sources and manual verification.</p>
+                    <Link
+                      className="button-primary"
+                      href={requestResearchHref({
+                        service: "market-scan",
+                        product: unmatched,
+                        context: "Entered in the Market Explorer; not covered by the public samples.",
+                      })}
+                    >
+                      Use this product in a research request <ArrowIcon />
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
         )}
-        <button type="submit" disabled={status === "loading"}>
-          {status === "loading" ? "Checking preview…" : "Explore market"}
-          <ArrowIcon />
-        </button>
-      </form>
-      {message && <p className="field-message is-error" id={`query-message-${variant}`}>{message}</p>}
 
-      {status === "empty" ? (
-        <div className="explorer-empty" role="status">
-          <p className="empty-title">This preview does not have a matching demo.</p>
-          <p>
-            The V1 Explorer contains two transparent examples rather than pretending to cover every product.
-            Try one of these:
-          </p>
-          <div className="example-actions">
-            {demoMarkets.map((market) => (
-              <button key={market.slug} type="button" onClick={() => selectExample(market)}>
-                {market.query} · {market.hsCode}
-              </button>
-            ))}
+        <div className="source-strip">
+          <div>
+            <span>Source status</span>
+            <strong>{isSample ? "Synthetic sample values" : result.sources.map((source) => source.publisher).join(", ")}</strong>
           </div>
-        </div>
-      ) : (
-        <div className={status === "loading" ? "explorer-result is-loading" : "explorer-result"} aria-busy={status === "loading"}>
-          <div className="result-meta">
-            <div>
-              <span>Product</span>
-              <strong>{result.query}</strong>
-            </div>
-            <div>
-              <span>HS reference</span>
-              <strong>{result.hsCode}</strong>
-            </div>
-            <div>
-              <span>Country lens</span>
-              <strong>{country}</strong>
-            </div>
-          </div>
-
-          <div className="result-primary">
-            <div className="trend-panel">
-              <div className="result-heading">
-                <div>
-                  <h3>{variant === "hero" ? "Illustrative five-year signal" : title}</h3>
-                  <p>{result.unit}</p>
-                </div>
-                <span className="trend-change">+{result.trend.at(-1)!.value - result.trend[0].value} index pts</span>
-              </div>
-              <TrendChart data={result.trend} compact={variant === "hero"} />
-            </div>
-            <div className="province-panel">
-              <div className="result-heading">
-                <div>
-                  <h3>Leading provinces</h3>
-                  <p>Illustrative share of value</p>
-                </div>
-              </div>
-              <ProvinceBars data={result.provinces} compact={variant === "hero"} />
-            </div>
-          </div>
-
-          {variant === "full" && (
-            <>
-              <div className="result-interpretation">
-                <p>{result.interpretation}</p>
-              </div>
-              <div className="result-secondary">
-                <div>
-                  <h3>Potential commercial routes</h3>
-                  <div className="route-list">
-                    {result.routes.map((route) => (
-                      <article key={route.name}>
-                        <div><strong>{route.name}</strong><span>{route.fit}</span></div>
-                        <p>{route.rationale}</p>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3>Relevant official resources</h3>
-                  <div className="resource-list">
-                    {result.resources.map((resource) => (
-                      <a key={resource.label} href={resource.url} target="_blank" rel="noreferrer">
-                        <span>{resource.label}</span><small>{resource.publisher}</small><ArrowIcon />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </>
+          <p>{result.sources[0]?.notes}</p>
+          {full ? (
+            <Link href={sampleRequestHref}>Research a real product like this</Link>
+          ) : (
+            <Link href="/market-explorer">See sources and limitations</Link>
           )}
-
-          <div className="source-strip">
-            <div>
-              <span>Source status</span>
-              <strong>{result.source.dataset}</strong>
-            </div>
-            <p>{result.source.notes}</p>
-            <a href={result.source.url}>Read the methodology</a>
-          </div>
         </div>
-      )}
+      </div>
+    </section>
+  );
+}
+
+function Provenance({ result }: { result: MarketResult }) {
+  const limitations = collectLimitations(result);
+  return (
+    <section className="provenance" aria-labelledby="provenance-title">
+      <h3 id="provenance-title">Sources, provenance and limitations</h3>
+      <div className="provenance-grid">
+        <div>
+          {result.sources.map((source) => (
+            <dl key={source.id} className="provenance-record">
+              <div><dt>Status</dt><dd>{result.status === "demo" ? "Sample (synthetic values)" : "Live official data"}</dd></div>
+              <div><dt>Publisher</dt><dd>{source.publisher}</dd></div>
+              <div><dt>Dataset</dt><dd>{source.url.startsWith("/") ? <Link href={source.url}>{source.dataset}</Link> : <a href={source.url} target="_blank" rel="noreferrer">{source.dataset}<span className="sr-only"> (opens in a new tab)</span></a>}</dd></div>
+              <div><dt>Period</dt><dd>{source.period}</dd></div>
+              <div><dt>Last updated</dt><dd>{formatSourceDate(source.lastUpdated, result.status)}</dd></div>
+              <div><dt>Retrieved</dt><dd>{formatSourceDate(source.retrievedAt, result.status)}</dd></div>
+              <div><dt>Licence</dt><dd>{source.licence}</dd></div>
+              <div><dt>HS {result.hsCode}</dt><dd>{result.hsDescription}</dd></div>
+            </dl>
+          ))}
+        </div>
+        <div>
+          <h4>Material limitations</h4>
+          <ul>{limitations.map((item) => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </div>
     </section>
   );
 }
