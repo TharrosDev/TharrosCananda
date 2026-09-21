@@ -14,8 +14,8 @@ export function PageHero({
       <div>
         <h1>{title}</h1>
         <p>{description}</p>
+        {aside && <aside>{aside}</aside>}
       </div>
-      {aside && <aside>{aside}</aside>}
     </section>
   );
 }

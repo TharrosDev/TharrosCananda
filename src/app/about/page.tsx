@@ -25,7 +25,6 @@ export default function AboutPage() {
           <p>Each engagement starts from a written scope that you approve. Official public data is used with its publisher, period and limitations recorded. Company and competitor findings are verified manually against their own public sources. Deliverables separate observation from inference, and state what remains uncertain.</p>
         </div>
         <aside>
-          <span>Independence</span>
           <strong>Independent of government.</strong>
           <p>Tharros Canada is not affiliated with, endorsed by or acting for any government body or the publishers of the data it cites. It provides commercial intelligence, not legal, tax, customs, immigration, financial or compliance advice.</p>
         </aside>

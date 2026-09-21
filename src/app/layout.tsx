@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/manrope";
-import "@fontsource-variable/newsreader";
+import "@fontsource-variable/schibsted-grotesk";
+import "@fontsource-variable/source-serif-4/opsz.css";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f3f0e8",
+  themeColor: "#f4f1ea",
   colorScheme: "light",
 };
 

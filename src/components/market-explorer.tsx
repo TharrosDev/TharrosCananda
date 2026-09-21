@@ -18,10 +18,12 @@ const samples = provider.listSamples();
 
 type ExplorerProps = {
   variant?: "hero" | "full";
+  /** Sample slug from the URL (?sample=), so a shared link opens the same entry. */
+  initialSample?: string;
 };
 
-export function MarketExplorer({ variant = "full" }: ExplorerProps) {
-  const [result, setResult] = useState<MarketResult>(samples[0]);
+export function MarketExplorer({ variant = "full", initialSample }: ExplorerProps) {
+  const [result, setResult] = useState<MarketResult>(samples.find((sample) => sample.slug === initialSample) ?? samples[0]);
   const [query, setQuery] = useState("");
   const [unmatched, setUnmatched] = useState<string | null>(null);
   const [message, setMessage] = useState("");
@@ -31,6 +33,7 @@ export function MarketExplorer({ variant = "full" }: ExplorerProps) {
   function selectSample(sample: MarketResult) {
     setResult(sample);
     setUnmatched(null);
+    if (full) window.history.replaceState(null, "", `?sample=${sample.slug}`);
     track("market_explorer_completed", { result: sample.slug });
   }
 
@@ -67,7 +70,7 @@ export function MarketExplorer({ variant = "full" }: ExplorerProps) {
       </div>
 
       <div className="sample-picker" role="group" aria-labelledby={`sample-label-${variant}`}>
-        <span id={`sample-label-${variant}`}>Sample scenarios · public preview</span>
+        <span id={`sample-label-${variant}`} className="sr-only">Sample scenarios (public preview)</span>
         <div>
           {samples.map((sample) => (
             <button
@@ -85,13 +88,14 @@ export function MarketExplorer({ variant = "full" }: ExplorerProps) {
 
       <div className="explorer-result">
         <div className="result-meta">
-          <div>
+          <div className="entry-heading">
+            <span>HS heading</span>
+            <strong>{result.hsCode}</strong>
+          </div>
+          <div className="entry-description">
             <span>Sample product</span>
             <strong>{result.query}</strong>
-          </div>
-          <div>
-            <span>HS reference</span>
-            <strong>{result.hsCode}</strong>
+            {full && <small>{result.hsDescription}</small>}
           </div>
           <div>
             <span>Data status</span>
@@ -103,7 +107,7 @@ export function MarketExplorer({ variant = "full" }: ExplorerProps) {
           <div className="trend-panel">
             <div className="result-heading">
               <div>
-                <h3>{full ? `${result.query} · ${result.hsCode}` : "Illustrative five-year signal"}</h3>
+                <h3>Illustrative five‑year signal</h3>
                 <p>{result.trend.unit}</p>
               </div>
               <span className="trend-change">{formatDelta(trendDelta(result), "index pts")}</span>
@@ -124,7 +128,6 @@ export function MarketExplorer({ variant = "full" }: ExplorerProps) {
         {full && (
           <>
             <div className="result-interpretation">
-              <span>What this sample demonstrates</span>
               <p>{result.interpretation}</p>
             </div>
             <div className="result-secondary">

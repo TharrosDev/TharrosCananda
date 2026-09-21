@@ -15,9 +15,10 @@ export function ServiceList({ compact = false }: { compact?: boolean }) {
           <div className="service-copy">
             <p className="service-question">{service.question}</p>
             <p>{service.description}</p>
+            {compact && <p className="service-excludes"><strong>Not included:</strong> {service.excludes}</p>}
             {!compact && (
               <>
-                <h4>You receive</h4>
+                <h4>What you receive</h4>
                 <ul>{service.outputs.map((item) => <li key={item}><CheckIcon />{item}</li>)}</ul>
                 <dl className="service-terms">
                   <div><dt>Verification</dt><dd>{service.verification}</dd></div>

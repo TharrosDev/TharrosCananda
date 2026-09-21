@@ -20,7 +20,7 @@ export default async function RequestResearchPage({
 
   return (
     <>
-      <PageHero title="Describe the Canadian decision you need to make." description="No account and no mandatory call. After submission, Tharros reviews the request and replies in writing with any clarification, a proposed deliverable, a price and an estimated timeline." aside={<div className="hero-aside"><span>Before research begins</span><strong>You approve the scope.</strong><p>Submitting this form is a request for review, not a purchase or engagement.</p></div>} />
+      <PageHero title="Describe the Canadian decision you need to make." description="No account and no mandatory call. After submission, Tharros reviews the request and replies in writing with any clarification, a proposed deliverable, a price and an estimated timeline." aside={<div className="hero-aside"><strong>You approve the scope.</strong><p>Submitting this form is a request for review, not a purchase or engagement.</p></div>} />
       <section className="section request-layout">
         <ResearchRequestForm key={JSON.stringify(initial)} initial={initial} contactEmail={contactEmail} />
         <aside className="request-sidebar">

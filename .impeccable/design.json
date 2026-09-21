@@ -1,111 +1,392 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-21T16:28:00.6428091-04:00",
+  "generatedAt": "2026-09-21T22:14:11.148Z",
   "title": "Design System: Tharros Canada",
   "extensions": {
     "colorMeta": {
-      "report-paper": {
+      "ivory": {
         "role": "neutral",
-        "displayName": "Warm Report Paper",
-        "canonical": "#f3f0e8",
-        "tonalRamp": ["oklch(18% 0.012 88)", "oklch(29% 0.014 88)", "oklch(40% 0.015 88)", "oklch(52% 0.016 88)", "oklch(64% 0.017 88)", "oklch(76% 0.018 88)", "oklch(87% 0.019 88)", "#f3f0e8"]
+        "displayName": "Warm Ivory",
+        "canonical": "#f4f1ea",
+        "tonalRamp": [
+          "#272625",
+          "#41403e",
+          "#5a5957",
+          "#74736f",
+          "#9b9994",
+          "#c2bfba",
+          "#e1ded7",
+          "#f5f2ec"
+        ]
       },
-      "report-paper-deep": {
+      "ivory-deep": {
         "role": "neutral",
-        "displayName": "Deep Report Paper",
-        "canonical": "#e8e3d7",
-        "tonalRamp": ["oklch(18% 0.014 84)", "oklch(29% 0.015 84)", "oklch(40% 0.017 84)", "oklch(52% 0.019 84)", "oklch(64% 0.020 84)", "oklch(76% 0.021 84)", "#e8e3d7", "oklch(95% 0.022 84)"]
+        "displayName": "Ivory Deep",
+        "canonical": "#ebe6db",
+        "tonalRamp": [
+          "#272624",
+          "#41403d",
+          "#5b5955",
+          "#75736d",
+          "#9c9992",
+          "#c3bfb6",
+          "#e2ded3",
+          "#f5f2ec"
+        ]
       },
-      "report-paper-light": {
+      "ivory-light": {
         "role": "neutral",
-        "displayName": "Light Report Paper",
-        "canonical": "#faf8f2",
-        "tonalRamp": ["oklch(18% 0.009 88)", "oklch(29% 0.010 88)", "oklch(40% 0.011 88)", "oklch(52% 0.012 88)", "oklch(64% 0.013 88)", "oklch(76% 0.014 88)", "oklch(87% 0.015 88)", "#faf8f2"]
+        "displayName": "Ivory Light",
+        "canonical": "#faf8f3",
+        "tonalRamp": [
+          "#272625",
+          "#40403e",
+          "#5a5957",
+          "#747370",
+          "#9a9996",
+          "#c1bfbb",
+          "#e0ded9",
+          "#f4f2ed"
+        ]
       },
-      "canadian-ink": {
+      "ink": {
         "role": "neutral",
-        "displayName": "Deep Canadian Ink",
-        "canonical": "#11233b",
-        "tonalRamp": ["#11233b", "oklch(27% 0.050 252)", "oklch(38% 0.047 252)", "oklch(50% 0.043 252)", "oklch(62% 0.038 252)", "oklch(74% 0.032 252)", "oklch(86% 0.022 252)", "oklch(95% 0.010 252)"]
+        "displayName": "Graphite Ink",
+        "canonical": "#1c1d1f",
+        "tonalRamp": [
+          "#252628",
+          "#3f4042",
+          "#59595b",
+          "#727374",
+          "#99999a",
+          "#bfbfc0",
+          "#dedede",
+          "#f2f2f2"
+        ]
       },
-      "softened-ink": {
+      "ink-soft": {
         "role": "neutral",
-        "displayName": "Softened Ink",
-        "canonical": "#415067",
-        "tonalRamp": ["oklch(15% 0.036 252)", "#415067", "oklch(39% 0.036 252)", "oklch(51% 0.033 252)", "oklch(63% 0.029 252)", "oklch(75% 0.024 252)", "oklch(87% 0.016 252)", "oklch(95% 0.008 252)"]
+        "displayName": "Soft Ink",
+        "canonical": "#45484d",
+        "tonalRamp": [
+          "#252629",
+          "#3d4044",
+          "#575a5e",
+          "#717377",
+          "#98999c",
+          "#bebfc1",
+          "#dddedf",
+          "#f2f2f3"
+        ]
       },
-      "annotation-slate": {
+      "slate": {
         "role": "neutral",
         "displayName": "Annotation Slate",
-        "canonical": "#677384",
-        "tonalRamp": ["oklch(15% 0.025 250)", "oklch(27% 0.026 250)", "#677384", "oklch(51% 0.025 250)", "oklch(63% 0.022 250)", "oklch(75% 0.018 250)", "oklch(87% 0.012 250)", "oklch(95% 0.006 250)"]
+        "canonical": "#5d6166",
+        "tonalRamp": [
+          "#252628",
+          "#3e4043",
+          "#565a5e",
+          "#707378",
+          "#97999d",
+          "#bec0c2",
+          "#dddedf",
+          "#f2f2f3"
+        ]
       },
-      "ledger-line": {
+      "rule": {
         "role": "neutral",
-        "displayName": "Ledger Line",
-        "canonical": "#b7b6b0",
-        "tonalRamp": ["oklch(15% 0.008 85)", "oklch(27% 0.009 85)", "oklch(39% 0.010 85)", "oklch(51% 0.011 85)", "oklch(63% 0.011 85)", "#b7b6b0", "oklch(87% 0.010 85)", "oklch(95% 0.006 85)"]
+        "displayName": "Rule",
+        "canonical": "rgba(28, 29, 31, 0.13)"
       },
-      "ledger-line-dark": {
+      "rule-strong": {
         "role": "neutral",
-        "displayName": "Dark Ledger Line",
-        "canonical": "#7e8791",
-        "tonalRamp": ["oklch(15% 0.015 248)", "oklch(27% 0.016 248)", "oklch(39% 0.017 248)", "#7e8791", "oklch(63% 0.016 248)", "oklch(75% 0.014 248)", "oklch(87% 0.009 248)", "oklch(95% 0.005 248)"]
+        "displayName": "Rule Strong",
+        "canonical": "rgba(28, 29, 31, 0.32)"
       },
-      "signal-red": {
+      "soft-black": {
+        "role": "neutral",
+        "displayName": "Soft Black",
+        "canonical": "#161719",
+        "tonalRamp": [
+          "#252628",
+          "#3f4041",
+          "#59595b",
+          "#727374",
+          "#99999a",
+          "#bfbfc0",
+          "#dedede",
+          "#f2f2f2"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite Band",
+        "canonical": "#232528",
+        "tonalRamp": [
+          "#252729",
+          "#3e4043",
+          "#58595c",
+          "#727375",
+          "#98999b",
+          "#bfbfc0",
+          "#dedede",
+          "#f2f2f2"
+        ]
+      },
+      "on-dark": {
+        "role": "neutral",
+        "displayName": "On-Dark Ivory",
+        "canonical": "#ece8df",
+        "tonalRamp": [
+          "#272625",
+          "#41403d",
+          "#5b5956",
+          "#75736e",
+          "#9c9993",
+          "#c2bfb8",
+          "#e2ded5",
+          "#f4f2ed"
+        ]
+      },
+      "on-dark-soft": {
+        "role": "neutral",
+        "displayName": "On-Dark Soft",
+        "canonical": "#aeaba3",
+        "tonalRamp": [
+          "#272624",
+          "#41403d",
+          "#5b5955",
+          "#75736d",
+          "#9c9992",
+          "#c2bfb9",
+          "#dfdedb",
+          "#f3f2f1"
+        ]
+      },
+      "rule-dark": {
+        "role": "neutral",
+        "displayName": "Rule Dark",
+        "canonical": "rgba(236, 232, 223, 0.14)"
+      },
+      "red": {
         "role": "primary",
-        "displayName": "Signal Canadian Red",
-        "canonical": "#ad303a",
-        "tonalRamp": ["oklch(15% 0.110 23)", "oklch(27% 0.145 23)", "#84252d", "#ad303a", "oklch(63% 0.155 23)", "oklch(75% 0.110 23)", "oklch(87% 0.060 23)", "oklch(95% 0.025 23)"]
+        "displayName": "Muted Canadian Red",
+        "canonical": "#9e3a35",
+        "tonalRamp": [
+          "#451917",
+          "#732a27",
+          "#9f3c37",
+          "#ae5a56",
+          "#c48784",
+          "#dab4b2",
+          "#ecd8d7",
+          "#f8f0f0"
+        ]
       },
-      "signal-red-dark": {
+      "red-dark": {
         "role": "primary",
-        "displayName": "Deep Signal Red",
-        "canonical": "#84252d",
-        "tonalRamp": ["oklch(15% 0.105 23)", "oklch(27% 0.135 23)", "#84252d", "oklch(51% 0.145 23)", "oklch(63% 0.130 23)", "oklch(75% 0.095 23)", "oklch(87% 0.052 23)", "oklch(95% 0.022 23)"]
+        "displayName": "Deep Oxide",
+        "canonical": "#7f2c28",
+        "tonalRamp": [
+          "#471916",
+          "#762925",
+          "#8d4440",
+          "#9f605d",
+          "#b98c8a",
+          "#d3b7b6",
+          "#e8dad9",
+          "#f6f1f0"
+        ]
       },
-      "data-blue": {
+      "steel": {
         "role": "secondary",
-        "displayName": "Measured Data Blue",
-        "canonical": "#2f6690",
-        "tonalRamp": ["oklch(15% 0.070 245)", "oklch(27% 0.090 245)", "#2f6690", "oklch(51% 0.105 245)", "oklch(63% 0.092 245)", "oklch(75% 0.068 245)", "oklch(87% 0.038 245)", "oklch(95% 0.016 245)"]
+        "displayName": "Survey Steel",
+        "canonical": "#46677f",
+        "tonalRamp": [
+          "#1c2933",
+          "#2f4454",
+          "#416076",
+          "#5c798e",
+          "#889ead",
+          "#b5c2cc",
+          "#d8dfe4",
+          "#f0f3f5"
+        ]
       },
-      "verified-green": {
+      "steel-on-dark": {
+        "role": "secondary",
+        "displayName": "Survey Steel on Dark",
+        "canonical": "#8fb0c7",
+        "tonalRamp": [
+          "#20282d",
+          "#36424b",
+          "#4c5d69",
+          "#617887",
+          "#82a0b4",
+          "#acc5d6",
+          "#d4e1e9",
+          "#eef3f7"
+        ]
+      },
+      "green": {
         "role": "tertiary",
-        "displayName": "Verified Green",
-        "canonical": "#4f735e",
-        "tonalRamp": ["oklch(15% 0.055 150)", "oklch(27% 0.070 150)", "#4f735e", "oklch(51% 0.080 150)", "oklch(63% 0.071 150)", "oklch(75% 0.052 150)", "oklch(87% 0.030 150)", "oklch(95% 0.014 150)"]
+        "displayName": "Ledger Green",
+        "canonical": "#4f6e58",
+        "tonalRamp": [
+          "#1f2b22",
+          "#334739",
+          "#486450",
+          "#627d6a",
+          "#8ca192",
+          "#b7c4bb",
+          "#dae0dc",
+          "#f1f3f1"
+        ]
       },
-      "focus-blue": {
-        "role": "secondary",
-        "displayName": "Accessible Focus Blue",
-        "canonical": "#176fab",
-        "tonalRamp": ["oklch(15% 0.085 245)", "oklch(27% 0.115 245)", "#176fab", "oklch(51% 0.135 245)", "oklch(63% 0.115 245)", "oklch(75% 0.080 245)", "oklch(87% 0.043 245)", "oklch(95% 0.018 245)"]
+      "green-on-dark": {
+        "role": "tertiary",
+        "displayName": "Ledger Green on Dark",
+        "canonical": "#9bbfa4",
+        "tonalRamp": [
+          "#212923",
+          "#38453b",
+          "#4e6053",
+          "#647c6a",
+          "#86a58e",
+          "#adcbb4",
+          "#d4e4d8",
+          "#eff5f0"
+        ]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "Error Oxide",
+        "canonical": "#8a312d",
+        "tonalRamp": [
+          "#461917",
+          "#752a26",
+          "#93413d",
+          "#a45e5b",
+          "#bd8a88",
+          "#d6b6b5",
+          "#e9d9d8",
+          "#f7f0f0"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus Blue",
+        "canonical": "#2f6fae",
+        "tonalRamp": [
+          "#122b43",
+          "#1e4770",
+          "#2a649d",
+          "#447eb6",
+          "#77a1ca",
+          "#aac4de",
+          "#d3e0ee",
+          "#eef3f8"
+        ]
+      },
+      "focus-on-dark": {
+        "role": "neutral",
+        "displayName": "Focus Blue on Dark",
+        "canonical": "#8fb8e0",
+        "tonalRamp": [
+          "#1f2831",
+          "#344351",
+          "#485d71",
+          "#5d7892",
+          "#7ca0c2",
+          "#a4c5e6",
+          "#d0e1f2",
+          "#edf3fa"
+        ]
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Editorial Display", "purpose": "Page propositions and major hero statements only." },
-      "headline": { "displayName": "Section Headline", "purpose": "Large section arguments and decision prompts." },
-      "title": { "displayName": "Evidence Title", "purpose": "Services, modules, and compact editorial subheads." },
-      "body": { "displayName": "Interface Body", "purpose": "Reading copy, controls, and explanatory content." },
-      "label": { "displayName": "Evidence Label", "purpose": "Provenance, sequence, status, and field metadata." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero h1; inner-page h1 at clamp(46px, 5.6vw, 84px)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section and band h2s."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Service names, process steps, policy and index entry headings."
+      },
+      "entry-figure": {
+        "displayName": "Entry Figure",
+        "purpose": "HS heading readout in the Explorer; tabular lining numerals."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, controls and readouts; 16px under 640px."
+      },
+      "label": {
+        "displayName": "Field Label",
+        "purpose": "Uppercase slate label naming a datum; never above a heading."
+      }
     },
-    "shadows": [
-      { "name": "explorer-lift", "value": "0 18px 44px rgba(17, 35, 59, .08)", "purpose": "The compact working Explorer in the first viewport." },
-      { "name": "workspace-lift", "value": "0 22px 54px rgba(17, 35, 59, .08)", "purpose": "Full Explorer pages and primary working surfaces." },
-      { "name": "form-lift", "value": "0 22px 54px rgba(17, 35, 59, .07)", "purpose": "The progressive research request form." },
-      { "name": "menu-lift", "value": "0 18px 30px rgba(17, 35, 59, .12)", "purpose": "Temporary mobile navigation only." }
-    ],
+    "shadows": [],
     "motion": [
-      { "name": "state-fast", "value": "160ms ease-out", "purpose": "Button, icon, loading-opacity, and compact state transitions." },
-      { "name": "rule-reveal", "value": "180ms ease-out", "purpose": "Navigation underline reveal." },
-      { "name": "progress", "value": "240ms ease-out", "purpose": "Research-request progress movement." },
-      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Effectively removes animation when reduced motion is requested." }
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Every transition and the chart registration."
+      },
+      {
+        "name": "state-transition",
+        "value": "160ms",
+        "purpose": "Colour, background and border changes on hover."
+      },
+      {
+        "name": "underline-scale",
+        "value": "240ms",
+        "purpose": "Nav underline and arrow nudge; 280ms for the sample-picker underline."
+      },
+      {
+        "name": "register-graticule",
+        "value": "register-in 500ms",
+        "purpose": "Chart graticule fades in first."
+      },
+      {
+        "name": "register-line",
+        "value": "register-draw 1400ms, 350ms delay",
+        "purpose": "Trend line draws via stroke-dashoffset (pathLength 1)."
+      },
+      {
+        "name": "register-series",
+        "value": "register-in 700ms, 1000ms delay",
+        "purpose": "Area wash and points fade in after the line."
+      },
+      {
+        "name": "register-bar",
+        "value": "register-bar 1100ms, 500ms delay",
+        "purpose": "Province bars scale in from the left."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation and transition 0.01ms, delay 0",
+        "purpose": "All motion disabled under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
-      { "name": "wide-compress", "value": "1220px" },
-      { "name": "stack-and-menu", "value": "980px" },
-      { "name": "mobile-ledger", "value": "700px" }
+      {
+        "name": "compact-desktop",
+        "value": "1180px"
+      },
+      {
+        "name": "tablet",
+        "value": "980px"
+      },
+      {
+        "name": "mobile",
+        "value": "640px"
+      }
     ]
   },
   "components": [
@@ -113,93 +394,131 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The scarce signal-red action for the single clearest next step.",
-      "html": "<button class=\"ds-btn-primary\">Explore market <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"/></svg></button>",
-      "css": ".ds-btn-primary { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 18px; border: 1px solid var(--red, #ad303a); border-radius: 0; color: #fff; background: var(--red, #ad303a); font: 750 16px/1.25 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; transition: background 160ms ease-out, border-color 160ms ease-out; } .ds-btn-primary svg { width: 20px; height: 20px; transition: transform 160ms ease-out; } .ds-btn-primary:hover { background: var(--red-dark, #84252d); border-color: var(--red-dark, #84252d); } .ds-btn-primary:hover svg { transform: translateX(4px); } .ds-btn-primary:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(1px); }"
+      "description": "Red action with trailing arrow.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Request research <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-btn-primary{display:inline-flex;min-height:50px;align-items:center;gap:14px;padding:12px 22px;border:1px solid var(--red,#9e3a35);background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;border-radius:0;transition:background 160ms cubic-bezier(0.16,1,0.3,1),border-color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary:hover{background:var(--red-dark,#7f2c28);border-color:var(--red-dark,#7f2c28)}.ds-btn-primary:hover svg{transform:translateX(4px)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "A flat ink-bound action for important alternatives.",
-      "html": "<button class=\"ds-btn-secondary\">See how research works <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg></button>",
-      "css": ".ds-btn-secondary { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 18px; border: 1px solid var(--ink, #11233b); border-radius: 0; color: var(--ink, #11233b); background: transparent; font: 750 16px/1.25 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; transition: color 160ms ease-out, background 160ms ease-out; } .ds-btn-secondary svg { width: 20px; height: 20px; transition: transform 160ms ease-out; } .ds-btn-secondary:hover { color: #fff; background: var(--ink, #11233b); } .ds-btn-secondary:hover svg { transform: translateX(4px); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-btn-secondary:active { transform: translateY(1px); }"
+      "description": "Ink-stroked quiet action that inverts on hover.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">See how research works <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-btn-secondary{display:inline-flex;min-height:50px;align-items:center;gap:14px;padding:12px 22px;border:1px solid var(--ink,#1c1d1f);background:transparent;color:var(--ink,#1c1d1f);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;text-decoration:none;border-radius:0;transition:background 160ms cubic-bezier(0.16,1,0.3,1),color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-secondary svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-secondary:hover{background:var(--ink,#1c1d1f);color:var(--ivory-light,#faf8f3)}.ds-btn-secondary:hover svg{transform:translateX(4px)}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
     },
     {
-      "name": "Ledger Input",
+      "name": "Text Link",
+      "kind": "button",
+      "description": "Underruled sample link beside the primary action.",
+      "html": "<a class=\"ds-text-link\" href=\"#\">See a sample analysis <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-text-link{display:inline-flex;min-height:50px;align-items:center;gap:14px;border-bottom:1px solid var(--ink,#1c1d1f);color:var(--ink,#1c1d1f);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;text-decoration:none}.ds-text-link svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-text-link:hover svg{transform:translateX(4px)}.ds-text-link:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+    },
+    {
+      "name": "Text Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "A square white field that reads as a precise entry in the report grid.",
-      "html": "<label class=\"ds-field\"><span>Product description or HS code</span><input type=\"text\" value=\"Industrial LED lighting\" /></label>",
-      "css": ".ds-field { display: grid; gap: 8px; color: var(--ink, #11233b); font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-field > span { font-size: 13px; font-weight: 800; } .ds-field input { width: 100%; height: 50px; padding: 0 14px; border: 1px solid var(--line-dark, #7e8791); border-radius: 0; color: var(--ink, #11233b); background: #fff; font: 400 16px/1.65 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-field input:hover { border-color: var(--ink-soft, #415067); } .ds-field input:focus-visible { border-color: var(--focus, #176fab); outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
+      "description": "Square white field with a rule-strong stroke.",
+      "html": "<label class=\"ds-field\"><span>Product or HS code <em>Required</em></span><input placeholder=\"e.g. LED luminaires, 9405.11\"></label>",
+      "css": ".ds-field{display:grid;gap:8px;font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-field>span{display:flex;gap:10px;align-items:baseline;font-size:15px;font-weight:600}.ds-field em{color:var(--red,#9e3a35);font-size:12px;font-style:normal;font-weight:600;letter-spacing:.06em;text-transform:uppercase}.ds-field input{height:52px;padding:0 14px;border:1px solid var(--rule-strong,rgba(28,29,31,.32));border-radius:0;background:#fff;color:var(--ink,#1c1d1f);font:inherit;font-size:17px;transition:border-color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-field input::placeholder{color:#6e7176}.ds-field input:hover{border-color:var(--ink-soft,#45484d)}.ds-field input:focus{border-color:var(--focus,#2f6fae)}.ds-field input:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
     },
     {
-      "name": "Primary Navigation",
+      "name": "Navigation",
       "kind": "nav",
       "refersTo": "nav-action",
-      "description": "Quiet editorial links with one filled commercial action.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Primary example\"><a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Market Explorer</a><a class=\"ds-nav-link\" href=\"#\">Methodology</a><a class=\"ds-nav-action\" href=\"#\">Request research</a></nav>",
-      "css": ".ds-nav { display: flex; align-items: center; gap: 26px; font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-nav-link { position: relative; padding: 14px 0 11px; color: var(--ink-soft, #415067); font-size: 13px; font-weight: 650; text-decoration: none; } .ds-nav-link::after { content: ''; position: absolute; right: 0; bottom: 5px; left: 0; height: 1px; background: var(--red, #ad303a); transform: scaleX(0); transform-origin: left; transition: transform 180ms ease-out; } .ds-nav-link:hover::after, .ds-nav-link-active::after { transform: scaleX(1); } .ds-nav-link:focus-visible, .ds-nav-action:focus-visible { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-nav-action { padding: 11px 16px; color: #fff; background: var(--red, #ad303a); font-size: 13px; font-weight: 700; text-decoration: none; transition: background 160ms ease-out, transform 160ms ease-out; } .ds-nav-action:hover { background: var(--red-dark, #84252d); transform: translateY(-1px); } .ds-nav-action:active { transform: translateY(0); }"
+      "description": "Ruled bar: wordmark with red slash, ink-soft links with scale-in underline, red action.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\" aria-current=\"page\">Market Explorer</a><a href=\"#\">Research Services</a><a href=\"#\">Methodology</a></div><a class=\"ds-nav-action\" href=\"#\">Request research</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:32px;min-height:84px;border-bottom:1px solid var(--rule,rgba(28,29,31,.13));background:var(--ivory,#f4f1ea);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-wordmark{display:inline-flex;align-items:center;gap:12px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:21px;font-weight:500;letter-spacing:.16em;text-decoration:none;color:inherit}.ds-slash{width:1px;height:22px;background:var(--red,#9e3a35);transform:skewX(-18deg)}.ds-links{display:flex;gap:28px}.ds-links a{position:relative;padding:30px 0 28px;color:var(--ink-soft,#45484d);font-size:14px;font-weight:500;text-decoration:none;transition:color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-links a::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink,#1c1d1f);transform:scaleX(0);transform-origin:left;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-links a:hover,.ds-links a[aria-current=page]{color:var(--ink,#1c1d1f)}.ds-links a:hover::after,.ds-links a[aria-current=page]::after{transform:scaleX(1)}.ds-links a:focus-visible,.ds-nav-action:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}.ds-nav-action{min-height:44px;display:inline-flex;align-items:center;padding:0 18px;background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-size:14px;font-weight:600;text-decoration:none;transition:background 160ms cubic-bezier(0.16,1,0.3,1)}.ds-nav-action:hover{background:var(--red-dark,#7f2c28)}"
     },
     {
-      "name": "Evidence Ledger",
-      "kind": "card",
-      "refersTo": "ledger-surface",
-      "description": "A rule-divided evidence surface that replaces the generic card pattern.",
-      "html": "<section class=\"ds-ledger\"><header><div><h3>Illustrative five-year signal</h3><p>Demo index, not live statistics</p></div><strong>+24 index pts</strong></header><dl><div><dt>Product</dt><dd>Industrial LED lighting</dd></div><div><dt>HS reference</dt><dd>9405.11</dd></div></dl><footer><span>Source status</span><b>Synthetic demonstration dataset</b></footer></section>",
-      "css": ".ds-ledger { border-top: 1px solid var(--line-dark, #7e8791); border-bottom: 1px solid var(--line-dark, #7e8791); color: var(--ink, #11233b); background: var(--paper-light, #faf8f2); box-shadow: 0 18px 44px rgba(17,35,59,.08); font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-ledger header { padding: 18px; display: flex; align-items: start; justify-content: space-between; gap: 18px; border-bottom: 1px solid var(--line, #b7b6b0); } .ds-ledger h3 { margin: 0; font: 620 19px/1.2 var(--display, 'Newsreader Variable', Georgia, serif); } .ds-ledger p { margin: 2px 0 0; color: var(--slate, #677384); font-size: 10px; } .ds-ledger header > strong { color: var(--green, #4f735e); font-size: 11px; white-space: nowrap; } .ds-ledger dl { margin: 0; display: grid; grid-template-columns: 1.5fr 1fr; } .ds-ledger dl > div { padding: 13px 18px; border-right: 1px solid var(--line, #b7b6b0); } .ds-ledger dl > div:last-child { border-right: 0; } .ds-ledger dt, .ds-ledger footer span { color: var(--slate, #677384); font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; } .ds-ledger dd { margin: 2px 0 0; font: 600 16px/1.3 var(--display, 'Newsreader Variable', Georgia, serif); } .ds-ledger footer { padding: 11px 18px; border-top: 1px solid var(--line-dark, #7e8791); } .ds-ledger footer b { display: block; margin-top: 2px; font-size: 11px; } .ds-ledger:focus-within { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
-    },
-    {
-      "name": "Selected Research Choice",
-      "kind": "chip",
-      "refersTo": "ledger-surface",
-      "description": "A full-width selected row for objectives and research routes.",
-      "html": "<label class=\"ds-choice\"><input type=\"checkbox\" checked /><span class=\"ds-choice-check\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m5 12 4 4L19 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></span><strong>Buyer and distributor intelligence</strong></label>",
-      "css": ".ds-choice { min-height: 62px; padding: 12px 14px; border: 1px solid var(--ink, #11233b); display: flex; align-items: center; gap: 12px; color: var(--ink, #11233b); background: var(--paper-deep, #e8e3d7); font: 600 14px/1.4 var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); cursor: pointer; } .ds-choice input { position: absolute; opacity: 0; pointer-events: none; } .ds-choice-check { width: 22px; height: 22px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; background: var(--green, #4f735e); border: 1px solid var(--green, #4f735e); } .ds-choice-check svg { width: 15px; } .ds-choice:hover { border-color: var(--red, #ad303a); } .ds-choice:has(input:focus-visible) { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; } .ds-choice:active { background: var(--paper, #f3f0e8); }"
-    },
-    {
-      "name": "Demo Status Stamp",
+      "name": "Schedule Entry Meta",
       "kind": "custom",
-      "refersTo": "ledger-surface",
-      "description": "A compact, non-optional disclosure that prevents demo data from reading as live statistics.",
-      "html": "<div class=\"ds-demo-stamp\" role=\"note\"><span>Demonstration data</span><p>Illustrative values only — not current Canadian statistics.</p></div>",
-      "css": ".ds-demo-stamp { max-width: 310px; padding: 7px 8px 5px; border: 1px solid var(--red, #ad303a); color: var(--ink, #11233b); background: transparent; font-family: var(--sans, 'Manrope Variable', 'Segoe UI', sans-serif); } .ds-demo-stamp span { color: var(--red-dark, #84252d); font-size: 10px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; } .ds-demo-stamp p { margin: 3px 0 0; color: var(--ink-soft, #415067); font-size: 11px; line-height: 1.35; } .ds-demo-stamp:hover { background: var(--paper-deep, #e8e3d7); } .ds-demo-stamp:focus-within { outline: 3px solid var(--focus, #176fab); outline-offset: 3px; }"
+      "description": "Explorer result meta row: uppercase field labels over serif values, HS heading as the tabular entry figure, rules only.",
+      "html": "<div class=\"ds-entry\"><div><span>HS heading</span><strong class=\"ds-fig\">9405.11</strong></div><div><span>Sample product</span><strong>Industrial LED lighting</strong></div><div><span>Data status</span><strong>Synthetic sample</strong></div></div>",
+      "css": ".ds-entry{display:grid;grid-template-columns:.8fr 1.5fr .8fr;border-top:2px solid var(--ink,#1c1d1f);border-bottom:1px solid var(--rule,rgba(28,29,31,.13));color:var(--ink,#1c1d1f);background:var(--ivory,#f4f1ea)}.ds-entry>div{padding:16px 20px 16px 0}.ds-entry span{display:block;color:var(--slate,#5d6166);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:12px;font-weight:600;letter-spacing:.08em;line-height:1.4;text-transform:uppercase}.ds-entry strong{display:block;margin-top:4px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:17px;font-weight:500;line-height:1.3}.ds-entry .ds-fig{font-size:30px;font-weight:400;letter-spacing:-.01em;line-height:1.1;font-variant-numeric:tabular-nums lining-nums}"
+    },
+    {
+      "name": "Province Bars",
+      "kind": "custom",
+      "description": "Steel magnitude bars on ivory-deep tracks; scale in once as part of chart registration.",
+      "html": "<div class=\"ds-bars\"><div class=\"ds-row\"><span>Ontario</span><strong>42%</strong><div class=\"ds-track\"><i style=\"width:42%\"></i></div></div><div class=\"ds-row\"><span>Quebec</span><strong>24%</strong><div class=\"ds-track\"><i style=\"width:24%\"></i></div></div></div>",
+      "css": ".ds-bars{display:grid;gap:14px;font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f);font-size:15px}.ds-row{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:baseline}.ds-row strong{font-weight:600;font-variant-numeric:tabular-nums}.ds-track{grid-column:1/-1;height:5px;background:var(--ivory-deep,#ebe6db)}.ds-track i{display:block;height:100%;background:var(--steel,#46677f);transform-origin:left;animation:ds-bar 1100ms cubic-bezier(0.16,1,0.3,1) 500ms both}@keyframes ds-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){.ds-track i{animation:none}}"
+    },
+    {
+      "name": "Question Index Row",
+      "kind": "custom",
+      "description": "Numbered ruled entry inside a soft-black band; numerals only because the sequence carries meaning.",
+      "html": "<ol class=\"ds-index\"><li><span>01</span><div><h3>Demand</h3><p>Is there measurable Canadian activity for this product?</p></div><a href=\"#\">Canada Market Scan</a></li><li><span>02</span><div><h3>Market structure</h3><p>How is the market organized across segments?</p></div><a href=\"#\">Canada Market Scan</a></li></ol>",
+      "css": ".ds-index{margin:0;padding:24px;list-style:none;background:var(--soft-black,#161719);color:var(--on-dark,#ece8df);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-index li{display:grid;grid-template-columns:56px 1fr 12em;gap:8px 24px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--rule-dark,rgba(236,232,223,.14))}.ds-index li:first-child{border-top:1px solid var(--rule-dark,rgba(236,232,223,.14))}.ds-index span{color:var(--on-dark-soft,#aeaba3);font-size:12px;font-weight:600;letter-spacing:.08em;font-variant-numeric:tabular-nums}.ds-index h3{margin:0 0 4px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:26px;font-weight:400;line-height:1.2}.ds-index p{margin:0;color:var(--on-dark-soft,#aeaba3);font-size:16px}.ds-index a{color:var(--on-dark,#ece8df);font-size:14px;font-weight:500;text-align:right;text-decoration:none}.ds-index a:hover{text-decoration:underline}.ds-index a:focus-visible{outline:2px solid var(--focus-on-dark,#8fb8e0);outline-offset:3px}"
     }
   ],
   "narrative": {
-    "northStar": "The Evidence Ledger",
-    "overview": "Tharros Canada should feel like an exceptionally clear export dossier brought to life: editorial enough to establish authority, operational enough to interrogate, and restrained enough that evidence always outranks promotion. Warm uncoated report paper, deep Canadian ink, slate annotations, muted data colors, and a single signal red create an institutional world without drifting into a government portal.\n\nThe interface earns confidence through visible provenance and disciplined structure. Rules, registers, source strips, tabular numerals, and asymmetric editorial compositions organize the experience; decorative containers do not. The density is deliberate but breathable, with publication-scale headlines balanced by exact controls and compact evidence labels.",
+    "northStar": "The Tariff Schedule",
+    "overview": "The whole site reads as one authoritative schedule, like a customs tariff: ruled entries in fixed columns, every fact set beside its source. Warm-ivory uncoated stock carries graphite ink, never pure black. Soft-black and graphite chapter bands run full bleed for the question index, the cross-border band and the footer. A serif at display optical size speaks; a grotesk with tabular numerals keeps the schedule.\n\nDensity is editorial on the ground and tabular inside the entries. Everything sits on a strict 12-column grid with wide gutters. Structure comes from horizontal rules, never from boxes. Rules are sparse: one per boundary. The one authored motion is chart registration, where the entry prints like a plate, keyline first and series second, once.",
     "keyCharacteristics": [
-      "Editorial authority paired with precise interface control.",
-      "Warm paper surfaces subdivided by hairline ledger rules.",
-      "Asymmetric, evidence-forward compositions that become linear on small screens.",
-      "Restrained Canadian red used as a signal, never as atmosphere.",
-      "Honest status, source, limitation, and methodology treatments embedded in the visual hierarchy."
+      "Ivory ground (#f4f1ea), graphite ink (#1c1d1f), full-bleed dark bands only as chapters and footer.",
+      "A strict 12-column grid; content spans columns such as 1/6 + 7/6 or 1/4 + 6/7.",
+      "Ruled entries instead of cards, with one rule per section boundary and square geometry throughout.",
+      "Red for action only. Steel and green are data channels.",
+      "Tabular numerals wherever a figure is read or compared.",
+      "One motion: the chart registers in, and it is disabled under reduced motion."
     ],
     "rules": [
-      { "name": "The Red Is a Signal Rule", "body": "Signal red marks action, status, or a meaningful editorial cue; it never becomes a large decorative field.", "section": "colors" },
-      { "name": "The Evidence Color Rule", "body": "Data blue and verified green communicate distinct evidence channels. Do not recolor data for visual variety.", "section": "colors" },
-      { "name": "The Paper, Not White Rule", "body": "Warm report paper is the environmental ground. Pure white belongs only inside exact input and control surfaces.", "section": "colors" },
-      { "name": "The Editorial-Control Pair Rule", "body": "Newsreader speaks for propositions and interpretation; Manrope speaks for actions, inputs, metadata, and factual scaffolding.", "section": "typography" },
-      { "name": "The Labels Are Evidence Rule", "body": "Uppercase labels identify a datum or state. They do not serve as ornamental eyebrow text.", "section": "typography" },
-      { "name": "The Evidence Before Ornament Rule", "body": "The layout allocates the most space to inspectable output, provenance, and next-step clarity—not to decorative brand staging.", "section": "layout" },
-      { "name": "The Mobile Reading Order Rule", "body": "On narrow screens, preserve proposition, action, then evidence. Do not merely squeeze the desktop split.", "section": "layout" },
-      { "name": "The Flat-by-Default Rule", "body": "Content remains on the report plane. Shadows identify active tools or temporary overlays, never generic cards.", "section": "elevation" },
-      { "name": "The Square Instrument Rule", "body": "Interactive geometry stays square. Do not import pill buttons, rounded cards, floating bubbles, or soft dashboard tiles.", "section": "shapes" }
+      {
+        "name": "The Red Means Act Rule",
+        "body": "Red marks something the visitor can do. It never tints a surface, never colours a datum, and never decorates a heading.",
+        "section": "colors"
+      },
+      {
+        "name": "The Data Channel Rule",
+        "body": "Steel carries series and magnitudes, and green carries positive change and confirmation. Neither is used for action or ornament.",
+        "section": "colors"
+      },
+      {
+        "name": "The Band Rule",
+        "body": "Dark tones appear only as full-bleed chapter bands and the footer, never as boxes on the ivory ground. Inside a band, every colour switches to its on-dark partner, including focus.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Kicker Rule",
+        "body": "Nothing sits above a heading as a label. Uppercase appears only as a field label for data, placed directly above the value it names.",
+        "section": "typography"
+      },
+      {
+        "name": "The Meaningful Numeral Rule",
+        "body": "Numbering (01–05, 1–3, the success-step counter) is used only where the sequence carries meaning: the five-question index, process and request steps, and HS headings. Numerals are always tabular and slate.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every figure a reader compares (chart labels, shares, prices, change readouts, progress) uses tabular numerals.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Rule Per Boundary Rule",
+        "body": "Each boundary gets exactly one rule. A strong 1px ink (or 2px on entry heads and sidebars) opens a list or entry, and hairline rules divide its rows. Never double a rule with padding boxes or borders on both sides.",
+        "section": "layout"
+      },
+      {
+        "name": "The Printed Plate Rule",
+        "body": "Surfaces never lift or float. Hover changes colour, underline or arrow position, never elevation.",
+        "section": "elevation"
+      }
     ],
     "dos": [
-      "Do make sources, status, periods, limitations, and retrieval context visible within the evidence hierarchy.",
-      "Do use hairline rules and aligned fields to organize dense information.",
-      "Do preserve the Newsreader/Manrope division between editorial interpretation and interface control.",
-      "Do treat red as a scarce action or status signal and blue/green as stable data channels.",
-      "Do compose mobile screens deliberately around reading order, generous targets, and stacked evidence fields."
+      "**Do** lay every section on the 12-column grid inside the shell, and split heading from ruled content by columns.",
+      "**Do** separate entries with one rule per boundary: ink to open, hairline rule between rows.",
+      "**Do** keep red for actions and the selected state of an action control. Use steel and green for data.",
+      "**Do** switch to the on-dark tokens, including focus-on-dark, inside bands and the footer.",
+      "**Do** set every compared figure in tabular numerals.",
+      "**Do** keep the chart registration as the only authored motion, and keep it disabled under prefers-reduced-motion."
     ],
     "donts": [
-      "Don't introduce rounded cards, pill controls, glass effects, gradients, or floating dashboard tiles.",
-      "Don't use red as a broad background, decorative wash, or substitute for hierarchy.",
-      "Don't bury provenance in a footer, tooltip, or secondary disclosure when it qualifies a visible result.",
-      "Don't fabricate testimonials, partners, live-data claims, scale signals, or government affiliation.",
-      "Don't add ornamental imagery where a working query, chart, source register, or clear written boundary provides stronger proof."
+      "**Don't** put a kicker, eyebrow or label line above any heading. Uppercase is only for field labels that name a datum.",
+      "**Don't** number anything whose order carries no meaning.",
+      "**Don't** use cards, boxed panels or dark boxes on the ivory ground. Dark tones are only full-bleed bands and the footer.",
+      "**Don't** round corners or add shadows to surfaces.",
+      "**Don't** use pure black (#000) for ink or bands.",
+      "**Don't** add a second animated moment or scroll-triggered reveals."
     ]
   }
 }

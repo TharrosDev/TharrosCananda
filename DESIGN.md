@@ -1,261 +1,257 @@
 ---
 name: Tharros Canada
-description: A precise editorial evidence ledger for Canadian market intelligence.
+description: Canadian market intelligence laid out as one authoritative tariff schedule.
 colors:
-  report-paper: "#f3f0e8"
-  report-paper-deep: "#e8e3d7"
-  report-paper-light: "#faf8f2"
-  canadian-ink: "#11233b"
-  softened-ink: "#415067"
-  annotation-slate: "#677384"
-  ledger-line: "#b7b6b0"
-  ledger-line-dark: "#7e8791"
-  signal-red: "#ad303a"
-  signal-red-dark: "#84252d"
-  data-blue: "#2f6690"
-  verified-green: "#4f735e"
-  focus-blue: "#176fab"
+  ivory: "#f4f1ea"
+  ivory-deep: "#ebe6db"
+  ivory-light: "#faf8f3"
+  ink: "#1c1d1f"
+  ink-soft: "#45484d"
+  slate: "#5d6166"
+  rule: "rgba(28, 29, 31, 0.13)"
+  rule-strong: "rgba(28, 29, 31, 0.32)"
+  soft-black: "#161719"
+  graphite: "#232528"
+  on-dark: "#ece8df"
+  on-dark-soft: "#aeaba3"
+  rule-dark: "rgba(236, 232, 223, 0.14)"
+  red: "#9e3a35"
+  red-dark: "#7f2c28"
+  steel: "#46677f"
+  steel-on-dark: "#8fb0c7"
+  green: "#4f6e58"
+  green-on-dark: "#9bbfa4"
+  error: "#8a312d"
+  focus: "#2f6fae"
+  focus-on-dark: "#8fb8e0"
 typography:
   display:
-    fontFamily: "Newsreader Variable, Georgia, serif"
-    fontSize: "clamp(56px, 5.8vw, 94px)"
-    fontWeight: 470
-    lineHeight: 0.96
-    letterSpacing: "-0.035em"
+    fontFamily: "Source Serif 4 Variable, Source Serif Pro, Georgia, serif"
+    fontSize: "clamp(52px, 6.6vw, 96px)"
+    fontWeight: 380
+    lineHeight: 0.98
+    letterSpacing: "-0.028em"
   headline:
-    fontFamily: "Newsreader Variable, Georgia, serif"
-    fontSize: "clamp(42px, 4.2vw, 70px)"
-    fontWeight: 470
-    lineHeight: 1.02
-    letterSpacing: "-0.025em"
-  title:
-    fontFamily: "Newsreader Variable, Georgia, serif"
-    fontSize: "29px"
-    fontWeight: 590
-    lineHeight: 1.2
-  body:
-    fontFamily: "Manrope Variable, Segoe UI, sans-serif"
-    fontSize: "16px"
+    fontFamily: "Source Serif 4 Variable, Source Serif Pro, Georgia, serif"
+    fontSize: "clamp(36px, 3.6vw, 56px)"
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.05
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Source Serif 4 Variable, Source Serif Pro, Georgia, serif"
+    fontSize: "28px"
+    fontWeight: 500
+    lineHeight: 1.15
+  entry-figure:
+    fontFamily: "Source Serif 4 Variable, Source Serif Pro, Georgia, serif"
+    fontSize: "30px"
+    fontWeight: 400
+    lineHeight: 1.1
+    letterSpacing: "-0.01em"
+    fontFeature: "tnum, lnum"
+  body:
+    fontFamily: "Schibsted Grotesk Variable, Helvetica Neue, Arial, sans-serif"
+    fontSize: "17px"
+    fontWeight: 400
+    lineHeight: 1.6
   label:
-    fontFamily: "Manrope Variable, Segoe UI, sans-serif"
-    fontSize: "10px"
-    fontWeight: 800
-    lineHeight: 1.35
-    letterSpacing: "0.14em"
+    fontFamily: "Schibsted Grotesk Variable, Helvetica Neue, Arial, sans-serif"
+    fontSize: "12px"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "0.08em"
 rounded:
   square: "0px"
 spacing:
   hairline: "1px"
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  control: "14px"
-  lg: "18px"
-  xl: "24px"
-  2xl: "32px"
-  section: "112px"
+  gutter: "clamp(20px, 4.2vw, 64px)"
+  col-gap: "clamp(16px, 2vw, 32px)"
+  section: "clamp(88px, 10vw, 152px)"
 components:
   button-primary:
-    backgroundColor: "{colors.signal-red}"
-    textColor: "{colors.report-paper-light}"
+    backgroundColor: "{colors.red}"
+    textColor: "{colors.ivory-light}"
     typography: "{typography.body}"
     rounded: "{rounded.square}"
-    padding: "12px 18px"
-    height: "48px"
+    padding: "12px 22px"
+    height: "50px"
   button-primary-hover:
-    backgroundColor: "{colors.signal-red-dark}"
-    textColor: "{colors.report-paper-light}"
-    rounded: "{rounded.square}"
+    backgroundColor: "{colors.red-dark}"
+    textColor: "{colors.ivory-light}"
   button-secondary:
     backgroundColor: "transparent"
-    textColor: "{colors.canadian-ink}"
+    textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.square}"
-    padding: "12px 18px"
-    height: "48px"
+    padding: "12px 22px"
+    height: "50px"
+  button-secondary-hover:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.ivory-light}"
+  nav-action:
+    backgroundColor: "{colors.red}"
+    textColor: "{colors.ivory-light}"
+    rounded: "{rounded.square}"
+    padding: "0 18px"
+    height: "44px"
   field:
     backgroundColor: "#ffffff"
-    textColor: "{colors.canadian-ink}"
+    textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.square}"
     padding: "0 14px"
-    height: "50px"
-  ledger-surface:
-    backgroundColor: "{colors.report-paper-light}"
-    textColor: "{colors.canadian-ink}"
-    rounded: "{rounded.square}"
-    padding: "18px"
-  nav-action:
-    backgroundColor: "{colors.signal-red}"
-    textColor: "{colors.report-paper-light}"
-    typography: "{typography.label}"
-    rounded: "{rounded.square}"
-    padding: "11px 16px"
+    height: "52px"
+  band:
+    backgroundColor: "{colors.graphite}"
+    textColor: "{colors.on-dark}"
+  band-dark:
+    backgroundColor: "{colors.soft-black}"
+    textColor: "{colors.on-dark}"
 ---
 
 # Design System: Tharros Canada
 
 ## Overview
 
-**Creative North Star: "The Evidence Ledger"**
+**Creative North Star: "The Tariff Schedule"**
 
-Tharros Canada should feel like an exceptionally clear export dossier brought to life: editorial enough to establish authority, operational enough to interrogate, and restrained enough that evidence always outranks promotion. Warm uncoated report paper, deep Canadian ink, slate annotations, muted data colors, and a single signal red create an institutional world without drifting into a government portal.
+The whole site reads as one authoritative schedule, like a customs tariff: ruled entries in fixed columns, every fact set beside its source. Warm-ivory uncoated stock carries graphite ink, never pure black. Soft-black and graphite chapter bands run full bleed for the question index, the cross-border band and the footer. A serif at display optical size speaks; a grotesk with tabular numerals keeps the schedule.
 
-The interface earns confidence through visible provenance and disciplined structure. Rules, registers, source strips, tabular numerals, and asymmetric editorial compositions organize the experience; decorative containers do not. The density is deliberate but breathable, with publication-scale headlines balanced by exact controls and compact evidence labels.
+Density is editorial on the ground and tabular inside the entries. Everything sits on a strict 12-column grid with wide gutters. Structure comes from horizontal rules, never from boxes. Rules are sparse: one per boundary. The one authored motion is chart registration, where the entry prints like a plate, keyline first and series second, once.
 
 **Key Characteristics:**
-
-- Editorial authority paired with precise interface control.
-- Warm paper surfaces subdivided by hairline ledger rules.
-- Asymmetric, evidence-forward compositions that become linear on small screens.
-- Restrained Canadian red used as a signal, never as atmosphere.
-- Honest status, source, limitation, and methodology treatments embedded in the visual hierarchy.
+- Ivory ground (#f4f1ea), graphite ink (#1c1d1f), full-bleed dark bands only as chapters and footer.
+- A strict 12-column grid; content spans columns such as 1/6 + 7/6 or 1/4 + 6/7.
+- Ruled entries instead of cards, with one rule per section boundary and square geometry throughout.
+- Red for action only. Steel and green are data channels.
+- Tabular numerals wherever a figure is read or compared.
+- One motion: the chart registers in, and it is disabled under reduced motion.
 
 ## Colors
 
-The palette combines warm report stock with deep navy ink, quiet slate annotation, and muted signal colors that read as evidence rather than decoration.
+A warm paper-and-ink palette with one action colour and two data channels. Contrast ratios below were computed from the token values. The only contrast claim in the source is the `:root` comment on slate (≥5:1 on every ivory tone), and it holds: 5.53 on ivory, 5.01 on ivory-deep, 5.88 on ivory-light.
 
 ### Primary
-
-- **Signal Canadian Red:** Reserved for primary actions, active rules, numbered sequence markers, demonstration status, and exceptional emphasis.
-- **Deep Signal Red:** The hover, required, and critical companion to the main signal color.
+- **Muted Canadian Red** (red): action only. Primary buttons, the header's Request research action, the selected-sample underline in the Explorer picker, and the text caret. Ivory-light text on it measures 6.36:1.
+- **Deep Oxide** (red-dark): the hover state of every red action (8.63:1 with ivory-light).
 
 ### Secondary
+- **Survey Steel** (steel): the trend line, the 10% area wash under it, chart points and province bars (5.31:1 on ivory). On dark bands use steel-on-dark.
 
-- **Measured Data Blue:** Used for quantitative series and chart marks where neutral evidence needs a distinct channel.
-- **Verified Green:** Used for positive trend values, selected checks, route fit, and verified or ready states.
+### Tertiary
+- **Ledger Green** (green): positive change readouts, list check marks and the success state (5.03:1 on ivory). On dark bands use green-on-dark (7.60:1 on graphite).
 
 ### Neutral
-
-- **Warm Report Paper:** The default page ground; it keeps long research-oriented surfaces calm and tactile.
-- **Deep Report Paper:** A tonal subdivision for tracks, selected controls, and secondary evidence regions.
-- **Light Report Paper:** The lifted working surface for explorers, forms, and high-density evidence modules.
-- **Deep Canadian Ink:** The primary text, dark band, and strongest structural-rule color.
-- **Softened Ink:** Supporting copy that remains readable without competing with titles or findings.
-- **Annotation Slate:** Metadata, helper text, axis labels, and provenance annotations.
-- **Ledger Line / Dark Ledger Line:** The structural rule vocabulary. Use the darker line to bound a system; use the lighter line to divide its contents.
-- **Accessible Focus Blue:** The dedicated keyboard-focus signal; it is not a decorative accent.
+- **Warm Ivory** (ivory): the page ground and header background.
+- **Ivory Deep** (ivory-deep): chart tracks, progress tracks and the scrollbar track.
+- **Ivory Light** (ivory-light): text on red and ink fills, the request-form sheet and the mobile menu sheet.
+- **Graphite Ink** (ink): body text (14.95:1 on ivory), strong 1–2px section rules, secondary-button stroke.
+- **Soft Ink** (ink-soft): descriptions and secondary copy (8.14:1).
+- **Annotation Slate** (slate): field labels, captions, step numerals.
+- **Rule / Rule Strong** (rule, rule-strong): hairline dividers inside entries; the stronger value for field strokes, chart axes and ticks.
+- **Soft Black / Graphite** (soft-black, graphite): full-bleed bands and the footer. On-dark text measures 14.67:1 on soft-black, and on-dark-soft measures 7.82:1.
+- **Focus Blue** (focus, focus-on-dark): the 2px focus outline (4.65:1 on ivory). Bands and the footer swap it to focus-on-dark (8.63:1).
+- **Error Oxide** (error): invalid-field stroke and error text.
 
 ### Named Rules
+**The Red Means Act Rule.** Red marks something the visitor can do. It never tints a surface, never colours a datum, and never decorates a heading.
 
-**The Red Is a Signal Rule.** Signal red marks action, status, or a meaningful editorial cue; it never becomes a large decorative field.
+**The Data Channel Rule.** Steel carries series and magnitudes, and green carries positive change and confirmation. Neither is used for action or ornament.
 
-**The Evidence Color Rule.** Data blue and verified green communicate distinct evidence channels. Do not recolor data for visual variety.
-
-**The Paper, Not White Rule.** Warm report paper is the environmental ground. Pure white belongs only inside exact input and control surfaces.
+**The Band Rule.** Dark tones appear only as full-bleed chapter bands and the footer, never as boxes on the ivory ground. Inside a band, every colour switches to its on-dark partner, including focus.
 
 ## Typography
 
-**Display Font:** Newsreader Variable (with Georgia and serif fallbacks)
-**Body Font:** Manrope Variable (with Segoe UI and sans-serif fallbacks)
-**Label Font:** Manrope Variable
+**Display Font:** Source Serif 4 Variable, optical sizing on (fallback Source Serif Pro, Georgia)
+**Body Font:** Schibsted Grotesk Variable (fallback Helvetica Neue, Arial)
 
-**Character:** Newsreader supplies the measured authority of a financial publication or research brief; Manrope supplies unambiguous controls, dense metadata, and international legibility. Their contrast is the identity, so neither should be replaced by a generic all-purpose face.
+**Character:** The serif speaks for the headings, entry names and interpretive sentences. The grotesk runs the schedule: body, controls, labels and tabular readouts.
 
 ### Hierarchy
-
-- **Display:** Low-contrast editorial headlines with tight tracking and nearly solid leading. Use only for page propositions and major hero statements.
-- **Headline:** Large section arguments and decision prompts; keep the measure controlled so the type reads as an editorial statement.
-- **Title:** Service names, evidence-module headings, and compact editorial subheads.
-- **Body:** Default reading and control copy. Keep long-form text at or below the established 70-character measure.
-- **Label:** Compact uppercase metadata with wide tracking for provenance, sequence numbers, status, and field context. Never use it for sentences.
+- **Display** (380, clamp(52px, 6.6vw, 96px), 0.98, max 12ch): home hero h1. Inner-page h1 uses clamp(46px, 5.6vw, 84px) at weight 380.
+- **Headline** (400, clamp(36px, 3.6vw, 56px), 1.05): section and band h2s. Secondary section h2s step down to clamp(34px, 3.2vw, 48px).
+- **Title** (500, 28px, 1.15): service names, process steps (32px) and policy headings (30px). Index entries use 26px, and sub-headings 20–24px.
+- **Entry Figure** (400, 30px, tabular lining numerals): the HS heading readout in the Explorer.
+- **Body** (400, 17px, 1.6; 16px under 640px): measures held at 32–44em. Hero description clamp(18px, 1.35vw, 21px).
+- **Label** (600, 12px, 0.08em, uppercase, slate): field labels that name a datum (HS heading, source status, provenance terms, footer column heads).
 
 ### Named Rules
+**The No Kicker Rule.** Nothing sits above a heading as a label. Uppercase appears only as a field label for data, placed directly above the value it names.
 
-**The Editorial-Control Pair Rule.** Newsreader speaks for propositions and interpretation; Manrope speaks for actions, inputs, metadata, and factual scaffolding.
+**The Meaningful Numeral Rule.** Numbering (01–05, 1–3, the success-step counter) is used only where the sequence carries meaning: the five-question index, process and request steps, and HS headings. Numerals are always tabular and slate.
 
-**The Labels Are Evidence Rule.** Uppercase labels identify a datum or state. They do not serve as ornamental eyebrow text.
+**The Tabular Rule.** Every figure a reader compares (chart labels, shares, prices, change readouts, progress) uses tabular numerals.
 
 ## Layout
 
-The primary shell is a centered fluid frame capped at 1480px with 32px desktop gutters. Major sections use generous 112px vertical intervals, while evidence modules tighten to 18–32px internal spacing. Desktop compositions favor intentional asymmetry: proposition beside working interface, analysis beside source register, and research flow beside boundary notes.
+Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. The home hero runs six and six: proposition on the left, Explorer entry on the right. Vertical rhythm is set by the section token, clamp(88px, 10vw, 152px).
 
-The system changes at three implemented seams. At 1220px, the shell narrows and large gaps compress. At 980px, navigation becomes a menu and major multi-column compositions stack. At 700px, gutters reduce to 14px, action groups become vertical, evidence grids collapse, and the proposition remains ahead of the Explorer in document order. Dense data stays structured on mobile through reordered subdivisions, not horizontal overflow.
+Under 1180px the hero shifts to five and seven. Under 980px every split collapses to a single full-width column and the navigation becomes a toggled sheet. Under 640px, multi-column entries (result meta, provenance, service terms, choice grids) stack, and actions stretch to full width in forms.
 
-Hairline rules are part of the grid. A dark top or outer rule establishes the boundary of a ledger; lighter rules subdivide rows, columns, and source fields. Cards should not be introduced where a ruled list or divided field can express the same hierarchy.
-
-**The Evidence Before Ornament Rule.** The layout allocates the most space to inspectable output, provenance, and next-step clarity—not to decorative brand staging.
-
-**The Mobile Reading Order Rule.** On narrow screens, preserve proposition, action, then evidence. Do not merely squeeze the desktop split.
+**The One Rule Per Boundary Rule.** Each boundary gets exactly one rule. A strong 1px ink (or 2px on entry heads and sidebars) opens a list or entry, and hairline rules divide its rows. Never double a rule with padding boxes or borders on both sides.
 
 ## Elevation & Depth
 
-The system is flat by default and uses tonal layering plus rules for most depth. Soft navy shadows appear only beneath substantial working surfaces—the hero Explorer, full Explorer, request form, and opened mobile navigation—where the surface must read as an active instrument above report paper. Hover depth is expressed with a one-pixel lift on the compact navigation action; ordinary content rows remain flat.
+The system is flat. Depth comes from tone, not shadow: ivory ground, the ivory-light sheet for the request form, and full-bleed dark bands for chapters. The only box-shadow in the build is the mobile menu sheet's soft drop. That shadow is an existing value, not a system rule (see drift).
 
-### Shadow Vocabulary
-
-- **Explorer Lift** (`0 18px 44px rgba(17, 35, 59, .08)`): The compact working Explorer in the first viewport.
-- **Workspace Lift** (`0 22px 54px rgba(17, 35, 59, .08)`): Full Explorer pages and other primary workspaces.
-- **Form Lift** (`0 22px 54px rgba(17, 35, 59, .07)`): The progressive request form.
-- **Menu Lift** (`0 18px 30px rgba(17, 35, 59, .12)`): Temporary mobile navigation only.
-
-### Named Rules
-
-**The Flat-by-Default Rule.** Content remains on the report plane. Shadows identify active tools or temporary overlays, never generic cards.
+**The Printed Plate Rule.** Surfaces never lift or float. Hover changes colour, underline or arrow position, never elevation.
 
 ## Shapes
 
-The form language is rectilinear and exact. Controls, buttons, fields, chips, panels, status stamps, chart tracks, and selection marks use square corners. Structure comes from one-pixel rules, full-width bands, and hard subdivisions rather than rounded containers. The recurring silhouettes are ledger rows, source strips, split report fields, and dark institutional bands.
-
-**The Square Instrument Rule.** Interactive geometry stays square. Do not import pill buttons, rounded cards, floating bubbles, or soft dashboard tiles.
+The geometry is square: 0 radius on buttons, fields, checks, tracks and sheets. The single exception is the radio mark, a native circle, because a round mark is how a radio reads. The wordmark separator is a 1px red slash skewed −18deg, part of the identity mark only. Arrows are inline 18px SVGs that move 4px right on hover.
 
 ## Components
 
 ### Buttons
-
-- **Shape:** Square, minimum 48px high, with compact horizontal padding and a clear one-pixel boundary.
-- **Primary:** Signal red with light report text; bold Manrope makes the action direct without oversized display treatment.
-- **Hover / Focus:** Hover deepens to dark signal red. Arrow icons travel 4px to confirm direction. Keyboard focus uses the dedicated 3px blue outline with 3px offset.
-- **Secondary:** Transparent with Canadian ink border and text; hover inverts to a solid ink field.
-- **Text Link:** A minimum-height inline action with a single ink underline and the same directional arrow motion.
-
-### Chips
-
-- **Style:** Example-query actions and compact demonstration stamps are square, transparent, and rule-bound. They are annotations or shortcuts, not decorative pills.
-- **State:** Selected research choices shift to deep report paper with an ink boundary; verified checks use green.
+Firm and typographic, never pill-shaped.
+- **Shape:** square (0px), minimum height 50px, 16px/600 text, 14px gap to the trailing arrow.
+- **Primary:** red fill, ivory-light text, 12px 22px padding. Hover moves to red-dark over 160ms on the ease-out curve.
+- **Secondary:** 1px ink stroke, transparent fill. Hover inverts to an ink fill with ivory-light text.
+- **Text link:** no padding, 1px ink bottom rule, arrow nudges on hover.
+- **Focus:** 2px focus-blue outline, 3px offset.
 
 ### Cards / Containers
-
-- **Corner Style:** Square throughout.
-- **Background:** Use light report paper for working surfaces and standard report paper for the environment.
-- **Shadow Strategy:** Only primary tools lift; evidence rows and service entries remain rule-separated and flat.
-- **Border:** Dark outer rules establish a ledger; light internal rules divide content.
-- **Internal Padding:** Compact data cells use 18px; standard evidence groups use 24–32px.
+There are no cards. Content is ruled entries on the ivory ground: lists open with an ink rule and divide rows with hairlines. The request form is the only tinted sheet (ivory-light, 2px ink top rule, no border or shadow).
 
 ### Inputs / Fields
-
-- **Style:** White rectangular controls with dark ledger-line borders, 50px standard height, and concise internal padding.
-- **Focus:** The field border shifts to accessible focus blue while the global 3px focus outline remains visible.
-- **Error / Disabled:** Error copy uses a deep red and appears next to the affected field; disabled submission preserves shape and lowers opacity without obscuring the label.
+- **Style:** white fill, 1px rule-strong stroke, square, 52px tall (50px inline in the Explorer ask), 14px horizontal padding. Labels are 15px/600 sans, and the "Required" marker is an uppercase 12px em.
+- **Hover / Focus:** stroke darkens to ink-soft, then to focus blue on focus.
+- **Error:** error-oxide stroke plus a 14px/600 message. The form error block has a 2px error top rule.
+- **Choices:** ruled rows at least 60px tall with a square 22px check that fills ink when selected. Radios use a ring that thickens to 6px ink.
 
 ### Navigation
+84px bar on ivory with a hairline bottom rule. Links are 14px/500 ink-soft. On hover or on the current page they turn ink, and a 1px ink underline scales in from the left (240ms). The red Request research action sits last. Under 980px a 44px square toggle opens a full-width ivory-light sheet of 17px ruled rows.
 
-The wordmark uses Newsreader with generous tracking and a red slash. Desktop links are quiet 13px Manrope labels whose active or hover state draws a fine red rule beneath the text. The request action is the only filled navigation item. Below 980px, a 44px square menu control opens a ruled, light-paper navigation panel with full-width link rows.
+### Market Explorer (signature)
+The schedule entry. It opens with a 2px ink top rule and closes with a 1px ink bottom rule. From top to bottom:
+- a title line with the sample-data stamp;
+- a sample picker whose selected tab gains a 2px red underline;
+- a result meta row of labelled fields, including the HS heading as the entry figure;
+- the trend chart with a labelled graticule, beside province bars (5px steel on ivory-deep tracks);
+- a source strip, a serif interpretation line (22px), routes, resources and a provenance record.
 
-### Market Explorer
+**Chart registration (the one authored motion).** The graticule fades in over 500ms. The line then draws via stroke-dashoffset (1400ms, 350ms delay), and the area and points fade in last (700ms, 1000ms delay). Province bars scale in from the left (1100ms, 500ms delay). Everything runs once on the ease-out curve cubic-bezier(0.16, 1, 0.3, 1). Under prefers-reduced-motion, all animation and transition durations collapse to 0.01ms with no delay.
 
-The Market Explorer is the signature instrument: a light report surface divided into topline, query controls, metadata, chart and province fields, interpretation, route/resource registers, and a source strip. It must always expose demonstration status and provenance. Loading dims and slightly desaturates the existing result rather than replacing the whole surface with a theatrical skeleton.
+### Question Index
+A soft-black band. Heading in columns 1–4, and a ruled list in 6–12 of numbered entries (tabular slate numeral, serif title, sans description, right-aligned service link).
 
-### Research Choice
-
-Research objectives and route selections use full-width square rows. The unselected state is white and dark-line bound; the selected state shifts to deep report paper, strengthens the boundary, and reveals a verified-green check. The whole row carries the focus outline so keyboard state remains unambiguous.
+### Footer
+A soft-black band with the light wordmark, a 26px serif line, three link columns under uppercase field-label heads, and a legal line under a rule-dark hairline.
 
 ## Do's and Don'ts
 
 ### Do:
-
-- **Do** make sources, status, periods, limitations, and retrieval context visible within the evidence hierarchy.
-- **Do** use hairline rules and aligned fields to organize dense information.
-- **Do** preserve the Newsreader/Manrope division between editorial interpretation and interface control.
-- **Do** treat red as a scarce action or status signal and blue/green as stable data channels.
-- **Do** compose mobile screens deliberately around reading order, generous targets, and stacked evidence fields.
+- **Do** lay every section on the 12-column grid inside the shell, and split heading from ruled content by columns.
+- **Do** separate entries with one rule per boundary: ink to open, hairline rule between rows.
+- **Do** keep red for actions and the selected state of an action control. Use steel and green for data.
+- **Do** switch to the on-dark tokens, including focus-on-dark, inside bands and the footer.
+- **Do** set every compared figure in tabular numerals.
+- **Do** keep the chart registration as the only authored motion, and keep it disabled under prefers-reduced-motion.
 
 ### Don't:
-
-- **Don't** introduce rounded cards, pill controls, glass effects, gradients, or floating dashboard tiles.
-- **Don't** use red as a broad background, decorative wash, or substitute for hierarchy.
-- **Don't** bury provenance in a footer, tooltip, or secondary disclosure when it qualifies a visible result.
-- **Don't** fabricate testimonials, partners, live-data claims, scale signals, or government affiliation.
-- **Don't** add ornamental imagery where a working query, chart, source register, or clear written boundary provides stronger proof.
+- **Don't** put a kicker, eyebrow or label line above any heading. Uppercase is only for field labels that name a datum.
+- **Don't** number anything whose order carries no meaning.
+- **Don't** use cards, boxed panels or dark boxes on the ivory ground. Dark tones are only full-bleed bands and the footer.
+- **Don't** round corners or add shadows to surfaces.
+- **Don't** use pure black (#000) for ink or bands.
+- **Don't** add a second animated moment or scroll-triggered reveals.

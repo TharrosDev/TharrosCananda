@@ -30,8 +30,7 @@ export function ReadinessChecker() {
         </p>
       </div>
       <div className="readiness-output" aria-live="polite">
-        <div><span>Route questions</span><strong>{channel}</strong></div>
-        <h2>Questions to investigate before launch</h2>
+        <h2>Questions to investigate: {channel}</h2>
         <ul>{questions[channel].map((item) => <li key={item}><CheckIcon />{item}</li>)}</ul>
         <p>This is informational signposting, not legal, tax, customs or regulatory advice. Verify requirements with official sources and qualified professionals.</p>
       </div>
