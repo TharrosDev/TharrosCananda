@@ -23,7 +23,7 @@ function changeFromYearAgo(data: TradeExplorerResponse | null) {
   if (!data || data.points.length < 13) return null;
   const latest = data.points.at(-1)?.valueCad;
   const previous = data.points.at(-13)?.valueCad;
-  if (!latest || !previous) return null;
+  if (latest === undefined || previous === undefined) return null;
   return ((latest - previous) / previous) * 100;
 }
 
