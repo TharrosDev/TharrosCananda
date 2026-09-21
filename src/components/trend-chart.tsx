@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { TrendPoint } from "@/types/market";
+type TrendPoint = { year: string; value: number };
 
 type Props = {
   data: TrendPoint[];
