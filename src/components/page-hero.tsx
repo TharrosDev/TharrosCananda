@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 export type HeroIndexItem = { label: string; href?: string; note?: string };
-export type PageHeroVariant = "home" | "standard" | "task";
+export type PageHeroVariant = "home" | "standard" | "task" | "document";
 
 /** Shared dark hero with deliberately different density for home, editorial and task pages. */
 export function PageHero({
@@ -36,8 +36,10 @@ export function PageHero({
     </ol>
   ) : null;
 
+  const surfaceClass = variant === "document" ? "" : "band band-dark";
+
   return (
-    <section className={`page-hero page-hero-${variant} band band-dark`}>
+    <section className={`page-hero page-hero-${variant} ${surfaceClass}`.trim()}>
       <div className="page-hero-inner">
         <div className="page-hero-copy">
           <h1>{title}</h1>
