@@ -1,26 +1,28 @@
 ---
-version: 1
+version: 2
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
-related_targets: ["src/app/market-explorer/page.tsx","src/app/research-services/page.tsx","src/app/request-research/page.tsx","src/app/about/page.tsx","src/app/how-it-works/page.tsx","src/app/methodology/page.tsx","src/app/ecommerce-readiness/page.tsx"]
+related_targets: ["src/app/market-explorer/page.tsx","src/app/research/page.tsx","src/app/research-services/page.tsx","src/app/research-areas/page.tsx","src/app/request-research/page.tsx","src/app/about/page.tsx","src/app/how-it-works/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx"]
 ---
 
 ## Scope
 
-Whole site (home, market-explorer, research-services, how-it-works, methodology, about, request-research, ecommerce-readiness, header/footer). Mode: Persuade on home and services; Operate inside the Explorer and request form.
+Whole public site. Persuade on home/services, inform on document/research pages, and operate inside Market Data and research intake.
 
-Audience: owners and commercial leads at European SMEs evaluating Canada. Action: request scoped research. Proof: the sample Explorer with visible provenance, explicit offers, written-scope process. Constraints: no invented claims; synthetic data labelled; WCAG 2.2 AA; ivory-led with graphite bands (user choice); new faces allowed (user choice).
+Audience: businesses and organizations with Canada–Europe commercial questions. Primary action: commission scoped research. Proof: official data, transparent methods, clearly defined services, and verified research as it is published.
+
+Constraints: no invented evidence or implied institutional affiliation; WCAG 2.2 AA target; ivory/graphite/red system; official publisher names are attribution, never endorsements.
 
 ## Direction contract
 
-THESIS: The whole site reads as one authoritative schedule, like a customs tariff: ruled entries in fixed columns, every fact beside its source, numbers only where the sequence carries meaning (the five-question index, process and request steps, HS headings). It refuses the consultancy default of skyline hero plus three service cards.
+THESIS: Tharros is an evidence-led commercial research house. The interface uses a strict ledger grammar—rules, registers, publication metadata and source annotations—without pretending the business is larger or more established than verified evidence supports.
 
-OWN-WORLD: Warm-ivory uncoated stock (#f4f1ea) carries graphite ink (#1c1d1f, never pure black), with soft-black/charcoal full-bleed chapter bands (#17181a / #26282b) for the hero index, services and footer. Muted Canadian red (#9e3a35) marks action only. Steel-blue (#46677f) and green (#56765f) are data channels. Source Serif 4 at display optical size speaks; Schibsted Grotesk with tabular numerals does the schedule. Every section is laid on a strict 12-column grid; rules are sparse, one per boundary, column gutters wide, no cards, square geometry.
+OWN-WORLD: Warm ivory, graphite ink, dark chapter bands, muted action red, steel quantitative series, Source Serif 4 and Schibsted Grotesk. The visual material comes from data/research artifacts, not stock photos or generic dashboard cards.
 
-STORY: The visitor learns what Tharros researches (Canada–Europe commercial, economic, industrial, technological and strategic developments), scans the four research areas, sees example commissions and the standard products, notes the independent research, and commissions research in writing.
+STORY: Understand the proposition → start from a decision/service → inspect expertise and live evidence → review method/research archive → commission a scoped answer.
 
-FIRST VIEWPORT: Ivory. The proposition "Commercial research and intelligence connecting Canada and Europe." spans eleven columns at ~96px; the description and the red Commission research action plus a quiet Research areas link sit offset in columns 7–11 beneath it. The soft-black band below indexes the four research areas as 01–04. No Explorer on the homepage (user decision); no kicker above the headline.
+FIRST VIEWPORT: Dark brand hero on home. Compact dark hero on task pages. Light editorial document headers on archive, expertise, methodology, about, process and policy routes. Homepage includes a live Statistics Canada evidence block.
 
-FORM: The Tariff Schedule, candidate 5 of 7 on my ordered list; seed key 49e0954e. Raises: strict 12-column grid (design annual); charts print keyline first then series, once (woodblock registration); labelled graticule and tabular readouts (oscilloscope); samples addressable by URL (HyperCard).
+FORM: Primary navigation is Services · Expertise · Research · Market Data · About. The research archive stays empty until genuine publications exist. Market Data uses Statistics Canada WDS and Government of Canada CKAN; failed source calls show an unavailable state rather than synthetic data.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+FINISH: unreviewed or undocumented work is unfinished. A production pass ends with lint, typecheck, tests and build passing and agent-facing documentation aligned to the shipped architecture.
