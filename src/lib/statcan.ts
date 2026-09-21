@@ -155,7 +155,11 @@ export async function getCetaTradeSeries(input: {
   const metadata = requireSuccess(metadataResponse[0], "metadata");
   const dimensions = metadata.dimension ?? metadata.dimensions ?? [];
 
-  const tradeDimension = findDimension(dimensions, ["trade", "imports exports"]);
+  const tradeDimension =
+    dimensions.find((dimension) => {
+      const name = clean(dimension.dimensionNameEn);
+      return (name === "trade" || name.includes("imports") || name.includes("exports")) && !name.includes("agreement");
+    }) ?? null;
   const agreementDimension = findDimension(dimensions, ["free trade agreement", "trade agreement"]);
   const commodityDimension = findDimension(dimensions, [
     "north american product classification",
@@ -212,7 +216,7 @@ export async function getCetaTradeSeries(input: {
   }
 
   const points = (series.vectorDataPoint ?? [])
-    .filter((point) => point.value !== null && point.statusCode !== 9)
+    .filter((point) => point.value !== null && ![1, 8, 9, 10].includes(point.statusCode))
     .map((point) => {
       const rawValue = Number(point.value);
       return {
