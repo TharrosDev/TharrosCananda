@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { TradeSignalPreview } from "@/components/trade-signal-preview";
+import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
 
@@ -29,6 +30,9 @@ const clientQuestions = [
 ] as const;
 
 export default function HomePage() {
+  const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
+  const researchToShow = featuredResearch.length ? featuredResearch : publications.slice(0, 3);
+
   return (
     <>
       <PageHero
@@ -106,12 +110,25 @@ export default function HomePage() {
 
       <section className="section archive-home">
         <div>
-          <h2>Research archive.</h2>
-          <p>The archive is ready for real papers, briefs and data notes as they are published. It remains deliberately empty until that work exists.</p>
+          <h2>{researchToShow.length ? "Selected research." : "Research archive."}</h2>
+          {researchToShow.length ? (
+            <p>Recent verified work from the Tharros Canada research archive.</p>
+          ) : (
+            <p>The archive is ready for real papers, briefs and data notes as they are published. It remains deliberately empty until that work exists.</p>
+          )}
         </div>
-        <div>
-          <Link className="text-link" href="/research">Open research archive <ArrowIcon /></Link>
-          <Link className="text-link" href="/methodology">Sources & methodology <ArrowIcon /></Link>
+        <div className={researchToShow.length ? "home-research-list" : undefined}>
+          {researchToShow.length ? researchToShow.map((publication) => (
+            <Link key={publication.slug} href={`/research/${publication.slug}`}>
+              <strong>{publication.title}</strong>
+              <span>{publication.type} · {new Date(publication.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "short", timeZone: "UTC" })}</span>
+            </Link>
+          )) : (
+            <>
+              <Link className="text-link" href="/research">Open research archive <ArrowIcon /></Link>
+              <Link className="text-link" href="/methodology">Sources & methodology <ArrowIcon /></Link>
+            </>
+          )}
         </div>
       </section>
 
