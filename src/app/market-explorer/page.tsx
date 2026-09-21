@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { MarketExplorer } from "@/components/market-explorer";
 import { PageHero } from "@/components/page-hero";
-import { demoMarkets } from "@/data/demo-markets";
 
 export const metadata: Metadata = {
   title: "Data: Market Explorer",
@@ -20,12 +19,9 @@ export default async function MarketExplorerPage({
   return (
     <>
       <PageHero
-        title="How Tharros presents data."
-        description="Two sample scenarios show a trade signal, its provincial concentration, possible routes to market and every source and limitation. The values are synthetic."
-        index={[
-          ...demoMarkets.map((market) => ({ label: market.query, href: `?sample=${market.slug}`, note: `Sample · HS ${market.hsCode}` })),
-          { label: "Sources and limitations", href: "#provenance-title" },
-        ]}
+        variant="task"
+        title="Market Explorer."
+        description="Explore sample market evidence, provincial concentration, routes and provenance. Demonstration values are synthetic."
       />
       <div className="page-shell explorer-page"><MarketExplorer key={typeof sample === "string" ? sample : "default"} initialSample={typeof sample === "string" ? sample : undefined} /></div>
       <section className="closing-cta">
