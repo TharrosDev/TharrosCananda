@@ -34,6 +34,7 @@ export function LiveMarketExplorer() {
   const [datasets, setDatasets] = useState<OfficialDatasetSearchResponse["results"]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [message, setMessage] = useState("");
+  const selectedCommodityLabel = data?.query.commodity.label ?? "";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -61,9 +62,9 @@ export function LiveMarketExplorer() {
   }, [commodity, flow]);
 
   useEffect(() => {
-    if (!data) return;
+    if (!selectedCommodityLabel) return;
     const controller = new AbortController();
-    const query = `${data.query.commodity.label} international trade`;
+    const query = `${selectedCommodityLabel} international trade`;
     fetch(`/api/open-data/search?q=${encodeURIComponent(query)}`, { signal: controller.signal })
       .then(async (response) => {
         if (!response.ok) return { results: [] };
@@ -72,7 +73,7 @@ export function LiveMarketExplorer() {
       .then((payload) => setDatasets(payload.results))
       .catch(() => setDatasets([]));
     return () => controller.abort();
-  }, [data?.query.commodity.label]);
+  }, [selectedCommodityLabel]);
 
   const chartPoints = useMemo(
     () => (data?.points ?? []).map((point) => ({ year: periodLabel(point.period), value: point.valueCad })),
