@@ -16,42 +16,34 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        title="An independent commercial research company."
-        description="Tharros Canada researches the commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, and provides commissioned research to organizations working across that relationship."
+        variant="document"
+        title="Independent commercial research between Canada and Europe."
+        description="Tharros Canada is built to assemble scattered public evidence into concise, decision-oriented commercial research without pretending that public indicators establish more than they do."
         index={[
+          { label: "Why Canada–Europe", href: "#relationship" },
           { label: "How the work is done", href: "#method" },
+          { label: "Research accountability", href: "#accountability" },
           { label: "Independence", href: "#independence" },
-          { label: "Privacy", href: "#privacy" },
-          { label: "Accessibility", href: "#accessibility" },
         ]}
       />
       <section className="section about-story">
         <div>
+          <h2 id="relationship">Why Canada–Europe</h2>
+          <p>Commercial questions across Canada and Europe cut across trade agreements, procurement systems, industrial strategies, company activity and public data held by different institutions. Tharros focuses on that relationship rather than presenting itself as a general-purpose consultancy.</p>
+
           <h2 id="method">How the work is done</h2>
-          <p>Evidence on Canada–Europe questions is spread across trade tables, procurement notices, company filings, policy documents and sector sources on both sides of the Atlantic. Tharros assembles it, checks it by hand and reports what it does and does not establish.</p>
-          <p>Commissioned work starts from a written scope you approve. Every material fact names its source and period; interpretation is labelled as interpretation.</p>
+          <p>Evidence is assembled from public datasets, procurement notices, company records, policy documents and sector sources on both sides of the Atlantic. Material facts are sourced and dated; interpretation is labelled as interpretation.</p>
+          <p>Commissioned work starts from a written scope you approve. The deliverable, source approach, exclusions, price and timing are agreed before research begins.</p>
+
+          <h2 id="accountability">Research accountability</h2>
+          <p>Public research is structured to carry named authorship when a piece is released. Commissioned work identifies responsibility in the approved scope. The site does not publish invented team profiles, client logos, testimonials or institutional affiliations to imply scale that has not been verified.</p>
         </div>
         <aside id="independence">
           <strong>Independent of government.</strong>
-          <p>Tharros Canada is a commercial company. It is not affiliated with or acting for any government, and it does not provide legal, tax, regulatory, lobbying or investment advice.</p>
+          <p>Tharros Canada is a commercial research operation. References to public institutions identify sources only and do not imply endorsement, affiliation or access to non-public information.</p>
+          <p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p>
+          {contactEmail && <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
         </aside>
-      </section>
-      <section className="section policy-notes">
-        <article id="privacy">
-          <h2>Privacy</h2>
-          <p>The research request form collects your organization, country, optional website, business email, the subject and purpose of the research, and any context you add. It is used only to respond to your request and is sent securely to the Tharros Canada intake system. Consent to review is required; there is no marketing consent and nothing is preselected.</p>
-          <p>If usage measurement is enabled, the site records a small set of events (viewing the services page, opening a sample scenario, starting or submitting a request, and the research type chosen) with the page path. No cookies are set for this, and nothing is recorded when your browser sends a Global Privacy Control signal.</p>
-          {contactEmail ? (
-            <p>To ask about or delete information you have submitted, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
-          ) : (
-            <p>To ask about or delete information you have submitted, reply to any email you receive from Tharros Canada.</p>
-          )}
-        </article>
-        <article id="accessibility">
-          <h2>Accessibility</h2>
-          <p>The site aims to meet WCAG 2.2 AA. Accessibility problems are treated as defects.</p>
-          {contactEmail && <p>Contact: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
-        </article>
       </section>
       <section className="closing-cta">
         <h2>Have a question that needs research?</h2>
