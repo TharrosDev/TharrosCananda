@@ -1,74 +1,91 @@
-# Tharros Canada: Version 1 Product Brief
+# Tharros Canada product brief
 
-## Target user
+## Purpose
 
-Businesses and organizations operating across the Canada–Europe relationship: European companies assessing Canada, Canadian companies assessing Europe, and organizations that need sourced intelligence on trade, defence-industrial links, energy and critical minerals, supply chains, industrial policy or technology. They need focused, sourced answers to support a commercial or strategic decision.
+Tharros Canada is an independent commercial research and intelligence business focused on Canada–Europe questions. Commissioned human research is the commercial core. Public research and public-source data tools demonstrate research quality and make the methods inspectable.
 
-Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, while providing commissioned research and commercial intelligence to businesses and organizations operating across that relationship.
+## Primary user jobs
 
-Four research areas organize the work: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; Technology & Strategic Industries (defined once in `src/lib/research-areas.ts`).
+- enter or evaluate a market;
+- identify buyers, distributors, partners or relevant organizations;
+- understand competitors and observable positioning;
+- track a sector, policy, procurement or industrial development;
+- inspect public evidence before commissioning deeper work;
+- commission a focused answer without a mandatory sales call.
 
-## Jobs to be done
+## Public information architecture
 
-- Commission focused research on a commercially relevant Canada–Europe question.
-- Read independent Tharros research to judge its quality before commissioning.
+1. **Services** — what can be commissioned.
+2. **Expertise** — the four Canada–Europe subject areas.
+3. **Research** — archive of real Tharros publications as they are released.
+4. **Market Data** — live public-source evidence, currently Statistics Canada Canada–CETA trade data.
+5. **About** — purpose, method, accountability and independence.
+6. **Commission research** — progressive intake workflow.
 
-- Understand whether measurable Canadian trade activity exists for a product or classification.
-- See where commercial activity may be concentrated and which route to market could fit.
-- Identify relevant Canadian buyers, importers, distributors, retailers or partners.
-- Understand competitors and observable positioning in Canada.
-- Find official resources for tariff, tax, customs and market-access questions.
-- Purchase focused research without sitting through a sales call.
+## Commercial products
+
+Defined only in `src/lib/services.ts`:
+
+- Canada Market Scan
+- Buyer & Distributor Intelligence
+- Competitor Intelligence
+- Commissioned Research
+
+Indicative prices are visible in service detail, not used as the lead brand proposition. Scope, price, exclusions and timing are confirmed in writing before work starts.
+
+## Research archive
+
+The archive is infrastructure for real work, not content theatre. It remains empty until research is genuinely published.
+
+Publication registry: `src/data/publications.ts`.
+
+Archive capabilities:
+
+- text search;
+- expertise filtering;
+- publication-format filtering;
+- stable URLs;
+- optional author/tags/PDF metadata.
+
+A future research article/report template should include actual authorship, date, executive summary, key findings, evidence, methodology, sources and limitations. No placeholder publication may be represented as completed research.
+
+## Market Data
+
+The former synthetic Market Explorer has been retired.
+
+The current interface exposes live Statistics Canada Table 12-10-0174-01 data through WDS and related Government of Canada dataset discovery through the Open Government CKAN API. It is deliberately narrow rather than pretending to answer arbitrary market questions.
+
+The tool must always distinguish:
+
+- official values supplied by publishers;
+- transformations made by Tharros;
+- descriptive interface copy;
+- human interpretation.
+
+It must never manufacture missing data.
 
 ## Core funnel
 
-1. **Explore:** read the research areas, independent research or the sample data view without an account.
-2. **Understand:** inspect sources, dates, methods and limitations.
-3. **Decide:** choose whether the evidence is sufficient or a human-verified question remains.
-4. **Request:** submit a concise brief and receive a written scope, price and timeline.
+**Understand proposition → inspect service/expertise/evidence → evaluate methods → commission research.**
 
-## Product layers
+Public research becomes an additional proof route as the archive grows.
 
-### Layer 1 — Free self-service
+## Deferred capabilities
 
-Tharros Market Explorer. In Version 1 it is a sample-mode demonstration: two synthetic scenarios behind a `MarketDataProvider` boundary, with provenance and limitations shown. It does not search Canadian data; a product that is not a sample becomes a prefilled research request. Real official-data integration comes only after research requests show which data actually matters.
+Do not build until justified by real demand:
 
-### Layer 2 — Low-touch intelligence
+- accounts or subscriptions;
+- SaaS billing;
+- CRM/admin suite;
+- AI chat;
+- proprietary-data claims;
+- automated legal/customs determinations;
+- large data warehouse;
+- automated report generation;
+- fake case studies, testimonials or team scale.
 
-Tharros Market Snapshot. A possible future structured output (internal working range C$29–99). It is not sold, shown or implemented in Version 1.
+## Accessibility and performance
 
-### Layer 3 — Human-verified research
+Target WCAG 2.2 AA. Keep HTML equivalents for data graphics, keyboard access, visible focus, reduced motion, good target sizing and responsive layouts.
 
-Manually scoped work that adds verification, context and judgment:
-
-- Canada Market Scan: indicative C$250–400.
-- Buyer & Distributor Intelligence: indicative C$300–750.
-- Competitor Intelligence: indicative C$300–600.
-- Commissioned Research: any other Canada–Europe question, quoted per scope.
-
-Prices are indicative and defined in `src/lib/services.ts`. Scope, price and timeline are confirmed in writing before work starts. Internally these ranges are still being tested against real requests; that is not customer-facing language.
-
-## Research standards
-
-Every material factual block should identify the publisher, dataset, URL, period, update/retrieval date, licence and limitations. Automated information and human interpretation must remain distinguishable. Inference must not be presented as fact.
-
-## Measures of learning
-
-- Market Explorer starts and completed demo queries.
-- Which demo/product questions visitors attempt.
-- Research service views.
-- Research-request starts and submissions.
-- Selected research need and Canadian objective.
-- Recurring data or source requests that justify the next integration.
-
-## Future roadmap
-
-1. Validate research-service demand through human research and refine scope/pricing.
-2. Once requests show which data matters, add one licensed, maintained official-data adapter behind `MarketDataProvider`.
-3. Only then consider source-health monitoring and freshness displays.
-4. Prototype a generated Market Snapshot only after repeatable inputs are proven.
-5. Accounts, subscriptions, CRM, admin systems and report infrastructure stay deferred until manual volume warrants them.
-
-## Intentionally excluded from Version 1
-
-Accounts, subscriptions, full SaaS billing, complex authentication, AI chat, a proprietary data warehouse, CRM, automated legal/customs analysis, report-generation infrastructure, marketplace integrations and a large admin system.
+Performance targets remain LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 where practical. External government API calls run through server routes with explicit timeouts and bounded caching.
