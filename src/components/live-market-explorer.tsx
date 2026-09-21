@@ -40,9 +40,6 @@ export function LiveMarketExplorer() {
     const controller = new AbortController();
     const params = new URLSearchParams({ flow: flow.toLowerCase() });
     if (commodity) params.set("commodity", commodity);
-    setStatus("loading");
-    setMessage("");
-
     fetch(`/api/market-data/trade?${params}`, { signal: controller.signal })
       .then(async (response) => {
         const body = await response.json();
@@ -98,14 +95,29 @@ export function LiveMarketExplorer() {
       <div className="official-explorer-controls">
         <label>
           <span>Trade flow</span>
-          <select value={flow} onChange={(event) => setFlow(event.target.value as TradeFlow)}>
+          <select
+            value={flow}
+            onChange={(event) => {
+              setStatus("loading");
+              setMessage("");
+              setFlow(event.target.value as TradeFlow);
+            }}
+          >
             <option>Imports</option>
             <option>Exports</option>
           </select>
         </label>
         <label>
           <span>Commodity group</span>
-          <select value={commodity} onChange={(event) => setCommodity(event.target.value)} disabled={!data}>
+          <select
+            value={commodity}
+            onChange={(event) => {
+              setStatus("loading");
+              setMessage("");
+              setCommodity(event.target.value);
+            }}
+            disabled={!data}
+          >
             {(data?.options.commodities ?? []).map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
           </select>
         </label>
