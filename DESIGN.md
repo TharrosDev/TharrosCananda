@@ -51,7 +51,7 @@ typography:
     fontFeature: "tnum, lnum"
   body:
     fontFamily: "Schibsted Grotesk Variable, Helvetica Neue, Arial, sans-serif"
-    fontSize: "17px"
+    fontSize: "18px"
     fontWeight: 400
     lineHeight: 1.6
   label:
@@ -66,7 +66,7 @@ spacing:
   hairline: "1px"
   gutter: "clamp(20px, 4.2vw, 64px)"
   col-gap: "clamp(16px, 2vw, 32px)"
-  section: "clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them"
+  section: "page clamp(64px, 7vw, 104px); section clamp(52px, 5.5vw, 80px); block clamp(32px, 4vw, 56px); consecutive sections drop their top padding so one interval separates them"
 components:
   button-primary:
     backgroundColor: "{colors.red}"
@@ -168,11 +168,11 @@ A warm paper-and-ink palette with one action colour and two data channels. Contr
 **Character:** The serif speaks for the headings, entry names and interpretive sentences. The grotesk runs the schedule: body, controls, labels and tabular readouts.
 
 ### Hierarchy
-- **Display** (380, clamp(52px, 6.6vw, 96px), 0.98, max 12ch): home hero h1. Inner-page h1 uses clamp(46px, 5.6vw, 84px) at weight 380 in columns 1–7, with the lede bottom-aligned in columns 8–12 under an ink rule (stacked below 980px).
+- **Display**: home hero h1 uses clamp(50px, 6vw, 88px); standard page h1 uses clamp(44px, 4.8vw, 72px); task-page h1 uses clamp(42px, 4.2vw, 64px). All use Source Serif 4 at weight 360 with tight display leading.
 - **Headline** (400, clamp(36px, 3.6vw, 56px), 1.05): section and band h2s. Secondary section h2s step down to clamp(34px, 3.2vw, 48px).
 - **Title** (500, 28px, 1.15): service names, process steps (32px) and policy headings (30px). Index entries use 26px, and sub-headings 20–24px.
 - **Entry Figure** (400, 30px, tabular lining numerals): the HS heading readout in the Explorer.
-- **Body** (400, 17px, 1.6; 16px under 640px): measures held at 32–44em. Hero description clamp(18px, 1.35vw, 21px).
+- **Body** (400, 18px, 1.6; 17px under 640px): reading prose is normally capped around 64ch, with large interpretive serif copy closer to 44ch. Hero description clamp(18px, 1.25vw, 21px).
 - **Label** (600, 12px, 0.08em, uppercase, slate): field labels that name a datum (HS heading, source status, provenance terms, footer column heads).
 
 ### Named Rules
@@ -184,9 +184,9 @@ A warm paper-and-ink palette with one action colour and two data channels. Contr
 
 ## Layout
 
-Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. Every page, home included, opens with the shared PageHero: a full-bleed soft-black band with the ivory headline and lede (under a 56px red rule) in columns 1–7 and a numbered "on this page" index in columns 9–12 that links to sections (home: the four research areas). Faint column hairlines fade in toward the right of the band. The Explorer lives only on the Data page. Vertical rhythm is set by the section token, clamp(80px, 9vw, 136px); consecutive sections drop their top padding so one interval separates them.
+Every section sits in a shell of min(1440px, 100vw − 2 × gutter) and on a 12-column grid with col-gap clamp(16px, 2vw, 32px). The usual split puts a heading block in columns 1–4 or 1–5 and ruled content in 6–12 or 7–12. PageHero has three density modes: home is the strongest brand moment, standard is a shallower editorial opener, and task is compact so Market Explorer, intake and other working interfaces begin quickly. Hero indexes are reserved for real page navigation and are omitted when they merely duplicate controls or summaries. Vertical rhythm uses page, section, block and row tokens rather than one oversized universal interval.
 
-Under 1180px the hero description and actions widen to columns 6–12. Under 980px every split collapses to a single full-width column and the navigation becomes a toggled sheet. Under 640px, multi-column entries (result meta, provenance, service terms, choice grids) stack, and actions stretch to full width in forms.
+Below 1180px the primary navigation tightens before it disappears. Around 1020px it becomes a toggled sheet; at 980px major content splits collapse to a single full-width column. Under 640px heroes become materially shorter, multi-column entries stack and form actions stretch. Under 420px footer navigation becomes one column.
 
 **The One Rule Per Boundary Rule.** Each boundary gets exactly one rule. A strong 1px ink (or 2px on entry heads and sidebars) opens a list or entry, and hairline rules divide its rows. Never double a rule with padding boxes or borders on both sides.
 
@@ -220,7 +220,7 @@ There are no cards. Content is ruled entries on the ivory ground: lists open wit
 - **Choices:** ruled rows at least 60px tall with a square 22px check that fills ink when selected. Radios use a ring that thickens to 6px ink.
 
 ### Navigation
-84px bar on ivory with a hairline bottom rule. Links are 14px/500 ink-soft. On hover or on the current page they turn ink, and a 1px ink underline scales in from the left (240ms). The red Request research action sits last. Under 980px a 44px square toggle opens a full-width ivory-light sheet of 17px ruled rows.
+76px bar on ivory with a hairline bottom rule. Links are 16px/500 ink-soft on full desktop and tighten to 15px in the compact desktop range. On hover or on the current page they turn ink, and a 1px ink underline scales in from the left (240ms). The red Commission research action sits last. Around 1020px a 44px square toggle opens a full-width ivory-light sheet of ruled rows.
 
 ### Market Explorer (signature)
 The schedule entry. It opens with a 2px ink top rule and closes with a 1px ink bottom rule. From top to bottom:
