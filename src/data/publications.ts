@@ -13,12 +13,15 @@ export type Publication = {
   title: string;
   type: (typeof publicationTypes)[number]["name"];
   area: ResearchArea["slug"];
-  /** ISO 8601 publication date. */
   publishedAt: string;
   summary: string;
   url: string;
+  author?: string;
+  tags?: string[];
+  pdfUrl?: string;
+  featured?: boolean;
 };
 
-// ponytail: empty until the first piece is published; add entries here and the Research page lists them.
-// Only internally initiated work belongs here, labelled "Independent research by Tharros Canada".
+// This remains empty until verified Tharros Canada research is actually published.
+// Add real entries here; the archive UI will automatically expose search and filters.
 export const publications: Publication[] = [];
