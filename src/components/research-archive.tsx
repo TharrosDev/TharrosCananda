@@ -93,7 +93,7 @@ export function ResearchArchive({
                 {new Date(item.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
               </time>
             </div>
-            <h2><Link href={item.url}>{item.title}</Link></h2>
+            <h2><Link href={`/research/${item.slug}`}>{item.title}</Link></h2>
             <p>{item.summary}</p>
             <div className="archive-tags">{(item.tags ?? []).map((tag) => <span key={tag}>{tag}</span>)}</div>
           </li>
