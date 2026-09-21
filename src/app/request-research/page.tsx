@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { ResearchRequestForm } from "@/components/research-request-form";
 import { researchEmail } from "@/lib/contact";
@@ -28,6 +30,10 @@ export default async function RequestResearchPage({
           <h2>What not to send</h2><p>Do not include trade secrets, personal information unrelated to the request, passwords or confidential customer lists.</p>
           <h2>Commercial boundaries</h2><p>Commercial research and intelligence only; not legal, tax, regulatory, lobbying or investment advice.</p>
           {contactEmail && <><h2>Prefer email?</h2><p>Write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the same information.</p></>}
+          <nav className="request-trust-links" aria-label="Before commissioning">
+            <Link href="/how-it-works">How commissions work <ArrowIcon /></Link>
+            <Link href="/methodology">Sources & methodology <ArrowIcon /></Link>
+          </nav>
         </aside>
       </section>
     </>
