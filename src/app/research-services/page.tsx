@@ -19,7 +19,7 @@ export default function ResearchServicesPage() {
       <PageHero
         title="Commissioned research, scoped to the decision."
         description="Three standard products for market work in Canada, and custom research for any other Canada–Europe question. Everything is agreed in writing; a call is optional."
-        index={services.map((service) => ({ label: service.name, href: `#${service.slug}`, note: service.priceLabel }))}
+        index={services.map((service) => ({ label: service.name, href: `#${service.slug}` }))}
       />
       <section className="section services-page">
         <div className="service-context">
