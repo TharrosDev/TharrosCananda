@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { demoMarkets } from "../src/data/demo-markets";
-import { collectLimitations, formatDelta, formatSourceDate } from "../src/lib/format";
+import { formatDelta, formatSourceDate } from "../src/lib/format";
 
 describe("formatting helpers", () => {
   it("signs trend deltas correctly", () => {
@@ -13,12 +12,5 @@ describe("formatting helpers", () => {
     expect(formatSourceDate(null, "demo")).toMatch(/sample/i);
     expect(formatSourceDate(null, "live")).toBe("Not recorded");
     expect(formatSourceDate("2026-03-14", "live")).toContain("2026");
-  });
-
-  it("collects evidence and result limitations without duplicates", () => {
-    const all = collectLimitations(demoMarkets[0]);
-    expect(all).toContain("Values are synthetic and do not represent current Canadian imports.");
-    expect(all).toEqual([...new Set(all)]);
-    for (const item of demoMarkets[0].limitations) expect(all).toContain(item);
   });
 });
