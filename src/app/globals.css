@@ -313,7 +313,11 @@ p { text-wrap: pretty; }
 .page-shell { width: var(--shell); margin: 0 auto; }
 
 /* ---------- Services page ---------- */
-.pricing-note { max-width: var(--measure-reading); margin: 0 0 48px; color: var(--ink-soft); }
+.service-context { margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
+.pricing-note { max-width: var(--measure-reading); margin: 0; color: var(--ink-soft); }
+.context-links { display: flex; flex: 0 0 auto; gap: 24px; flex-wrap: wrap; }
+.context-links a, .request-trust-links a { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-size: 16px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--ink); }
+.context-links svg, .request-trust-links svg { width: 16px; height: 16px; flex: 0 0 16px; }
 
 /* ---------- How it works ---------- */
 .process-page { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 56px; align-items: start; }
@@ -375,6 +379,7 @@ p { text-wrap: pretty; }
 .request-sidebar h2 { margin: 28px 0 6px; font-size: 22px; font-weight: 500; }
 .request-sidebar h2:first-child { margin-top: 0; }
 .request-sidebar p { margin: 0; color: var(--ink-soft); font-size: 17px; }
+.request-trust-links { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; justify-items: start; gap: 6px; }
 .form-progress { margin-bottom: 44px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; }
 .form-progress > div { height: 2px; background: var(--ivory-deep); }
 .form-progress > div span { display: block; height: 100%; background: var(--ink); transform-origin: left; transition: transform 400ms var(--ease-out); }
@@ -501,6 +506,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 }
 
 @media (max-width: 980px) {
+  .service-context { align-items: flex-start; flex-direction: column; gap: 20px; }
   .product-list { grid-template-columns: 1fr 1fr; row-gap: 24px; }
   .area-section > .index-number { grid-column: 1 / -1; padding: 0; }
   .page-copy-full, .page-hero-copy, .hero-index,
