@@ -22,7 +22,13 @@ export default function ResearchServicesPage() {
         index={services.map((service) => ({ label: service.name, href: `#${service.slug}`, note: service.priceLabel }))}
       />
       <section className="section services-page">
-        <p className="pricing-note">{pricingTerms}</p>
+        <div className="service-context">
+          <p className="pricing-note">{pricingTerms}</p>
+          <nav className="context-links" aria-label="Commissioning information">
+            <Link href="/how-it-works">How commissions work <ArrowIcon /></Link>
+            <Link href="/methodology">Sources & methodology <ArrowIcon /></Link>
+          </nav>
+        </div>
         <ServiceList />
       </section>
       <section className="closing-cta">
