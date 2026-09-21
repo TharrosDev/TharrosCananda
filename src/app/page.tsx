@@ -20,6 +20,7 @@ export default function HomePage() {
   return (
     <>
       <PageHero
+        variant="home"
         title="Commercial research and intelligence connecting Canada and Europe."
         description="Tharros Canada researches the commercial, economic, industrial, technological and strategic developments that link the two, and takes commissions from organizations working across that relationship."
         index={researchAreas.map((area) => ({ label: area.name, href: `/research-areas#${area.slug}`, note: area.scope }))}
