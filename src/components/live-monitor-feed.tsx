@@ -102,7 +102,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
       <div className="monitor-status-line">
         <span>
           <i aria-hidden="true" />
-          Powered by <a className="monitor-provider-link" href="https://currentsapi.services/" target="_blank" rel="noreferrer">Currents News API<span className="sr-only"> (opens in a new tab)</span></a>
+          <a className="monitor-provider-link" href="https://currentsapi.services/" target="_blank" rel="noreferrer">Currents<span className="sr-only"> News API (opens in a new tab)</span></a> · live news search
         </span>
         <span data-volatile>Retrieved {displayDate(data.retrievedAt)} ET</span>
       </div>
