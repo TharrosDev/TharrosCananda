@@ -5,6 +5,7 @@ export const monitorTopics = [
     shortLabel: "Trade",
     query: '(trade OR CETA OR tariff OR tariffs OR export OR exports OR import OR imports OR investment OR economy OR commerce)',
     matchKeywords: ["trade", "ceta", "tariff", "export", "import", "investment", "economy", "commerce"],
+    fallbackQuery: 'Canada Europe trade CETA investment',
   },
   {
     id: "defence-security",
@@ -12,6 +13,7 @@ export const monitorTopics = [
     shortLabel: "Defence",
     query: '(defence OR defense OR NATO OR military OR security OR procurement OR "defence industry" OR "defense industry")',
     matchKeywords: ["defence", "defense", "nato", "military", "security", "procurement"],
+    fallbackQuery: 'Canada Europe defence defense NATO security procurement',
   },
   {
     id: "energy-industry",
@@ -19,13 +21,15 @@ export const monitorTopics = [
     shortLabel: "Industry",
     query: '(energy OR "critical minerals" OR mining OR resources OR manufacturing OR industrial OR infrastructure OR hydrogen OR nuclear)',
     matchKeywords: ["energy", "critical mineral", "mining", "manufactur", "industrial", "infrastructure", "hydrogen", "nuclear"],
+    fallbackQuery: 'Canada Europe energy "critical minerals" manufacturing industry',
   },
   {
     id: "technology-strategic",
     label: "Technology & Strategic Industries",
     shortLabel: "Technology",
     query: '(technology OR "artificial intelligence" OR cyber OR cybersecurity OR space OR semiconductor OR semiconductors OR telecom OR digital)',
-    matchKeywords: ["technology", "artificial intelligence", "cyber", "space", "semiconductor", "telecom", "digital"],
+    matchKeywords: ["technology", "artificial intelligence", "cyber", "space", "semiconductor", "telecom", "digital", " ai "],
+    fallbackQuery: 'Canada Europe technology AI cyber semiconductor telecom',
   },
 ] as const;
 
@@ -37,6 +41,7 @@ export const monitorWindows = [
 
 export type MonitorTopicId = (typeof monitorTopics)[number]["id"];
 export type MonitorWindowId = (typeof monitorWindows)[number]["id"];
+export type MonitorProvider = "GDELT" | "Google News RSS";
 
 export type MonitorArticle = {
   id: string;
@@ -46,6 +51,8 @@ export type MonitorArticle = {
   sourceCountry: string;
   language: string;
   seenAt: string;
+  timestampKind: "indexed" | "published";
+  urlKind: "publisher" | "aggregator";
   topics: MonitorTopicId[];
 };
 
@@ -53,9 +60,8 @@ export type LiveMonitorSnapshot = {
   kind: "ok" | "partial" | "error";
   articles: MonitorArticle[];
   retrievedAt: string;
-  failedTopics: MonitorTopicId[];
-  broadFallback: boolean;
-  provider: "GDELT";
+  provider: MonitorProvider;
+  fallbackProvider: boolean;
   coverageWindow: "7 days";
 };
 

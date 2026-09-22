@@ -5,9 +5,8 @@ import {
 } from "@/lib/live-monitor";
 
 export const GDELT_DOC_BASE_URL = "https://api.gdeltproject.org/api/v2/doc/doc";
-const TOPIC_MAX_RECORDS = 50;
-const FALLBACK_MAX_RECORDS = 75;
-const FETCH_TIMEOUT_MS = 10_000;
+const MAX_RECORDS = 160;
+const FETCH_TIMEOUT_MS = 9_000;
 const RETRIES = 1;
 
 type GdeltArticle = {
@@ -78,25 +77,19 @@ function articleId(url: string) {
   return Math.abs(hash >>> 0).toString(36);
 }
 
-export function buildGdeltQuery(topicId: MonitorTopicId) {
-  const topic = monitorTopics.find((item) => item.id === topicId);
-  if (!topic) throw new Error("Unknown Live Monitor topic.");
-  // Keep one Boolean OR block per request. Canada + Europe are ANDed with the topic block.
-  return "Canada Europe " + topic.query;
-}
-
-export function buildGdeltFallbackQuery() {
-  return 'Canada Europe (trade OR CETA OR defence OR defense OR NATO OR energy OR industry OR technology OR cyber OR "critical minerals" OR manufacturing)';
+export function buildGdeltMonitorQuery() {
+  const topicTerms = '(trade OR CETA OR investment OR defence OR defense OR NATO OR procurement OR energy OR "critical minerals" OR manufacturing OR industry OR technology OR "artificial intelligence" OR cyber OR semiconductor OR telecom)';
+  return '(Canada OR Canadian) (Europe OR European OR "European Union") ' + topicTerms;
 }
 
 export function inferMonitorTopics(title: string): MonitorTopicId[] {
-  const value = title.toLowerCase();
+  const value = " " + title.toLowerCase() + " ";
   return monitorTopics
     .filter((topic) => topic.matchKeywords.some((keyword) => value.includes(keyword)))
     .map((topic) => topic.id);
 }
 
-export function parseGdeltArticles(payload: unknown, topicId: MonitorTopicId | null): MonitorArticle[] {
+export function parseGdeltArticles(payload: unknown): MonitorArticle[] {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     throw new GdeltRequestError("GDELT returned an unexpected response.", true);
   }
@@ -123,18 +116,15 @@ export function parseGdeltArticles(payload: unknown, topicId: MonitorTopicId | n
       sourceCountry: asCleanText(raw.sourcecountry) || "Not supplied",
       language: asCleanText(raw.language) || "Not supplied",
       seenAt,
-      topics: topicId ? [topicId] : inferMonitorTopics(title),
+      timestampKind: "indexed",
+      urlKind: "publisher",
+      topics: inferMonitorTopics(title),
     });
   }
   return articles;
 }
 
-async function requestGdelt(
-  query: string,
-  topicId: MonitorTopicId | null,
-  maxRecords: number,
-  options: GdeltFetchOptions = {},
-) {
+export async function fetchGdeltMonitor(options: GdeltFetchOptions = {}) {
   const fetcher = options.fetcher ?? fetch;
   const baseUrl = options.baseUrl ?? process.env.GDELT_DOC_BASE_URL ?? GDELT_DOC_BASE_URL;
   const now = options.now ?? (() => new Date());
@@ -143,12 +133,12 @@ async function requestGdelt(
   const sleep = options.sleep ?? ((ms: number) => new Promise((resolve) => setTimeout(resolve, ms)));
 
   const url = new URL(baseUrl);
-  url.searchParams.set("query", query);
+  url.searchParams.set("query", buildGdeltMonitorQuery());
   url.searchParams.set("mode", "artlist");
   url.searchParams.set("format", "json");
   url.searchParams.set("sort", "datedesc");
   url.searchParams.set("timespan", "7d");
-  url.searchParams.set("maxrecords", String(maxRecords));
+  url.searchParams.set("maxrecords", String(MAX_RECORDS));
 
   let lastError: unknown;
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -175,20 +165,15 @@ async function requestGdelt(
 
       return {
         retrievedAt: now().toISOString(),
-        articles: parseGdeltArticles(payload, topicId),
+        articles: parseGdeltArticles(payload),
       };
     } catch (error) {
       lastError = error;
       const retryable = error instanceof GdeltRequestError ? error.retryable : true;
       if (!retryable || attempt >= retries) throw error;
-      await sleep(300);
+      await sleep(350 * (attempt + 1));
     }
   }
+
   throw lastError instanceof Error ? lastError : new Error("GDELT request failed.");
 }
-
-export const fetchGdeltTopic = (topicId: MonitorTopicId, options?: GdeltFetchOptions) =>
-  requestGdelt(buildGdeltQuery(topicId), topicId, TOPIC_MAX_RECORDS, options);
-
-export const fetchGdeltFallback = (options?: GdeltFetchOptions) =>
-  requestGdelt(buildGdeltFallbackQuery(), null, FALLBACK_MAX_RECORDS, options);

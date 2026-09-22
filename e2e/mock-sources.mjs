@@ -21,6 +21,7 @@ createServer((req, res) => {
 
     if (url.pathname === "/api/v2/doc/doc") {
       const query = url.searchParams.get("query") ?? "";
+      const isBroadMonitor = query.includes("CETA") && query.includes("NATO") && query.includes("critical minerals") && query.includes("artificial intelligence");
       const topic = query.includes("NATO") ? "defence" : query.includes("critical minerals") ? "industry" : query.includes("artificial intelligence") ? "technology" : "trade";
       const samples = {
         trade: [
@@ -40,15 +41,19 @@ createServer((req, res) => {
           ["Canadian AI companies look to European research partnerships", "example-ai.ca", "Canada", "English", 14],
         ],
       };
+      const selected = isBroadMonitor ? Object.entries(samples).flatMap(([group, items]) => items.map((item) => [group, item])) : samples[topic].map((item) => [topic, item]);
       return res.end(JSON.stringify({
-        articles: samples[topic].map(([title, domain, sourcecountry, language, hoursAgo], index) => ({
-          title,
-          domain,
-          sourcecountry,
-          language,
-          seendate: gdeltStamp(hoursAgo),
-          url: "https://" + domain + "/story-" + topic + "-" + index,
-        })),
+        articles: selected.map(([group, item], index) => {
+          const [title, domain, sourcecountry, language, hoursAgo] = item;
+          return {
+            title,
+            domain,
+            sourcecountry,
+            language,
+            seendate: gdeltStamp(hoursAgo),
+            url: "https://" + domain + "/story-" + group + "-" + index,
+          };
+        }),
       }));
     }
 

@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildGdeltFallbackQuery,
-  buildGdeltQuery,
-  fetchGdeltTopic,
+  buildGdeltMonitorQuery,
+  fetchGdeltMonitor,
   inferMonitorTopics,
   parseGdeltArticles,
 } from "../src/lib/gdelt";
@@ -17,13 +16,18 @@ const article = {
 };
 
 describe("GDELT adapter", () => {
-  it("builds bounded Canada-Europe topic queries", () => {
-    expect(buildGdeltQuery("trade-economy")).toMatch(/^Canada Europe \(trade OR CETA/);
-    expect(buildGdeltFallbackQuery()).toContain("Canada Europe");
+  it("uses one broad Canada-Europe query spanning the four research areas", () => {
+    const query = buildGdeltMonitorQuery();
+    expect(query).toContain("(Canada OR Canadian)");
+    expect(query).toContain("(Europe OR European");
+    expect(query).toContain("CETA");
+    expect(query).toContain("NATO");
+    expect(query).toContain("critical minerals");
+    expect(query).toContain("artificial intelligence");
   });
 
   it("parses article metadata, strips tracking parameters and keeps GDELT index time", () => {
-    const parsed = parseGdeltArticles({ articles: [article] }, "defence-security");
+    const parsed = parseGdeltArticles({ articles: [article] });
     expect(parsed).toHaveLength(1);
     expect(parsed[0]).toMatchObject({
       title: article.title,
@@ -32,23 +36,25 @@ describe("GDELT adapter", () => {
       sourceCountry: "Canada",
       language: "English",
       seenAt: "2026-09-22T04:15:00.000Z",
+      timestampKind: "indexed",
+      urlKind: "publisher",
       topics: ["defence-security"],
     });
   });
 
-  it("treats a valid empty payload as no coverage rather than a provider failure", () => {
-    expect(parseGdeltArticles({}, "trade-economy")).toEqual([]);
-    expect(parseGdeltArticles({ articles: [] }, "trade-economy")).toEqual([]);
+  it("treats a valid empty payload as no coverage rather than malformed data", () => {
+    expect(parseGdeltArticles({})).toEqual([]);
+    expect(parseGdeltArticles({ articles: [] })).toEqual([]);
   });
 
-  it("infers research areas for broad fallback headlines", () => {
+  it("infers multiple research areas from headlines", () => {
     expect(inferMonitorTopics("Critical minerals and defence procurement link Canada with Europe")).toEqual([
       "defence-security",
       "energy-industry",
     ]);
   });
 
-  it("retries transient upstream failures and then returns coverage", async () => {
+  it("retries a transient upstream failure once", async () => {
     let calls = 0;
     let requested = "";
     const fetcher = (async (input: RequestInfo | URL) => {
@@ -58,7 +64,7 @@ describe("GDELT adapter", () => {
       return Response.json({ articles: [article] });
     }) as typeof fetch;
 
-    const result = await fetchGdeltTopic("defence-security", {
+    const result = await fetchGdeltMonitor({
       fetcher,
       baseUrl: "https://gdelt.test/doc",
       retries: 1,
@@ -68,8 +74,7 @@ describe("GDELT adapter", () => {
 
     expect(calls).toBe(2);
     expect(requested).toContain("mode=artlist");
-    expect(requested).toContain("timespan=7d");
-    expect(result.retrievedAt).toBe("2026-09-22T04:20:00.000Z");
+    expect(requested).toContain("maxrecords=160");
     expect(result.articles).toHaveLength(1);
   });
 
@@ -80,7 +85,7 @@ describe("GDELT adapter", () => {
       return new Response("bad query", { status: 400 });
     }) as typeof fetch;
 
-    await expect(fetchGdeltTopic("trade-economy", {
+    await expect(fetchGdeltMonitor({
       fetcher,
       baseUrl: "https://gdelt.test/doc",
       retries: 1,
@@ -91,7 +96,7 @@ describe("GDELT adapter", () => {
 
   it("rejects non-JSON success responses instead of fabricating coverage", async () => {
     const fetcher = (async () => new Response("<html>busy</html>", { status: 200 })) as typeof fetch;
-    await expect(fetchGdeltTopic("trade-economy", {
+    await expect(fetchGdeltMonitor({
       fetcher,
       baseUrl: "https://gdelt.test/doc",
       retries: 0,

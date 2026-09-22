@@ -72,8 +72,8 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     return (
       <section className="monitor-error" aria-labelledby="monitor-error-title">
         <p className="monitor-kicker">Live coverage</p>
-        <h2 id="monitor-error-title">The GDELT feed is not responding.</h2>
-        <p>The Live Monitor page is available, but the upstream discovery service did not return usable coverage. No substitute headlines or synthetic stories are shown.</p>
+        <h2 id="monitor-error-title">Live coverage is temporarily unavailable.</h2>
+        <p>Neither the primary GDELT source nor the secondary RSS source returned usable coverage. No substitute headlines or synthetic stories are shown.</p>
         <div className="monitor-error-actions">
           <button className="button-secondary" type="button" onClick={() => router.refresh()}>Retry live coverage</button>
           <a className="text-link" href="https://www.gdeltproject.org/" target="_blank" rel="noreferrer">
@@ -84,18 +84,18 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     );
   }
 
+  const sourceLabel = data.provider === "GDELT" ? "GDELT · primary live source" : "Google News RSS · fallback source";
+
   return (
     <section className="monitor-workspace" aria-label="Canada Europe live news monitor">
       <div className="monitor-status-line">
-        <span><i aria-hidden="true" />GDELT discovery · 7-day rolling source window</span>
+        <span><i aria-hidden="true" />{sourceLabel}</span>
         <span data-volatile>Retrieved {displayDate(data.retrievedAt)} ET</span>
       </div>
 
-      {data.kind === "partial" && (
+      {data.fallbackProvider && (
         <p className="monitor-notice" role="status">
-          {data.broadFallback
-            ? "Topic-specific GDELT feeds were unavailable, so a broader Canada–Europe discovery feed is shown. Research-area tags are inferred from headlines when possible."
-            : "Some research-area feeds could not be refreshed. Available coverage is shown."}
+          GDELT is temporarily unavailable or returned no usable coverage. Current reporting is being supplied through an attributed RSS fallback.
         </p>
       )}
 
@@ -151,16 +151,16 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
           <li key={article.id}>
             <div className="archive-meta">
               <span>{article.topics.length ? article.topics.map(topicLabel).join(" · ") : "Canada–Europe"}</span>
-              <time dateTime={article.seenAt}>Indexed {displayDate(article.seenAt)} ET</time>
+              <time dateTime={article.seenAt}>{article.timestampKind === "indexed" ? "Indexed" : "Published"} {displayDate(article.seenAt)} ET</time>
             </div>
             <h2><a href={article.url} target="_blank" rel="noreferrer">{article.title}</a></h2>
             <div className="monitor-source-meta">
               <strong>{article.domain}</strong>
-              <span>{article.sourceCountry}</span>
-              <span>{languageLabel(article.language)}</span>
+              {article.sourceCountry !== "Not supplied" && <span>{article.sourceCountry}</span>}
+              {article.language !== "Not supplied" && <span>{languageLabel(article.language)}</span>}
             </div>
             <a className="text-link monitor-open-link" href={article.url} target="_blank" rel="noreferrer">
-              Open original <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
+              {article.urlKind === "publisher" ? "Open original" : "Open coverage"} <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
             </a>
           </li>
         ))}
