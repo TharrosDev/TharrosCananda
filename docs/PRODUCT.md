@@ -18,9 +18,10 @@ Tharros Canada is an independent commercial research and intelligence business f
 1. **Services** — what can be commissioned.
 2. **Expertise** — the four Canada–Europe subject areas.
 3. **Research** — archive of real Tharros publications as they are released.
-4. **Market Data** — live public-source evidence, currently Statistics Canada Canada–CETA trade data.
-5. **About** — purpose, method, accountability and independence.
-6. **Commission research** — progressive intake workflow.
+4. **Live Monitor** — current Canada–Europe reporting discovered through GDELT and linked to original publishers.
+5. **Market Data** — live public-source evidence, currently Statistics Canada Canada–CETA trade data.
+6. **About** — purpose, method, accountability and independence.
+7. **Commission research** — progressive intake workflow.
 
 ## Commercial products
 
@@ -51,6 +52,14 @@ Archive capabilities:
 - optional tags/PDF metadata.
 
 The research article template requires actual authorship, date, origin (independent or genuinely commissioned), executive summary, key findings, methodology, sources, limitations and a suggested citation. No placeholder publication may be represented as completed research.
+
+## Live Monitor
+
+The Live Monitor is an automated discovery surface, not a Tharros publication stream. The page shell renders immediately and the GDELT-backed panel streams behind `<Suspense>`, so a slow source cannot make navigation appear broken.
+
+The monitor searches a rolling seven-day window across the four Tharros research areas. Results preserve original publisher links, publisher domain, source country, language and GDELT index time. Article bodies are not copied and automated summaries are not presented as Tharros findings.
+
+Topic requests are cached for 15 minutes, retry transient upstream failures once and fail closed. If all topic-specific requests fail, one broader Canada–Europe discovery query may be shown with an explicit degraded-state notice; it never invents headlines.
 
 ## Market Data
 
@@ -91,7 +100,7 @@ Do not build until justified by real demand:
 
 Target WCAG 2.2 AA. Keep HTML equivalents for data graphics, keyboard access, visible focus, reduced motion, good target sizing and responsive layouts.
 
-Performance targets remain LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 where practical. External government API calls run through server routes with explicit timeouts and bounded caching.
+Performance targets remain LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 where practical. External source API calls use explicit timeouts and bounded caching, and live interfaces must stream or otherwise keep upstream latency from blocking page navigation.
 
 
 ## Browser quality
