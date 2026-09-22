@@ -57,9 +57,13 @@ The research article template requires actual authorship, date, origin (independ
 
 The Live Monitor is an automated discovery surface, not a Tharros publication stream. The page shell renders immediately and the Currents-backed panel streams behind `<Suspense>`, so upstream latency cannot make navigation appear broken.
 
-The monitor runs one rolling seven-day Currents V2 search for Canada–Europe reporting across the four Tharros research areas. Results preserve direct publisher URLs, source domain, language and publication time. Title, description and Currents category metadata are used locally to classify articles into research areas. Article bodies are not copied and automated summaries are not presented as Tharros findings.
+The monitor runs one rolling seven-day Currents V2 search for Canada–Europe reporting across the four Tharros research areas. The adapter sends second-precision RFC3339 timestamps and requests one page of 20 results per refresh. This keeps the integration inside the documented free-tier result cap while bounding request volume on higher plans.
 
-Successful retrievals are cached for 15 minutes. Authentication, quota, upstream and invalid-response failures are handled explicitly; the monitor never inserts synthetic headlines.
+Results preserve direct publisher URLs, source domain, language and publication time. Tracking parameters are removed before display. Title, description and Currents category metadata are used locally to classify articles into research areas. Future-dated records are rejected, and duplicate URLs are removed only after time validation so an invalid copy cannot suppress a valid current item.
+
+Successful retrievals are cached for 15 minutes. The API key remains server-only and is sent through Bearer authentication. Missing configuration, rejected credentials, quota exhaustion, invalid requests, transient upstream failures and invalid response shapes have explicit failure states. Transient network/5xx failures receive one bounded retry; 400/auth/quota failures do not. The monitor has no secondary provider and never inserts synthetic headlines.
+
+Currents attribution and original-publisher links remain visible. Article bodies are not copied, persistent republishing is not part of the product, and automated summaries are not presented as Tharros findings.
 
 ## Market Data
 
