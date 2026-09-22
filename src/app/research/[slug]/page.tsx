@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
-import { publicationBySlug, publications } from "@/data/publications";
+import { allPublications, publicationBySlug } from "@/data/publications";
 
 export function generateStaticParams() {
-  return publications.map((publication) => ({ slug: publication.slug }));
+  return allPublications.map((publication) => ({ slug: publication.slug }));
 }
 
 export async function generateMetadata({

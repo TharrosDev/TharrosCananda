@@ -1,16 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Schibsted_Grotesk, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { SiteAnalytics } from "@/components/analytics-beacon";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { organization, organizationJsonLd } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
+import { display, sans } from "@/lib/fonts";
 import { jsonLd, siteUrl } from "@/lib/site";
-
-// Self-hosted at build time with preload and a metric-matched fallback (no layout shift on swap).
-const sans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
-const display = Source_Serif_4({ subsets: ["latin"], axes: ["opsz"], variable: "--font-display" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

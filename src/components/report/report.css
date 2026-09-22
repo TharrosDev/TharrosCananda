@@ -1,15 +1,5 @@
-/* Example report layout (/research/example-report): printed-report pages on the ivory ground. */
-.report-notice { width: var(--shell); margin: 0 auto; padding: 28px 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; border-bottom: 1px solid var(--rule-strong); }
-.report-notice strong { display: block; margin-bottom: 6px; color: var(--red); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.report-notice p { max-width: 62ch; margin: 0; color: var(--ink-soft); font-size: 17px; }
-.report-notice .text-link { flex: 0 0 auto; }
+/* Report sheets: shared by the print surface (PDF source) and the report page. */
 
-.report-document { width: min(900px, calc(100vw - 2 * var(--gutter))); margin: 0 auto; padding: clamp(40px, 5vw, 72px) 0; display: grid; gap: 40px; }
-.report-page { position: relative; min-height: 1180px; padding: 56px 72px 48px; display: grid; grid-template-rows: auto 1fr auto; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong), 0 24px 60px -30px rgba(22, 23, 25, .35); }
-.report-running-head, .report-running-foot { display: flex; justify-content: space-between; gap: 16px; color: var(--slate); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
-.report-running-head { padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
-.report-running-head span:first-child { color: var(--ink); font-family: var(--display); font-size: 13px; letter-spacing: .16em; }
-.report-running-foot { padding-top: 14px; border-top: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
 .report-page-body { padding: 40px 0 24px; }
 .report-page-body p { margin: 0 0 14px; color: var(--ink-soft); font-size: 16px; line-height: 1.65; }
 
@@ -47,10 +37,20 @@
 .report-citation p { font-size: 14px !important; }
 
 @media (max-width: 760px) {
-  .report-notice { display: block; }
-  .report-notice .text-link { margin-top: 16px; }
-  .report-page { min-height: 0; padding: 28px 22px 24px; }
   .report-meta { grid-template-columns: 1fr 1fr; }
   .report-columns { grid-template-columns: 1fr; gap: 0; }
   .report-figure { margin-top: 24px; }
+}
+
+/* Print surface: the flowing document Chromium paginates into the PDF. Screen view is only a preview. */
+.report-document--print { width: 816px; padding: 0; gap: 0; }
+.report-document--print .report-page-body { padding: 0; }
+.report-document--print .report-meta, .report-document--print .report-columns, .report-document--print .report-figure,
+.report-document--print .report-callout, .report-document--print .report-findings li, .report-document--print .report-sources li { break-inside: avoid; }
+.report-document--print h2 { break-after: avoid; }
+
+@media print {
+  .skip-link, .site-header, .site-footer { display: none !important; }
+  html, body { background: var(--ivory-light) !important; }
+  .report-document--print { width: auto; }
 }

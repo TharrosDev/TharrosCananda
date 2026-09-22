@@ -659,3 +659,13 @@ legend:focus:not(:focus-visible) { outline: none; }
   .buyer-tiers > div > small { grid-column: 1; }
   .research-article-meta dl { grid-template-columns: 1fr 1fr; }
 }
+
+/* ---------- Report notice ---------- */
+.report-notice { width: var(--shell); margin: 0 auto; padding: 28px 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; border-bottom: 1px solid var(--rule-strong); }
+.report-notice strong { display: block; margin-bottom: 6px; color: var(--red); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.report-notice p { max-width: 62ch; margin: 0; color: var(--ink-soft); font-size: 17px; }
+.report-notice .text-link { flex: 0 0 auto; }
+@media (max-width: 760px) {
+  .report-notice { display: block; }
+  .report-notice .text-link { margin-top: 16px; }
+}
