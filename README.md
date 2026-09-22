@@ -121,7 +121,7 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 | `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
-| `NEXT_PUBLIC_RESEARCH_EMAIL` | Recommended | Verified monitored contact address used in About/footer/intake fallback. |
+| `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
 | `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL` | Tests only | Point the adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
 
 ## Architecture

@@ -67,12 +67,12 @@
   .form-success { padding: 40px 20px; }
 }
 .commission-hero > div:first-child > p:first-child { margin: 0 0 28px; color: var(--on-dark-soft); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.commission-hero { width: var(--shell); margin: 0 auto; padding: clamp(68px, 8vw, 120px) 0 clamp(52px, 6vw, 88px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+.commission-hero { width: var(--shell); margin: 0 auto; padding: clamp(56px, 6vw, 88px) 0 clamp(44px, 5vw, 72px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
 .commission-hero { color: var(--on-dark); background: var(--soft-black); width: auto; padding-right: max(var(--gutter), calc((100vw - 1440px) / 2)); padding-left: max(var(--gutter), calc((100vw - 1440px) / 2)); }
-.commission-hero > div:first-child { grid-column: 1 / span 7; }
+.commission-hero > div:first-child { grid-column: 1 / span 8; }
 .commission-hero > div:last-child { grid-column: 9 / -1; align-self: end; }
 .commission-hero > div:first-child > p:first-child { color: var(--red-on-dark); }
-.commission-hero h1 { max-width: 10ch; margin: 0; font-size: clamp(54px, 6.5vw, 96px); letter-spacing: -.035em; line-height: .92; }
+.commission-hero h1 { max-width: 18ch; margin: 0; font-size: clamp(54px, 6vw, 88px); letter-spacing: -.035em; line-height: .92; }
 .commission-hero > div:last-child p { color: var(--on-dark-soft); }
 .commission-hero > div:last-child strong { display: block; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rule-dark); color: var(--on-dark); font-size: 14px; font-weight: 600; }
 .commission-sequence { width: var(--shell); margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--rule-strong); }

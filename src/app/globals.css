@@ -460,14 +460,27 @@ legend:focus:not(:focus-visible) { outline: none; }
 .home-finale h2 { margin: 0 0 42px; font-size: clamp(52px, 7vw, 104px); letter-spacing: -.035em; line-height: .92; }
 
 /* Research: archive machinery is visible even before the first release. */
-.research-hero { width: var(--shell); margin: 0 auto; padding: clamp(68px, 8vw, 120px) 0 clamp(52px, 6vw, 88px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
-.research-hero-copy { grid-column: 1 / span 7; }
+.research-hero { width: var(--shell); margin: 0 auto; padding: clamp(56px, 6vw, 88px) 0 clamp(44px, 5vw, 72px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+.research-hero-copy { grid-column: 1 / span 8; }
 .research-hero-copy > p:first-child { color: var(--red); }
-.research-hero h1 { max-width: 12ch; margin: 0 0 28px; font-size: clamp(54px, 7vw, 98px); letter-spacing: -.035em; line-height: .92; }
+.research-hero h1 { max-width: 16ch; margin: 0 0 24px; font-size: clamp(54px, 7vw, 98px); letter-spacing: -.035em; line-height: .92; }
 .research-hero-copy > p:last-child { max-width: 56ch; margin: 0; color: var(--ink-soft); font-size: 20px; }
 .research-hero-manifest { grid-column: 9 / -1; align-self: end; border-top: 2px solid var(--ink); }
 .research-hero-manifest > span { display: block; padding: 14px 0; color: var(--slate); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .research-hero-manifest ol { margin: 0; padding: 0; list-style: none; }
+.archive-example { margin-top: 40px; padding: 24px 0; display: grid; grid-template-columns: 96px minmax(0, 1fr) 20px; gap: 28px; align-items: center; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); text-decoration: none; }
+.archive-example-sheet { height: 124px; padding: 14px 12px; display: grid; align-content: start; gap: 7px; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong), 0 12px 28px -16px rgba(22, 23, 25, .4); }
+.archive-example-sheet i { height: 4px; background: var(--rule-strong); }
+.archive-example-sheet i:first-child { width: 40%; height: 3px; background: var(--red); }
+.archive-example-sheet i:nth-child(2) { height: 9px; background: var(--ink); }
+.archive-example-sheet i:nth-child(4) { width: 70%; }
+.archive-example-copy { display: grid; gap: 4px; }
+.archive-example-label { color: var(--red); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.archive-example-copy strong { font-family: var(--display); font-size: 26px; font-weight: 450; line-height: 1.2; }
+.archive-example-copy > span:last-child { max-width: 64ch; color: var(--ink-soft); font-size: 16px; }
+.archive-example > svg { width: 20px; transition: transform 240ms var(--ease-out); }
+.archive-example:hover strong { text-decoration: underline; text-decoration-thickness: 1px; }
+.archive-example:hover > svg { transform: translateX(4px); }
 .research-hero-manifest li { padding: 10px 0; border-top: 1px solid var(--rule); font-family: var(--display); font-size: 20px; }
 .archive-principle { padding: 28px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 32px; color: var(--on-dark); background: var(--graphite); }
 .archive-principle p { max-width: 65ch; margin: 0; }
@@ -491,10 +504,10 @@ legend:focus:not(:focus-visible) { outline: none; }
 .archive-result-count { min-height: 46px; display: flex; align-items: center; justify-content: space-between; color: var(--slate); font-size: 14px; border-bottom: 1px solid var(--rule); }
 
 /* About: a statement of method with spatial restraint. */
-.about-hero { width: var(--shell); margin: 0 auto; padding: clamp(68px, 8vw, 118px) 0; }
+.about-hero { width: var(--shell); margin: 0 auto; padding: clamp(56px, 6vw, 88px) 0 clamp(48px, 5vw, 80px); }
 .about-hero > p { color: var(--red); }
-.about-hero h1 { max-width: 18ch; margin: 0; font-size: clamp(54px, 7vw, 100px); letter-spacing: -.035em; line-height: .92; }
-.about-hero > div { margin-top: 52px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+.about-hero h1 { max-width: 30ch; margin: 0; font-size: clamp(54px, 6vw, 88px); letter-spacing: -.035em; line-height: .92; }
+.about-hero > div { margin-top: 36px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
 .about-hero > div p { grid-column: 5 / span 5; margin: 0; color: var(--ink-soft); font-size: 20px; }
 .about-hero > div a { grid-column: 11 / -1; align-self: end; text-align: right; text-decoration: none; font-size: 14px; font-weight: 600; }
 .about-thesis { padding: var(--space-section) max(var(--gutter), calc((100vw - 1440px) / 2)); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); color: var(--on-dark); background: var(--graphite); }
@@ -570,6 +583,10 @@ legend:focus:not(:focus-visible) { outline: none; }
   .archive-format-grid h3 { margin-top: 18px; }
   .archive-controls { grid-template-columns: 1fr; }
   .about-hero > div { display: block; }
+  .archive-example { grid-template-columns: 64px minmax(0, 1fr); gap: 18px; }
+  .archive-example-sheet { height: 84px; padding: 10px 8px; gap: 5px; }
+  .archive-example > svg { display: none; }
+  .archive-example-copy strong { font-size: 22px; }
   .about-hero > div p { margin-bottom: 26px; }
   .about-hero > div a { text-align: left; }
   .about-thesis { display: block; }
