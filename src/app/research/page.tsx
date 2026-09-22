@@ -24,6 +24,15 @@ export default function ResearchPage() {
       <section className="archive-principle"><p>Search titles, summaries and tags, or filter by area, format and date.</p><Link href="/methodology">Methodology <ArrowIcon /></Link></section>
       <section className="section section--compact archive-page">
         <ResearchArchive publications={publications} areas={researchAreas} publicationTypes={publicationTypes} />
+        <Link className="archive-example" href="/research/example-report">
+          <span className="archive-example-sheet" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+          <span className="archive-example-copy">
+            <span className="archive-example-label">Example layout · placeholder text</span>
+            <strong>See how a Tharros research report is laid out</strong>
+            <span>A two-page specimen in lorem ipsum: summary, key findings, figure, methodology, limitations, sources and citation. Not a publication.</span>
+          </span>
+          <ArrowIcon />
+        </Link>
       </section>
       <section className="closing-cta">
         <h2>Need research on a specific question?</h2>

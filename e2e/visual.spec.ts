@@ -8,6 +8,7 @@ const routes = [
   ["request", "/request-research"],
   ["about", "/about"],
   ["research", "/research"],
+  ["example-report", "/research/example-report"],
   ["methodology", "/methodology"],
   ["not-found", "/this-page-does-not-exist"],
 ] as const;

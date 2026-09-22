@@ -29,7 +29,7 @@ After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tigh
 
 ## Identity and contact
 
-- [ ] Set `NEXT_PUBLIC_RESEARCH_EMAIL` to a verified monitored address.
+- [x] Public contact address: TharrosDev@gmail.com (default in `src/lib/contact.ts`; `NEXT_PUBLIC_RESEARCH_EMAIL` overrides it). Confirm the inbox is monitored.
 - [ ] Fill `src/data/organization.ts` with verified details only: research lead (name, role, short approved bio, real profile links), legal entity (legal name, jurisdiction, registration, address) and company profiles. Each block stays hidden until it is set.
 - [ ] Add real author profiles only when actual publications identify those authors.
 
