@@ -10,6 +10,7 @@ colors:
   slate: "#5d6166"
   soft-black: "#161719"
   graphite: "#232528"
+  atlas-black: "#191b1d"
   on-dark: "#ece8df"
   on-dark-soft: "#aeaba3"
   red: "#9e3a35"
@@ -64,12 +65,13 @@ Long prose is normally capped around 64ch. Large interpretive copy can use appro
 
 **Schibsted Grotesk** is the operating voice: navigation, prose, controls, metadata and tabular readouts.
 
-- Home hero: clamp(50px, 6vw, 88px)
+- Home hero: clamp(58px, 7.5vw, 116px), tightening to the mobile display scale below 700px
 - Standard dark hero: clamp(44px, 4.8vw, 72px)
 - Compact task hero: clamp(42px, 4.2vw, 64px)
 - Light document hero: standard display scale on ivory
 - Body: 18px / 1.6; 17px on small screens
 - Field labels: compact sans, uppercase only where the label names a datum
+- Context labels: compact sans, uppercase, used sparingly to identify the operating context of statement-scale page openings
 
 ## Hero hierarchy
 
@@ -89,13 +91,13 @@ Compact dark hero for a working interface such as Market Data or Commission Rese
 
 ### Document
 
-Light ivory editorial header for Expertise, Research Archive, About, Methodology, How It Works, Privacy and Accessibility. These pages should read like documents rather than repeated marketing landings.
+Light ivory editorial header for Research Archive, Methodology, How It Works, Privacy and Accessibility. These pages should read like documents rather than repeated marketing landings. About uses its own restrained statement composition; Commission Research uses a task-led scope desk.
 
 ## Primary navigation
 
 Desktop order:
 
-**Services · Expertise · Research · Market Data · About**
+**Services · Research · Market Data · About**
 
 Primary action:
 
@@ -107,15 +109,15 @@ Use the same destination name everywhere. In particular, do not call Market Data
 
 ## Homepage architecture
 
-1. Brand proposition and Commission Research
-2. Decision-oriented client questions
-3. Canada–Europe expertise
+1. Evidence-atlas first viewport, brand proposition and Commission Research
+2. Statement-scale, decision-oriented client questions
+3. Four-area Canada–Europe research summary
 4. Live official-data proof
 5. Commissioned services
 6. Research archive / methodology links
 7. Final commission CTA
 
-The homepage proves the operation with live source material. It must not pretend unfinished research is already published.
+The homepage uses the evidence route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation with live source material and must not pretend unfinished research is already published.
 
 ## Research archive
 
@@ -125,12 +127,14 @@ When empty, it states the absence once, calmly, and shows the publication format
 
 When populated, it supports:
 
-- search;
-- expertise-area filter;
+- search across titles, summaries and tags;
+- research-area filter;
 - publication-type filter;
-- publication date/type metadata;
+- publication-date filter and date/type metadata;
 - tags;
 - stable report/article links.
+
+The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The four research areas are archive taxonomy and a homepage summary, not a dedicated public route.
 
 A real report page should eventually include verified authorship, date, executive summary, key findings, charts/tables, methodology, sources, limitations, related research and a commission CTA.
 
@@ -140,28 +144,28 @@ The public data interface currently uses Statistics Canada Table 12-10-0174-01 t
 
 Visual hierarchy:
 
-1. publisher/data-status line;
+1. task framing, official-source status and a three-step use guide;
 2. trade-flow and NAPCS commodity controls;
 3. latest value / annual change / CETA grouping;
 4. accessible time-series chart;
 5. source/provenance record;
-6. limitations;
+6. limitations and an explicit interpretation boundary;
 7. related Government of Canada dataset discovery.
 
 Statistics Canada attribution must remain visible. No government logos may be used.
 
 Charts use steel. Green may communicate a positive change/state, but never imply that an increase is commercially “good.”
 
-## Expertise
+## Research areas
 
-Each of the four expertise areas should combine:
+The four research areas remain a durable classification system for the homepage and Research archive. They do not require a standalone page. Their public expression is limited to:
 
-- concise scope;
-- evidence types commonly examined;
-- example questions;
-- commission route.
+- a concise scope in the homepage ledger;
+- area metadata on real publications;
+- a clear archive filter;
+- links into relevant commissioned services where useful.
 
-As real work is produced, evidence artifacts may be added to make areas visually distinctive, but never invent a chart/map/project solely for decoration.
+As real work is produced, evidence artifacts may be added to make areas visually distinctive, but never invent a chart, map or project solely for decoration.
 
 ## Services
 
@@ -169,13 +173,17 @@ Pricing is secondary product information, not hero-level positioning. Lead with 
 
 ## About
 
-About explains the focus, method, research accountability and independence. It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
+About uses a spacious Canada–Europe relationship statement, an operating-principles ledger and a clear independence boundary to explain focus, method and research accountability. It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
 
 Privacy and Accessibility remain separate utility pages.
 
+## Commission Research
+
+Commission Research is a task-led scope desk: a concise opening statement, a three-step commissioning sequence, the progressive intake form and adjacent trust/boundary guidance. Submission remains a request for review, not a checkout; no account or mandatory call is required, and work begins only after written scope approval.
+
 ## Motion
 
-The chart registration is the only authored data motion. Hover transitions may move arrows/underlines. Avoid scroll-triggered reveals and ornamental motion. All motion must collapse under `prefers-reduced-motion`.
+The homepage evidence route and the chart registration are the two authored data motions. Both draw evidence paths into an already-readable static composition. Hover transitions may move arrows/underlines. Avoid scroll-triggered reveals and ornamental motion. All motion must collapse under `prefers-reduced-motion`.
 
 ## Responsive rules
 
@@ -187,6 +195,32 @@ The chart registration is the only authored data motion. Hover transitions may m
 - At 420px: footer becomes one column
 
 No page should require horizontal scrolling at an equivalent 320 CSS px viewport.
+
+## Components
+
+### Navigation
+
+The 76px ruled navigation uses the serif wordmark, four commercial destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
+
+### Buttons and text links
+
+Primary actions are square muted-red fields with a trailing arrow. Secondary actions are square ink outlines that invert on hover. Editorial text links carry a single underline rule; arrows move on hover while the surrounding layout remains fixed. Every variant uses the shared visible focus ring.
+
+### Evidence atlas
+
+The homepage atlas is a dark, ruled evidence plate connecting Canada and Europe through a single red route, steel verification node and four source classes. It is semantic SVG geometry with a text alternative, not a decorative map or an implied dataset. The route draw is disabled under reduced motion.
+
+### Official data entry
+
+The Market Data instrument keeps source status, publisher table, query controls, KPI readouts, accessible chart/table, provenance, limitations and discovery records in one continuous ruled surface. Loading and error states replace the selected series rather than leaving stale values presented as current.
+
+### Research archive
+
+The empty archive shows a truthful zero count and the five supported formats. Once publications exist, a square control row provides title/summary/tag search plus research-area, publication-type and year filters, followed by a newest-first result count and ruled publication entries.
+
+### Research scope desk
+
+The Commission Research form sits on one light editorial sheet with a small operating label, three-step progress, explicit field requirements, validation recovery, review/edit state and a non-purchase success state. The adjacent sidebar carries only information needed to submit safely.
 
 ## Do
 

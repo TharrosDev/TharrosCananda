@@ -9,8 +9,7 @@ The production domain is intended to be [tharros.ca](https://tharros.ca).
 The site is deliberately small and evidence-led:
 
 - **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
-- **Expertise** — Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; Technology & Strategic Industries.
-- **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Add verified entries to `src/data/publications.ts`.
+- **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
 - **Market Data** — a live Canada–CETA merchandise-trade interface backed by Statistics Canada Table 12-10-0174-01 through the Statistics Canada Web Data Service (WDS). Related federal datasets are discovered through the Government of Canada Open Data CKAN API.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.
@@ -22,7 +21,7 @@ No public page fabricates publications, customers, client logos, testimonials, t
 
 Primary navigation is:
 
-**Services · Expertise · Research · Market Data · About**
+**Services · Research · Market Data · About**
 
 with **Commission research** as the primary action.
 
@@ -35,10 +34,14 @@ Commissioned work is the commercial core. Public research and data interfaces ex
 The archive UI in `src/components/research-archive.tsx` already supports:
 
 - text search;
-- expertise-area filtering;
+- research-area filtering;
 - publication-type filtering;
+- publication-date filtering;
 - stable publication URLs;
-- author/tags/PDF metadata when supplied;\n- a reusable `/research/[slug]` article template for executive summary, findings, methodology, sources and limitations.
+- author/tags/PDF metadata when supplied;
+- a reusable `/research/[slug]` article template for executive summary, findings, methodology, sources and limitations.
+
+Planned publication formats are **Intelligence Brief**, **Research Report**, **Market Note**, **Data Note**, and **Sector Analysis**. Search covers titles, summaries and tags.
 
 When a real publication is added, build its article/report page with the actual title, authorship, publication date, executive summary, methodology, sources, limitations and any real visual assets. Do not create dummy entries to make the archive look populated.
 
@@ -111,7 +114,8 @@ npm run build
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`. |
-| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |\n| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
+| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |
+| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Recommended | Verified monitored contact address used in About/footer/intake fallback. |
 

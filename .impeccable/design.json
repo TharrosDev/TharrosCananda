@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-21T22:14:11.148Z",
+  "generatedAt": "2026-09-21T21:15:04.2102540-04:00",
   "title": "Design System: Tharros Canada",
   "extensions": {
     "colorMeta": {
@@ -133,6 +133,12 @@
           "#dedede",
           "#f2f2f2"
         ]
+      },
+      "atlas-black": {
+        "role": "neutral",
+        "displayName": "Atlas Black",
+        "canonical": "#191b1d",
+        "tonalRamp": ["#191b1d", "#303336", "#4a4d50", "#66696c", "#8d8f91", "#b6b7b8", "#d8d9d9", "#f1f1f1"]
       },
       "on-dark": {
         "role": "neutral",
@@ -308,7 +314,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Home hero h1; inner-page h1 at clamp(46px, 5.6vw, 84px)."
+        "purpose": "Statement-scale home and inner-page headings; the home hero reaches clamp(58px, 7.5vw, 116px)."
       },
       "headline": {
         "displayName": "Headline",
@@ -355,7 +361,7 @@
       },
       {
         "name": "register-line",
-        "value": "register-draw 1400ms, 350ms delay",
+        "value": "register-draw 1100ms, 180ms delay",
         "purpose": "Trend line draws via stroke-dashoffset (pathLength 1)."
       },
       {
@@ -367,6 +373,11 @@
         "name": "register-bar",
         "value": "register-bar 1100ms, 500ms delay",
         "purpose": "Province bars scale in from the left."
+      },
+      {
+        "name": "atlas-route",
+        "value": "atlas-draw 1600ms, 220ms delay",
+        "purpose": "The Canada-Europe evidence route draws once into an already-readable atlas plate."
       },
       {
         "name": "reduced-motion",
@@ -382,6 +393,10 @@
       {
         "name": "tablet",
         "value": "980px"
+      },
+      {
+        "name": "flagship-compact",
+        "value": "700px"
       },
       {
         "name": "mobile",
@@ -426,7 +441,7 @@
       "kind": "nav",
       "refersTo": "nav-action",
       "description": "76px ruled bar with commercial-first destinations, labelled mobile Menu control and one red Commission research action.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\">Services</a><a href=\"#\">Expertise</a><a href=\"#\">Research</a><a href=\"#\">Market Data</a><a href=\"#\">About</a></div><a class=\"ds-nav-action\" href=\"#\">Commission research</a></nav>",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\">Services</a><a href=\"#\">Research</a><a href=\"#\">Market Data</a><a href=\"#\">About</a></div><a class=\"ds-nav-action\" href=\"#\">Commission research</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:76px;border-bottom:1px solid var(--rule,rgba(28,29,31,.13));background:var(--ivory,#f4f1ea);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-wordmark{display:inline-flex;align-items:center;gap:12px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:23px;font-weight:500;letter-spacing:.16em;text-decoration:none;color:inherit}.ds-slash{width:1px;height:22px;background:var(--red,#9e3a35);transform:skewX(-18deg)}.ds-links{display:flex;gap:24px}.ds-links a{position:relative;padding:26px 0 25px;color:var(--ink-soft,#45484d);font-size:16px;font-weight:500;text-decoration:none}.ds-nav-action{min-height:44px;display:inline-flex;align-items:center;padding:0 18px;background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-size:16px;font-weight:600;text-decoration:none}"
     },
     {
@@ -435,19 +450,41 @@
       "description": "Source-first live-data register: publisher status, Statistics Canada table, controls, KPI readouts, chart, provenance and limitations. Never rendered with synthetic fallback values.",
       "html": "<section class=\"ds-official-data\"><span>Live official source</span><h3>Canada–CETA merchandise trade</h3><dl><div><dt>Publisher</dt><dd>Statistics Canada</dd></div><div><dt>Table</dt><dd>12-10-0174-01</dd></div></dl></section>",
       "css": ".ds-official-data{padding:24px 0;border-top:2px solid var(--ink,#1c1d1f);border-bottom:1px solid var(--ink,#1c1d1f);color:var(--ink,#1c1d1f);background:var(--ivory,#f4f1ea)}.ds-official-data>span{color:var(--green,#4f6e58);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.ds-official-data h3{margin:6px 0 20px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:30px;font-weight:500}.ds-official-data dl{display:grid;grid-template-columns:1fr 1fr;margin:0;border-top:1px solid var(--rule,rgba(28,29,31,.13))}.ds-official-data dl>div{padding:12px 0}.ds-official-data dt{color:var(--slate,#5d6166);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.ds-official-data dd{margin:3px 0 0;font-weight:600}"
+    },
+    {
+      "name": "Evidence Atlas",
+      "kind": "custom",
+      "description": "The homepage evidence plate: a semantic Canada-Europe route and four inspectable source classes.",
+      "html": "<section class=\"ds-atlas\"><header><span>Evidence route</span><span>CA ↔ EU</span></header><svg viewBox=\"0 0 520 180\" aria-label=\"Canada to Europe evidence route\"><path d=\"M55 115C175 28 316 35 465 108\"/><circle cx=\"55\" cy=\"115\" r=\"5\"/><circle cx=\"465\" cy=\"108\" r=\"5\"/></svg><div><span>01 Official data</span><span>02 Procurement</span><span>03 Company records</span><span>04 Policy documents</span></div></section>",
+      "css": ".ds-atlas{color:var(--on-dark,#ece8df);background:var(--atlas-black,#191b1d);border-top:1px solid var(--rule-dark,rgba(236,232,223,.14));border-bottom:1px solid var(--rule-dark,rgba(236,232,223,.14));font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-atlas header{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid var(--rule-dark,rgba(236,232,223,.14));color:var(--on-dark-soft,#aeaba3);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.ds-atlas svg{display:block;width:100%;height:auto}.ds-atlas path{fill:none;stroke:#e0a39c;stroke-width:1.5}.ds-atlas circle{fill:#e0a39c}.ds-atlas>div{display:grid;grid-template-columns:1fr 1fr}.ds-atlas>div span{padding:11px 14px;border-top:1px solid var(--rule-dark,rgba(236,232,223,.14));color:var(--on-dark-soft,#aeaba3);font-size:12px}"
+    },
+    {
+      "name": "Archive Controls",
+      "kind": "custom",
+      "description": "Square search and taxonomy controls for title, summary, tag, area, format and publication year.",
+      "html": "<form class=\"ds-archive\"><label><span>Search archive</span><input placeholder=\"Title, subject or keyword\"></label><label><span>Research area</span><select><option>All areas</option></select></label><label><span>Publication type</span><select><option>All formats</option></select></label><label><span>Publication year</span><select><option>All dates</option></select></label></form>",
+      "css": ".ds-archive{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:18px;padding:20px 0;border-top:1px solid var(--ink,#1c1d1f);border-bottom:1px solid var(--rule,rgba(28,29,31,.13));font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-archive label{display:grid;gap:7px}.ds-archive label>span{font-size:13px;font-weight:600}.ds-archive input,.ds-archive select{height:48px;padding:0 12px;border:1px solid var(--rule-strong,rgba(28,29,31,.32));border-radius:0;background:#fff;color:var(--ink,#1c1d1f);font:inherit}.ds-archive input:focus-visible,.ds-archive select:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+    },
+    {
+      "name": "Research Scope Desk",
+      "kind": "custom",
+      "description": "The light commissioning sheet with explicit progress and written-scope expectations.",
+      "html": "<section class=\"ds-scope\"><header>Research scope desk</header><div><span>Step 1 of 3</span><strong>Who is the research for?</strong><p>No account is created and no sales call is required.</p></div></section>",
+      "css": ".ds-scope{background:var(--ivory-light,#faf8f3);color:var(--ink,#1c1d1f);box-shadow:0 20px 70px rgba(28,29,31,.08);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-scope header{height:34px;padding:0 18px;display:flex;align-items:center;background:var(--ivory-deep,#ebe6db);color:var(--slate,#5d6166);font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.ds-scope>div{padding:34px 40px}.ds-scope span{display:block;color:var(--slate,#5d6166);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.ds-scope strong{display:block;margin-top:18px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:34px;font-weight:400}.ds-scope p{color:var(--ink-soft,#45484d)}"
     }
   ],
   "narrative": {
-    "northStar": "The Tariff Schedule",
-    "overview": "Tharros Canada is an evidence-led commercial research house. Warm ivory carries graphite ink, dark bands mark major commercial/task moments, and light document headers keep archive, methodology, expertise and policy pages editorial. The visual material comes from real research artifacts and official-source data rather than stock photography or generic dashboard cards.\\n\\nThe homepage starts from client decisions, then expertise, live Statistics Canada evidence, services and the research archive. Public research remains visibly empty until verified work exists. Market Data fails closed when official sources are unavailable.",
+    "northStar": "The Evidence Ledger",
+    "overview": "Tharros Canada is an evidence-led commercial research house. Warm ivory carries graphite ink, dark bands mark major commercial and task moments, and statement-scale editorial compositions give each major surface its own hierarchy. The visual material comes from real research artifacts, official-source data and the semantic evidence atlas rather than stock photography or generic dashboard cards.\\n\\nThe homepage follows the evidence route from Canada to Europe, starts from the client decision, summarizes the four research areas, proves the operation with live Statistics Canada evidence, then opens into services and the research archive. Public research remains visibly empty until verified work exists. Market Data fails closed when official sources are unavailable.",
     "keyCharacteristics": [
       "Ivory ground, graphite ink, dark bands used selectively rather than on every route.",
-      "Services · Expertise · Research · Market Data · About primary navigation.",
-      "Four hero modes: home, standard, task and light document.",
-      "Research archive built for search/filter growth but honest while empty.",
+      "Services · Research · Market Data · About primary navigation.",
+      "Evidence-atlas homepage opening plus distinct statement, task and document compositions.",
+      "Four research areas remain a homepage summary and archive taxonomy, not a standalone route.",
+      "Research archive supports title, summary and tag search plus area, format and year filters while remaining honest when empty.",
       "Official Statistics Canada data with visible provenance and limitations; no synthetic fallback.",
       "Ruled registers and 12-column layouts instead of cards.",
-      "Red for action, steel for data, green for positive state/change.",
+      "Red for action, steel for data, green for source state and confirmation.",
       "Source Serif 4 editorial voice and Schibsted Grotesk interface voice."
     ],
     "rules": [
@@ -463,12 +500,12 @@
       },
       {
         "name": "The Band Rule",
-        "body": "Dark tones appear only as full-bleed chapter bands and the footer, never as boxes on the ivory ground. Inside a band, every colour switches to its on-dark partner, including focus.",
+        "body": "Dark tones appear as full-bleed chapter bands, the footer and the evidence-atlas plate. They are never generic card surfaces on the ivory ground. Inside a dark surface, every colour switches to its on-dark partner, including focus.",
         "section": "colors"
       },
       {
-        "name": "The No Kicker Rule",
-        "body": "Nothing sits above a heading as a label. Uppercase appears only as a field label for data, placed directly above the value it names.",
+        "name": "The Context Label Rule",
+        "body": "Compact uppercase labels identify either a datum or the operating context of a statement-scale page opening. They remain descriptive, never promotional decoration.",
         "section": "typography"
       },
       {
