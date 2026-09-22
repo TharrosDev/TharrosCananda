@@ -1,15 +1,19 @@
 name: Update visual baselines
 
-# Run manually on a branch after an approved visual change. Regenerates the Linux screenshots CI compares
-# against and commits them to that branch, so the new baselines are reviewed in the pull request diff.
+# Run after an approved visual change: manually, or by pushing a commit whose message contains
+# [update-baselines]. Regenerates the Linux screenshots CI compares against and commits them to that
+# branch, so the new baselines are reviewed in the pull request diff.
 on:
   workflow_dispatch:
+  push:
+    branches-ignore: [main]
 
 permissions:
   contents: write
 
 jobs:
   update:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[update-baselines]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

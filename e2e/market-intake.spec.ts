@@ -13,15 +13,19 @@ test.describe("market data", () => {
   });
 
   test("selections update a shareable URL and announce the new series", async ({ page }) => {
+    // Each step waits for the previous series to land (status line empties); a cold server can take a few seconds.
+    const settled = () => expect(page.locator(".market-control-status")).toBeEmpty({ timeout: 15_000 });
     await page.goto("/market-explorer");
     await page.getByText("Exports", { exact: true }).click();
-    await expect(page).toHaveURL(/flow=exports/);
-    await expect(page.getByRole("heading", { name: "Exports under CETA: Total of all merchandise" })).toBeVisible();
+    await expect(page).toHaveURL(/flow=exports/, { timeout: 15_000 });
+    await expect(page.getByRole("heading", { name: "Exports under CETA: Total of all merchandise" })).toBeVisible({ timeout: 15_000 });
+    await settled();
     await page.getByLabel("Commodity group").selectOption({ label: "Energy products" });
-    await expect(page).toHaveURL(/flow=exports&commodity=14/);
+    await expect(page).toHaveURL(/flow=exports&commodity=14/, { timeout: 15_000 });
+    await settled();
     await expect(page.locator("[aria-live=polite]").filter({ hasText: "Showing exports under CETA, Energy products" })).toHaveCount(1);
     await page.getByText("1 year", { exact: true }).click();
-    await expect(page).toHaveURL(/range=12/);
+    await expect(page).toHaveURL(/range=12/, { timeout: 15_000 });
     await expect(page.getByRole("heading", { name: "Exports, last 12 months" })).toBeVisible();
   });
 
