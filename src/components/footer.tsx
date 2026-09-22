@@ -20,7 +20,6 @@ export function Footer() {
           <div>
             <p className="footer-heading">Work</p>
             <Link href="/research-services">Services</Link>
-            <Link href="/research-areas">Expertise</Link>
             <Link href="/request-research">Commission research</Link>
             <Link href="/how-it-works">How it works</Link>
           </div>

@@ -21,7 +21,6 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 ## Current public surfaces
 
 - Services
-- Expertise
 - Research archive
 - Market Data
 - About
@@ -51,6 +50,7 @@ Warm ivory, graphite/soft black, slate, muted Canadian red for action, steel for
 
 - Start with the client decision, then the subject area.
 - Use research/data as the visual material.
+- Keep the four Canada–Europe research areas as a concise homepage overview and archive taxonomy rather than a standalone destination.
 - Prefer a narrow real capability over a broad simulated one.
 - Preserve provenance as part of the UI and data model.
 - Make public research easy to archive and navigate as the body of work grows.

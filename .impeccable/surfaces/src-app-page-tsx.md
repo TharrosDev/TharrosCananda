@@ -2,7 +2,7 @@
 version: 2
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
-related_targets: ["src/app/market-explorer/page.tsx","src/app/research/page.tsx","src/app/research-services/page.tsx","src/app/research-areas/page.tsx","src/app/request-research/page.tsx","src/app/about/page.tsx","src/app/how-it-works/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx"]
+related_targets: ["src/app/market-explorer/page.tsx","src/app/research/page.tsx","src/app/research-services/page.tsx","src/app/request-research/page.tsx","src/app/about/page.tsx","src/app/how-it-works/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx"]
 ---
 
 ## Scope
@@ -19,10 +19,10 @@ THESIS: Tharros is an evidence-led commercial research house. The interface uses
 
 OWN-WORLD: Warm ivory, graphite ink, dark chapter bands, muted action red, steel quantitative series, Source Serif 4 and Schibsted Grotesk. The visual material comes from data/research artifacts, not stock photos or generic dashboard cards.
 
-STORY: Understand the proposition → start from a decision/service → inspect expertise and live evidence → review method/research archive → commission a scoped answer.
+STORY: Read the Canada–Europe evidence route → start from a decision/service → inspect the four research areas and live evidence → review method/research archive → commission a scoped answer.
 
-FIRST VIEWPORT: Dark brand hero on home. Compact dark hero on task pages. Light editorial document headers on archive, expertise, methodology, about, process and policy routes. Homepage includes a live Statistics Canada evidence block.
+FIRST VIEWPORT: Home opens with a dark, full-bleed evidence atlas beside the statement-scale proposition and commission action. Compact dark heroes introduce task pages; archive, methodology, process and policy routes use light editorial document headers. About and Commission Research use dedicated statement and scope-desk compositions. Homepage includes a live Statistics Canada evidence block.
 
-FORM: Primary navigation is Services · Expertise · Research · Market Data · About. Canadian Buyer Intelligence is the flagship entry product; market, ecosystem, commissioned and white-label research remain visible. The archive stays empty until genuine publications exist. Market Data uses Statistics Canada WDS and Government of Canada CKAN; failed or updating source calls never leave stale values presented as the newly selected query.
+FORM: Primary navigation is Services · Research · Market Data · About. The four research areas remain a homepage summary and archive taxonomy rather than a standalone route. Canadian Buyer Intelligence is the flagship entry product; market, ecosystem, commissioned and white-label research remain visible. The archive stays empty until genuine publications exist and is prepared for area/type/date filtering plus title/summary/tag search across Intelligence Briefs, Research Reports, Market Notes, Data Notes and Sector Analyses. Market Data uses Statistics Canada WDS and Government of Canada CKAN; its guided controls, provenance and interpretation boundary make the official series useful without overstating what it proves, and failed or updating source calls never leave stale values presented as the newly selected query.
 
 FINISH: unreviewed or undocumented work is unfinished. A production pass ends with lint, typecheck, tests and build passing and agent-facing documentation aligned to the shipped architecture.

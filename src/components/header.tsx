@@ -7,7 +7,6 @@ import { MenuIcon } from "@/components/icons";
 
 const links = [
   { href: "/research-services", label: "Services" },
-  { href: "/research-areas", label: "Expertise" },
   { href: "/research", label: "Research" },
   { href: "/market-explorer", label: "Market Data" },
   { href: "/about", label: "About" },

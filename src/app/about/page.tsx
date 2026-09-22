@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
-import { PageHero } from "@/components/page-hero";
 import { researchEmail } from "@/lib/contact";
 
 export const metadata: Metadata = {
@@ -15,36 +14,18 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageHero
-        variant="document"
-        title="Independent commercial research between Canada and Europe."
-        description="Tharros Canada assembles scattered public evidence into concise, decision-oriented commercial research across trade, defence, energy, industry and strategic technology."
-        index={[
-          { label: "Why Canada–Europe", href: "#relationship" },
-          { label: "How the work is done", href: "#method" },
-          { label: "Research accountability", href: "#accountability" },
-          { label: "Independence", href: "#independence" },
-        ]}
-      />
-      <section className="section about-story">
-        <div>
-          <h2 id="relationship">Why Canada–Europe</h2>
-          <p>Commercial questions across Canada and Europe cut across trade agreements, procurement systems, industrial strategies, company activity and public data held by different institutions. Tharros focuses on that relationship rather than operating as a general-purpose consultancy.</p>
-
-          <h2 id="method">How the work is done</h2>
-          <p>Evidence is assembled from public datasets, procurement notices, company records, policy documents and sector sources on both sides of the Atlantic. Material facts are sourced and dated; interpretation and unresolved uncertainty are kept distinct from verified facts.</p>
-          <p>Commissioned work starts from a written scope. The deliverable, source approach, exclusions, price and timing are agreed before research begins.</p>
-
-          <h2 id="accountability">Research accountability</h2>
-          <p>Public Tharros research identifies authorship, publication date, sources, methodology and material limitations. Internally initiated work is presented as independent Tharros research; commissioned work is described as such only where that is factually accurate and publication is permitted.</p>
-        </div>
-        <aside id="independence">
-          <strong>Independent of government.</strong>
-          <p>Tharros Canada is a commercial research operation. References to public institutions identify sources only and do not imply endorsement, affiliation or access to non-public information.</p>
-          <p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p>
-          {contactEmail && <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
-        </aside>
+      <header className="about-hero"><p>About Tharros Canada</p><h1>Focused enough to know where to look. Independent enough to show the limits.</h1><div><p>Tharros is a commercial research operation built for questions that sit between Canada and Europe—where public evidence is abundant, fragmented and rarely organized around one decision.</p><Link href="#principles">How the work holds up <span aria-hidden="true">↓</span></Link></div></header>
+      <section className="about-thesis" id="relationship"><div><span>CA</span><i aria-hidden="true" /><span>EU</span></div><p>Trade agreements, procurement systems, industrial strategies, company activity and official data do not live in one place. Tharros follows the relationship rather than pretending to cover every market.</p></section>
+      <section className="section about-principles" id="principles">
+        <div className="about-principles-lead"><h2>The operating principles.</h2><p>The work is designed to be useful, attributable and honest about what public evidence can—and cannot—establish.</p></div>
+        <ol>
+          <li id="method"><span>01</span><h3>Start with the decision.</h3><p>The deliverable, source route, exclusions, timing and price are agreed in writing before research begins.</p></li>
+          <li><span>02</span><h3>Separate fact from inference.</h3><p>Material facts are sourced and dated. Interpretation is identified. Unresolved uncertainty remains visible.</p></li>
+          <li id="accountability"><span>03</span><h3>Make the work inspectable.</h3><p>Public research identifies authorship, publication date, methodology, sources and material limitations.</p></li>
+          <li><span>04</span><h3>Stay commercially useful.</h3><p>Research is organized around the decision, not the volume of material collected.</p></li>
+        </ol>
       </section>
+      <section className="about-independence" id="independence"><div><p>Independence</p><h2>No borrowed authority.</h2></div><div><p>Tharros Canada is not a government body or think tank. Public-institution names identify sources only and never imply endorsement, affiliation or access to non-public information.</p><p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p>{contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}</div></section>
       <section className="closing-cta">
         <h2>Have a question that needs research?</h2>
         <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>

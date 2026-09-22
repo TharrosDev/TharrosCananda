@@ -17,6 +17,9 @@ export function ResearchArchive({
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("all");
   const [type, setType] = useState("all");
+  const [year, setYear] = useState("all");
+
+  const years = useMemo(() => [...new Set(publications.map((publication) => publication.publishedAt.slice(0, 4)))].sort().reverse(), [publications]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -27,23 +30,18 @@ export function ResearchArchive({
           .join(" ")
           .toLowerCase()
           .includes(needle);
-      return matchesQuery && (area === "all" || publication.area === area) && (type === "all" || publication.type === type);
-    });
-  }, [area, publications, query, type]);
+      return matchesQuery && (area === "all" || publication.area === area) && (type === "all" || publication.type === type) && (year === "all" || publication.publishedAt.startsWith(year));
+    }).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  }, [area, publications, query, type, year]);
 
   if (!publications.length) {
     return (
       <div className="archive-empty">
-        <div>
-          <h2>First publications in preparation</h2>
-          <p>The archive structure is ready for the first completed Tharros Canada research. Each release will carry its authorship, date, methodology, sources, limitations and suggested citation.</p>
+        <div className="archive-empty-status"><span>Archive status</span><strong>0</strong><p>Published records</p></div>
+        <div className="archive-empty-copy"><h2>Ready for the first release.</h2><p>The archive is deliberately empty until the underlying Tharros work exists. When research is released, this page will index it by area, publication type and date, with search across titles, summaries and tags.</p><p>Every entry is structured to carry named authorship where applicable, an executive summary, methodology, sources, limitations and a stable URL.</p></div>
+        <div className="archive-format-grid">
+          {publicationTypes.map((item, index) => <div key={item.name}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.name}</h3><p>{item.description}</p></div>)}
         </div>
-        <details className="archive-placeholder">
-          <summary>Publication formats</summary>
-          <div>
-            {publicationTypes.map((item) => <p key={item.name}><strong>{item.name}</strong> — {item.description}</p>)}
-          </div>
-        </details>
       </div>
     );
   }
@@ -56,7 +54,7 @@ export function ResearchArchive({
           <input value={query} onChange={(event) => setQuery(event.target.value)} type="search" placeholder="Title, subject or keyword" />
         </label>
         <label>
-          <span>Expertise</span>
+          <span>Research area</span>
           <select value={area} onChange={(event) => setArea(event.target.value)}>
             <option value="all">All areas</option>
             {areas.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
@@ -69,7 +67,15 @@ export function ResearchArchive({
             {publicationTypes.map((item) => <option key={item.name}>{item.name}</option>)}
           </select>
         </label>
+        <label>
+          <span>Publication year</span>
+          <select value={year} onChange={(event) => setYear(event.target.value)}>
+            <option value="all">All dates</option>
+            {years.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
       </form>
+      <div className="archive-result-count" aria-live="polite"><span>{results.length} {results.length === 1 ? "publication" : "publications"}</span><span>Newest first</span></div>
       <ol className="archive-list">
         {results.map((item) => (
           <li key={item.slug}>
