@@ -63,6 +63,7 @@ export default function HomePage() {
           </div>
           <div
             className="evidence-folio"
+            role="group"
             aria-label="A specimen of the Tharros evidence review process"
           >
             <div className="folio-head">

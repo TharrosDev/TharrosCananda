@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const isProduction=process.env.NODE_ENV==="production";
+// ponytail: script-src keeps 'unsafe-inline' for Next's inline bootstrap scripts. A nonce would force every
+// page to render dynamically; React escapes all provider text and JSON-LD escapes "<" (src/lib/site.ts).
 const contentSecurityPolicy=[
   "default-src 'self'","base-uri 'self'","object-src 'none'","frame-ancestors 'none'","form-action 'self'",
   "img-src 'self' data: blob:","font-src 'self' data:","style-src 'self' 'unsafe-inline'","script-src 'self' 'unsafe-inline'",
@@ -8,7 +10,7 @@ const contentSecurityPolicy=[
 ].join("; ");
 
 const nextConfig:NextConfig={
-  poweredByHeader:false,reactStrictMode:true,turbopack:{root:process.cwd()},experimental:{typedEnv:true},
+  poweredByHeader:false,reactStrictMode:true,turbopack:{root:process.cwd()},
   // Retired route: the cross-border checklist folded into the Canada Market Scan. 308 keeps old links and search results working.
   async redirects(){return[{source:"/ecommerce-readiness",destination:"/research-services#market-scan",permanent:true}];},
   async headers(){return[{source:"/(.*)",headers:[

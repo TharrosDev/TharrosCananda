@@ -50,7 +50,7 @@ export function PageHero({
           hasLinkedItems ? (
             <nav className="hero-index" aria-label={indexLabel}>{indexContents}</nav>
           ) : (
-            <div className="hero-index" aria-label={indexLabel}>{indexContents}</div>
+            <div className="hero-index" role="group" aria-label={indexLabel}>{indexContents}</div>
           )
         )}
       </div>

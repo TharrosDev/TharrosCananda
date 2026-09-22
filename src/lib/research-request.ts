@@ -1,3 +1,4 @@
+import { emailPattern } from "@/lib/contact";
 import { researchNeeds, serviceBySlug, type ResearchNeed } from "@/lib/services";
 export { researchNeeds, type ResearchNeed };
 
@@ -16,7 +17,6 @@ export const honeypotField = "fax";
 // Field limits total ~6.1k chars; curly quotes and accents are up to 3 UTF-8 bytes each.
 export const maxBodyBytes = 32_000;
 export const emptyRequest: ResearchRequestPayload = { companyName:"",country:"",website:"",email:"",product:"",industry:"",description:"",hsCode:"",objectives:[],researchNeed:"",context:"",consent:false };
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const hsPattern = /^[0-9][0-9.\s]*$/;
 
 export function normalizeWebsite(value: string): string | null {

@@ -10,7 +10,9 @@ const viewports = [
 ];
 
 for (const path of paths) {
-  test(`${path} has no horizontal overflow at core breakpoints`, async ({ page }) => {
+  test(`${path} has no horizontal overflow at core breakpoints`, async ({ page }, testInfo) => {
+    // The loop sets its own viewports, so one project covers it.
+    test.skip(testInfo.project.name === "mobile");
     for (const viewport of viewports) {
       await page.setViewportSize(viewport);
       await page.goto(path);

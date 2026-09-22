@@ -11,19 +11,9 @@ import {
   type MonitorTopicId,
   type MonitorWindowId,
 } from "@/lib/live-monitor";
+import { formatDateTime } from "@/lib/site";
 
-const dateFormatter = new Intl.DateTimeFormat("en-CA", {
-  month: "short",
-  day: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-  timeZone: "America/Toronto",
-});
-
-function displayDate(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "time unavailable" : dateFormatter.format(date);
-}
+const displayDate = (value: string) => formatDateTime(value, "America/Toronto");
 
 function languageLabel(value: string) {
   const normalised = value.toLowerCase();
@@ -260,7 +250,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
       </div>
 
       {visible.length ? (
-        <div className="monitor-feed" key={`${topic}-${windowId}-${deferredQuery}`}>
+        <div className="monitor-feed" key={`${topic}-${windowId}`}>
           <article className="monitor-lead">
             <div className="monitor-lead-index">
               <span>Lead dispatch</span>

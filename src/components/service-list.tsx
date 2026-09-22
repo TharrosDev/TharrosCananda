@@ -24,7 +24,7 @@ export function ServiceList() {
                   <p className="service-question">{service.question}</p>
                   <ul>{service.outputs.map((item) => <li key={item}><CheckIcon />{item}</li>)}</ul>
                   {service.flagship && (
-                    <div className="buyer-tiers" aria-label="Canadian Buyer Intelligence tiers">
+                    <div className="buyer-tiers" role="group" aria-label="Canadian Buyer Intelligence tiers">
                       {buyerIntelligenceTiers.map((tier) => (
                         <div key={tier.name}>
                           <strong>{tier.name}</strong>

@@ -37,9 +37,7 @@
   --space-block: clamp(32px, 4vw, 56px);
   --space-row: clamp(20px, 2.5vw, 32px);
   --section: var(--space-page);
-  --measure-narrow: 44ch;
   --measure-reading: 64ch;
-  --measure-wide: 72ch;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -114,15 +112,10 @@ p { text-wrap: pretty; }
 .band ::selection { color: var(--soft-black); background: var(--on-dark); }
 .index-number { font-variant-numeric: tabular-nums; }
 
-/* ---------- Data chart ---------- */
-
-@keyframes register-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes register-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-
 /* ---------- Sections ---------- */
 .section { width: var(--shell); margin: 0 auto; padding: var(--section) 0; }
 .section + .section { padding-top: 0; }
-.page-hero + .section, .page-hero + .page-shell { padding-top: var(--space-block); }
+.page-hero + .section { padding-top: var(--space-block); }
 
 
 .service-list { border-top: 1px solid var(--ink); }
@@ -161,7 +154,6 @@ p { text-wrap: pretty; }
 .hero-index-body > a, .hero-index-body > span { color: var(--on-dark); font-family: var(--display); font-size: 20px; line-height: 1.25; text-decoration: none; }
 .hero-index-body > a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
 .hero-index small { color: var(--on-dark-soft); font-size: 14px; line-height: 1.4; }
-.page-shell { width: var(--shell); margin: 0 auto; }
 
 /* ---------- Services page ---------- */
 .service-context { margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
@@ -315,7 +307,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 .citation-panel { padding: 18px; display: grid; gap: 14px; }
 .citation-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
 .citation-tab { padding: 6px 10px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-soft); font-size: 13px; font-weight: 600; cursor: pointer; }
-.citation-tab[aria-selected="true"] { border-color: var(--red); background: var(--red); color: var(--ivory-light); }
+.citation-tab[aria-pressed="true"] { border-color: var(--red); background: var(--red); color: var(--ivory-light); }
 .citation-text { margin: 0; padding: 12px; border: 1px solid var(--rule); background: var(--ivory-light); color: var(--ink); font-size: 13px; line-height: 1.55; }
 .citation-copy { height: 40px; padding: 0 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; }
 .citation-copy:hover { background: var(--ink); color: var(--ivory-light); }

@@ -17,11 +17,7 @@ for (const [name, path] of routes) {
   test(`visual: ${name}`, async ({ page }) => {
     await page.goto(path);
     await page.evaluate(() => document.fonts.ready);
-    await page
-      .locator("[data-loading]")
-      .first()
-      .waitFor({ state: "detached", timeout: 15_000 })
-      .catch(() => {});
+    await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
     await expect(page).toHaveScreenshot(`${name}.png`, {
       fullPage: true,
       mask: [page.locator("[data-volatile]")],

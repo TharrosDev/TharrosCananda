@@ -15,6 +15,12 @@ const links: { href: string; label: string; prefetch?: boolean }[] = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [openedAt, setOpenedAt] = useState(pathname);
+  // Any navigation (logo, back/forward) closes the menu.
+  if (openedAt !== pathname) {
+    setOpenedAt(pathname);
+    setOpen(false);
+  }
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 

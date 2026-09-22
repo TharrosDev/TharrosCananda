@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { buildCitation, citationStyles, type CitationInput, type CitationStyle } from "@/lib/citation";
 
 export function CitationPanel({ input }: { input: CitationInput }) {
@@ -8,11 +8,16 @@ export function CitationPanel({ input }: { input: CitationInput }) {
   const [copied, setCopied] = useState(false);
   const text = useMemo(() => buildCitation(style, input), [style, input]);
 
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch {
       // Clipboard access can be denied by the browser; the citation text remains selectable.
     }
@@ -20,13 +25,12 @@ export function CitationPanel({ input }: { input: CitationInput }) {
 
   return (
     <div className="citation-panel">
-      <div className="citation-tabs" role="tablist" aria-label="Citation style">
+      <div className="citation-tabs" role="group" aria-label="Citation style">
         {citationStyles.map((item) => (
           <button
             key={item.id}
             type="button"
-            role="tab"
-            aria-selected={style === item.id}
+            aria-pressed={style === item.id}
             className="citation-tab"
             onClick={() => setStyle(item.id)}
           >
@@ -38,6 +42,9 @@ export function CitationPanel({ input }: { input: CitationInput }) {
       <button type="button" className="citation-copy" onClick={handleCopy}>
         {copied ? "Copied" : "Copy citation"}
       </button>
+      <span className="sr-only" role="status">
+        {copied ? "Citation copied" : ""}
+      </span>
     </div>
   );
 }
