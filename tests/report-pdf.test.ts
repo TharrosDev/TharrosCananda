@@ -32,3 +32,8 @@ describe.each(allPublications.map((p) => [p.slug, p] as const))("report %s", (sl
     expect(asset!.outline).toBe(true);
   });
 });
+
+it("print route reads the same stylesheet the stale guard hashes", () => {
+  const route = readFileSync(join(process.cwd(), "src/app/research/[slug]/print/page.tsx"), "utf8");
+  expect(route).toContain(`"${REPORT_CSS_PATH.split("/").join('", "')}"`);
+});

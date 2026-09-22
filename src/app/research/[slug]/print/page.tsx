@@ -6,7 +6,7 @@ import { ReportDocument } from "@/components/report/report-document";
 import { allPublications, publicationBySlug } from "@/data/publications";
 import { buildCitation } from "@/lib/citation";
 import { display, sans } from "@/lib/fonts";
-import { REPORT_CSS_PATH, reportSourceHash } from "@/lib/report-source";
+import { reportSourceHash } from "@/lib/report-source";
 import { siteUrl } from "@/lib/site";
 import "@/components/report/report.css";
 
@@ -19,7 +19,8 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = publicationBySlug((await params).slug);
   if (!p) return {};
-  const css = readFileSync(join(process.cwd(), REPORT_CSS_PATH), "utf8");
+  // Literal path so the build traces one file, not the project. Must match REPORT_CSS_PATH.
+  const css = readFileSync(join(process.cwd(), "src", "components", "report", "report.css"), "utf8");
   return {
     title: `${p.title} (print)`,
     robots: { index: false, follow: false },

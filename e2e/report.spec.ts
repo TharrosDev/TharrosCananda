@@ -78,3 +78,15 @@ test.describe("without JavaScript", () => {
     await expect(page.getByRole("link", { name: /Download PDF/ }).first()).toHaveAttribute("href", "/research/TC-EX-000.pdf");
   });
 });
+
+test("stable ID redirects permanently, case-insensitively; unknown IDs 404", async ({ request }) => {
+  const ok = await request.get("/research/id/tc-ex-000", { maxRedirects: 0 });
+  expect(ok.status()).toBe(308);
+  expect(ok.headers()["location"]).toMatch(/\/research\/example-report$/);
+  expect((await request.get("/research/id/NOPE", { maxRedirects: 0 })).status()).toBe(404);
+});
+
+test("non-indexable PDF carries X-Robots-Tag and is not in the sitemap", async ({ request }) => {
+  expect((await request.get("/research/TC-EX-000.pdf")).headers()["x-robots-tag"]).toContain("noindex");
+  expect(await (await request.get("/sitemap.xml")).text()).not.toContain("example-report");
+});
