@@ -131,7 +131,7 @@ export function ResearchArchive({
           <li key={item.slug}>
             <div className="archive-meta">
               <div className="archive-meta-fields">
-                <span>{item.type}</span>
+                <span>{item.specimen ? `Example · ${item.type}` : item.type}</span>
                 <time dateTime={item.publishedAt}>
                   {new Date(item.publishedAt).toLocaleDateString("en-CA", {
                     year: "numeric",
@@ -140,14 +140,16 @@ export function ResearchArchive({
                   })}
                 </time>
               </div>
-              <CiteButton
-                input={{
-                  title: item.title,
-                  authors: item.authors,
-                  publishedAt: item.publishedAt,
-                  url: `${siteUrl}/research/${item.slug}`,
-                }}
-              />
+              {!item.specimen && (
+                <CiteButton
+                  input={{
+                    title: item.title,
+                    authors: item.authors,
+                    publishedAt: item.publishedAt,
+                    url: `${siteUrl}/research/${item.slug}`,
+                  }}
+                />
+              )}
             </div>
             <h2>
               <Link href={`/research/${item.slug}`}>{item.title}</Link>

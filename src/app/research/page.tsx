@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { ResearchArchive } from "@/components/research-archive";
-import { publications, publicationTypes } from "@/data/publications";
+import { publications, publicationTypes, researchSpecimenPublication } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 
 export const metadata: Metadata = {
@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default function ResearchPage() {
+  const archivePublications = publications.length ? publications : [researchSpecimenPublication];
+
   return (
     <>
       <header className="research-hero">
@@ -40,7 +42,7 @@ export default function ResearchPage() {
       </section>
       <section className="section section--compact archive-page">
         <ResearchArchive
-          publications={publications}
+          publications={archivePublications}
           areas={researchAreas}
           publicationTypes={publicationTypes}
         />

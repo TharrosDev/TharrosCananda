@@ -51,63 +51,32 @@ export type Publication = {
   tags?: string[];
   pdfUrl?: string;
   featured?: boolean;
+  specimen?: boolean;
 };
 
+// Intentionally empty until verified Tharros Canada research is actually published.
 // Independent work must use origin: "independent". Use "commissioned" only for work actually commissioned by a client and permitted for publication.
-export const publications: Publication[] = [
-  {
-    slug: "example-report",
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    type: "Research Report",
-    area: "trade-economic-integration",
-    origin: "independent",
-    publishedAt: "2026-09-01",
-    authors: ["Tharros Canada"],
-    summary:
-      "Sed posuere consectetur est at lobortis: vestibulum id ligula porta felis euismod semper, cras mattis consectetur purus sit amet fermentum.",
-    executiveSummary:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum, nulla vitae elit libero, a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla.",
-    keyFindings: [
-      "Lorem ipsum dolor sit amet. Consectetur adipiscing elit, integer posuere erat a ante venenatis dapibus.",
-      "Maecenas faucibus mollis interdum. Nulla vitae elit libero, a pharetra augue donec ullamcorper.",
-      "Vestibulum id ligula porta. Felis euismod semper, cras mattis consectetur purus sit amet.",
-    ],
-    methodology:
-      "Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.",
-    limitations: [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Integer posuere erat a ante venenatis dapibus.",
-      "Donec ullamcorper nulla non metus auctor fringilla.",
-    ],
-    sources: [
-      {
-        publisher: "Publisher",
-        title: "Dataset or document title",
-        url: "https://example.com/source-1",
-        period: "Reference period",
-        retrievedAt: "2026-09-01",
-      },
-      {
-        publisher: "Publisher",
-        title: "Dataset or document title",
-        url: "https://example.com/source-2",
-        period: "Reference period",
-        retrievedAt: "2026-09-01",
-      },
-      {
-        publisher: "Publisher",
-        title: "Dataset or document title",
-        url: "https://example.com/source-3",
-        period: "Reference period",
-        retrievedAt: "2026-09-01",
-      },
-    ],
-    suggestedCitation:
-      "Tharros Canada. (2026, September 1). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tharros Canada Research Report.",
-    tags: ["Trade & Economic Integration"],
-    pdfUrl: "/research/reports/example-report.pdf",
-  },
-];
+export const publications: Publication[] = [];
+
+export const researchSpecimenPublication: Publication = {
+  slug: "example-report",
+  title: "Example research report layout",
+  type: "Research Report",
+  area: "trade-economic-integration",
+  origin: "independent",
+  publishedAt: "2026-09-01",
+  authors: ["Tharros Canada"],
+  summary:
+    "A clearly labelled specimen showing how a published report appears in the archive and how its evidence, findings, methodology and sources are structured.",
+  executiveSummary: "Placeholder specimen content only.",
+  keyFindings: [],
+  methodology: "Placeholder specimen content only.",
+  limitations: ["This is a layout specimen, not a Tharros Canada research finding."],
+  sources: [],
+  suggestedCitation: "Not applicable. This is a layout specimen.",
+  tags: ["Example layout", "Publication structure"],
+  specimen: true,
+};
 
 export function publicationBySlug(slug: string) {
   return publications.find((publication) => publication.slug === slug);

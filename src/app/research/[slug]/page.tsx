@@ -74,54 +74,42 @@ export default async function ResearchArticlePage({
           {publication.pdfUrl && <a className="text-link" href={publication.pdfUrl}>Download report <ArrowIcon /></a>}
         </header>
 
-        {publication.pdfUrl ? (
-          <section className="research-pdf-embed">
-            <object data={publication.pdfUrl} type="application/pdf" aria-label={`${publication.title} (PDF)`}>
-              <p>
-                <a href={publication.pdfUrl}>Download the report (PDF)</a>
-              </p>
-            </object>
+        <section>
+          <h2>Executive summary</h2>
+          <p className="research-lede">{publication.executiveSummary}</p>
+        </section>
+
+        <section>
+          <h2>Key findings</h2>
+          <ol className="research-findings">{publication.keyFindings.map((finding) => <li key={finding}>{finding}</li>)}</ol>
+        </section>
+
+        {(publication.sections ?? []).map((section) => (
+          <section key={section.heading}>
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </section>
-        ) : (
-          <>
-            <section>
-              <h2>Executive summary</h2>
-              <p className="research-lede">{publication.executiveSummary}</p>
-            </section>
+        ))}
 
-            <section>
-              <h2>Key findings</h2>
-              <ol className="research-findings">{publication.keyFindings.map((finding) => <li key={finding}>{finding}</li>)}</ol>
-            </section>
+        <section><h2>Methodology</h2><p>{publication.methodology}</p></section>
+        <section><h2>Limitations</h2><ul className="research-limitations">{publication.limitations.map((item) => <li key={item}>{item}</li>)}</ul></section>
 
-            {(publication.sections ?? []).map((section) => (
-              <section key={section.heading}>
-                <h2>{section.heading}</h2>
-                {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              </section>
+        <section>
+          <h2>Sources</h2>
+          <ol className="research-sources">
+            {publication.sources.map((source) => (
+              <li key={source.url}>
+                <a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a>
+                {(source.period || source.retrievedAt) && <small>{[source.period, source.retrievedAt && `Retrieved ${source.retrievedAt}`].filter(Boolean).join(" · ")}</small>}
+              </li>
             ))}
+          </ol>
+        </section>
 
-            <section><h2>Methodology</h2><p>{publication.methodology}</p></section>
-            <section><h2>Limitations</h2><ul className="research-limitations">{publication.limitations.map((item) => <li key={item}>{item}</li>)}</ul></section>
-
-            <section>
-              <h2>Sources</h2>
-              <ol className="research-sources">
-                {publication.sources.map((source) => (
-                  <li key={source.url}>
-                    <a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a>
-                    {(source.period || source.retrievedAt) && <small>{[source.period, source.retrievedAt && `Retrieved ${source.retrievedAt}`].filter(Boolean).join(" · ")}</small>}
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            <section className="research-citation">
-              <h2>Suggested citation</h2>
-              <p>{publication.suggestedCitation}</p>
-            </section>
-          </>
-        )}
+        <section className="research-citation">
+          <h2>Suggested citation</h2>
+          <p>{publication.suggestedCitation}</p>
+        </section>
 
         <footer className="research-article-footer">
           <Link href="/research">Back to research archive</Link>

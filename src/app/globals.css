@@ -308,10 +308,6 @@ legend:focus:not(:focus-visible) { outline: none; }
 .research-article-footer { padding-top: 28px; border-top: 1px solid var(--ink); display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .research-article-footer > a:first-child { font-weight: 600; }
 
-.research-pdf-embed { border: 1px solid var(--rule-strong); background: var(--ivory-light); }
-.research-pdf-embed object { display: block; width: 100%; height: 80vh; min-height: 640px; }
-.research-pdf-embed p { margin: 0; padding: 48px 24px; text-align: center; }
-
 /* ---------- Citation ---------- */
 
 .citation-sidebar-sticky { position: sticky; top: calc(var(--header-height) + 24px); border: 1px solid var(--ink); }
