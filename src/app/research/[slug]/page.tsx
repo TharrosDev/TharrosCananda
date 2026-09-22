@@ -2,128 +2,112 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowIcon } from "@/components/icons";
-import { CitationSidebar } from "@/components/citation-sidebar";
-import { PageHero } from "@/components/page-hero";
-import { publicationBySlug, publications } from "@/data/publications";
+import { ReportActions } from "@/components/report/report-actions";
+import { ReportViewer } from "@/components/report/report-viewer";
+import { allPublications, publicationBySlug } from "@/data/publications";
+import type { CitationInput } from "@/lib/citation";
 import { researchAreas } from "@/lib/research-areas";
-import { jsonLd, siteUrl } from "@/lib/site";
+import { reportAsset } from "@/lib/reports";
+import { formatLongDate, jsonLd, siteUrl } from "@/lib/site";
 
-export function generateStaticParams() {
-  return publications.map((publication) => ({ slug: publication.slug }));
-}
+export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const publication = publicationBySlug(slug);
-  if (!publication) return {};
+type Props = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const p = publicationBySlug((await params).slug);
+  if (!p) return {};
+  const asset = reportAsset(p.slug);
+  // The OG image comes from ./opengraph-image.tsx (the file convention wins over metadata images).
+  const base: Metadata = {
+    title: p.title,
+    description: p.summary,
+    alternates: { canonical: `/research/${p.slug}` },
+    openGraph: { type: "article", title: p.title, description: p.summary, publishedTime: p.publishedAt, authors: p.authors },
+  };
+  if (!p.indexable) return { ...base, robots: { index: false, follow: false } };
+  // Highwire Press tags: what Google Scholar reads to index a report and its PDF.
   return {
-    title: publication.title,
-    description: publication.summary,
-    alternates: { canonical: `/research/${publication.slug}` },
-    openGraph: {
-      type: "article",
-      title: publication.title,
-      description: publication.summary,
-      publishedTime: publication.publishedAt,
-      authors: publication.authors,
+    ...base,
+    other: {
+      citation_title: p.title,
+      citation_author: p.authors,
+      citation_publication_date: p.publishedAt.replaceAll("-", "/"),
+      citation_publisher: "Tharros Canada",
+      citation_technical_report_number: p.reference,
+      citation_technical_report_institution: "Tharros Canada",
+      citation_language: "en",
+      ...(asset ? { citation_pdf_url: `${siteUrl}${asset.file}` } : {}),
     },
   };
 }
 
-export default async function ResearchArticlePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const publication = publicationBySlug(slug);
-  if (!publication) notFound();
-
-  const area = researchAreas.find((item) => item.slug === publication.area);
-  const originLabel = publication.origin === "independent" ? "Independent research by Tharros Canada" : "Client-commissioned research";
+export default async function ReportPage({ params }: Props) {
+  const p = publicationBySlug((await params).slug);
+  if (!p) notFound();
+  const asset = reportAsset(p.slug);
+  const area = researchAreas.find((a) => a.slug === p.area);
+  const stableUrl = `${siteUrl}/research/id/${p.reference}`;
+  const citation: CitationInput = { title: p.title, authors: p.authors, publishedAt: p.publishedAt, url: stableUrl, reference: p.reference };
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: publication.title,
-    description: publication.summary,
-    datePublished: publication.publishedAt,
-    author: publication.authors.map((name) => ({ "@type": "Person", name })),
+    "@type": "Report",
+    name: p.title,
+    headline: p.title,
+    reportNumber: p.reference,
+    abstract: p.summary,
+    datePublished: p.publishedAt,
+    inLanguage: "en-CA",
+    author: p.authors.map((name) => ({ "@type": name === "Tharros Canada" ? "Organization" : "Person", name })),
     publisher: { "@type": "Organization", name: "Tharros Canada", url: siteUrl },
-    articleSection: area?.name ?? publication.area,
-    citation: publication.sources.map((source) => source.url),
+    about: area?.name,
+    url: `${siteUrl}/research/${p.slug}`,
+    ...(asset ? { encoding: { "@type": "MediaObject", contentUrl: `${siteUrl}${asset.file}`, encodingFormat: "application/pdf" } } : {}),
+    citation: p.sources.flatMap((s) => (s.url ? [s.url] : [])),
   };
 
   return (
     <>
-      <PageHero variant="document" title={publication.title} description={publication.summary} />
-      <div className="section research-article-layout">
-      <article className="research-article">
-        <header className="research-article-meta">
-          <dl>
-            <div><dt>Format</dt><dd>{publication.type}</dd></div>
-            <div><dt>Origin</dt><dd>{originLabel}</dd></div>
-            <div><dt>Expertise</dt><dd>{area?.name ?? publication.area}</dd></div>
-            <div><dt>Published</dt><dd><time dateTime={publication.publishedAt}>{new Date(publication.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time></dd></div>
-            <div><dt>Authors</dt><dd>{publication.authors.join(", ")}</dd></div>
-          </dl>
-          {publication.pdfUrl && <a className="text-link" href={publication.pdfUrl}>Download report <ArrowIcon /></a>}
-        </header>
-
-        <section>
-          <h2>Executive summary</h2>
-          <p className="research-lede">{publication.executiveSummary}</p>
-        </section>
-
-        <section>
-          <h2>Key findings</h2>
-          <ol className="research-findings">{publication.keyFindings.map((finding) => <li key={finding}>{finding}</li>)}</ol>
-        </section>
-
-        {(publication.sections ?? []).map((section) => (
-          <section key={section.heading}>
-            <h2>{section.heading}</h2>
-            {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-          </section>
-        ))}
-
-        <section><h2>Methodology</h2><p>{publication.methodology}</p></section>
-        <section><h2>Limitations</h2><ul className="research-limitations">{publication.limitations.map((item) => <li key={item}>{item}</li>)}</ul></section>
-
-        <section>
-          <h2>Sources</h2>
-          <ol className="research-sources">
-            {publication.sources.map((source) => (
-              <li key={source.url}>
-                <a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a>
-                {(source.period || source.retrievedAt) && <small>{[source.period, source.retrievedAt && `Retrieved ${source.retrievedAt}`].filter(Boolean).join(" · ")}</small>}
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="research-citation">
-          <h2>Suggested citation</h2>
-          <p>{publication.suggestedCitation}</p>
-        </section>
-
-        <footer className="research-article-footer">
-          <Link href="/research">Back to research archive</Link>
-          <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
-        </footer>
-      </article>
-      <CitationSidebar
-        input={{
-          title: publication.title,
-          authors: publication.authors,
-          publishedAt: publication.publishedAt,
-          url: `${siteUrl}/research/${publication.slug}`,
-        }}
-      />
-      </div>
+      {p.specimen && (
+        <div className="report-notice" role="note">
+          <div>
+            <strong>Example layout</strong>
+            <p>
+              This shows how a Tharros research report is published. Every word is lorem ipsum placeholder text, and the figure
+              contains no data. It is not a publication and is kept out of search engines.
+            </p>
+          </div>
+          <Link className="text-link" href="/research">
+            Back to the research archive <ArrowIcon />
+          </Link>
+        </div>
+      )}
+      <header className="report-header">
+        <p className="report-header-kicker">
+          {p.type} · {area?.name ?? p.area}
+        </p>
+        <h1>{p.title}</h1>
+        {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
+        <dl className="report-header-meta">
+          <div><dt>Reference</dt><dd>{p.reference}</dd></div>
+          <div><dt>Published</dt><dd><time dateTime={p.publishedAt}>{formatLongDate(p.publishedAt)}</time></dd></div>
+          <div><dt>Authors</dt><dd>{p.authors.join(", ")}</dd></div>
+          {asset && <div><dt>Length</dt><dd>{asset.pages} pages</dd></div>}
+        </dl>
+        <p className="report-header-abstract">{p.summary}</p>
+        {asset && <ReportActions file={asset.file} bytes={asset.bytes} citation={citation} url={stableUrl} title={p.title} />}
+      </header>
+      {asset ? (
+        <ReportViewer file={asset.file} pages={asset.pages} title={p.title} />
+      ) : (
+        <p className="report-pending">The PDF for this report is being prepared.</p>
+      )}
+      <section className="closing-cta">
+        <h2>Need research on a specific question?</h2>
+        <Link className="button-primary" href="/request-research">
+          Commission research <ArrowIcon />
+        </Link>
+      </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
     </>
   );

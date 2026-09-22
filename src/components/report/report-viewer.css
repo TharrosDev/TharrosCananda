@@ -1,0 +1,31 @@
+/* Report viewer: PDF pages drawn as shadowed ivory sheets. Kept apart from report.css, which shapes the PDF itself. */
+.report-viewer { width: min(900px, calc(100vw - 2 * var(--gutter))); margin: 0 auto clamp(56px, 7vw, 96px); }
+.report-viewer-toolbar { position: sticky; top: var(--header-height); z-index: 5; margin-bottom: 28px; padding: 10px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; border-bottom: 1px solid var(--rule-strong); background: var(--ivory); font-size: 15px; }
+.report-viewer-pages, .report-viewer-zoom { display: flex; align-items: center; gap: 8px; }
+.report-viewer-pages label { font-weight: 600; }
+.report-viewer-pages input { width: 3.2em; height: 40px; border: 1px solid var(--rule-strong); background: var(--ivory-light); color: var(--ink); text-align: center; font: inherit; font-variant-numeric: tabular-nums; }
+.report-viewer-pages span { color: var(--slate); }
+.report-viewer-zoom button { min-width: 44px; height: 40px; padding: 0 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+.report-viewer-zoom button:hover, .report-viewer-zoom button[aria-pressed="true"] { background: var(--ink); color: var(--ivory-light); }
+.report-viewer-zoom output { min-width: 4.5ch; text-align: center; font-variant-numeric: tabular-nums; }
+.report-viewer-download { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.report-viewer-sheets { display: grid; justify-items: center; gap: 32px; overflow-x: auto; padding: 4px 0 12px; }
+.report-viewer-sheets:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
+.report-sheet { position: relative; flex: none; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong), 0 24px 60px -30px rgba(22, 23, 25, .35); scroll-margin-top: calc(var(--header-height) + 88px); }
+.report-sheet canvas { display: block; width: 100% !important; height: 100% !important; }
+.report-viewer-error { padding: 56px 24px; border: 1px solid var(--rule-strong); background: var(--ivory-light); text-align: center; }
+.report-viewer-error p { margin: 0 0 12px; font-size: 19px; }
+@media (max-width: 560px) {
+  .report-viewer-toolbar { top: 0; position: static; }
+  .report-viewer-sheets { gap: 18px; }
+}
+
+/* pdf.js text layer (from pdfjs-dist/web/pdf_viewer.css, 6.x): transparent positioned text over the canvas. */
+.textLayer { color-scheme: only light; position: absolute; text-align: initial; inset: 0; overflow: clip; opacity: 1; line-height: 1; letter-spacing: normal; word-spacing: normal; text-size-adjust: none; forced-color-adjust: none; transform-origin: 0 0; caret-color: CanvasText; z-index: 0; --min-font-size: 1; --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size)); --min-font-size-inv: calc(1 / var(--min-font-size)); }
+.textLayer :is(span, br) { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0% 0%; user-select: text; }
+.textLayer > :not(.markedContent), .textLayer .markedContent span:not(.markedContent) { z-index: 1; --font-height: 0; font-size: calc(var(--text-scale-factor) * var(--font-height)); --scale-x: 1; --rotate: 0deg; transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv)); }
+.textLayer .markedContent { display: contents; }
+.textLayer ::selection { background: rgba(70, 103, 127, .28); color: transparent; }
+.textLayer br::selection { background: transparent; }
+.textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: 0; cursor: default; user-select: none; }
+.textLayer.selecting .endOfContent { top: 0; }

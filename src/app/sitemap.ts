@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { publications } from "@/data/publications";
+import { allPublications } from "@/data/publications";
+import { reportAsset } from "@/lib/reports";
 import { siteUrl as base } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -24,11 +25,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         : "monthly") as "hourly" | "weekly" | "monthly",
     priority: index === 0 ? 1 : index < 7 ? 0.9 : 0.6,
   }));
-  const research = publications.map((publication) => ({
-    url: `${base}/research/${publication.slug}`,
-    lastModified: new Date(publication.publishedAt),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  const research = allPublications
+    .filter((p) => p.indexable)
+    .flatMap((p) => {
+      const asset = reportAsset(p.slug);
+      const lastModified = new Date(p.publishedAt);
+      const page = { url: `${base}/research/${p.slug}`, lastModified, changeFrequency: "monthly" as const, priority: 0.8 };
+      return asset ? [page, { url: `${base}${asset.file}`, lastModified, changeFrequency: "yearly" as const, priority: 0.6 }] : [page];
+    });
   return [...core, ...research];
 }

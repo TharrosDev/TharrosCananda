@@ -39,11 +39,19 @@ The archive UI in `src/components/research-archive.tsx` already supports:
 - publication-date filtering;
 - stable publication URLs;
 - author/tags/PDF metadata when supplied;
-- a reusable `/research/[slug]` article template for executive summary, findings, methodology, sources and limitations.
+- a `/research/[slug]` report page that embeds the real PDF (drawn with pdf.js as paper sheets), with Cite / Download / Copy link / Share;
+- a stable citation URL per report: `/research/id/<reference>` (308 to the slug).
 
-Planned publication formats are **Intelligence Brief**, **Research Report**, **Market Note**, **Data Note**, and **Sector Analysis**. Search covers titles, summaries and tags.
+Planned publication formats are **Intelligence Brief**, **Research Report**, **Market Note**, **Data Note**, and **Sector Analysis**.
 
-When a real publication is added, build its article/report page with the actual title, authorship, publication date, executive summary, methodology, sources, limitations and any real visual assets. Do not create dummy entries to make the archive look populated.
+The example report (`TC-EX-000`) is a clearly labelled lorem-ipsum specimen. It runs through the whole pipeline but has `indexable: false`, so it is noindex, has no Scholar tags, stays out of the sitemap and its PDF is served with `X-Robots-Tag: noindex`. Do not create dummy entries to make the archive look populated.
+
+### Publishing a report
+
+1. Add a record to `publications` in `src/data/publications.ts`: `reference` `TC-<YEAR>-<NNN>`, typed `body` blocks, and `indexable: true` only for verified, published work.
+2. `npm run build && npm run report:pdf -- <slug>` prints `/research/<slug>/print` to `public/research/<reference>.pdf` and writes the cover, the extracted text (`src/data/report-text.json`) and `src/data/report-pdf.json`. Commit all of them; Vercel builds cannot run Chromium.
+3. Read the PDF before committing. `npm test` fails when the record or `src/components/report/report.css` changes without regenerating.
+4. Indexable reports get Highwire `citation_*` tags (Google Scholar), `Report` JSON-LD, sitemap entries for the page and PDF, and the stable URL.
 
 ## Live Monitor
 

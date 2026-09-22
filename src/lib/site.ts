@@ -6,6 +6,7 @@ export const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\u0
 // Locale-free date text: built from numeric parts only, so server and every browser render the same
 // string (en-CA month names differ between ICU versions, e.g. "Sep" vs "Sept.", and break hydration).
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const fullMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function dateParts(value: string, timeZone: string) {
   const date = new Date(value);
@@ -27,6 +28,18 @@ function dateParts(value: string, timeZone: string) {
 export function formatMonthYear(value: string) {
   const p = dateParts(value, "UTC");
   return p ? `${p.month} ${p.year}` : "Date unavailable";
+}
+
+/** "June 1, 2026" (UTC) */
+export function formatLongDate(value: string) {
+  const p = dateParts(value, "UTC");
+  return p ? `${fullMonths[months.indexOf(p.month)]} ${p.day}, ${p.year}` : "Date unavailable";
+}
+
+/** "June 2026" (UTC) */
+export function formatFullMonthYear(value: string) {
+  const p = dateParts(value, "UTC");
+  return p ? `${fullMonths[months.indexOf(p.month)]} ${p.year}` : "Date unavailable";
 }
 
 /** "Sep 22, 4:15 p.m." in the given time zone */

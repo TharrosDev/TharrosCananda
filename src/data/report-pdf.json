@@ -1,0 +1,10 @@
+{
+  "example-report": {
+    "file": "/research/TC-EX-000.pdf",
+    "cover": "/research/TC-EX-000-cover.jpg",
+    "pages": 3,
+    "bytes": 189952,
+    "sha": "2deb6b160f89bf80",
+    "outline": true
+  }
+}
