@@ -11,24 +11,24 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Tharros Canada | Commercial research and intelligence connecting Canada and Europe",
+    default: "Tharros Canada | Independent Canada–Europe research",
     template: "%s | Tharros Canada",
   },
   description:
-    "Tharros Canada researches commercial, economic, industrial, technological and strategic developments connecting Canada and Europe, and provides commissioned research and commercial intelligence.",
+    "Independent research on trade, defence, energy, industry and technology across Canada and Europe.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_CA",
     url: siteUrl,
     siteName: "Tharros Canada",
-    title: "Commercial research and intelligence connecting Canada and Europe.",
-    description: "Independent research and commissioned intelligence on trade, defence, energy, industry and technology between Canada and Europe.",
+    title: "Independent Canada–Europe research.",
+    description: "Research on trade, defence, energy, industry and technology across Canada and Europe.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Tharros Canada",
-    description: "Commercial research and intelligence connecting Canada and Europe.",
+    description: "Independent Canada–Europe research.",
   },
   robots: { index: true, follow: true },
 };
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@type": "Organization",
     name: "Tharros Canada",
     url: siteUrl,
-    description: "Commercial research and intelligence company focused on Canada–Europe relations.",
+    description: "Independent research organization focused on Canada–Europe relations.",
     ...(email ? { email } : {}),
   };
 

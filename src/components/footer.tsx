@@ -13,7 +13,7 @@ export function Footer() {
             <span className="wordmark-slash">/</span>
             <span>CANADA</span>
           </Link>
-          <p>Commercial research and intelligence connecting Canada and Europe.</p>
+          <p>Independent Canada–Europe research.</p>
           {contactEmail && <a className="footer-contact" href={`mailto:${contactEmail}`}>{contactEmail}</a>}
         </div>
         <nav className="footer-links" aria-label="Footer">
@@ -38,7 +38,7 @@ export function Footer() {
         </nav>
       </div>
       <div className="footer-legal">
-        <p>© {new Date().getFullYear()} Tharros Canada. Independent commercial research.</p>
+        <p>© {new Date().getFullYear()} Tharros Canada.</p>
         <p>Not legal, tax, regulatory, lobbying or investment advice.</p>
       </div>
     </footer>

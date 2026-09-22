@@ -31,7 +31,7 @@ export const researchAreas = [
       "How do industrial policies on each side shape investment decisions?",
       "Who are the active buyers, processors and offtakers in a segment?",
     ],
-    evidence: ["Project and production data", "Industrial-policy and infrastructure records", "Corporate filings and commercial announcements"],
+    evidence: ["Project and production data", "Industrial-policy and infrastructure records", "Corporate filings and company announcements"],
   },
   {
     slug: "technology-strategic-industries",
@@ -40,7 +40,7 @@ export const researchAreas = [
     questions: [
       "Which Canadian and European organizations lead in a technology segment?",
       "How do AI and digital policy differ in ways that affect market entry?",
-      "Where is research cooperation turning into commercial activity?",
+      "Where is research cooperation producing practical applications?",
     ],
     evidence: ["Public company and funding records", "Research and programme documentation", "Policy, procurement and ecosystem data"],
   },
