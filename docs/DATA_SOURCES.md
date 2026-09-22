@@ -93,7 +93,7 @@ If values are transformed (for example, Statistics Canada's scalar-factor codes)
 
 - Never replace unavailable official data with plausible demonstration values.
 - Never silently change a requested classification, flow, commodity or country grouping.
-- Return a clear unavailable/error state when a publisher or discovery provider cannot be reached; any degraded discovery fallback must be visibly labelled.
+- Return a clear unavailable/error state when a publisher or discovery provider cannot be reached. Live Monitor currently has no degraded or secondary-provider fallback; adding one requires an explicit provenance, rights and UI review.
 - Cache official responses only for a bounded period appropriate to the publisher's update frequency.
 - Treat schema changes as failures until inspected.
 - Do not call a value current/live unless the request path and retrieval time are observable.
