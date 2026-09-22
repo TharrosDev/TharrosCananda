@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 
 export function Footer() {
@@ -32,13 +33,14 @@ export function Footer() {
           <div>
             <p className="footer-heading">Company</p>
             <Link href="/about">About</Link>
+            <Link href="/about#contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/accessibility">Accessibility</Link>
           </div>
         </nav>
       </div>
       <div className="footer-legal">
-        <p>© {new Date().getFullYear()} Tharros Canada.</p>
+        <p><span data-volatile>© {new Date().getFullYear()}</span> {organization.legal?.legalName ?? "Tharros Canada"}.</p>
         <p>Not legal, tax, regulatory, lobbying or investment advice.</p>
       </div>
     </footer>

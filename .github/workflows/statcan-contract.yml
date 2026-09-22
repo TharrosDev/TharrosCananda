@@ -1,0 +1,20 @@
+name: Statistics Canada contract
+
+# Weekly check that the live WDS still matches what the adapter validates. A failure means the Market Data
+# page is showing, or will soon show, its "no figures" state: update src/lib/statcan.ts and the fixtures.
+on:
+  schedule:
+    - cron: "17 11 * * 1"
+  workflow_dispatch:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:contract

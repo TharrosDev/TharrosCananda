@@ -1,12 +1,17 @@
 export type TradeFlow = "Imports" | "Exports";
 
+/** A publisher quality, revision or suppression marker attached to an observation. */
+export type DataFlag = { code: string; label: string };
+
 export type TradePoint = {
+  /** Reference month as published (YYYY-MM-DD, always the first of the month). */
   period: string;
   valueCad: number;
   rawValue: number;
   scalarFactorCode: number;
   releaseTime: string;
   statusCode: number;
+  flags: DataFlag[];
 };
 
 export type TradeOption = { id: string; label: string };
@@ -21,6 +26,7 @@ export type TradeExplorerResponse = {
     title: string;
     url: string;
     licenceUrl: string;
+    /** When Tharros retrieved this copy from Statistics Canada (preserved through caching). */
     retrievedAt: string;
     latestRelease: string | null;
     frequency: "Monthly";
@@ -28,8 +34,13 @@ export type TradeExplorerResponse = {
   };
   query: { flow: TradeFlow; agreement: string; commodity: TradeOption };
   coordinate: string;
+  vectorId: number;
   seriesTitle: string;
   points: TradePoint[];
+  /** Months the publisher withheld (suppressed, not available or too unreliable), never shown as values. */
+  withheld: { period: string; flags: DataFlag[] }[];
+  /** Statistics Canada table notes that apply to this series. */
+  notes: string[];
   options: { flows: TradeFlow[]; commodities: TradeOption[] };
   limitations: string[];
 };

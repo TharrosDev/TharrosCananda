@@ -30,7 +30,8 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
 
-test("nested research route keeps Research navigation state",async({page})=>{
+test("nested research route keeps Research navigation state",async({page,isMobile})=>{
+  test.skip(isMobile,"Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
   await expect(page.getByRole("link",{name:"Research",exact:true})).toHaveAttribute("aria-current","page");
 });

@@ -4,7 +4,7 @@
 
 The public Market Data interface uses **real Statistics Canada data**. It does not contain synthetic fallback values.
 
-### Statistics Canada — Table 12-10-0174-01
+### Statistics Canada: Table 12-10-0174-01
 
 - **WDS Product ID:** 12100174\n- **Catalogue/issue ID:** 1210017401
 - **Table:** 12-10-0174-01
@@ -20,7 +20,15 @@ Implementation: `src/lib/statcan.ts`.
 
 The adapter calls `getCubeMetadata`, `getSeriesInfoFromCubePidCoord`, and `getDataFromCubePidCoordAndLatestNPeriods`. Coordinates are built from the publisher's dimension/member metadata rather than relying on undocumented hard-coded coordinates. Required semantic members must be positively identified; an unrecognized dimension is allowed to default only when it has exactly one active member. The WDS base PID is used for metadata/series calls; the public table view and DOI use the catalogue/issue identifier ending in `01`.
 
-The table publishes values with scalar-factor metadata. The adapter applies `10 ** scalarFactorCode` before presenting Canadian-dollar values.
+The table publishes values with scalar-factor metadata. The adapter applies `10 ** scalarFactorCode` before presenting Canadian-dollar values, and rejects a series whose datapoints mix scales or disagree with the series information, or whose unit is not dollars.
+
+### Validation, quality flags and failure behaviour
+
+- Every WDS response is checked at runtime: the `SUCCESS` envelope, product id, dimension positions, member ids and names, coordinate echo, vector id, monthly reference periods, finite values and the scalar factor. Any mismatch throws `StatcanDriftError`, and the page shows its explicit "no figures" state.
+- Symbol codes (p, r), status codes (A to F, `..`, `...`, `0s`, `<LOD`) and suppression (`x`) are kept per observation. Flagged values are labelled; withheld months are listed as not published and never charted or summed.
+- Table notes that apply to the table or to the selected members are shown beside the figures.
+- Successful responses are cached for 6 hours (`src/lib/statcan-data.ts`); failures are never cached. A copy older than 24 hours means refreshes are failing, and it is labelled with its retrieval time.
+- Fixture tests (`tests/statcan.test.ts`) run against recorded real responses and mutated copies (schema drift, missing dimensions, renamed or terminated members, invalid datapoints, flags, timeouts and HTTP errors). `npm run test:contract` checks the live service weekly in CI.
 
 ### Statistics Canada acknowledgement
 
@@ -32,7 +40,7 @@ Do not use Statistics Canada or Government of Canada logos/wordmarks.
 
 ## Government of Canada Open Data
 
-The Market Data page also queries the official Open Government CKAN Action API using `package_search`.
+The Market Data page offers a collapsed, secondary "Find related federal datasets" panel that queries the official Open Government CKAN Action API (`package_search`) only when opened.
 
 Implementation: `src/app/api/open-data/search/route.ts`.
 
