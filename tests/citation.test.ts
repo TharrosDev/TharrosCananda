@@ -31,11 +31,30 @@ describe("buildCitation", () => {
       "Smith, J. & Chen, A. (June 2026). Defence procurement pathways. Tharros Canada. https://tharros.ca/research/defence-procurement",
     );
     expect(buildCitation("mla", namedReport)).toBe(
-      'Smith, J., and Alex Chen. "Defence procurement pathways." Tharros Canada, June 1, 2026, https://tharros.ca/research/defence-procurement.',
+      'Smith, Jane, and Alex Chen. "Defence procurement pathways." Tharros Canada, June 1, 2026, https://tharros.ca/research/defence-procurement.',
     );
   });
 
   it("includes an access date in Harvard citations", () => {
     expect(buildCitation("harvard", namedReport)).toContain("Accessed: September 22, 2026");
+  });
+  it("keeps full first names for MLA and Chicago, initials only for APA", () => {
+    expect(buildCitation("mla", namedReport)).toBe(
+      'Smith, Jane, and Alex Chen. "Defence procurement pathways." Tharros Canada, June 1, 2026, https://tharros.ca/research/defence-procurement.',
+    );
+    expect(buildCitation("chicago", namedReport)).toBe(
+      'Smith, Jane, and Alex Chen. 2026. "Defence procurement pathways." Tharros Canada. https://tharros.ca/research/defence-procurement.',
+    );
+    expect(buildCitation("apa", namedReport)).toContain("Smith, J. & Chen, A.");
+  });
+
+  it("adds the report number when a reference is given", () => {
+    const withRef = { ...namedReport, reference: "TC-2026-001" };
+    expect(buildCitation("apa", withRef)).toBe(
+      "Smith, J. & Chen, A. (June 2026). Defence procurement pathways (Report No. TC-2026-001). Tharros Canada. https://tharros.ca/research/defence-procurement",
+    );
+    expect(buildCitation("mla", withRef)).toContain('"Defence procurement pathways." Tharros Canada Report TC-2026-001, Tharros Canada,');
+    expect(buildCitation("chicago", withRef)).toContain('"Defence procurement pathways." Report TC-2026-001. Tharros Canada.');
+    expect(buildCitation("harvard", withRef)).toContain("Defence procurement pathways. Report TC-2026-001. Tharros Canada.");
   });
 });
