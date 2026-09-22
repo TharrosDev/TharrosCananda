@@ -7,8 +7,12 @@ import {
 export const CURRENTS_API_BASE_URL = "https://api.currentsapi.services";
 const SEARCH_PATH = "/v2/search";
 const FETCH_TIMEOUT_MS = 10_000;
-const PREFERRED_PAGE_SIZE = 100;
-const SAFE_PAGE_SIZE = 30;
+const PAGE_SIZE = 20;
+const MAX_ATTEMPTS = 2;
+const DEFAULT_RETRY_DELAY_MS = 250;
+const MAX_RETRY_DELAY_MS = 1_000;
+const SEARCH_WINDOW_MS = 7 * 24 * 60 * 60 * 1_000;
+const RETRYABLE_STATUSES = new Set([408, 425, 500, 502, 503, 504]);
 
 const EUROPE_TERMS = [
   '"European Union"', "Europe", "European", "EU",
@@ -52,12 +56,19 @@ type CurrentsOptions = {
   apiKey?: string;
   now?: () => Date;
   timeoutMs?: number;
+  retryDelayMs?: number;
 };
 
 export class CurrentsError extends Error {
   constructor(
     message: string,
-    readonly code: "not-configured" | "unauthorized" | "quota" | "upstream" | "invalid-response",
+    readonly code:
+      | "not-configured"
+      | "unauthorized"
+      | "quota"
+      | "invalid-request"
+      | "upstream"
+      | "invalid-response",
     readonly status?: number,
   ) {
     super(message);
@@ -108,23 +119,26 @@ function stableId(value: string) {
 }
 
 function categoryText(value: unknown) {
-  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string").join(" ") : "";
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string").join(" ").toLowerCase()
+    : "";
 }
 
 export function inferCurrentsTopics(title: string, description: string, categories: string): MonitorTopicId[] {
-  const value = " " + [title, description, categories.replaceAll("_", " ")].join(" ").toLowerCase() + " ";
+  const normalizedCategories = categories.toLowerCase();
+  const value = " " + [title, description, normalizedCategories.replaceAll("_", " ")].join(" ").toLowerCase() + " ";
   const matched = monitorTopics
     .filter((topic) => topic.matchKeywords.some((keyword) => value.includes(keyword)))
     .map((topic) => topic.id);
 
-  if (categories.includes("economy_business_finance") && !matched.includes("trade-economy")) matched.push("trade-economy");
-  if (categories.includes("science_technology") && !matched.includes("technology-strategic")) matched.push("technology-strategic");
-  if (categories.includes("environment") && !matched.includes("energy-industry")) matched.push("energy-industry");
+  if (normalizedCategories.includes("economy_business_finance") && !matched.includes("trade-economy")) matched.push("trade-economy");
+  if (normalizedCategories.includes("science_technology") && !matched.includes("technology-strategic")) matched.push("technology-strategic");
+  if (normalizedCategories.includes("environment") && !matched.includes("energy-industry")) matched.push("energy-industry");
   return matched;
 }
 
 export function buildCurrentsQuery() {
-  return '(Canada OR Canadian) AND (' + EUROPE_TERMS + ') AND (' + SUBJECT_TERMS + ')';
+  return "(Canada OR Canadian) AND (" + EUROPE_TERMS + ") AND (" + SUBJECT_TERMS + ")";
 }
 
 export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
@@ -172,10 +186,128 @@ function formatDate(date: Date) {
   return date.toISOString().replace(/\.\d{3}Z$/, "Z");
 }
 
+function providerMessage(payload: unknown) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) return "";
+  const object = payload as CurrentsPayload;
+  return clean(object.message) || clean(object.msg);
+}
+
+function parseBody(body: string) {
+  if (!body.trim()) return null;
+  try {
+    return JSON.parse(body) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+function retryDelay(response: Response, fallbackMs: number) {
+  const raw = response.headers.get("retry-after");
+  const boundedFallback = Math.min(Math.max(fallbackMs, 0), MAX_RETRY_DELAY_MS);
+  if (!raw) return boundedFallback;
+
+  const seconds = Number(raw);
+  if (Number.isFinite(seconds)) {
+    return Math.min(Math.max(seconds * 1_000, 0), MAX_RETRY_DELAY_MS);
+  }
+
+  const retryAt = Date.parse(raw);
+  if (Number.isNaN(retryAt)) return boundedFallback;
+  return Math.min(Math.max(retryAt - Date.now(), 0), MAX_RETRY_DELAY_MS);
+}
+
+async function wait(ms: number) {
+  if (ms > 0) await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function buildSearchUrl(baseUrl: string, start: Date, end: Date) {
+  let url: URL;
+  try {
+    url = new URL(SEARCH_PATH, baseUrl);
+  } catch {
+    throw new CurrentsError("Currents API base URL is invalid.", "not-configured");
+  }
+
+  url.searchParams.set("query", buildCurrentsQuery());
+  url.searchParams.set("language", "en");
+  url.searchParams.set("type", "1");
+  url.searchParams.set("start_date", formatDate(start));
+  url.searchParams.set("end_date", formatDate(end));
+  url.searchParams.set("page_number", "1");
+  url.searchParams.set("page_size", String(PAGE_SIZE));
+  return url;
+}
+
 async function requestCurrents(
-  pageSize: number,
-  options: CurrentsOptions,
+  url: URL,
+  apiKey: string,
+  fetcher: typeof fetch,
+  timeoutMs: number,
+  retryDelayMs: number,
 ) {
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    let response: Response;
+
+    try {
+      response = await fetcher(url, {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + apiKey,
+        },
+        signal: AbortSignal.timeout(timeoutMs),
+        cache: "no-store",
+      });
+    } catch {
+      if (attempt + 1 < MAX_ATTEMPTS) {
+        await wait(retryDelayMs);
+        continue;
+      }
+      throw new CurrentsError("Currents could not be reached.", "upstream");
+    }
+
+    let body = "";
+    try {
+      body = await response.text();
+    } catch {
+      if (attempt + 1 < MAX_ATTEMPTS) {
+        await wait(retryDelay(response, retryDelayMs));
+        continue;
+      }
+      throw new CurrentsError("Currents response could not be read.", "upstream", response.status);
+    }
+
+    const payload = parseBody(body);
+
+    if (response.ok) {
+      if (body.trim() && payload === null) {
+        throw new CurrentsError("Currents returned non-JSON content.", "invalid-response", response.status);
+      }
+      return parseCurrentsPayload(payload);
+    }
+
+    const message = providerMessage(payload);
+    if (response.status === 401 || response.status === 403) {
+      throw new CurrentsError(message || "Currents rejected the API key.", "unauthorized", response.status);
+    }
+    if (response.status === 429) {
+      throw new CurrentsError(message || "Currents API quota has been reached.", "quota", response.status);
+    }
+    if (response.status === 400) {
+      throw new CurrentsError(message || "Currents rejected the search request.", "invalid-request", response.status);
+    }
+
+    if (RETRYABLE_STATUSES.has(response.status) && attempt + 1 < MAX_ATTEMPTS) {
+      await wait(retryDelay(response, retryDelayMs));
+      continue;
+    }
+
+    throw new CurrentsError(message || "Currents returned HTTP " + response.status + ".", "upstream", response.status);
+  }
+
+  throw new CurrentsError("Currents request failed.", "upstream");
+}
+
+export async function fetchCurrentsMonitor(options: CurrentsOptions = {}) {
   const apiKey = options.apiKey ?? process.env.CURRENTS_API_KEY;
   if (!apiKey) throw new CurrentsError("Currents API key is not configured.", "not-configured");
 
@@ -183,63 +315,17 @@ async function requestCurrents(
   const now = options.now ?? (() => new Date());
   const fetcher = options.fetcher ?? fetch;
   const timeoutMs = options.timeoutMs ?? FETCH_TIMEOUT_MS;
+  const retryDelayMs = options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
 
   const end = now();
-  const start = new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const url = new URL(SEARCH_PATH, baseUrl);
-  url.searchParams.set("query", buildCurrentsQuery());
-  url.searchParams.set("language", "en");
-  url.searchParams.set("type", "1");
-  url.searchParams.set("start_date", formatDate(start));
-  url.searchParams.set("end_date", formatDate(end));
-  url.searchParams.set("page_number", "1");
-  url.searchParams.set("page_size", String(pageSize));
-
-  const response = await fetcher(url, {
-    headers: {
-      Accept: "application/json",
-      Authorization: "Bearer " + apiKey,
-    },
-    signal: AbortSignal.timeout(timeoutMs),
-    cache: "no-store",
-  });
-
-  const body = await response.text();
-  let payload: unknown = null;
-  if (body.trim()) {
-    try {
-      payload = JSON.parse(body);
-    } catch {
-      if (response.ok) throw new CurrentsError("Currents returned non-JSON content.", "invalid-response", response.status);
-    }
-  }
-
-  if (!response.ok) {
-    const message = payload && typeof payload === "object"
-      ? clean((payload as CurrentsPayload).message) || clean((payload as CurrentsPayload).msg)
-      : "";
-    if (response.status === 401 || response.status === 403) {
-      throw new CurrentsError(message || "Currents rejected the API key.", "unauthorized", response.status);
-    }
-    if (response.status === 429) {
-      throw new CurrentsError(message || "Currents API quota has been reached.", "quota", response.status);
-    }
-    throw new CurrentsError(message || "Currents returned HTTP " + response.status + ".", "upstream", response.status);
-  }
+  if (Number.isNaN(end.getTime())) throw new CurrentsError("Currents search clock is invalid.", "invalid-request");
+  const start = new Date(end.getTime() - SEARCH_WINDOW_MS);
+  const url = buildSearchUrl(baseUrl, start, end);
+  const articles = await requestCurrents(url, apiKey, fetcher, timeoutMs, retryDelayMs);
+  const endTime = end.getTime();
 
   return {
     retrievedAt: end.toISOString(),
-    articles: parseCurrentsPayload(payload),
+    articles: articles.filter((article) => Date.parse(article.publishedAt) <= endTime),
   };
-}
-
-export async function fetchCurrentsMonitor(options: CurrentsOptions = {}) {
-  try {
-    return await requestCurrents(PREFERRED_PAGE_SIZE, options);
-  } catch (error) {
-    if (error instanceof CurrentsError && error.status === 400) {
-      return requestCurrents(SAFE_PAGE_SIZE, options);
-    }
-    throw error;
-  }
 }
