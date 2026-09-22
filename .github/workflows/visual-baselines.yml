@@ -12,7 +12,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: baselines-${{ github.ref }}
+  # Per event: a skipped push run must not cancel a manual dispatch on the same branch.
+  group: baselines-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
