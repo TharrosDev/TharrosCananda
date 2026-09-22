@@ -50,7 +50,7 @@ When a real publication is added, build its article/report page with the actual 
 
 `src/lib/currents.ts` integrates the Currents V2 Search API. One rolling seven-day Boolean query looks for reporting that connects Canada with Europe across trade, defence, energy/industry and strategic technology. `src/lib/currents-data.ts` owns the 15-minute server cache and explicit failure states. Results are classified into the four research areas locally from article title, description and Currents categories.
 
-The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for Currents before rendering the Tharros page shell.
+The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for Currents before rendering the Tharros page shell. Production deployments must provide `CURRENTS_API_KEY` as a server-only environment variable.
 
 ## Official data integration
 
