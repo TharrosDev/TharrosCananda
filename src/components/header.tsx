@@ -64,9 +64,9 @@ export function Header() {
         </button>
         <nav id="primary-navigation" className={open ? "main-nav is-open" : "main-nav"} aria-label="Primary">
           <div className="nav-links">
-            {links.map((link) => <Link key={link.href} href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>{link.label}</Link>)}
+            {links.map((link) => <Link key={link.href} href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined} onClick={() => setOpen(false)}>{link.label}</Link>)}
           </div>
-          <Link className="nav-action" href="/request-research">Commission research</Link>
+          <Link className="nav-action" href="/request-research" onClick={() => setOpen(false)}>Commission research</Link>
         </nav>
       </div>
     </header>

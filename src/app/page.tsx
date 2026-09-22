@@ -74,7 +74,7 @@ export default function HomePage() {
       <section className="section section--compact client-scope">
         <div className="section-intro">
           <h2>Built for cross-Atlantic work.</h2>
-          <p>Tharros can work on either side of the relationship and can sit behind another firm's engagement where appropriate.</p>
+          <p>Tharros can work on either side of the relationship and can sit behind another firm’s engagement where appropriate.</p>
         </div>
         <div className="client-scope-grid">
           {customerScope.map(([name, need]) => <div key={name}><strong>{name}</strong><p>{need}</p></div>)}
