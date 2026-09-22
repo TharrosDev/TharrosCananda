@@ -97,7 +97,7 @@ Light ivory editorial header for Research Archive, Methodology, How It Works, Pr
 
 Desktop order:
 
-**Services · Research · Market Data · About**
+**Services · Research · Live Monitor · Market Data · About**
 
 Primary action:
 
@@ -137,6 +137,24 @@ When populated, it supports:
 The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The four research areas are archive taxonomy and a homepage summary, not a dedicated public route.
 
 A real report page should eventually include verified authorship, date, executive summary, key findings, charts/tables, methodology, sources, limitations, related research and a commission CTA.
+
+## Live Monitor
+
+Live Monitor is a working editorial discovery surface, not a dashboard and not a Tharros publication feed. It should visually belong to the same ruled evidence-led system as Research and Market Data.
+
+Visual hierarchy:
+
+1. compact task hero with the four research areas;
+2. brief provenance/interpretation boundary;
+3. streamed loading state that clearly communicates an external-source lookup;
+4. source status and retrieval time;
+5. search, research-area and time-window controls;
+6. ruled publisher-linked article entries;
+7. explicit unavailable state when Currents cannot return usable coverage.
+
+Currents attribution must remain visible and usable as a link. Original publisher links and publication times remain part of each record. Do not visually imply that inclusion means verification, endorsement or a Tharros finding.
+
+The loading state may use restrained motion to communicate retrieval, but it must collapse under `prefers-reduced-motion`. Failure states must replace the live-results region rather than populate it with substitute headlines.
 
 ## Official Market Data
 
@@ -200,7 +218,7 @@ No page should require horizontal scrolling at an equivalent 320 CSS px viewport
 
 ### Navigation
 
-The 76px ruled navigation uses the serif wordmark, four commercial destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
+The 76px ruled navigation uses the serif wordmark, five primary destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
 
 ### Buttons and text links
 
@@ -209,6 +227,10 @@ Primary actions are square muted-red fields with a trailing arrow. Secondary act
 ### Evidence atlas
 
 The homepage atlas is a dark, ruled evidence plate connecting Canada and Europe through a single red route, steel verification node and four source classes. It is semantic SVG geometry with a text alternative, not a decorative map or an implied dataset. The route draw is disabled under reduced motion.
+
+### Live Monitor entry
+
+The Live Monitor keeps provider attribution, retrieval time, query controls and publisher-linked coverage in one continuous ruled surface. Result rows use the same editorial-list language as Research rather than card UI. The error state remains explicit and source-specific; never disguise provider failure with substitute content.
 
 ### Official data entry
 
