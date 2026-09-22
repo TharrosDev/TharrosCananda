@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import "@fontsource-variable/schibsted-grotesk";
 import "@fontsource-variable/source-serif-4/opsz.css";
 import "./globals.css";
+import { SiteAnalytics } from "@/components/analytics-beacon";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { organization, organizationJsonLd } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
+import { jsonLd, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -18,7 +17,6 @@ export const metadata: Metadata = {
   },
   description:
     "Independent research on trade, defence, energy, industry and technology across Canada and Europe.",
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_CA",
@@ -53,8 +51,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
-        <Analytics />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <SiteAnalytics />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
       </body>
     </html>
   );

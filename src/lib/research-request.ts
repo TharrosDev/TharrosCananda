@@ -13,7 +13,8 @@ type TextField = Exclude<keyof ResearchRequestPayload, "objectives" | "researchN
 export const maxLengths: Record<TextField, number> = { companyName:160,country:80,website:300,email:254,product:200,industry:120,description:2000,hsCode:20,context:3000 };
 const textFields = Object.keys(maxLengths) as TextField[];
 export const honeypotField = "fax";
-export const maxBodyBytes = 16_000;
+// Field limits total ~6.1k chars; curly quotes and accents are up to 3 UTF-8 bytes each.
+export const maxBodyBytes = 32_000;
 export const emptyRequest: ResearchRequestPayload = { companyName:"",country:"",website:"",email:"",product:"",industry:"",description:"",hsCode:"",objectives:[],researchNeed:"",context:"",consent:false };
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const hsPattern = /^[0-9][0-9.\s]*$/;

@@ -6,8 +6,7 @@ import { CitationSidebar } from "@/components/citation-sidebar";
 import { PageHero } from "@/components/page-hero";
 import { publicationBySlug, publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
+import { jsonLd, siteUrl } from "@/lib/site";
 
 export function generateStaticParams() {
   return publications.map((publication) => ({ slug: publication.slug }));
@@ -53,7 +52,7 @@ export default async function ResearchArticlePage({
     description: publication.summary,
     datePublished: publication.publishedAt,
     author: publication.authors.map((name) => ({ "@type": "Person", name })),
-    publisher: { "@type": "Organization", name: "Tharros Canada", url: "https://tharros.ca" },
+    publisher: { "@type": "Organization", name: "Tharros Canada", url: siteUrl },
     articleSection: area?.name ?? publication.area,
     citation: publication.sources.map((source) => source.url),
   };
@@ -125,7 +124,7 @@ export default async function ResearchArticlePage({
         }}
       />
       </div>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
     </>
   );
 }

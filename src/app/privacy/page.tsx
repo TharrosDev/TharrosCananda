@@ -36,7 +36,7 @@ export default function PrivacyPage() {
         </article>
         <article>
           <h2>Site measurement</h2>
-          <p>If usage measurement is enabled, the site may record a small set of events and the page path. Nothing is sent when no endpoint is configured or when the browser sends a Global Privacy Control signal.</p>
+          <p>The site uses Vercel Web Analytics to count page views and a few events, such as starting the request form. It sets no cookies and does not identify you. Nothing is sent when your browser sends a Global Privacy Control signal.</p>
         </article>
         <article>
           <h2>Contact and deletion requests</h2>

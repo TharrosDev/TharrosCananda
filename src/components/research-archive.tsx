@@ -5,8 +5,8 @@ import { useMemo, useState } from "react";
 import { CiteButton } from "@/components/cite-button";
 import type { Publication } from "@/data/publications";
 import type { ResearchArea } from "@/lib/research-areas";
+import { siteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 
 export function ResearchArchive({
   publications,

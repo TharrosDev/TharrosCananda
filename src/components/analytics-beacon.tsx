@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { track, type AnalyticsEvent } from "@/lib/analytics";
+import { Analytics } from "@vercel/analytics/next";
+import { privacySignal, track, type AnalyticsEvent } from "@/lib/analytics";
 
-export function AnalyticsBeacon({ event, properties }: { event: AnalyticsEvent; properties?: Record<string, string> }) {
-  useEffect(() => {
-    track(event, properties);
-  }, [event, properties]);
+export function AnalyticsBeacon({ event }: { event: AnalyticsEvent }) {
+  useEffect(() => track(event), [event]);
   return null;
+}
+
+/** Vercel Web Analytics, suppressed under Global Privacy Control. */
+export function SiteAnalytics() {
+  return <Analytics beforeSend={(event) => (privacySignal() ? null : event)} />;
 }
