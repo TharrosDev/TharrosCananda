@@ -30,6 +30,8 @@ const nextConfig:NextConfig={
     ...(isProduction?[{key:"Content-Security-Policy",value:contentSecurityPolicy}]:[]),
   ]},
   ...noindexFiles.map((source)=>({source,headers:[{key:"X-Robots-Tag",value:"noindex, nofollow"}]})),
+  // next/image serves covers from /_next/image?url=<file>: gate that URL too.
+  ...noindexFiles.map((file)=>({source:"/_next/image",has:[{type:"query" as const,key:"url",value:file.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}],headers:[{key:"X-Robots-Tag",value:"noindex, nofollow"}]})),
   ];},
 };
 export default nextConfig;

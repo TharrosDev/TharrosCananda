@@ -69,3 +69,28 @@ test.describe("without JavaScript", () => {
     await expect(page.getByRole("link", { name: /Lorem ipsum dolor sit amet/ })).toBeVisible();
   });
 });
+
+test("pausing mid-phrase keeps the space and every keystroke", async ({ page }) => {
+  await page.goto("/research");
+  await search(page).pressSequentially("lorem ", { delay: 40 });
+  await page.waitForTimeout(600);
+  await search(page).pressSequentially("ipsum", { delay: 40 });
+  await expect(search(page)).toHaveValue("lorem ipsum");
+  await expect(page).toHaveURL(/q=lorem\+ipsum/);
+});
+
+test("the cite popover stays on screen on phones", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/research");
+  await page.locator("article").first().getByText("Cite", { exact: true }).click();
+  const box = (await page.locator(".archive-card .cite-popover-body").boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(360);
+});
+
+test("the specimen cover thumbnail is not indexable", async ({ page, request }) => {
+  await page.goto("/research");
+  const src = await page.locator(".archive-cover img").first().getAttribute("src");
+  const response = await request.get(src!);
+  expect(response.headers()["x-robots-tag"]).toContain("noindex");
+});

@@ -63,7 +63,9 @@ export function createArchiveIndex(docs: ArchiveDoc[]) {
 }
 
 export function runArchiveQuery(docs: ArchiveDoc[], index: MiniSearch<ArchiveDoc>, state: ArchiveState): { results: ArchiveResult[]; facets: Facets } {
-  const query = state.q.trim();
+  // A query with no searchable tokens (e.g. "(((") behaves like no query at all.
+  const tokenize = MiniSearch.getDefault("tokenize") as (text: string) => string[];
+  const query = tokenize(state.q).some(Boolean) ? state.q.trim() : "";
   const hits = query ? index.search(query) : [];
   const matched = query ? new Map(hits.map((hit) => [hit.id as string, hit])) : null;
   const inQuery = docs.filter((doc) => !matched || matched.has(doc.slug));
@@ -96,12 +98,18 @@ export function runArchiveQuery(docs: ArchiveDoc[], index: MiniSearch<ArchiveDoc
   return { results, facets: { area: count("area"), type: count("type"), year: count("year") } };
 }
 
+/** Case-insensitive whole-word pattern for the given terms (regex characters escaped); null when empty. */
+export function termPattern(terms: string[], flags = "i") {
+  const escaped = terms.filter(Boolean).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  return escaped.length ? new RegExp(`\\b(${escaped.join("|")})\\b`, flags) : null;
+}
+
 /** Plain-text window around the first matching term, ellipsised; null when no term appears in the text. */
 export function snippet(text: string, terms: string[], radius = 80): string | null {
   const lower = text.toLowerCase();
-  const positions = terms.map((term) => lower.indexOf(term.toLowerCase())).filter((at) => at >= 0);
-  if (!positions.length) return null;
-  const at = Math.min(...positions);
+  const found = termPattern(terms)?.exec(text);
+  if (!found) return null;
+  const at = found.index;
   const start = Math.max(0, lower.lastIndexOf(" ", Math.max(0, at - radius)) + 1);
   const endSpace = lower.indexOf(" ", Math.min(text.length, at + radius));
   const end = endSpace === -1 ? text.length : endSpace;

@@ -98,3 +98,15 @@ describe("helpers", () => {
     expect(readingMinutes("word ".repeat(690))).toBe(3);
   });
 });
+
+describe("review fixes", () => {
+  const index = createArchiveIndex(docs);
+  it("treats a punctuation-only query as no query", () => {
+    expect(runArchiveQuery(docs, index, { ...defaults, q: "(((" }).results).toHaveLength(3);
+  });
+  it("snippets match whole words, not fragments inside other words", () => {
+    const s = snippet("We support the port authority.", ["port"])!;
+    expect(s).toBe("We support the port authority.");
+    expect(snippet("We support it.", ["port"])).toBeNull();
+  });
+});

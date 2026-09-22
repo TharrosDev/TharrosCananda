@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { CiteButton } from "@/components/cite-button";
 import {
@@ -14,6 +14,7 @@ import {
   readingMinutes,
   runArchiveQuery,
   serializeArchiveState,
+  termPattern,
 } from "@/lib/archive";
 import { formatMonthYear, siteUrl } from "@/lib/site";
 
@@ -23,7 +24,6 @@ type Props = { docs: ArchiveDoc[]; areas: readonly Area[]; types: readonly { nam
 /** Reads and writes the archive state in the URL (?q=&area=&type=&year=&sort=) so every view can be shared. */
 export function ResearchArchiveWithUrl(props: Props) {
   const params = useSearchParams();
-  const router = useRouter();
   const pathname = usePathname();
   const allowed = useMemo(
     () => ({
@@ -34,8 +34,9 @@ export function ResearchArchiveWithUrl(props: Props) {
     [props.areas, props.types, props.docs],
   );
   const state = parseArchiveState(new URLSearchParams(params.toString()), allowed);
-  // replace, not push: filtering and typing must not add history entries.
-  const onChange = (next: ArchiveState) => router.replace(`${pathname}${serializeArchiveState(next)}`, { scroll: false });
+  // Shallow URL update (Next's documented pattern for client-only state): no server round-trip per
+  // keystroke, and replace, not push, so filtering never floods history. useSearchParams follows it.
+  const onChange = (next: ArchiveState) => window.history.replaceState(null, "", `${pathname}${serializeArchiveState(next)}`);
   return <ResearchArchive {...props} state={state} onChange={onChange} />;
 }
 
@@ -44,18 +45,29 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
   const { results, facets } = useMemo(() => runArchiveQuery(docs, index, state), [docs, index, state]);
   const set = (patch: Partial<ArchiveState>) => onChange?.({ ...state, ...patch });
 
-  // The field is local so typing stays instant; the URL follows after a short pause.
+  // The field is local so typing stays instant; the URL follows after a short pause. The field only
+  // resyncs from the URL when the change came from elsewhere (back/forward, a chip, a suggestion),
+  // never from the echo of its own write, so spaces and in-flight keystrokes survive.
   const [draft, setDraft] = useState(state.q);
+  const [sent, setSent] = useState<string | null>(null);
   const [syncedQuery, setSyncedQuery] = useState(state.q);
   if (syncedQuery !== state.q) {
     setSyncedQuery(state.q);
-    setDraft(state.q);
+    if (state.q !== sent) setDraft(state.q);
   }
   useEffect(() => {
-    if (draft === state.q) return;
-    const timer = setTimeout(() => onChange?.({ ...state, q: draft, sort: !draft.trim() ? "newest" : state.q.trim() ? state.sort : "relevance" }), 250);
+    const next = draft.trim();
+    if (next === state.q.trim()) return;
+    const timer = setTimeout(() => {
+      setSent(next);
+      onChange?.({ ...state, q: next, sort: !next ? "newest" : state.q.trim() ? state.sort : "relevance" });
+    }, 250);
     return () => clearTimeout(timer);
   }, [draft, state, onChange]);
+  const clearAll = () => {
+    setDraft("");
+    onChange?.(defaultArchiveState);
+  };
 
   const years = Object.keys(facets.year).sort().reverse();
   const onlySpecimens = docs.length > 0 && docs.every((d) => d.specimen);
@@ -78,9 +90,9 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
             const count = facets.area[area.slug] ?? 0;
             return (
               <button key={area.slug} type="button" aria-pressed={pressed} disabled={!pressed && count === 0}
-                onClick={() => set({ area: pressed ? "all" : area.slug })}>
+                aria-describedby={`area-scope-${area.slug}`} onClick={() => set({ area: pressed ? "all" : area.slug })}>
                 <span className="archive-area-name">{area.name} <em>({count})</em></span>
-                <span className="archive-area-scope">{area.scope}</span>
+                <span className="archive-area-scope" id={`area-scope-${area.slug}`}>{area.scope}</span>
               </button>
             );
           })}
@@ -126,7 +138,7 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
             </label>
           )}
           {!state.q.trim() && <span>Newest first</span>}
-          {filtered && <button type="button" className="archive-clear" onClick={() => onChange?.(defaultArchiveState)}>Clear all</button>}
+          {filtered && <button type="button" className="archive-clear" onClick={clearAll}>Clear all</button>}
         </span>
       </div>
 
@@ -141,7 +153,7 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
           {results.map((doc) => <ArchiveCard key={doc.slug} doc={doc} />)}
         </ol>
       ) : (
-        <div className="archive-no-results" role="status">
+        <div className="archive-no-results">
           <h2>No publications match.</h2>
           {suggestions.length > 0 && (
             <p>
@@ -149,13 +161,13 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
               {suggestions.map((s, i) => (
                 <Fragment key={s}>
                   {i > 0 && ", "}
-                  <button type="button" className="archive-suggestion" onClick={() => set({ q: s })}>{s}</button>
+                  <button type="button" className="archive-suggestion" onClick={() => set({ q: s, sort: "relevance" })}>{s}</button>
                 </Fragment>
               ))}
               ?
             </p>
           )}
-          <button type="button" className="button-secondary" onClick={() => onChange?.(defaultArchiveState)}>Clear all filters</button>
+          <button type="button" className="button-secondary" onClick={clearAll}>Clear all filters</button>
         </div>
       )}
     </div>
@@ -206,8 +218,8 @@ function ArchiveCard({ doc }: { doc: ArchiveDoc & { snippet: string | null; term
 
 /** Wraps matched terms in <mark>; the text stays plain React text, so nothing is injected as HTML. */
 function Highlighted({ text, terms }: { text: string; terms: string[] }) {
-  const escaped = terms.filter(Boolean).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  if (!escaped.length) return <>{text}</>;
-  const parts = text.split(new RegExp(`(${escaped.join("|")})`, "gi"));
+  const pattern = termPattern(terms, "gi");
+  if (!pattern) return <>{text}</>;
+  const parts = text.split(pattern);
   return <>{parts.map((part, i) => (i % 2 ? <mark key={i}>{part}</mark> : <Fragment key={i}>{part}</Fragment>))}</>;
 }
