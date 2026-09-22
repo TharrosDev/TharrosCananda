@@ -38,19 +38,19 @@ Because the Tharros interface is a value-added product, every live result must r
 
 Do not use Statistics Canada or Government of Canada logos/wordmarks.
 
-## GDELT Live Monitor
+## Currents Live Monitor
 
-The `/live-monitor` page uses the GDELT DOC API as a current-news discovery layer. GDELT is not treated as the publisher or as evidence that a surfaced claim is true. Every result links to the original publisher and retains the publisher domain, source country, language and GDELT index time.
+The `/live-monitor` page uses the Currents News API V2 Search endpoint as a current-news discovery layer. Currents is not treated as evidence that a surfaced claim is true; every result links to the original publisher URL returned by the API.
 
-Implementation is split between `src/lib/gdelt.ts` (query construction, transport and runtime parsing) and `src/lib/gdelt-data.ts` (Next.js caching, aggregation, deduplication and fallback state). The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
+Implementation is split between `src/lib/currents.ts` (query construction, authentication, transport, runtime validation and parsing) and `src/lib/currents-data.ts` (Next.js caching and user-safe failure states). The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
 
-The normal path issues one seven-day query for each Tharros research area. Successful topic responses are cached for 15 minutes. Transient failures are retried once. Tracking parameters are removed from article URLs before deduplication. A valid empty response is treated as zero coverage rather than a provider failure.
+The normal path issues one rolling seven-day Boolean search covering Canada, Europe and the monitor's trade, defence/security, energy/industry and strategic-technology terms. Results are then classified locally into the four Tharros research areas using article title, description and Currents category metadata. Tracking parameters are removed from publisher URLs before display.
 
-If every topic-specific query fails, the adapter may attempt one broader Canada–Europe query. That state is labelled as degraded coverage, and research-area tags are inferred from headline terms only when possible. If the broader request also fails, no substitute headlines are shown.
+Authentication uses the server-only `CURRENTS_API_KEY` environment variable and the HTTP Authorization header. The key must never be embedded in a URL, exposed through a `NEXT_PUBLIC_*` variable or committed to the repository. Successful responses are cached for 15 minutes. The adapter distinguishes missing configuration, rejected credentials, quota exhaustion, upstream errors and invalid response shapes.
 
-GDELT `seendate` is displayed as **indexed time**, not asserted to be the publisher's publication timestamp. Article bodies are not copied and discovered headlines are never represented as Tharros analysis or verification.
+Currents `published` is displayed as publication time. Article bodies are not copied and discovered headlines/descriptions are never represented as Tharros analysis or verification.
 
-Reference: https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
+Reference: https://currentsapi.services/en/docs/search
 
 ## Government of Canada Open Data
 
