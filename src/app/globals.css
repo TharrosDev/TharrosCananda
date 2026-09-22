@@ -368,18 +368,18 @@ legend:focus:not(:focus-visible) { outline: none; }
 /* ---------- Page-level compositions (home, research, about, commission) ---------- */
 .home-intro { min-height: calc(100svh - var(--header-height)); color: var(--on-dark); background: var(--soft-black); overflow: hidden; }
 .home-intro-grid { width: var(--shell); min-height: calc(100svh - 188px); margin: 0 auto; padding: clamp(28px, 5vw, 84px) 0 clamp(40px, 4vw, 64px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: center; }
-.home-intro-copy { grid-column: 1 / span 7; position: relative; z-index: 2; }
+.home-intro-copy { grid-column: 1 / span 8; position: relative; z-index: 2; }
 .research-hero-copy > p:first-child, .about-hero > p, .expertise-statement > p:first-child, .research-threshold > div > p:first-child, .home-finale > p, .about-independence > div > p:first-child { margin: 0 0 28px; color: var(--on-dark-soft); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .home-intro h1 { max-width: 10ch; margin: 0; font-size: clamp(58px, 7.5vw, 116px); font-weight: 350; letter-spacing: -.035em; line-height: .9; text-wrap: balance; }
 .home-intro-deck { max-width: 57ch; margin: 34px 0 0; color: var(--on-dark-soft); font-size: clamp(18px, 1.4vw, 22px); line-height: 1.55; }
 .home-intro .hero-actions { margin-top: 38px; }
 .home-intro .text-link { color: var(--on-dark); border-color: var(--on-dark); }
-.evidence-folio { grid-column: 8 / -1; min-width: 0; border-top: 1px solid var(--rule-dark); border-bottom: 1px solid var(--rule-dark); background: #191b1d; }
+.evidence-folio { grid-column: 9 / -1; min-width: 0; border-top: 1px solid var(--rule-dark); border-bottom: 1px solid var(--rule-dark); background: #191b1d; }
 .folio-head { min-height: 52px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--rule-dark); color: var(--on-dark-soft); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.folio-stage { min-height: 430px; padding: clamp(28px, 3vw, 44px); display: grid; grid-template-columns: minmax(0, 1fr) 94px; align-items: stretch; gap: 18px; }
-.folio-sheet { min-width: 0; padding: clamp(24px, 3vw, 38px); color: var(--ink); background: var(--ivory-light); box-shadow: 0 18px 48px -30px rgba(0,0,0,.9); transform: rotate(-1.2deg); }
+.folio-stage { min-height: 360px; padding: clamp(22px, 2.4vw, 36px); display: grid; grid-template-columns: minmax(0, 1fr) 94px; align-items: stretch; gap: 18px; }
+.folio-sheet { min-width: 0; padding: clamp(20px, 2.4vw, 32px); color: var(--ink); background: var(--ivory-light); box-shadow: 0 18px 48px -30px rgba(0,0,0,.9); transform: rotate(-1.2deg); }
 .folio-reference { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); color: var(--slate); font-size: 10px; font-weight: 700; letter-spacing: .08em; }
-.folio-sheet h2 { max-width: 10ch; margin: 32px 0 14px; font-size: clamp(34px, 3.4vw, 48px); font-weight: 420; letter-spacing: -.025em; line-height: .96; }
+.folio-sheet h2 { max-width: 10ch; margin: 26px 0 12px; font-size: clamp(26px, 2.4vw, 36px); font-weight: 420; letter-spacing: -.025em; line-height: .96; }
 .folio-sheet > p { max-width: 40ch; margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
 .folio-extract { margin: 28px 0; display: grid; gap: 8px; }
 .folio-extract i { height: 5px; background: var(--rule-strong); }
@@ -519,8 +519,8 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 @media (max-width: 1100px) {
   .home-intro-grid { min-height: auto; align-items: end; }
-  .home-intro-copy { grid-column: 1 / span 7; }
-  .evidence-folio { grid-column: 8 / -1; }
+  .home-intro-copy { grid-column: 1 / span 8; }
+  .evidence-folio { grid-column: 9 / -1; }
   .home-intro h1 { font-size: clamp(58px, 8vw, 86px); }
   .archive-format-grid { grid-template-columns: repeat(3, 1fr); }
   .archive-format-grid > div { border-bottom: 1px solid var(--rule); }
