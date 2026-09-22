@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
-import { ResearchArchive } from "@/components/research-archive";
-import { publications, publicationTypes, researchSpecimenPublication } from "@/data/publications";
+import { Suspense } from "react";
+import { ResearchArchive, ResearchArchiveWithUrl } from "@/components/research-archive";
+import { allPublications, publicationTypes } from "@/data/publications";
+import { buildArchiveDocs } from "@/lib/archive";
 import { researchAreas } from "@/lib/research-areas";
+import { reportAsset, reportText } from "@/lib/reports";
 
 export const metadata: Metadata = {
   title: "Research Archive",
@@ -13,7 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default function ResearchPage() {
-  const archivePublications = publications.length ? publications : [researchSpecimenPublication];
+  // Built at build time: metadata plus each PDF's extracted text, so search reaches inside reports.
+  const docs = buildArchiveDocs(allPublications, reportAsset, reportText);
+  const archive = { docs, areas: researchAreas, types: publicationTypes };
 
   return (
     <>
@@ -21,7 +26,7 @@ export default function ResearchPage() {
         <div className="research-hero-copy">
           <p>Research archive</p>
           <h1>Canada–Europe research.</h1>
-          <p>Browse published work by area, format and date.</p>
+          <p>Search every report in full, or browse by area, format and year.</p>
         </div>
         <div className="research-hero-manifest">
           <span>Each publication carries</span>
@@ -35,17 +40,16 @@ export default function ResearchPage() {
         </div>
       </header>
       <section className="archive-principle">
-        <p>Search titles, summaries and tags, or filter by area, format and date.</p>
+        <p>Search the full text of every report, or filter by area, format and year.</p>
         <Link href="/methodology">
           Methodology <ArrowIcon />
         </Link>
       </section>
       <section className="section section--compact archive-page">
-        <ResearchArchive
-          publications={archivePublications}
-          areas={researchAreas}
-          publicationTypes={publicationTypes}
-        />
+        {/* Without JavaScript (or before hydration) the default view renders; the URL-aware tool takes over after. */}
+        <Suspense fallback={<ResearchArchive {...archive} />}>
+          <ResearchArchiveWithUrl {...archive} />
+        </Suspense>
       </section>
       <section className="closing-cta">
         <h2>Need research on a specific question?</h2>
