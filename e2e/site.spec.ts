@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const paths = ["/", "/research-services", "/request-research", "/live-monitor"];
+const paths = ["/", "/research-services", "/request-research", "/live-monitor", "/research/example-report"];
 const viewports = [
   { width: 1440, height: 900 },
   { width: 1024, height: 768 },
