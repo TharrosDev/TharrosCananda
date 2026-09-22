@@ -1,23 +1,15 @@
-// Stand-in for Statistics Canada WDS, Open Government catalogue and Currents News API.
-// Recorded/controlled responses keep e2e and visual tests deterministic.
+// Stand-in for the Currents News API. Controlled responses keep e2e and visual tests deterministic.
 import { createServer } from "node:http";
-import { readFileSync } from "node:fs";
 
 const port = Number(process.argv[2] ?? 4010);
-const load = (name) => JSON.parse(readFileSync(new URL(`../tests/fixtures/${name}.json`, import.meta.url), "utf8"));
-const metadata = load("statcan/getCubeMetadata");
-const pools = { getDataFromCubePidCoordAndLatestNPeriods: load("statcan/getDataFromCubePidCoordAndLatestNPeriods"), getSeriesInfoFromCubePidCoord: load("statcan/getSeriesInfoFromCubePidCoord") };
-const openData = load("open-data-search");
 const rfc3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://mock");
   if (url.pathname === "/health") return res.end("ok");
-  let body = "";
-  req.on("data", (chunk) => (body += chunk));
+  req.resume();
   req.on("end", () => {
     res.setHeader("Content-Type", "application/json");
-    const method = url.pathname.split("/").pop();
 
     if (url.pathname === "/v2/search") {
       if (req.headers.authorization !== "Bearer playwright-test-key") {
@@ -59,16 +51,23 @@ createServer((req, res) => {
           url: "https://example-trade.eu/story-trade",
           language: "en",
           category: ["economy_business_finance"],
-          published: new Date(Date.now() - 60 * 60 * 1000).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " +0000"),
+          published: new Date(Date.now() - 60 * 60 * 1000)
+            .toISOString()
+            .replace("T", " ")
+            .replace(/\.\d{3}Z$/, " +0000"),
         },
         {
           id: "defence-1",
           title: "Canadian and European defence suppliers expand cooperation",
-          description: "The industrial agreement covers NATO procurement and security supply chains.",
+          description:
+            "The industrial agreement covers NATO procurement and security supply chains.",
           url: "https://example-defence.eu/story-defence",
           language: "en",
           category: ["politics_government"],
-          published: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " +0000"),
+          published: new Date(Date.now() - 2 * 60 * 60 * 1000)
+            .toISOString()
+            .replace("T", " ")
+            .replace(/\.\d{3}Z$/, " +0000"),
         },
         {
           id: "industry-1",
@@ -77,7 +76,10 @@ createServer((req, res) => {
           url: "https://example-industry.eu/story-industry",
           language: "en",
           category: ["environment", "economy_business_finance"],
-          published: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " +0000"),
+          published: new Date(Date.now() - 3 * 60 * 60 * 1000)
+            .toISOString()
+            .replace("T", " ")
+            .replace(/\.\d{3}Z$/, " +0000"),
         },
         {
           id: "tech-1",
@@ -86,20 +88,15 @@ createServer((req, res) => {
           url: "https://example-tech.eu/story-technology",
           language: "en",
           category: ["science_technology"],
-          published: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " +0000"),
+          published: new Date(Date.now() - 4 * 60 * 60 * 1000)
+            .toISOString()
+            .replace("T", " ")
+            .replace(/\.\d{3}Z$/, " +0000"),
         },
       ];
       return res.end(JSON.stringify({ status: "ok", page: 1, next_cursor: null, news: samples }));
     }
 
-    if (url.pathname.endsWith("/package_search")) return res.end(JSON.stringify(openData));
-    if (method === "getCubeMetadata") return res.end(JSON.stringify(metadata));
-    if (method in pools) {
-      const requested = JSON.parse(body || "[]");
-      return res.end(JSON.stringify(requested.map(({ coordinate }) =>
-        pools[method].find((item) => item.object.coordinate === coordinate) ??
-        { status: "FAILED", object: { responseStatusCode: 2, productId: 12100174, coordinate, vectorId: 0, vectorDataPoint: [] } })));
-    }
     res.statusCode = 404;
     res.end("{}");
   });

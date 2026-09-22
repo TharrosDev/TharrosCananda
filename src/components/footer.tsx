@@ -15,7 +15,11 @@ export function Footer() {
             <span>CANADA</span>
           </Link>
           <p>Independent Canada–Europe research.</p>
-          {contactEmail && <a className="footer-contact" href={`mailto:${contactEmail}`}>{contactEmail}</a>}
+          {contactEmail && (
+            <a className="footer-contact" href={`mailto:${contactEmail}`}>
+              {contactEmail}
+            </a>
+          )}
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>
@@ -28,7 +32,6 @@ export function Footer() {
             <p className="footer-heading">Evidence</p>
             <Link href="/research">Research archive</Link>
             <Link href="/live-monitor">Live Monitor</Link>
-            <Link href="/market-explorer">Market data</Link>
             <Link href="/methodology">Sources & methodology</Link>
           </div>
           <div>
@@ -41,7 +44,10 @@ export function Footer() {
         </nav>
       </div>
       <div className="footer-legal">
-        <p><span data-volatile>© {new Date().getFullYear()}</span> {organization.legal?.legalName ?? "Tharros Canada"}.</p>
+        <p>
+          <span data-volatile>© {new Date().getFullYear()}</span>{" "}
+          {organization.legal?.legalName ?? "Tharros Canada"}.
+        </p>
         <p>Not legal, tax, regulatory, lobbying or investment advice.</p>
       </div>
     </footer>

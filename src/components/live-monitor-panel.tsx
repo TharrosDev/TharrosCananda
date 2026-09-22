@@ -17,14 +17,21 @@ export function LiveMonitorPanelSkeleton() {
     <section className="monitor-loading" data-loading aria-label="Loading live coverage">
       <div className="monitor-loading-card">
         <div className="monitor-loading-heading">
-          <span className="monitor-loading-signal" aria-hidden="true"><i /></span>
+          <span className="monitor-loading-signal" aria-hidden="true">
+            <i />
+          </span>
           <div>
             <p>Live Monitor</p>
             <h2>Scanning current Canada–Europe coverage.</h2>
-            <p>Connecting to Currents, organizing recent reporting and preserving direct source links.</p>
+            <p>
+              Connecting to Currents, organizing recent reporting and preserving direct source
+              links.
+            </p>
           </div>
         </div>
-        <div className="monitor-loading-progress" aria-hidden="true"><span /></div>
+        <div className="monitor-loading-progress" aria-hidden="true">
+          <span />
+        </div>
         <ol className="monitor-loading-stages" aria-hidden="true">
           {stages.map(([number, label], index) => (
             <li key={number} className={index === 0 ? "is-active" : ""}>
@@ -36,22 +43,17 @@ export function LiveMonitorPanelSkeleton() {
         </ol>
       </div>
       <div className="monitor-loading-preview" aria-hidden="true">
-        <div className="archive-controls monitor-controls">
-          <div className="monitor-skeleton-field" />
-          <div className="monitor-skeleton-field" />
-          <div className="monitor-skeleton-field" />
+        <div className="monitor-skeleton-command" />
+        <div className="monitor-skeleton-lead">
+          <span className="monitor-skeleton-line monitor-skeleton-meta" />
+          <span className="monitor-skeleton-line monitor-skeleton-title" />
+          <span className="monitor-skeleton-line monitor-skeleton-title monitor-skeleton-title--short" />
+          <span className="monitor-skeleton-line monitor-skeleton-source" />
         </div>
-        <ol className="archive-list monitor-loading-list">
-          {[0, 1, 2].map((item) => (
-            <li key={item}>
-              <span className="monitor-skeleton-line monitor-skeleton-meta" />
-              <span className="monitor-skeleton-line monitor-skeleton-title" />
-              <span className="monitor-skeleton-line monitor-skeleton-source" />
-            </li>
-          ))}
-        </ol>
       </div>
-      <p className="sr-only" aria-live="polite">Loading current Canada–Europe coverage from Currents.</p>
+      <p className="sr-only" aria-live="polite">
+        Loading current Canada–Europe coverage from Currents.
+      </p>
     </section>
   );
 }

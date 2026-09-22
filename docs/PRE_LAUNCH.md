@@ -47,14 +47,6 @@ After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tigh
 - [ ] Keep the visible Currents attribution and original-publisher links intact. Do not add article-body storage, persistent archives, automated customer-facing summaries or redistribution without separately confirming the required rights.
 - [ ] Confirm a quota-exhausted or upstream-failure response shows the explicit unavailable state and never synthetic coverage.
 
-## Official data
-
-- [ ] Smoke-test the deployed Statistics Canada WDS integration from the production host.
-- [ ] Confirm the live table still exposes the expected trade, FTA and NAPCS dimensions.
-- [ ] Verify Statistics Canada attribution renders beside every value-added display.
-- [ ] Smoke-test Government of Canada CKAN search from the production host.
-- [ ] Add source-health monitoring only after the production deployment path is known.
-
 ## Platform
 
 - [ ] Confirm canonical `tharros.ca` / `www` redirect.

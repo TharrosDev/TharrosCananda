@@ -32,7 +32,6 @@ describe("Currents Live Monitor adapter", () => {
     const parsed = parseCurrentsPayload({ status: "ok", news: [news], page: 1 });
     expect(parsed).toHaveLength(1);
     expect(parsed[0]).toMatchObject({
-      id: "article-1",
       title: news.title,
       url: "https://example.com/story",
       domain: "example.com",
@@ -44,11 +43,16 @@ describe("Currents Live Monitor adapter", () => {
   });
 
   it("uses descriptions and canonical Currents categories for local classification", () => {
-    expect(inferCurrentsTopics(
-      "Canadian research partnership",
-      "New semiconductor and AI investment with European partners",
-      "SCIENCE_TECHNOLOGY ECONOMY_BUSINESS_FINANCE",
-    )).toEqual(["trade-economy", "technology-strategic"]);
+    expect(
+      inferCurrentsTopics(
+        "Canadian research partnership",
+        "New semiconductor and AI investment with European partners",
+        "SCIENCE_TECHNOLOGY ECONOMY_BUSINESS_FINANCE",
+      ),
+    ).toEqual(["trade-economy", "technology-strategic"]);
+    expect(inferCurrentsTopics("AI-driven Canadian venture", "European launch", "")).toEqual([
+      "technology-strategic",
+    ]);
   });
 
   it("uses the free-tier-safe page size, Bearer auth and a strict seven-day RFC3339 window", async () => {
@@ -81,24 +85,43 @@ describe("Currents Live Monitor adapter", () => {
   });
 
   it("fails clearly when the server key is missing", async () => {
-    await expect(fetchCurrentsMonitor({
-      fetcher: (async () => Response.json({ status: "ok", news: [] })) as typeof fetch,
-      apiKey: "",
-    })).rejects.toMatchObject({ code: "not-configured" } satisfies Partial<CurrentsError>);
+    await expect(
+      fetchCurrentsMonitor({
+        fetcher: (async () => Response.json({ status: "ok", news: [] })) as typeof fetch,
+        apiKey: "",
+      }),
+    ).rejects.toMatchObject({ code: "not-configured" } satisfies Partial<CurrentsError>);
   });
 
   it("maps authentication, quota and invalid-request failures", async () => {
-    const unauthorized = (async () => Response.json({ status: "error", msg: "Invalid token" }, { status: 401 })) as typeof fetch;
-    await expect(fetchCurrentsMonitor({ fetcher: unauthorized, apiKey: "secret", baseUrl: "https://currents.test" }))
-      .rejects.toMatchObject({ code: "unauthorized", status: 401 });
+    const unauthorized = (async () =>
+      Response.json({ status: "error", msg: "Invalid token" }, { status: 401 })) as typeof fetch;
+    await expect(
+      fetchCurrentsMonitor({
+        fetcher: unauthorized,
+        apiKey: "secret",
+        baseUrl: "https://currents.test",
+      }),
+    ).rejects.toMatchObject({ code: "unauthorized", status: 401 });
 
-    const quota = (async () => Response.json({ status: "error", msg: "Quota exceeded" }, { status: 429 })) as typeof fetch;
-    await expect(fetchCurrentsMonitor({ fetcher: quota, apiKey: "secret", baseUrl: "https://currents.test" }))
-      .rejects.toMatchObject({ code: "quota", status: 429 });
+    const quota = (async () =>
+      Response.json({ status: "error", msg: "Quota exceeded" }, { status: 429 })) as typeof fetch;
+    await expect(
+      fetchCurrentsMonitor({ fetcher: quota, apiKey: "secret", baseUrl: "https://currents.test" }),
+    ).rejects.toMatchObject({ code: "quota", status: 429 });
 
-    const badRequest = (async () => Response.json({ status: "error", msg: "Invalid parameters" }, { status: 400 })) as typeof fetch;
-    await expect(fetchCurrentsMonitor({ fetcher: badRequest, apiKey: "secret", baseUrl: "https://currents.test" }))
-      .rejects.toMatchObject({ code: "invalid-request", status: 400 });
+    const badRequest = (async () =>
+      Response.json(
+        { status: "error", msg: "Invalid parameters" },
+        { status: 400 },
+      )) as typeof fetch;
+    await expect(
+      fetchCurrentsMonitor({
+        fetcher: badRequest,
+        apiKey: "secret",
+        baseUrl: "https://currents.test",
+      }),
+    ).rejects.toMatchObject({ code: "invalid-request", status: 400 });
   });
 
   it("retries a transient upstream failure once", async () => {
@@ -106,7 +129,10 @@ describe("Currents Live Monitor adapter", () => {
     const fetcher = (async () => {
       attempts += 1;
       if (attempts === 1) {
-        return Response.json({ status: "error", msg: "Temporary backend failure" }, { status: 503 });
+        return Response.json(
+          { status: "error", msg: "Temporary backend failure" },
+          { status: 503 },
+        );
       }
       return Response.json({ status: "ok", news: [news], page: 1 });
     }) as typeof fetch;
@@ -124,21 +150,76 @@ describe("Currents Live Monitor adapter", () => {
   });
 
   it("rejects malformed successful responses instead of inventing coverage", async () => {
-    const fetcher = (async () => new Response("<html>bad gateway</html>", {
-      status: 200,
-      headers: { "Content-Type": "text/html" },
-    })) as typeof fetch;
+    const fetcher = (async () =>
+      new Response("<html>bad gateway</html>", {
+        status: 200,
+        headers: { "Content-Type": "text/html" },
+      })) as typeof fetch;
 
-    await expect(fetchCurrentsMonitor({
-      fetcher,
-      apiKey: "secret",
-      baseUrl: "https://currents.test",
-    })).rejects.toMatchObject({ code: "invalid-response" });
+    await expect(
+      fetchCurrentsMonitor({
+        fetcher,
+        apiKey: "secret",
+        baseUrl: "https://currents.test",
+      }),
+    ).rejects.toMatchObject({ code: "invalid-response" });
+  });
+
+  it("distinguishes a valid empty search from unusable provider records", () => {
+    expect(parseCurrentsPayload({ status: "ok", news: [], page: 1 })).toEqual([]);
+    expect(() =>
+      parseCurrentsPayload({
+        status: "ok",
+        news: [
+          { title: "Missing source metadata", url: "javascript:alert(1)", published: "not-a-date" },
+        ],
+        page: 1,
+      }),
+    ).toThrowError(expect.objectContaining({ code: "invalid-response" }));
+  });
+
+  it("bounds provider text and normalizes equivalent tracked URLs", () => {
+    const longTitle = "A".repeat(500);
+    const parsed = parseCurrentsPayload({
+      status: "ok",
+      news: [
+        {
+          ...news,
+          title: longTitle,
+          description: "B".repeat(2_000),
+          language: "language-" + "x".repeat(80),
+          url: "https://example.com/story?z=2&utm_source=test&a=1#section",
+        },
+      ],
+      page: 1,
+    });
+
+    expect(parsed[0].title).toHaveLength(321);
+    expect(parsed[0].description).toHaveLength(1_201);
+    expect(parsed[0].language).toHaveLength(41);
+    expect(parsed[0].url).toBe("https://example.com/story?a=1&z=2");
+  });
+
+  it("rejects unexpectedly large provider responses before parsing", async () => {
+    const fetcher = (async () =>
+      new Response("{}", {
+        status: 200,
+        headers: { "Content-Type": "application/json", "Content-Length": "600000" },
+      })) as typeof fetch;
+
+    await expect(
+      fetchCurrentsMonitor({
+        fetcher,
+        apiKey: "secret",
+        baseUrl: "https://currents.test",
+      }),
+    ).rejects.toMatchObject({ code: "invalid-response" });
   });
 
   it("drops future-dated provider records from the current snapshot", async () => {
     const future = { ...news, id: "future", published: "2026-09-23 04:15:00 +0000" };
-    const fetcher = (async () => Response.json({ status: "ok", news: [future, news], page: 1 })) as typeof fetch;
+    const fetcher = (async () =>
+      Response.json({ status: "ok", news: [future, news], page: 1 })) as typeof fetch;
 
     const result = await fetchCurrentsMonitor({
       fetcher,
@@ -147,6 +228,21 @@ describe("Currents Live Monitor adapter", () => {
       now: () => new Date("2026-09-22T05:00:00Z"),
     });
 
-    expect(result.articles.map((article) => article.id)).toEqual(["article-1"]);
+    expect(result.articles.map((article) => article.title)).toEqual([news.title]);
+  });
+
+  it("drops records outside the requested seven-day window", async () => {
+    const old = { ...news, id: "old", published: "2026-09-14 04:15:00 +0000" };
+    const fetcher = (async () =>
+      Response.json({ status: "ok", news: [old, news], page: 1 })) as typeof fetch;
+
+    const result = await fetchCurrentsMonitor({
+      fetcher,
+      apiKey: "secret",
+      baseUrl: "https://currents.test",
+      now: () => new Date("2026-09-22T05:00:00Z"),
+    });
+
+    expect(result.articles.map((article) => article.title)).toEqual([news.title]);
   });
 });

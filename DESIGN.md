@@ -87,7 +87,7 @@ For major commercial pages where a dark chapter opening is useful.
 
 ### Task
 
-Compact dark hero for a working interface such as Market Data or Commission Research. The task should begin quickly below it.
+Compact dark hero for a working interface such as Live Monitor or Commission Research. The task should begin quickly below it.
 
 ### Document
 
@@ -97,7 +97,7 @@ Light ivory editorial header for Research Archive, Methodology, How It Works, Pr
 
 Desktop order:
 
-**Services · Research · Live Monitor · Market Data · About**
+**Services · Research · Live Monitor · About**
 
 Primary action:
 
@@ -105,14 +105,12 @@ Primary action:
 
 The navigation tightens before collapsing. Around 1020px it becomes a labelled **Menu** control rather than an icon-only hamburger.
 
-Use the same destination name everywhere. In particular, do not call Market Data “Data” in one surface and “Market Explorer” in another.
-
 ## Homepage architecture
 
 1. Evidence-atlas first viewport, brand proposition and Commission Research
 2. Statement-scale, decision-oriented client questions
 3. Four-area Canada–Europe research summary
-4. Live official-data proof
+4. Live Monitor proof
 5. Commissioned services
 6. Research archive / methodology links
 7. Final commission CTA
@@ -140,39 +138,22 @@ A real report page should eventually include verified authorship, date, executiv
 
 ## Live Monitor
 
-Live Monitor is a working editorial discovery surface, not a dashboard and not a Tharros publication feed. It should visually belong to the same ruled evidence-led system as Research and Market Data.
+Live Monitor is a working editorial discovery surface, not a dashboard and not a Tharros publication feed. It should visually belong to the same ruled evidence-led system as Research.
 
 Visual hierarchy:
 
-1. compact task hero with the four research areas;
-2. brief provenance/interpretation boundary;
-3. streamed loading state that clearly communicates an external-source lookup;
-4. source status and retrieval time;
-5. search, research-area and time-window controls;
-6. ruled publisher-linked article entries;
-7. explicit unavailable state when Currents cannot return usable coverage.
+1. a dedicated Signal Desk hero connecting Canada and Europe through semantic route geometry;
+2. a concise provenance/interpretation boundary;
+3. source telemetry showing provider, checked time, window, source count and dispatch count;
+4. a fast command bar with search, explicit time-window controls and topic-count filters;
+5. the newest relevant article promoted as the lead dispatch;
+6. remaining publisher-linked coverage arranged as a responsive editorial wire;
+7. distinct empty, filtered-empty and unavailable states;
+8. explicit recovery actions for filter and provider failures.
 
-Currents attribution must remain visible and usable as a link. Original publisher links and publication times remain part of each record. Do not visually imply that inclusion means verification, endorsement or a Tharros finding.
+Currents attribution must remain visible and usable as a link. Original publisher links and publication times remain part of each record. The newest matching record may receive stronger editorial hierarchy, but that prominence means recency—not verification, importance, endorsement or a Tharros finding.
 
-The loading state may use restrained motion to communicate retrieval, but it must collapse under `prefers-reduced-motion`. Failure states must replace the live-results region rather than populate it with substitute headlines.
-
-## Official Market Data
-
-The public data interface currently uses Statistics Canada Table 12-10-0174-01 through WDS.
-
-Visual hierarchy:
-
-1. task framing, official-source status and a three-step use guide;
-2. trade-flow and NAPCS commodity controls;
-3. latest value / annual change / CETA grouping;
-4. accessible time-series chart;
-5. source/provenance record;
-6. limitations and an explicit interpretation boundary;
-7. related Government of Canada dataset discovery.
-
-Statistics Canada attribution must remain visible. No government logos may be used.
-
-Charts use steel. Green may communicate a positive change/state, but never imply that an increase is commercially “good.”
+The route draw and loading state may use restrained motion to communicate acquisition, but both must collapse under `prefers-reduced-motion`. Filter changes use one short feed transition rather than staggered item animation. Failure states must replace the live-results region rather than populate it with substitute headlines. Provider text and links must be bounded and able to wrap without causing overflow.
 
 ## Research areas
 
@@ -201,7 +182,7 @@ Commission Research is a task-led scope desk: a concise opening statement, a thr
 
 ## Motion
 
-The homepage evidence route and the chart registration are the two authored data motions. Both draw evidence paths into an already-readable static composition. Hover transitions may move arrows/underlines. Avoid scroll-triggered reveals and ornamental motion. All motion must collapse under `prefers-reduced-motion`.
+The homepage evidence route is the primary authored data motion. It draws the evidence path into an already-readable static composition. Hover transitions may move arrows/underlines. Avoid scroll-triggered reveals and ornamental motion. All motion must collapse under `prefers-reduced-motion`.
 
 ## Responsive rules
 
@@ -218,7 +199,7 @@ No page should require horizontal scrolling at an equivalent 320 CSS px viewport
 
 ### Navigation
 
-The 76px ruled navigation uses the serif wordmark, five primary destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
+The 76px ruled navigation uses the serif wordmark, four primary destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
 
 ### Buttons and text links
 
@@ -230,11 +211,7 @@ The homepage atlas is a dark, ruled evidence plate connecting Canada and Europe 
 
 ### Live Monitor entry
 
-The Live Monitor keeps provider attribution, retrieval time, query controls and publisher-linked coverage in one continuous ruled surface. Result rows use the same editorial-list language as Research rather than card UI. The error state remains explicit and source-specific; never disguise provider failure with substitute content.
-
-### Official data entry
-
-The Market Data instrument keeps source status, publisher table, query controls, KPI readouts, accessible chart/table, provenance, limitations and discovery records in one continuous ruled surface. Loading and error states replace the selected series rather than leaving stale values presented as current.
+The Live Monitor is the Signal Desk: a bespoke dark route hero, source telemetry, a compact filter rail, one lead dispatch and a ruled editorial wire. It avoids dashboard cards while making the freshest matching coverage immediately legible. Empty results explain whether the provider returned no current coverage or the visitor's filters removed all results. The error state remains explicit and source-specific; never disguise provider failure with substitute content.
 
 ### Research archive
 
@@ -249,20 +226,19 @@ The Commission Research form sits on one light editorial sheet with a small oper
 - Use real source metadata as visual content.
 - Preserve explicit source periods, retrieval context and limitations.
 - Keep the research archive honest when empty.
-- Make data interfaces readable without charts through semantic text/table equivalents.
+- Keep Live Monitor states and controls understandable without relying on colour alone.
 - Keep Commission Research visible but not repeated excessively.
 - Maintain strong focus states and keyboard navigation.
 
 ## Do not
 
 - Add fabricated reports, clients, partners, awards, experts or testimonials.
-- Reintroduce synthetic market figures as a fallback for unavailable official data.
+- Substitute synthetic coverage when Currents is unavailable.
 - Add stock photography merely to make pages feel “full.”
 - Use government logos or visual marks in a way that suggests affiliation.
 - Create decorative dashboard cards.
 - Use large dark heroes on every page.
 - Let pricing dominate the first impression of the business.
-
 
 ## Density and rules
 

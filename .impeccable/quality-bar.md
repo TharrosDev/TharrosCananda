@@ -4,8 +4,8 @@
 - Services lead the information architecture; public research and data act as evidence of method and expertise.
 - No report, author, client, testimonial, partner, award, image or quantitative finding is fabricated.
 - The Research Archive remains honest when empty, states that absence once, and scales without redesign when verified publications are added.
-- Market Data displays only official values retrieved through documented publisher paths; source failure never becomes a synthetic fallback.
-- Statistics Canada attribution, period, retrieval/release context and material limitations remain visible with the data.
+- Live Monitor displays only Currents-discovered publisher records; provider failure never becomes synthetic or secondary-provider coverage.
+- Currents attribution, publication time, retrieval context and direct publisher links remain visible with the coverage.
 - Canadian and European public-source routes are both represented in Methodology.
 - Document pages use a lighter editorial hierarchy instead of repeating the dark commercial hero.
 - Mobile preserves reading order, actions, data equivalents and keyboard accessibility without horizontal scrolling.
@@ -15,4 +15,4 @@
 - The site looks like a rigorous commercial-intelligence house, not a government site, think tank, generic agency or SaaS dashboard.
 
 - Browser regression checks cover responsive overflow, the commissioning journey and automated accessibility on core routes.
-- A Market Data request never leaves values from a previous query visible under newly selected controls.
+- Live Monitor distinguishes provider-empty, visitor-filtered empty and provider-failure states and provides the appropriate recovery action.

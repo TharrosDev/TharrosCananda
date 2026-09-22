@@ -8,7 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/research-services",
     "/research",
     "/live-monitor",
-    "/market-explorer",
     "/request-research",
     "/about",
     "/how-it-works",
@@ -18,7 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const core = routes.map((route, index) => ({
     url: `${base}${route}`,
-    changeFrequency: (route === "/live-monitor" ? "hourly" : index === 0 || route === "/research" ? "weekly" : "monthly") as "hourly" | "weekly" | "monthly",
+    changeFrequency: (route === "/live-monitor"
+      ? "hourly"
+      : index === 0 || route === "/research"
+        ? "weekly"
+        : "monthly") as "hourly" | "weekly" | "monthly",
     priority: index === 0 ? 1 : index < 7 ? 0.9 : 0.6,
   }));
   const research = publications.map((publication) => ({

@@ -1,8 +1,4 @@
-import {
-  monitorTopics,
-  type MonitorArticle,
-  type MonitorTopicId,
-} from "@/lib/live-monitor";
+import { monitorTopics, type MonitorArticle, type MonitorTopicId } from "@/lib/live-monitor";
 
 export const CURRENTS_API_BASE_URL = "https://api.currentsapi.services";
 const SEARCH_PATH = "/v2/search";
@@ -12,23 +8,106 @@ const MAX_ATTEMPTS = 2;
 const DEFAULT_RETRY_DELAY_MS = 250;
 const MAX_RETRY_DELAY_MS = 1_000;
 const SEARCH_WINDOW_MS = 7 * 24 * 60 * 60 * 1_000;
+const MAX_RESPONSE_BYTES = 512_000;
+const MAX_URL_LENGTH = 2_048;
+const MAX_TITLE_LENGTH = 320;
+const MAX_DESCRIPTION_LENGTH = 1_200;
+const MAX_LANGUAGE_LENGTH = 40;
+const MAX_CATEGORY_TEXT_LENGTH = 1_000;
 const RETRYABLE_STATUSES = new Set([408, 425, 500, 502, 503, 504]);
 
 const EUROPE_TERMS = [
-  '"European Union"', "Europe", "European", "EU",
-  "Germany", "German", "France", "French", "Italy", "Italian",
-  "Spain", "Spanish", "Poland", "Polish", "Netherlands", "Dutch",
-  "Belgium", "Belgian", "Sweden", "Swedish", "Finland", "Finnish",
-  "Denmark", "Danish", "Norway", "Norwegian", '"United Kingdom"',
-  "Britain", "British", "Ukraine", "Ukrainian",
+  '"European Union"',
+  "Europe",
+  "European",
+  "EU",
+  "Germany",
+  "German",
+  "France",
+  "French",
+  "Italy",
+  "Italian",
+  "Spain",
+  "Spanish",
+  "Poland",
+  "Polish",
+  "Netherlands",
+  "Dutch",
+  "Belgium",
+  "Belgian",
+  "Sweden",
+  "Swedish",
+  "Finland",
+  "Finnish",
+  "Denmark",
+  "Danish",
+  "Norway",
+  "Norwegian",
+  "Ireland",
+  "Irish",
+  "Portugal",
+  "Portuguese",
+  "Austria",
+  "Austrian",
+  "Czechia",
+  "Czech",
+  "Romania",
+  "Romanian",
+  "Greece",
+  "Greek",
+  "Hungary",
+  "Hungarian",
+  "Bulgaria",
+  "Bulgarian",
+  "Croatia",
+  "Croatian",
+  "Slovakia",
+  "Slovak",
+  "Slovenia",
+  "Slovenian",
+  "Estonia",
+  "Estonian",
+  "Latvia",
+  "Latvian",
+  "Lithuania",
+  "Lithuanian",
+  "Luxembourg",
+  "Malta",
+  "Cyprus",
+  "Iceland",
+  "Switzerland",
+  "Swiss",
+  '"United Kingdom"',
+  "Britain",
+  "British",
+  "Ukraine",
+  "Ukrainian",
 ].join(" OR ");
 
 const SUBJECT_TERMS = [
-  "trade", "CETA", "tariff", "investment", "economy", "business",
-  "defence", "defense", "NATO", "security", "procurement",
-  "energy", '"critical minerals"', "mining", "manufacturing", "industry",
-  "technology", '"artificial intelligence"', "AI", "cyber",
-  "semiconductor", "telecom", "space",
+  "trade",
+  "CETA",
+  "tariff",
+  "investment",
+  "economy",
+  "business",
+  "defence",
+  "defense",
+  "NATO",
+  "security",
+  "procurement",
+  "energy",
+  '"critical minerals"',
+  "mining",
+  "manufacturing",
+  "industry",
+  "technology",
+  '"artificial intelligence"',
+  "AI",
+  "cyber",
+  "semiconductor",
+  "telecom",
+  "space",
 ].join(" OR ");
 
 type CurrentsArticle = {
@@ -80,17 +159,32 @@ function clean(value: unknown) {
   return typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
 }
 
+function cleanBounded(value: unknown, maxLength: number) {
+  const text = clean(value);
+  const characters = [...text];
+  return characters.length > maxLength
+    ? characters.slice(0, maxLength).join("").trimEnd() + "…"
+    : text;
+}
+
 function cleanUrl(value: unknown) {
   const text = clean(value);
+  if (!text || text.length > MAX_URL_LENGTH) return null;
   try {
     const url = new URL(text);
     if (url.protocol !== "https:" && url.protocol !== "http:") return null;
     url.hash = "";
     for (const key of [...url.searchParams.keys()]) {
-      if (/^utm_/i.test(key) || ["fbclid", "gclid", "mc_cid", "mc_eid"].includes(key.toLowerCase())) {
+      if (
+        /^utm_/i.test(key) ||
+        ["fbclid", "gclid", "igshid", "mc_cid", "mc_eid", "mkt_tok", "vero_id"].includes(
+          key.toLowerCase(),
+        )
+      ) {
         url.searchParams.delete(key);
       }
     }
+    url.searchParams.sort();
     return url.toString();
   } catch {
     return null;
@@ -101,39 +195,65 @@ function parsePublished(value: unknown) {
   const text = clean(value);
   if (!text) return null;
 
-  const currentsFormat = text.match(/^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2})\s+([+-])(\d{2})(\d{2})$/);
+  const currentsFormat = text.match(
+    /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2})\s+([+-])(\d{2})(\d{2})$/,
+  );
   const normalized = currentsFormat
-    ? currentsFormat[1] + "T" + currentsFormat[2] + currentsFormat[3] + currentsFormat[4] + ":" + currentsFormat[5]
+    ? currentsFormat[1] +
+      "T" +
+      currentsFormat[2] +
+      currentsFormat[3] +
+      currentsFormat[4] +
+      ":" +
+      currentsFormat[5]
     : text;
   const parsed = Date.parse(normalized);
   return Number.isNaN(parsed) ? null : new Date(parsed).toISOString();
 }
 
-function stableId(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return Math.abs(hash >>> 0).toString(36);
-}
-
 function categoryText(value: unknown) {
   return Array.isArray(value)
-    ? value.filter((item): item is string => typeof item === "string").join(" ").toLowerCase()
+    ? cleanBounded(
+        value.filter((item): item is string => typeof item === "string").join(" "),
+        MAX_CATEGORY_TEXT_LENGTH,
+      ).toLowerCase()
     : "";
 }
 
-export function inferCurrentsTopics(title: string, description: string, categories: string): MonitorTopicId[] {
+export function inferCurrentsTopics(
+  title: string,
+  description: string,
+  categories: string,
+): MonitorTopicId[] {
   const normalizedCategories = categories.toLowerCase();
-  const value = " " + [title, description, normalizedCategories.replaceAll("_", " ")].join(" ").toLowerCase() + " ";
+  const value = (
+    " " +
+    [title, description, normalizedCategories.replaceAll("_", " ")].join(" ").toLowerCase() +
+    " "
+  ).replace(/[^\p{L}\p{N}]+/gu, " ");
   const matched = monitorTopics
-    .filter((topic) => topic.matchKeywords.some((keyword) => value.includes(keyword)))
+    .filter((topic) =>
+      topic.matchKeywords.some((keyword) => {
+        const needle = keyword.trim().toLowerCase();
+        return keyword === keyword.trim()
+          ? value.includes(needle)
+          : value.includes(` ${needle} `);
+      }),
+    )
     .map((topic) => topic.id);
 
-  if (normalizedCategories.includes("economy_business_finance") && !matched.includes("trade-economy")) matched.push("trade-economy");
-  if (normalizedCategories.includes("science_technology") && !matched.includes("technology-strategic")) matched.push("technology-strategic");
-  if (normalizedCategories.includes("environment") && !matched.includes("energy-industry")) matched.push("energy-industry");
+  if (
+    normalizedCategories.includes("economy_business_finance") &&
+    !matched.includes("trade-economy")
+  )
+    matched.push("trade-economy");
+  if (
+    normalizedCategories.includes("science_technology") &&
+    !matched.includes("technology-strategic")
+  )
+    matched.push("technology-strategic");
+  if (normalizedCategories.includes("environment") && !matched.includes("energy-industry"))
+    matched.push("energy-industry");
   return matched;
 }
 
@@ -148,7 +268,10 @@ export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
 
   const object = payload as CurrentsPayload;
   if (object.status !== "ok") {
-    throw new CurrentsError(clean(object.message) || clean(object.msg) || "Currents returned an error response.", "invalid-response");
+    throw new CurrentsError(
+      clean(object.message) || clean(object.msg) || "Currents returned an error response.",
+      "invalid-response",
+    );
   }
   if (!Array.isArray(object.news)) {
     throw new CurrentsError("Currents response did not include a news array.", "invalid-response");
@@ -156,25 +279,32 @@ export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
 
   const articles: MonitorArticle[] = [];
 
-  for (const raw of object.news as CurrentsArticle[]) {
+  for (const raw of (object.news as CurrentsArticle[]).slice(0, PAGE_SIZE)) {
     if (!raw || typeof raw !== "object") continue;
     const url = cleanUrl(raw.url);
-    const title = clean(raw.title);
-    const description = clean(raw.description);
+    const title = cleanBounded(raw.title, MAX_TITLE_LENGTH);
+    const description = cleanBounded(raw.description, MAX_DESCRIPTION_LENGTH);
     const publishedAt = parsePublished(raw.published);
     if (!url || !title || !publishedAt) continue;
 
     const categories = categoryText(raw.category);
     articles.push({
-      id: clean(raw.id) || stableId(url),
+      id: url,
       title,
       description,
       url,
       domain: new URL(url).hostname.replace(/^www\./, ""),
-      language: clean(raw.language) || "Not supplied",
+      language: cleanBounded(raw.language, MAX_LANGUAGE_LENGTH) || "Not supplied",
       publishedAt,
       topics: inferCurrentsTopics(title, description, categories),
     });
+  }
+
+  if (object.news.length > 0 && articles.length === 0) {
+    throw new CurrentsError(
+      "Currents returned records without usable titles, links or publication times.",
+      "invalid-response",
+    );
   }
 
   return articles.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
@@ -225,6 +355,9 @@ function buildSearchUrl(baseUrl: string, start: Date, end: Date) {
   } catch {
     throw new CurrentsError("Currents API base URL is invalid.", "not-configured");
   }
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    throw new CurrentsError("Currents API base URL must use HTTP or HTTPS.", "not-configured");
+  }
 
   url.searchParams.set("query", buildCurrentsQuery());
   url.searchParams.set("language", "en");
@@ -264,6 +397,14 @@ async function requestCurrents(
     }
 
     let body = "";
+    const contentLength = Number(response.headers.get("content-length"));
+    if (Number.isFinite(contentLength) && contentLength > MAX_RESPONSE_BYTES) {
+      throw new CurrentsError(
+        "Currents returned an unexpectedly large response.",
+        "invalid-response",
+        response.status,
+      );
+    }
     try {
       body = await response.text();
     } catch {
@@ -273,25 +414,48 @@ async function requestCurrents(
       }
       throw new CurrentsError("Currents response could not be read.", "upstream", response.status);
     }
+    if (body.length > MAX_RESPONSE_BYTES) {
+      throw new CurrentsError(
+        "Currents returned an unexpectedly large response.",
+        "invalid-response",
+        response.status,
+      );
+    }
 
     const payload = parseBody(body);
 
     if (response.ok) {
       if (body.trim() && payload === null) {
-        throw new CurrentsError("Currents returned non-JSON content.", "invalid-response", response.status);
+        throw new CurrentsError(
+          "Currents returned non-JSON content.",
+          "invalid-response",
+          response.status,
+        );
       }
       return parseCurrentsPayload(payload);
     }
 
     const message = providerMessage(payload);
     if (response.status === 401 || response.status === 403) {
-      throw new CurrentsError(message || "Currents rejected the API key.", "unauthorized", response.status);
+      throw new CurrentsError(
+        message || "Currents rejected the API key.",
+        "unauthorized",
+        response.status,
+      );
     }
     if (response.status === 429) {
-      throw new CurrentsError(message || "Currents API quota has been reached.", "quota", response.status);
+      throw new CurrentsError(
+        message || "Currents API quota has been reached.",
+        "quota",
+        response.status,
+      );
     }
     if (response.status === 400) {
-      throw new CurrentsError(message || "Currents rejected the search request.", "invalid-request", response.status);
+      throw new CurrentsError(
+        message || "Currents rejected the search request.",
+        "invalid-request",
+        response.status,
+      );
     }
 
     if (RETRYABLE_STATUSES.has(response.status) && attempt + 1 < MAX_ATTEMPTS) {
@@ -299,32 +463,47 @@ async function requestCurrents(
       continue;
     }
 
-    throw new CurrentsError(message || "Currents returned HTTP " + response.status + ".", "upstream", response.status);
+    throw new CurrentsError(
+      message || "Currents returned HTTP " + response.status + ".",
+      "upstream",
+      response.status,
+    );
   }
 
   throw new CurrentsError("Currents request failed.", "upstream");
 }
 
 export async function fetchCurrentsMonitor(options: CurrentsOptions = {}) {
-  const apiKey = options.apiKey ?? process.env.CURRENTS_API_KEY;
+  const apiKey = (options.apiKey ?? process.env.CURRENTS_API_KEY)?.trim();
   if (!apiKey) throw new CurrentsError("Currents API key is not configured.", "not-configured");
 
   const baseUrl = options.baseUrl ?? process.env.CURRENTS_API_BASE_URL ?? CURRENTS_API_BASE_URL;
   const now = options.now ?? (() => new Date());
   const fetcher = options.fetcher ?? fetch;
-  const timeoutMs = options.timeoutMs ?? FETCH_TIMEOUT_MS;
-  const retryDelayMs = options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
+  const timeoutMs = Math.min(Math.max(options.timeoutMs ?? FETCH_TIMEOUT_MS, 1), 30_000);
+  const retryDelayMs = Math.min(
+    Math.max(options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS, 0),
+    MAX_RETRY_DELAY_MS,
+  );
 
   const end = now();
-  if (Number.isNaN(end.getTime())) throw new CurrentsError("Currents search clock is invalid.", "invalid-request");
+  if (Number.isNaN(end.getTime()))
+    throw new CurrentsError("Currents search clock is invalid.", "invalid-request");
   const start = new Date(end.getTime() - SEARCH_WINDOW_MS);
   const url = buildSearchUrl(baseUrl, start, end);
   const articles = await requestCurrents(url, apiKey, fetcher, timeoutMs, retryDelayMs);
   const endTime = end.getTime();
+  const startTime = start.getTime();
   const seen = new Set<string>();
   const currentArticles = articles.filter((article) => {
     const published = Date.parse(article.publishedAt);
-    if (!Number.isFinite(published) || published > endTime || seen.has(article.url)) return false;
+    if (
+      !Number.isFinite(published) ||
+      published < startTime ||
+      published > endTime ||
+      seen.has(article.url)
+    )
+      return false;
     seen.add(article.url);
     return true;
   });

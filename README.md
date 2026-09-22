@@ -11,7 +11,6 @@ The site is deliberately small and evidence-led:
 - **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
 - **Live Monitor** — a Currents-powered discovery surface for recent Canada–Europe reporting across the four Tharros research areas. It streams behind the page shell, preserves direct publisher links and publication times, and never presents discovered headlines as Tharros findings.
-- **Market Data**: live Canada–CETA merchandise trade from Statistics Canada Table 12-10-0174-01 through the Web Data Service (WDS). Flow, commodity group and period live in the URL; a ranked comparison of every commodity group sits beside the chart; publisher flags, table notes and provenance are shown with the figures. A keyword search of the federal Open Government catalogue is available as a secondary, collapsed "find related datasets" panel.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.
 - Dedicated **About**, **Privacy**, **Accessibility**, and **How It Works** pages.
@@ -22,7 +21,7 @@ No public page fabricates publications, customers, client logos, testimonials, t
 
 Primary navigation is:
 
-**Services · Research · Live Monitor · Market Data · About**
+**Services · Research · Live Monitor · About**
 
 with **Commission research** as the primary action.
 
@@ -58,49 +57,16 @@ The production request contract is deliberately narrow:
 - the API key is sent only through the server-side `Authorization: Bearer` header;
 - successful snapshots are cached for 15 minutes;
 - one bounded retry is allowed for transient network/5xx failures, while 400, authentication and quota failures fail immediately;
-- malformed responses and future-dated records are rejected;
+- malformed or oversized responses and records outside the requested seven-day window are rejected;
 - URL deduplication happens after time validation so an invalid/future copy cannot suppress a valid current article;
-- tracking parameters are removed from outgoing publisher URLs;
-- article title, description and Currents categories are used only for local research-area classification.
+- tracking parameters are removed and remaining query parameters are normalized on outgoing publisher URLs;
+- article title, description, language and provider responses are bounded before display;
+- article title, description and Currents categories are used only for local research-area classification;
+- valid provider-empty, visitor-filtered empty and provider-failure states remain distinct and recoverable.
 
 The route streams the panel through `<Suspense>`, so navigating to `/live-monitor` renders the Tharros shell immediately rather than waiting on Currents. Each result keeps its original publisher URL and publication time. Currents is visibly attributed, and discovered headlines/descriptions are never presented as Tharros verification, endorsement or analysis.
 
 Production deployments must provide `CURRENTS_API_KEY` as a server-only environment variable. Do not add article-body storage, persistent republishing, automated customer-facing summaries or a fallback news provider without separately reviewing source rights and updating the provenance policy in `docs/DATA_SOURCES.md`.
-
-## Official data integration
-
-### Statistics Canada
-
-`src/lib/statcan.ts` integrates Statistics Canada WDS using WDS Product ID **12100174** and public table/issue **12-10-0174-01** (catalogue/DOI identifier **1210017401**), *Merchandise imports and exports, customs-based, by free trade agreement and by commodity*.
-
-The public interface:
-
-- requests live table metadata and validates it at runtime (envelope, product id, dimensions, members, positions) instead of casting;
-- identifies the trade, free-trade-agreement and NAPCS dimensions and the CETA member by name, so renamed, renumbered or terminated members fail closed;
-- builds the 10-position coordinate and accepts only publisher-listed commodity groups from the URL;
-- validates every series and datapoint (coordinate, vector id, monthly reference period, finite values, scalar factor, unit of measure);
-- keeps Statistics Canada symbol, status and suppression codes: flagged values are labelled, withheld months (x, F, `..`) are never charted as numbers;
-- requests 37 months per series, plus one batched request for all commodity groups (12-month totals, change and share);
-- caches successful retrievals for 6 hours with `unstable_cache` (`src/lib/statcan-data.ts`). Failures are never cached. If a refresh fails, the last good copy keeps serving and is labelled stale after 24 hours using its own `retrievedAt`;
-- streams inside `<Suspense>`, so page chrome renders immediately and a slow WDS cannot hang the page;
-- uses the required Statistics Canada value-added-product acknowledgement.
-
-No synthetic or fallback values exist anywhere in the site. Tests run against recorded real responses in `tests/fixtures/statcan/` (re-record with `node scripts/record-statcan-fixtures.mjs`). `npm run test:contract` checks the live service, and a weekly workflow runs it.
-
-Official references:
-
-- WDS: https://www.statcan.gc.ca/en/developers/wds
-- WDS user guide: https://www.statcan.gc.ca/en/developers/wds/user-guide
-- Table 12-10-0174-01: https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1210017401
-- Statistics Canada Open Licence: https://www.statcan.gc.ca/en/terms-conditions/open-licence
-
-### Government of Canada Open Data
-
-`src/app/api/open-data/search/route.ts` uses the official CKAN `package_search` GET API. The Market Data page calls it only when a visitor opens the collapsed "Find related federal datasets" panel. It is a discovery layer only; a returned record is not evidence for a Tharros conclusion.
-
-Official API entry point:
-
-https://open.canada.ca/en/access-our-application-programming-interface-api
 
 ## Stack
 
@@ -131,35 +97,31 @@ npm test                  # unit and fixture-based contract tests
 npm run build
 npx playwright install chromium
 npm run test:e2e          # functional, axe and visual tests on a production build with mocked sources
-npm run test:contract     # live Statistics Canada contract (bash / CI)
 npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart from one rejected POST)
 ```
 
 ## Environment variables
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`. |
-| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |
-| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
-| `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
-| `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
-| `CURRENTS_API_KEY` | Required for Live Monitor | Server-only Currents API key used in the Bearer authorization header. Never expose through a `NEXT_PUBLIC_*` variable, URL parameter or source control. |
-| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `CURRENTS_API_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
+| Variable                         | Required                  | Purpose                                                                                                                                                           |
+| -------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Recommended               | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`.                                                                                  |
+| `RESEARCH_INTAKE_WEBHOOK_URL`    | Required for live intake  | Server-only HTTPS endpoint receiving validated research requests.                                                                                                 |
+| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake  | Shared secret used to HMAC-sign the exact webhook payload and timestamp.                                                                                          |
+| `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional                  | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled.                                                 |
+| `NEXT_PUBLIC_RESEARCH_EMAIL`     | Optional                  | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
+| `CURRENTS_API_KEY`               | Required for Live Monitor | Server-only Currents API key used in the Bearer authorization header. Never expose through a `NEXT_PUBLIC_*` variable, URL parameter or source control.           |
+| `CURRENTS_API_BASE_URL`          | Tests only                | Points the Currents adapter at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment.                                                           |
 
 ## Architecture
 
 ```text
 src/
   app/
-    api/open-data/search/   Government of Canada CKAN discovery endpoint
     research/               research archive
     live-monitor/           Currents-powered current-coverage monitor
-    market-explorer/        live Canada–CETA data interface
-  components/              site UI, archive, chart, intake and live-data components
+  components/              site UI, archive, intake and Live Monitor components
   data/                    publications, verified source registry, organization (accountability) details
-  lib/                     services, research request, contact, analytics, Statistics Canada and Currents adapters
-  types/                   official-data contracts
+  lib/                     services, research request, contact, analytics and Currents adapter
 docs/
   DATA_SOURCES.md          integration and provenance policy
   PRE_LAUNCH.md            remaining operational/legal launch work
@@ -172,10 +134,9 @@ Tharros provides commercial research, market intelligence, market scans in Canad
 
 Public-source names identify publishers only. They must never be used to imply endorsement, partnership, privileged access or government affiliation.
 
-
 ## Browser quality checks
 
-`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves controlled Statistics Canada, Open Government and Currents responses, so screenshots never depend on live data. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
+`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves controlled Currents responses, so screenshots never depend on a live provider. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
 
 Baselines are Linux screenshots in `e2e/visual.spec.ts-snapshots/`. After an approved visual change, run the **Update visual baselines** workflow on the branch and review the committed images in the pull request. Local non-Linux snapshots are git-ignored and useful only for local comparison.
 
