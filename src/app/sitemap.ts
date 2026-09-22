@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const core = routes.map((route, index) => ({
     url: `${base}${route}`,
-    changeFrequency: (index === 0 || route === "/research" ? "weekly" : "monthly") as "weekly" | "monthly",
+    changeFrequency: (route === "/live-monitor" ? "hourly" : index === 0 || route === "/research" ? "weekly" : "monthly") as "hourly" | "weekly" | "monthly",
     priority: index === 0 ? 1 : index < 6 ? 0.9 : 0.6,
   }));
   const research = publications.map((publication) => ({
