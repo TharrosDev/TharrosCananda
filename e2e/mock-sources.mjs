@@ -1,4 +1,4 @@
-// Stand-in for Statistics Canada WDS, Open Government catalogue and GDELT DOC API.
+// Stand-in for Statistics Canada WDS, Open Government catalogue and Currents News API.
 // Recorded/controlled responses keep e2e and visual tests deterministic.
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
