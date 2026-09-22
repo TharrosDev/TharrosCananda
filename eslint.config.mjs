@@ -14,5 +14,6 @@ export default defineConfig([
     "outputs/**",
     "playwright-report/**",
     "test-results/**",
+    "public/pdf.worker.min.mjs",
   ]),
 ]);

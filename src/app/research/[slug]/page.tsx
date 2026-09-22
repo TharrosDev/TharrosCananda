@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/page-hero";
+import { ReportViewer } from "@/components/report/report-viewer";
+import { reportAsset } from "@/lib/reports";
 import { allPublications, publicationBySlug } from "@/data/publications";
 
 export function generateStaticParams() {
@@ -39,5 +41,11 @@ export default async function ResearchArticlePage({
   if (!publication) notFound();
 
   // Placeholder until the report page is rebuilt around the PDF viewer (plan Task 6).
-  return <PageHero variant="document" title={publication.title} description={publication.summary} />;
+  const asset = reportAsset(publication.slug);
+  return (
+    <>
+      <PageHero variant="document" title={publication.title} description={publication.summary} />
+      {asset && <ReportViewer file={asset.file} pages={asset.pages} title={publication.title} />}
+    </>
+  );
 }

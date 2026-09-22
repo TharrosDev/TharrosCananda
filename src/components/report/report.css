@@ -45,7 +45,7 @@
 /* Print surface: the flowing document Chromium paginates into the PDF. Screen view is only a preview. */
 .report-document--print { width: 816px; padding: 0; gap: 0; }
 .report-document--print .report-page-body { padding: 0; }
-.report-document--print .report-meta, .report-document--print .report-columns, .report-document--print .report-figure,
+.report-document--print .report-meta, .report-document--print .report-figure,
 .report-document--print .report-callout, .report-document--print .report-findings li, .report-document--print .report-sources li { break-inside: avoid; }
 .report-document--print h2 { break-after: avoid; }
 

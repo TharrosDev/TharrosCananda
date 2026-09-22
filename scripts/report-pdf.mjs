@@ -37,7 +37,7 @@ async function waitForServer() {
 }
 
 async function extract(bytes) {
-  const doc = await getDocument({ data: new Uint8Array(bytes), isEvalSupported: false, useSystemFonts: false }).promise;
+  const doc = await getDocument({ data: new Uint8Array(bytes), useSystemFonts: false }).promise;
   const pages = [];
   for (let n = 1; n <= doc.numPages; n += 1) {
     const content = await (await doc.getPage(n)).getTextContent();
