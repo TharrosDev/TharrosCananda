@@ -52,7 +52,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
 
   const window = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[2];
   const parsedReferenceTime = Date.parse(data.retrievedAt);
-  const referenceTime = Number.isFinite(parsedReferenceTime) ? parsedReferenceTime : Date.now();
+  const referenceTime = Number.isFinite(parsedReferenceTime) ? parsedReferenceTime : Number.NEGATIVE_INFINITY;
   const cutoff = referenceTime - window.hours * 60 * 60 * 1000;
 
   const inWindow = useMemo(
