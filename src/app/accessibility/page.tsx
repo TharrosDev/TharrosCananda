@@ -33,11 +33,7 @@ export default function AccessibilityPage() {
         </article>
         <article>
           <h2>Report a problem</h2>
-          {contactEmail ? (
-            <p>Send the page, device or assistive technology involved and a short description to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
-          ) : (
-            <p>A dedicated public accessibility contact will be shown here when a monitored contact address is configured.</p>
-          )}
+          <p>Send the page, device or assistive technology involved and a short description to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
         </article>
       </section>
     </>

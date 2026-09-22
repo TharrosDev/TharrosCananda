@@ -40,11 +40,7 @@ export default function PrivacyPage() {
         </article>
         <article>
           <h2>Contact and deletion requests</h2>
-          {contactEmail ? (
-            <p>To ask about information you submitted or request deletion, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
-          ) : (
-            <p>To ask about information you submitted or request deletion, reply to any email you receive from Tharros Canada. A public contact address will appear here only when one is configured and monitored.</p>
-          )}
+          <p>To ask about information you submitted or request deletion, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
         </article>
       </section>
     </>

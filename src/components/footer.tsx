@@ -15,11 +15,9 @@ export function Footer() {
             <span>CANADA</span>
           </Link>
           <p>Independent Canada–Europe research.</p>
-          {contactEmail && (
-            <a className="footer-contact" href={`mailto:${contactEmail}`}>
+          <a className="footer-contact" href={`mailto:${contactEmail}`}>
               {contactEmail}
             </a>
-          )}
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>
