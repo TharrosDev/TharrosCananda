@@ -8,6 +8,7 @@ const load = (name) => JSON.parse(readFileSync(new URL(`../tests/fixtures/${name
 const metadata = load("statcan/getCubeMetadata");
 const pools = { getDataFromCubePidCoordAndLatestNPeriods: load("statcan/getDataFromCubePidCoordAndLatestNPeriods"), getSeriesInfoFromCubePidCoord: load("statcan/getSeriesInfoFromCubePidCoord") };
 const openData = load("open-data-search");
+const rfc3339 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
 
 createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://mock");
@@ -23,10 +24,33 @@ createServer((req, res) => {
         res.statusCode = 401;
         return res.end(JSON.stringify({ status: "error", msg: "Invalid token" }));
       }
-      if (!url.searchParams.get("query")?.includes("Canada") || !url.searchParams.get("start_date") || !url.searchParams.get("end_date")) {
+
+      const query = url.searchParams.get("query") ?? "";
+      const startDate = url.searchParams.get("start_date") ?? "";
+      const endDate = url.searchParams.get("end_date") ?? "";
+      const start = Date.parse(startDate);
+      const end = Date.parse(endDate);
+      const validWindow =
+        rfc3339.test(startDate) &&
+        rfc3339.test(endDate) &&
+        Number.isFinite(start) &&
+        Number.isFinite(end) &&
+        end >= start &&
+        end - start <= 7 * 24 * 60 * 60 * 1000;
+      const validRequest =
+        query.includes("Canada") &&
+        url.searchParams.get("language") === "en" &&
+        url.searchParams.get("type") === "1" &&
+        url.searchParams.get("page_number") === "1" &&
+        url.searchParams.get("page_size") === "20" &&
+        !url.searchParams.has("apiKey") &&
+        validWindow;
+
+      if (!validRequest) {
         res.statusCode = 400;
         return res.end(JSON.stringify({ status: "error", msg: "Invalid parameters" }));
       }
+
       const samples = [
         {
           id: "trade-1",

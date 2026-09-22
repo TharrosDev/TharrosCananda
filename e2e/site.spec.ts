@@ -41,7 +41,7 @@ test("Live Monitor navigation opens the route",async({page,isMobile})=>{
 test("live monitor renders attributed Currents coverage and filters research areas",async({page})=>{
   await page.goto("/live-monitor");
   await expect(page.getByRole("heading",{name:"Live Canada–Europe Monitor."})).toBeVisible();
-  await expect(page.getByText(/Currents · live news search/i)).toBeVisible();
+  await expect(page.getByRole("link",{name:/Currents News API/i})).toBeVisible();
   await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();
   await page.getByLabel("Research area",{exact:true}).selectOption("defence-security");
   await expect(page.getByRole("link",{name:/Canadian and European defence suppliers expand cooperation/i})).toBeVisible();

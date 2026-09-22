@@ -49,6 +49,7 @@ export type LiveMonitorErrorCode =
   | "not-configured"
   | "unauthorized"
   | "quota"
+  | "invalid-request"
   | "upstream"
   | "invalid-response"
   | null;

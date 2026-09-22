@@ -5,7 +5,7 @@ import type { LiveMonitorSnapshot } from "@/lib/live-monitor";
 
 const cachedCurrents = unstable_cache(
   () => fetchCurrentsMonitor(),
-  ["currents-live-monitor-v1"],
+  ["currents-live-monitor-v2"],
   { revalidate: 900, tags: ["currents-live-monitor"] },
 );
 
@@ -14,7 +14,7 @@ export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
     const data = await cachedCurrents();
     return {
       kind: "ok",
-      articles: data.articles.slice(0, 160),
+      articles: data.articles,
       retrievedAt: data.retrievedAt,
       provider: "Currents",
       coverageWindow: "7 days",
@@ -22,7 +22,12 @@ export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
     };
   } catch (error) {
     const code = error instanceof CurrentsError ? error.code : "upstream";
-    console.error("[currents] " + (error instanceof Error ? error.message : "request failed"));
+    const status = error instanceof CurrentsError ? error.status : undefined;
+    console.error("[currents] Live Monitor request failed", {
+      code,
+      status,
+      errorType: error instanceof Error ? error.name : typeof error,
+    });
     return {
       kind: "error",
       articles: [],

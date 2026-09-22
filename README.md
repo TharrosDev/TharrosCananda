@@ -48,9 +48,24 @@ When a real publication is added, build its article/report page with the actual 
 
 ## Live Monitor
 
-`src/lib/currents.ts` integrates the Currents V2 Search API. One rolling seven-day Boolean query looks for reporting that connects Canada with Europe across trade, defence, energy/industry and strategic technology. `src/lib/currents-data.ts` owns the 15-minute server cache and explicit failure states. Results are classified into the four research areas locally from article title, description and Currents categories.
+The Live Monitor is a **Currents-only discovery surface**. It is not a publication feed and it has no synthetic or secondary-provider fallback. `src/lib/currents.ts` integrates the Currents V2 Search API and `src/lib/currents-data.ts` owns the server cache and user-safe error state.
 
-The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for Currents before rendering the Tharros page shell. Production deployments must provide `CURRENTS_API_KEY` as a server-only environment variable.
+The production request contract is deliberately narrow:
+
+- one Boolean search connects Canada with Europe across trade/economy, defence/security, energy/industry and strategic technology;
+- the search window is exactly seven days, using second-precision RFC3339 timestamps;
+- the adapter requests one page of **20 results**, keeping the request within the documented free-tier result cap and bounding quota use;
+- the API key is sent only through the server-side `Authorization: Bearer` header;
+- successful snapshots are cached for 15 minutes;
+- one bounded retry is allowed for transient network/5xx failures, while 400, authentication and quota failures fail immediately;
+- malformed responses and future-dated records are rejected;
+- URL deduplication happens after time validation so an invalid/future copy cannot suppress a valid current article;
+- tracking parameters are removed from outgoing publisher URLs;
+- article title, description and Currents categories are used only for local research-area classification.
+
+The route streams the panel through `<Suspense>`, so navigating to `/live-monitor` renders the Tharros shell immediately rather than waiting on Currents. Each result keeps its original publisher URL and publication time. Currents is visibly attributed, and discovered headlines/descriptions are never presented as Tharros verification, endorsement or analysis.
+
+Production deployments must provide `CURRENTS_API_KEY` as a server-only environment variable. Do not add article-body storage, persistent republishing, automated customer-facing summaries or a fallback news provider without separately reviewing source rights and updating the provenance policy in `docs/DATA_SOURCES.md`.
 
 ## Official data integration
 
@@ -129,7 +144,7 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
-| `CURRENTS_API_KEY` | Required for Live Monitor | Server-only Currents API key. Never expose through a `NEXT_PUBLIC_*` variable or commit it to source control. |
+| `CURRENTS_API_KEY` | Required for Live Monitor | Server-only Currents API key used in the Bearer authorization header. Never expose through a `NEXT_PUBLIC_*` variable, URL parameter or source control. |
 | `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `CURRENTS_API_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
 
 ## Architecture
