@@ -18,7 +18,7 @@ Tharros Canada is an independent commercial research and intelligence business f
 1. **Services** — what can be commissioned.
 2. **Expertise** — the four Canada–Europe subject areas.
 3. **Research** — archive of real Tharros publications as they are released.
-4. **Live Monitor** — current Canada–Europe reporting discovered through GDELT and linked to original publishers.
+4. **Live Monitor** — current Canada–Europe reporting discovered through Currents and linked to original publishers.
 5. **Market Data** — live public-source evidence, currently Statistics Canada Canada–CETA trade data.
 6. **About** — purpose, method, accountability and independence.
 7. **Commission research** — progressive intake workflow.
@@ -55,11 +55,11 @@ The research article template requires actual authorship, date, origin (independ
 
 ## Live Monitor
 
-The Live Monitor is an automated discovery surface, not a Tharros publication stream. The page shell renders immediately and the GDELT-backed panel streams behind `<Suspense>`, so a slow source cannot make navigation appear broken.
+The Live Monitor is an automated discovery surface, not a Tharros publication stream. The page shell renders immediately and the Currents-backed panel streams behind `<Suspense>`, so upstream latency cannot make navigation appear broken.
 
-The monitor searches a rolling seven-day window across the four Tharros research areas. Results preserve original publisher links, publisher domain, source country, language and GDELT index time. Article bodies are not copied and automated summaries are not presented as Tharros findings.
+The monitor runs one rolling seven-day Currents V2 search for Canada–Europe reporting across the four Tharros research areas. Results preserve direct publisher URLs, source domain, language and publication time. Title, description and Currents category metadata are used locally to classify articles into research areas. Article bodies are not copied and automated summaries are not presented as Tharros findings.
 
-Topic requests are cached for 15 minutes, retry transient upstream failures once and fail closed. If all topic-specific requests fail, one broader Canada–Europe discovery query may be shown with an explicit degraded-state notice; it never invents headlines.
+Successful retrievals are cached for 15 minutes. Authentication, quota, upstream and invalid-response failures are handled explicitly; the monitor never inserts synthetic headlines.
 
 ## Market Data
 
