@@ -1,6 +1,8 @@
 "use client";
 
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import { canvasRatio, nextZoom } from "@/lib/viewer";
 import "./report-viewer.css";
 
 type Props = { file: string; pages: number; title: string };
@@ -13,11 +15,12 @@ const MAX_FIT_WIDTH = 900;
 export function ReportViewer({ file, pages, title }: Props) {
   const rootRef = useRef<HTMLElement>(null);
   const sheetsRef = useRef<HTMLDivElement>(null);
+  const [doc, setDoc] = useState<PDFDocumentProxy | null>(null);
   const [zoom, setZoom] = useState<number | "fit">("fit");
   const [width, setWidth] = useState(0);
+  const [failed, setFailed] = useState(false);
   // Loading is derived: the sheets are current once the last completed render matches the requested one.
   const [renderedKey, setRenderedKey] = useState("");
-  const [failed, setFailed] = useState(false);
   const [current, setCurrent] = useState(1);
   const [pageInput, setPageInput] = useState("1");
 
@@ -30,27 +33,54 @@ export function ReportViewer({ file, pages, title }: Props) {
     return () => observer.disconnect();
   }, []);
 
-  const scale = zoom === "fit" ? Math.min(width || SHEET_WIDTH, MAX_FIT_WIDTH) / SHEET_WIDTH : zoom;
-  const renderKey = `${file}@${scale}`;
-  const rendering = renderedKey !== renderKey;
+  const fitScale = Math.min(width || SHEET_WIDTH, MAX_FIT_WIDTH) / SHEET_WIDTH;
+  // Rounded so sub-pixel resizes do not trigger a re-render.
+  const scale = Math.round((zoom === "fit" ? fitScale : zoom) * 100) / 100;
+  const rendering = renderedKey !== `${file}@${scale}`;
 
+  // One document (and one pdf.js worker) per file, destroyed when the file changes or the viewer unmounts.
   useEffect(() => {
-    if (!width) return;
+    let loadingTask: { promise: Promise<PDFDocumentProxy>; destroy: () => Promise<void> } | null = null;
+    let cancelled = false;
+    (async () => {
+      try {
+        const pdfjs = await import("pdfjs-dist");
+        if (cancelled) return;
+        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+        loadingTask = pdfjs.getDocument({ url: file });
+        const loaded = await loadingTask.promise;
+        if (!cancelled) setDoc(loaded);
+      } catch {
+        if (!cancelled) setFailed(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+      setDoc(null);
+      void loadingTask?.destroy();
+    };
+  }, [file]);
+
+  // Draw each page into a fresh off-screen canvas and text layer, then swap them in, so an
+  // interrupted render never blanks a sheet or shares a canvas with the next render.
+  const hasWidth = width > 0;
+  useEffect(() => {
+    if (!doc || !hasWidth) return;
     let cancelled = false;
     const tasks: { cancel: () => void }[] = [];
     (async () => {
       try {
         const pdfjs = await import("pdfjs-dist");
-        pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
-        const doc = await pdfjs.getDocument({ url: file }).promise;
         // ponytail: renders every page up front; switch to IntersectionObserver-driven rendering past ~20 pages.
-        for (let n = 1; n <= doc.numPages && !cancelled; n += 1) {
+        for (let n = 1; n <= doc.numPages; n += 1) {
+          const page = await doc.getPage(n);
+          if (cancelled) return;
           const sheet = sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${n}"]`);
           if (!sheet) continue;
-          const page = await doc.getPage(n);
           const viewport = page.getViewport({ scale: scale * (96 / 72) });
-          const ratio = window.devicePixelRatio || 1;
-          const canvas = sheet.querySelector("canvas")!;
+          const ratio = canvasRatio(viewport.width, viewport.height, window.devicePixelRatio);
+          const canvas = document.createElement("canvas");
+          canvas.setAttribute("aria-hidden", "true");
           canvas.width = Math.floor(viewport.width * ratio);
           canvas.height = Math.floor(viewport.height * ratio);
           canvas.style.width = `${viewport.width}px`;
@@ -58,10 +88,15 @@ export function ReportViewer({ file, pages, title }: Props) {
           const task = page.render({ canvas, viewport, transform: ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0] });
           tasks.push(task);
           await task.promise;
-          const layer = sheet.querySelector<HTMLDivElement>(".textLayer")!;
-          layer.replaceChildren();
+          if (cancelled) return;
+          const layer = document.createElement("div");
+          layer.className = "textLayer";
           layer.style.setProperty("--total-scale-factor", String(viewport.scale));
-          await new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: layer, viewport }).render();
+          const textLayer = new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: layer, viewport });
+          tasks.push(textLayer);
+          await textLayer.render();
+          if (cancelled) return;
+          sheet.replaceChildren(canvas, layer);
         }
         if (!cancelled) setRenderedKey(`${file}@${scale}`);
       } catch (error) {
@@ -72,7 +107,7 @@ export function ReportViewer({ file, pages, title }: Props) {
       cancelled = true;
       tasks.forEach((task) => task.cancel());
     };
-  }, [file, scale, width]);
+  }, [doc, file, scale, hasWidth]);
 
   // The page counter follows the sheet in the middle of the viewport.
   useEffect(() => {
@@ -94,18 +129,19 @@ export function ReportViewer({ file, pages, title }: Props) {
 
   function goTo(n: number) {
     const target = Math.min(Math.max(1, n || 1), pages);
+    setCurrent(target);
     setPageInput(String(target));
     sheetsRef.current?.querySelector(`.report-sheet[data-page="${target}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  const zoomBy = (delta: number) =>
-    setZoom((z) => Math.min(2, Math.max(0.4, Math.round(((z === "fit" ? scale : z) + delta) * 10) / 10)));
+  const zoomBy = (delta: number) => setZoom((z) => nextZoom(z === "fit" ? fitScale : z, delta));
 
   function onKeyDown(event: KeyboardEvent) {
-    if ((event.target as HTMLElement).tagName === "INPUT") return;
-    if (event.key === "PageDown") {
+    // Leave browser shortcuts (Ctrl/Cmd +, Alt combos) and typing in the page field alone.
+    if (event.ctrlKey || event.metaKey || event.altKey || (event.target as HTMLElement).tagName === "INPUT") return;
+    if (event.key === "PageDown" && current < pages) {
       event.preventDefault();
       goTo(current + 1);
-    } else if (event.key === "PageUp") {
+    } else if (event.key === "PageUp" && current > 1) {
       event.preventDefault();
       goTo(current - 1);
     } else if (event.key === "+" || event.key === "=") zoomBy(0.1);
@@ -127,6 +163,10 @@ export function ReportViewer({ file, pages, title }: Props) {
       data-loading={rendering && !failed ? "" : undefined}
       onKeyDown={onKeyDown}
     >
+      {/* Without JavaScript there is nothing to draw: hide the empty sheets and inert controls. */}
+      <noscript>
+        <style>{".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom{display:none!important}"}</style>
+      </noscript>
       <div className="report-viewer-toolbar" role="toolbar" aria-label="PDF controls">
         <form className="report-viewer-pages" onSubmit={(event) => { event.preventDefault(); goTo(Number(pageInput)); }}>
           <label htmlFor="report-page">Page</label>
@@ -153,12 +193,9 @@ export function ReportViewer({ file, pages, title }: Props) {
           {download}
         </div>
       ) : (
-        <div className="report-viewer-sheets" ref={sheetsRef} tabIndex={0} aria-label="Report pages">
+        <div className="report-viewer-sheets" ref={sheetsRef} tabIndex={0} role="region" aria-label="Report pages">
           {Array.from({ length: pages }, (_, i) => (
-            <div key={i} className="report-sheet" data-page={i + 1} style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }}>
-              <canvas aria-hidden="true" />
-              <div className="textLayer" />
-            </div>
+            <div key={i} className="report-sheet" data-page={i + 1} style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }} />
           ))}
         </div>
       )}

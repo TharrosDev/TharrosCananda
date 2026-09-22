@@ -19,8 +19,13 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = publicationBySlug((await params).slug);
   if (!p) return {};
-  // Literal path so the build traces one file, not the project. Must match REPORT_CSS_PATH.
-  const css = readFileSync(join(process.cwd(), "src", "components", "report", "report.css"), "utf8");
+  // Literal paths so the build traces these files, not the project. Must match REPORT_SOURCE_PATHS (tested).
+  const files = [
+    readFileSync(join(process.cwd(), "src", "components", "report", "report.css"), "utf8"),
+    readFileSync(join(process.cwd(), "src", "components", "report", "report-document.tsx"), "utf8"),
+    readFileSync(join(process.cwd(), "src", "app", "research", "[slug]", "print", "page.tsx"), "utf8"),
+    readFileSync(join(process.cwd(), "src", "lib", "citation.ts"), "utf8"),
+  ];
   return {
     title: `${p.title} (print)`,
     robots: { index: false, follow: false },
@@ -31,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "report-abstract": p.summary,
       "report-keywords": (p.tags ?? []).join(", "),
       "report-published": p.publishedAt,
-      "report-sha": reportSourceHash(p, css),
+      "report-sha": reportSourceHash(p, files),
     },
   };
 }

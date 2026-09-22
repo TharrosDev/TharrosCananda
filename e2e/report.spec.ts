@@ -90,3 +90,55 @@ test("non-indexable PDF carries X-Robots-Tag and is not in the sitemap", async (
   expect((await request.get("/research/TC-EX-000.pdf")).headers()["x-robots-tag"]).toContain("noindex");
   expect(await (await request.get("/sitemap.xml")).text()).not.toContain("example-report");
 });
+
+test("rapid zoom and resize never break, blank or duplicate pages, and reuse one worker", async ({ page }) => {
+  await page.addInitScript(() => {
+    const Original = window.Worker;
+    (window as unknown as { __workers: number }).__workers = 0;
+    window.Worker = class extends Original {
+      constructor(...args: ConstructorParameters<typeof Worker>) {
+        super(...args);
+        (window as unknown as { __workers: number }).__workers += 1;
+      }
+    };
+  });
+  await page.goto("/research/example-report");
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  for (let i = 0; i < 4; i += 1) await page.getByRole("button", { name: "Zoom in" }).click();
+  for (const width of [900, 1100, 800, 1300]) await page.setViewportSize({ width, height: 900 });
+  await page.getByRole("button", { name: "Fit width" }).click();
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  await expect(page.getByText("The PDF could not be displayed.")).toHaveCount(0);
+  const layer = viewer.locator('.report-sheet[data-page="1"] .textLayer');
+  expect((await layer.innerText()).match(/Executive summary/g)).toHaveLength(1);
+  const blank = await viewer.locator("canvas").evaluateAll((canvases) =>
+    canvases.filter((c) => {
+      const ctx = (c as HTMLCanvasElement).getContext("2d")!;
+      const { data } = ctx.getImageData(0, 0, (c as HTMLCanvasElement).width, (c as HTMLCanvasElement).height);
+      for (let i = 0; i < data.length; i += 4) if (data[i] < 200) return false;
+      return true;
+    }).length,
+  );
+  expect(blank).toBe(0);
+  expect(await page.evaluate(() => (window as unknown as { __workers: number }).__workers)).toBeLessThanOrEqual(1);
+});
+
+test("browser zoom shortcuts do not also zoom the report", async ({ page }) => {
+  await page.goto("/research/example-report");
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const before = await viewer.locator("output").innerText();
+  await viewer.locator(".report-viewer-sheets").focus();
+  await page.keyboard.press("Control+Equal");
+  await expect(viewer.locator("output")).toHaveText(before);
+});
+
+test.describe("without JavaScript the viewer hides empty sheets and dead controls", () => {
+  test.use({ javaScriptEnabled: false });
+  test("only the download link remains", async ({ page }) => {
+    await page.goto("/research/example-report");
+    await expect(page.locator(".report-viewer-sheets")).toBeHidden();
+    await expect(page.getByRole("button", { name: "Zoom in" })).toBeHidden();
+  });
+});

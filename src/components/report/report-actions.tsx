@@ -24,8 +24,9 @@ export function ReportActions({ file, bytes, citation, url, title }: Props) {
       try {
         await navigator.share({ title, url });
         return;
-      } catch {
-        // Dismissed or unsupported target: fall back to copying.
+      } catch (error) {
+        // The visitor closed the share sheet: respect that, do not pop the copy fallback.
+        if ((error as Error)?.name === "AbortError") return;
       }
     }
     await copyLink();

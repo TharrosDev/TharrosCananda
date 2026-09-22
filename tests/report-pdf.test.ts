@@ -2,10 +2,10 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { allPublications } from "../src/data/publications";
-import { REPORT_CSS_PATH, reportSourceHash } from "../src/lib/report-source";
+import { REPORT_SOURCE_PATHS, reportSourceHash } from "../src/lib/report-source";
 import { reportAsset, reportText } from "../src/lib/reports";
 
-const css = readFileSync(join(process.cwd(), REPORT_CSS_PATH), "utf8");
+const sourceFiles = REPORT_SOURCE_PATHS.map((path) => readFileSync(join(process.cwd(), path), "utf8"));
 
 describe.each(allPublications.map((p) => [p.slug, p] as const))("report %s", (slug, publication) => {
   const asset = reportAsset(slug);
@@ -20,7 +20,7 @@ describe.each(allPublications.map((p) => [p.slug, p] as const))("report %s", (sl
   });
 
   it("is not stale", () => {
-    expect(asset?.sha, `record or report.css changed; ${regenerate}`).toBe(reportSourceHash(publication, css));
+    expect(asset?.sha, `record or a PDF-shaping file changed; ${regenerate}`).toBe(reportSourceHash(publication, sourceFiles));
   });
 
   it("carries searchable text, an outline and its own identity", () => {
@@ -33,7 +33,7 @@ describe.each(allPublications.map((p) => [p.slug, p] as const))("report %s", (sl
   });
 });
 
-it("print route reads the same stylesheet the stale guard hashes", () => {
+it("print route fingerprints the same files as the stale guard", () => {
   const route = readFileSync(join(process.cwd(), "src/app/research/[slug]/print/page.tsx"), "utf8");
-  expect(route).toContain(`"${REPORT_CSS_PATH.split("/").join('", "')}"`);
+  for (const path of REPORT_SOURCE_PATHS) expect(route).toContain(`"${path.split("/").join('", "')}"`);
 });
