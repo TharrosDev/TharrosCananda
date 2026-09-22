@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const paths=["/","/research-services","/request-research","/market-explorer"];
+const paths=["/","/research-services","/request-research","/live-monitor","/market-explorer"];
 const viewports=[{width:1440,height:900},{width:1024,height:768},{width:390,height:844},{width:320,height:720}];
 
 for(const path of paths){
@@ -30,13 +30,20 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
 
+test("live monitor renders attributed GDELT coverage",async({page})=>{
+  await page.goto("/live-monitor");
+  await expect(page.getByRole("heading",{name:/Canada.Europe developments/i})).toBeVisible();
+  await expect(page.getByText("GDELT",{exact:true}).first()).toBeVisible();
+  await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();
+});
+
 test("nested research route keeps Research navigation state",async({page,isMobile})=>{
   test.skip(isMobile,"Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
   await expect(page.getByRole("link",{name:"Research",exact:true})).toHaveAttribute("aria-current","page");
 });
 
-for(const path of ["/","/research-services","/request-research"]){
+for(const path of ["/","/research-services","/request-research","/live-monitor"]){
   test(`${path} has no serious or critical automated accessibility violations`,async({page})=>{
     await page.goto(path);
     const results=await new AxeBuilder({page}).analyze();

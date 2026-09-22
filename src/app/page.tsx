@@ -76,6 +76,14 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="research-threshold">
+        <div><p>Live Monitor</p><h2>Follow the relationship as it moves.</h2></div>
+        <div>
+          <p>Track recent reporting across trade, defence, energy, industry and strategic technology, discovered through GDELT and linked back to original publishers.</p>
+          <div className="threshold-links"><Link className="text-link" href="/live-monitor">Open Live Monitor <ArrowIcon /></Link><Link className="text-link" href="/methodology">Methodology <ArrowIcon /></Link></div>
+        </div>
+      </section>
+
       <section className="data-stage">
         <div className="data-stage-intro"><p>Market data</p><h2>Canada–CETA merchandise trade.</h2><p>Explore current Statistics Canada series by trade flow and commodity group.</p><Link className="text-link" href="/market-explorer">Explore market data <ArrowIcon /></Link></div>
         <div className="data-stage-preview"><Suspense fallback={<TradeSignalPreviewSkeleton />}><TradeSignalPreview /></Suspense></div>

@@ -16,7 +16,7 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  // Production build against recorded Statistics Canada / Open Government responses: no live data in screenshots.
+  // Production build against recorded Statistics Canada / Open Government / GDELT responses: no live data in screenshots.
   webServer: process.env.PLAYWRIGHT_BASE_URL ? undefined : [
     { command: `node e2e/mock-sources.mjs ${mockPort}`, url: `http://127.0.0.1:${mockPort}/health`, reuseExistingServer: !process.env.CI },
     {
@@ -27,6 +27,7 @@ export default defineConfig({
       env: {
         STATCAN_WDS_BASE_URL: `http://127.0.0.1:${mockPort}/t1/wds/rest`,
         OPEN_DATA_BASE_URL: `http://127.0.0.1:${mockPort}/data/en`,
+        GDELT_DOC_BASE_URL: `http://127.0.0.1:${mockPort}/api/v2/doc/doc`,
         NEXT_PUBLIC_SITE_URL: "https://tharros.ca",
         RESEARCH_INTAKE_WEBHOOK_URL: "",
         RESEARCH_INTAKE_WEBHOOK_SECRET: "",

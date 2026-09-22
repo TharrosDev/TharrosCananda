@@ -8,6 +8,7 @@ import { MenuIcon } from "@/components/icons";
 const links = [
   { href: "/research-services", label: "Services" },
   { href: "/research", label: "Research" },
+  { href: "/live-monitor", label: "Live Monitor" },
   { href: "/market-explorer", label: "Market Data" },
   { href: "/about", label: "About" },
 ];
@@ -17,7 +18,6 @@ export function Header() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-
 
   useEffect(() => {
     if (!open) return;
