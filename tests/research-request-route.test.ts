@@ -60,8 +60,49 @@ describe("POST /api/research-request", () => {
 
   it("rejects unreadable and oversized bodies", async () => {
     expect((await post("{not json")).status).toBe(400);
-    expect((await post({ ...valid, context: "x".repeat(20_000) })).status).toBe(413);
+    expect((await post({ ...valid, context: "x".repeat(40_000) })).status).toBe(413);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("accepts accented text near the field limits", async () => {
+    const response = await post({
+      ...valid,
+      companyName: "’".repeat(160),
+      product: "’".repeat(200),
+      industry: "’".repeat(120),
+      description: "’".repeat(2000),
+      context: "’".repeat(3000),
+    });
+    expect(response.status).toBe(201);
+  });
+
+  it("rejects an oversized declared content-length before reading the body", async () => {
+    const request = new Request("http://localhost/api/research-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Content-Length": "999999" },
+      body: JSON.stringify(valid),
+    });
+    expect((await POST(request)).status).toBe(413);
+  });
+
+  it("rejects non-JSON content types and cross-site posts", async () => {
+    const plain = new Request("http://localhost/api/research-request", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(valid),
+    });
+    expect((await POST(plain)).status).toBe(415);
+    const crossSite = new Request("http://localhost/api/research-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Sec-Fetch-Site": "cross-site" },
+      body: JSON.stringify(valid),
+    });
+    expect((await POST(crossSite)).status).toBe(403);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("handles a JSON null body as invalid, not as a crash", async () => {
+    expect((await post("null")).status).toBe(422);
   });
 
   it("drops honeypot submissions silently", async () => {

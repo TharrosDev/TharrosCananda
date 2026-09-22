@@ -3,8 +3,9 @@ import { unstable_cache } from "next/cache";
 import { CurrentsError, fetchCurrentsMonitor } from "@/lib/currents";
 import type { LiveMonitorSnapshot } from "@/lib/live-monitor";
 
-async function loadLiveMonitor(): Promise<LiveMonitorSnapshot> {
-  try {
+// Throws on failure so unstable_cache never stores an error snapshot.
+const cachedLiveMonitor = unstable_cache(
+  async (): Promise<LiveMonitorSnapshot> => {
     const data = await fetchCurrentsMonitor();
     return {
       kind: "ok",
@@ -14,6 +15,14 @@ async function loadLiveMonitor(): Promise<LiveMonitorSnapshot> {
       coverageWindow: "7 days",
       errorCode: null,
     };
+  },
+  ["currents-live-monitor"],
+  { revalidate: 900 },
+);
+
+export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
+  try {
+    return await cachedLiveMonitor();
   } catch (error) {
     const code = error instanceof CurrentsError ? error.code : "upstream";
     const status = error instanceof CurrentsError ? error.status : undefined;
@@ -31,13 +40,4 @@ async function loadLiveMonitor(): Promise<LiveMonitorSnapshot> {
       errorCode: code,
     };
   }
-}
-
-const cachedLiveMonitor = unstable_cache(loadLiveMonitor, ["currents-live-monitor-v3"], {
-  revalidate: 900,
-  tags: ["currents-live-monitor"],
-});
-
-export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
-  return cachedLiveMonitor();
 }

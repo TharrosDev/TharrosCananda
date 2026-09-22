@@ -2,6 +2,8 @@
 // Read-only apart from one deliberately invalid intake POST, which is rejected (422) and never forwarded.
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const failures = [];
+// A hung deployment must fail the smoke run, not stall it.
+const get = (url, init = {}) => fetch(url, { signal: AbortSignal.timeout(15_000), ...init });
 const check = (ok, label) => {
   console.log(`${ok ? "ok  " : "FAIL"} ${label}`);
   if (!ok) failures.push(label);
@@ -21,15 +23,15 @@ for (const path of [
   "/sitemap.xml",
   "/robots.txt",
 ]) {
-  const response = await fetch(base + path, { redirect: "manual" });
+  const response = await get(base + path, { redirect: "manual" });
   check(response.status === 200, `${path} -> ${response.status}`);
 }
 
-const legacy = await fetch(`${base}/ecommerce-readiness`, { redirect: "manual" });
+const legacy = await get(`${base}/ecommerce-readiness`, { redirect: "manual" });
 check(legacy.status === 308, `/ecommerce-readiness -> ${legacy.status} (expected 308)`);
 
-const monitor = await fetch(`${base}/live-monitor`).then((response) => response.text());
-const coverage = monitor.includes("Currents") && monitor.includes("Open original");
+const monitor = await get(`${base}/live-monitor`).then((response) => response.text());
+const coverage = monitor.includes("Currents") && monitor.includes('class="monitor-lead"');
 const monitorFailedClosed = monitor.includes("Live coverage is temporarily unavailable");
 check(
   coverage || monitorFailedClosed,
@@ -37,7 +39,7 @@ check(
 );
 if (monitorFailedClosed) console.log("     note: Currents was unavailable from this deployment");
 
-const intake = await fetch(`${base}/api/research-request`, {
+const intake = await get(`${base}/api/research-request`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ consent: false }),
@@ -47,12 +49,14 @@ check(
   `POST /api/research-request (invalid) -> ${intake.status}, expected 422`,
 );
 
-const headers = (await fetch(base)).headers;
+const headers = (await get(base)).headers;
 for (const name of [
   "x-content-type-options",
   "x-frame-options",
   "referrer-policy",
   "strict-transport-security",
+  "content-security-policy",
+  "permissions-policy",
 ])
   check(headers.has(name), `header ${name}`);
 

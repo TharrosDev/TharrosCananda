@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { publications } from "@/data/publications";
+import { siteUrl as base } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
   const routes = [
     "",
     "/research-services",

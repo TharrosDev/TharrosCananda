@@ -1,9 +1,11 @@
-import { publicationBySlug } from "@/data/publications";
+import { publicationBySlug, publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
 export const size = ogSize;
 export const contentType = ogContentType;
+export const dynamicParams = false;
+export const generateStaticParams = () => publications.map((publication) => ({ slug: publication.slug }));
 
 export default async function OpenGraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

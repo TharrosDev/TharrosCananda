@@ -42,11 +42,7 @@ export default function AboutPage() {
               {lead.links.length > 0 && links(lead.links)}
             </div>
           )}
-          {contactEmail ? (
-            <p>Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
-          ) : (
-            <p>Send research questions through the <Link href="/request-research">research request form</Link>. Every request receives a written reply.</p>
-          )}
+          <p>Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
           {legal && (
             <dl className="company-details">
               <div><dt>Legal name</dt><dd>{legal.legalName}</dd></div>

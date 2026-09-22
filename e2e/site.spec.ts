@@ -10,7 +10,9 @@ const viewports = [
 ];
 
 for (const path of paths) {
-  test(`${path} has no horizontal overflow at core breakpoints`, async ({ page }) => {
+  test(`${path} has no horizontal overflow at core breakpoints`, async ({ page }, testInfo) => {
+    // The loop sets its own viewports, so one project covers it.
+    test.skip(testInfo.project.name === "mobile");
     for (const viewport of viewports) {
       await page.setViewportSize(viewport);
       await page.goto(path);
@@ -39,6 +41,16 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Research format to be suggested by Tharros")).toBeVisible();
   await page.getByRole("button", { name: "Edit" }).first().click();
   await expect(page.getByText("Who is the research for?")).toBeVisible();
+});
+
+test("commissioning prefills from the link that opened it", async ({ page }) => {
+  await page.goto("/request-research?product=Maple%20syrup&hs=1702.20");
+  await page.getByLabel("Organization").fill("Example GmbH");
+  await page.getByLabel("Country").fill("Germany");
+  await page.getByLabel("Business email").fill("research@example.com");
+  await page.getByRole("button", { name: /continue/i }).click();
+  await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Maple syrup");
+  await expect(page.getByLabel("HS code")).toHaveValue("1702.20");
 });
 
 test("Live Monitor navigation opens the route", async ({ page, isMobile }) => {

@@ -8,15 +8,6 @@ export function ArrowIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function SearchIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false" {...props}>
-      <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="m13 13 4 4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
 export function MenuIcon({ open, ...props }: SVGProps<SVGSVGElement> & { open: boolean }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...props}>

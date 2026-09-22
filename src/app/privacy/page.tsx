@@ -36,15 +36,11 @@ export default function PrivacyPage() {
         </article>
         <article>
           <h2>Site measurement</h2>
-          <p>If usage measurement is enabled, the site may record a small set of events and the page path. Nothing is sent when no endpoint is configured or when the browser sends a Global Privacy Control signal.</p>
+          <p>The site uses Vercel Web Analytics to count page views and a few events, such as starting the request form. It sets no cookies and does not identify you. Nothing is sent when your browser sends a Global Privacy Control signal.</p>
         </article>
         <article>
           <h2>Contact and deletion requests</h2>
-          {contactEmail ? (
-            <p>To ask about information you submitted or request deletion, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
-          ) : (
-            <p>To ask about information you submitted or request deletion, reply to any email you receive from Tharros Canada. A public contact address will appear here only when one is configured and monitored.</p>
-          )}
+          <p>To ask about information you submitted or request deletion, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
         </article>
       </section>
     </>

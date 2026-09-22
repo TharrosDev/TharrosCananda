@@ -25,19 +25,15 @@ export default function AccessibilityPage() {
         </article>
         <article>
           <h2>Current interface practices</h2>
-          <p>The site includes a skip link, visible keyboard focus, semantic form labels and errors, reduced-motion handling, text equivalents for chart data, minimum target sizing and sticky-header offsets for anchored content.</p>
+          <p>The site includes a skip link, visible keyboard focus, semantic form labels and errors, reduced-motion handling, minimum target sizing and sticky-header offsets for anchored content.</p>
         </article>
         <article>
           <h2>Data and document formats</h2>
-          <p>Research remains available in HTML when a downloadable report is provided. Data interfaces include text or table equivalents for charts.</p>
+          <p>Research remains available in HTML when a downloadable report is provided. Any chart published in a report comes with a text or table equivalent.</p>
         </article>
         <article>
           <h2>Report a problem</h2>
-          {contactEmail ? (
-            <p>Send the page, device or assistive technology involved and a short description to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
-          ) : (
-            <p>A dedicated public accessibility contact will be shown here when a monitored contact address is configured.</p>
-          )}
+          <p>Send the page, device or assistive technology involved and a short description to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
         </article>
       </section>
     </>

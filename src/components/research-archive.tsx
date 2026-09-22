@@ -5,8 +5,8 @@ import { useMemo, useState } from "react";
 import { CiteButton } from "@/components/cite-button";
 import type { Publication } from "@/data/publications";
 import type { ResearchArea } from "@/lib/research-areas";
+import { formatMonthYear, siteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 
 export function ResearchArchive({
   publications,
@@ -133,11 +133,7 @@ export function ResearchArchive({
               <div className="archive-meta-fields">
                 <span>{item.specimen ? `Example · ${item.type}` : item.type}</span>
                 <time dateTime={item.publishedAt}>
-                  {new Date(item.publishedAt).toLocaleDateString("en-CA", {
-                    year: "numeric",
-                    month: "short",
-                    timeZone: "UTC",
-                  })}
+                  {formatMonthYear(item.publishedAt)}
                 </time>
               </div>
               {!item.specimen && (

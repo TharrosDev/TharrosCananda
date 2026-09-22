@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -12,6 +15,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,13 +26,15 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
-      - run: npm run build
+      - run: npm audit --omit=dev --audit-level=high
+      # No build here: the browser job builds once for Playwright.
 
   browser:
     # Functional, accessibility (axe) and visual regression tests against a production build.
-    # Statistics Canada and Open Government are replaced by recorded responses (e2e/mock-sources.mjs),
+    # The Currents News API is replaced by controlled responses (e2e/mock-sources.mjs),
     # so screenshots never depend on live data; retrieval times and the year are masked.
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: verify
     steps:
       - uses: actions/checkout@v4

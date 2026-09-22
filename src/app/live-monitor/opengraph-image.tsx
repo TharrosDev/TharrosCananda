@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
     description: "Recent Canada–Europe reporting, discovered through Currents and linked back to original publishers.",
     meta: [
       { label: "Source", value: "Currents" },
-      { label: "Refresh", value: "Hourly" },
+      { label: "Refresh", value: "Every 15 min" },
     ],
   });
 }

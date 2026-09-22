@@ -1,8 +1,9 @@
+import "server-only";
 import { monitorTopics, type MonitorArticle, type MonitorTopicId } from "@/lib/live-monitor";
 
 export const CURRENTS_API_BASE_URL = "https://api.currentsapi.services";
 const SEARCH_PATH = "/v2/search";
-const FETCH_TIMEOUT_MS = 15_000;
+const FETCH_TIMEOUT_MS = 6_000;
 const PAGE_SIZE = 20;
 const MAX_ATTEMPTS = 2;
 const DEFAULT_RETRY_DELAY_MS = 250;
@@ -153,8 +154,9 @@ export function inferCurrentsTopics(
   const matched = monitorTopics
     .filter((topic) =>
       topic.matchKeywords.some((keyword) => {
-        const needle = keyword.trim().toLowerCase();
-        return keyword === keyword.trim() ? value.includes(needle) : value.includes(` ${needle} `);
+        const needle = keyword.toLowerCase();
+        if (needle.endsWith("*")) return value.includes(` ${needle.slice(0, -1)}`);
+        return value.includes(` ${needle} `) || value.includes(` ${needle}s `);
       }),
     )
     .map((topic) => topic.id);
@@ -272,8 +274,10 @@ function buildSearchUrl(baseUrl: string, start: Date, end: Date) {
   } catch {
     throw new CurrentsError("Currents API base URL is invalid.", "not-configured");
   }
-  if (url.protocol !== "https:" && url.protocol !== "http:") {
-    throw new CurrentsError("Currents API base URL must use HTTP or HTTPS.", "not-configured");
+  // Plain HTTP only for the local e2e mock; anywhere else it would leak the Bearer key.
+  const isLocal = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  if (url.protocol !== "https:" && !(url.protocol === "http:" && isLocal)) {
+    throw new CurrentsError("Currents API base URL must use HTTPS.", "not-configured");
   }
 
   url.searchParams.set("query", buildCurrentsQuery());
@@ -305,8 +309,10 @@ async function requestCurrents(
         signal: AbortSignal.timeout(timeoutMs),
         cache: "no-store",
       });
-    } catch {
-      if (attempt + 1 < MAX_ATTEMPTS) {
+    } catch (error) {
+      // A timeout already spent the budget; retrying would hold the page for twice as long.
+      const timedOut = error instanceof Error && error.name === "TimeoutError";
+      if (!timedOut && attempt + 1 < MAX_ATTEMPTS) {
         await wait(retryDelayMs);
         continue;
       }
@@ -324,8 +330,10 @@ async function requestCurrents(
     }
     try {
       body = await response.text();
-    } catch {
-      if (attempt + 1 < MAX_ATTEMPTS) {
+    } catch (error) {
+      // A timeout already spent the budget; retrying would hold the page for twice as long.
+      const timedOut = error instanceof Error && error.name === "TimeoutError";
+      if (!timedOut && attempt + 1 < MAX_ATTEMPTS) {
         await wait(retryDelay(response, retryDelayMs));
         continue;
       }

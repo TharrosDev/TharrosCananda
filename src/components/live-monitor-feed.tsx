@@ -11,19 +11,9 @@ import {
   type MonitorTopicId,
   type MonitorWindowId,
 } from "@/lib/live-monitor";
+import { formatDateTime } from "@/lib/site";
 
-const dateFormatter = new Intl.DateTimeFormat("en-CA", {
-  month: "short",
-  day: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-  timeZone: "America/Toronto",
-});
-
-function displayDate(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "time unavailable" : dateFormatter.format(date);
-}
+const displayDate = (value: string) => formatDateTime(value, "America/Toronto");
 
 function languageLabel(value: string) {
   const normalised = value.toLowerCase();
@@ -56,12 +46,12 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   const deferredQuery = useDeferredValue(query);
   const [limit, setLimit] = useState(11);
 
-  const window = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[2];
+  const activeWindow = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[2];
   const parsedReferenceTime = Date.parse(data.retrievedAt);
   const referenceTime = Number.isFinite(parsedReferenceTime)
     ? parsedReferenceTime
     : Number.NEGATIVE_INFINITY;
-  const cutoff = referenceTime - window.hours * 60 * 60 * 1000;
+  const cutoff = referenceTime - activeWindow.hours * 60 * 60 * 1000;
 
   const inWindow = useMemo(
     () =>
@@ -168,7 +158,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
           </div>
           <div>
             <dt>Window</dt>
-            <dd>{window.label}</dd>
+            <dd>{activeWindow.label}</dd>
           </div>
           <div>
             <dt>Sources</dt>
@@ -250,7 +240,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
           {visible.length} {visible.length === 1 ? "relevant dispatch" : "relevant dispatches"}
         </span>
         <span>
-          {topic === "all" ? "All research areas" : topicLabel(topic)} · {window.label}
+          {topic === "all" ? "All research areas" : topicLabel(topic)} · {activeWindow.label}
         </span>
         {filtersActive && (
           <button type="button" onClick={clearFilters}>
@@ -260,7 +250,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
       </div>
 
       {visible.length ? (
-        <div className="monitor-feed" key={`${topic}-${windowId}-${deferredQuery}`}>
+        <div className="monitor-feed" key={`${topic}-${windowId}`}>
           <article className="monitor-lead">
             <div className="monitor-lead-index">
               <span>Lead dispatch</span>

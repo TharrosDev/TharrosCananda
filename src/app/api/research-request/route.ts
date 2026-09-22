@@ -2,8 +2,6 @@ import { createHmac, randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { honeypotField, maxBodyBytes, parseResearchRequest } from "@/lib/research-request";
 
-export const runtime = "nodejs";
-
 // ponytail: no in-process rate limiting; it gives false security on serverless.
 // The limit is a Vercel Firewall rule on POST /api/research-request (docs/PRE_LAUNCH.md).
 
@@ -27,10 +25,15 @@ function intakeSecret() {
 }
 
 export async function POST(request: Request) {
+  // JSON-only blocks "simple" cross-site form/fetch posts that skip the CORS preflight.
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return json({ message: "Send the request as JSON." }, 415);
+  }
+  if (request.headers.get("sec-fetch-site") === "cross-site") return json({ message: "Cross-site requests are not accepted." }, 403);
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
   if (declaredLength > maxBodyBytes) return json({ message: "The request is too large." }, 413);
   const text = await request.text();
-  if (new TextEncoder().encode(text).length > maxBodyBytes) return json({ message: "The request is too large." }, 413);
+  if (Buffer.byteLength(text) > maxBodyBytes) return json({ message: "The request is too large." }, 413);
   let body: unknown;
   try {
     body = JSON.parse(text);
