@@ -8,8 +8,6 @@ import { publicationBySlug, publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { jsonLd, siteUrl } from "@/lib/site";
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   return publications.map((publication) => ({ slug: publication.slug }));
 }

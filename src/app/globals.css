@@ -24,8 +24,8 @@
   --focus: #2f6fae;
   --focus-on-dark: #8fb8e0;
 
-  --display: "Source Serif 4 Variable", "Source Serif Pro", Georgia, serif;
-  --sans: "Schibsted Grotesk Variable", "Helvetica Neue", Arial, sans-serif;
+  --display: var(--font-display), Georgia, serif;
+  --sans: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
 
   --gutter: clamp(20px, 4.2vw, 64px);
   --shell: min(1440px, calc(100vw - 2 * var(--gutter)));

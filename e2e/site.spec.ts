@@ -43,6 +43,16 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
 
+test("commissioning prefills from the link that opened it", async ({ page }) => {
+  await page.goto("/request-research?product=Maple%20syrup&hs=1702.20");
+  await page.getByLabel("Organization").fill("Example GmbH");
+  await page.getByLabel("Country").fill("Germany");
+  await page.getByLabel("Business email").fill("research@example.com");
+  await page.getByRole("button", { name: /continue/i }).click();
+  await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Maple syrup");
+  await expect(page.getByLabel("HS code")).toHaveValue("1702.20");
+});
+
 test("Live Monitor navigation opens the route", async ({ page, isMobile }) => {
   await page.goto("/");
   if (isMobile) await page.getByRole("button", { name: /menu/i }).click();

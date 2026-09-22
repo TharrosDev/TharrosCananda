@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/schibsted-grotesk";
-import "@fontsource-variable/source-serif-4/opsz.css";
+import { Schibsted_Grotesk, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { SiteAnalytics } from "@/components/analytics-beacon";
 import { Footer } from "@/components/footer";
@@ -8,6 +7,10 @@ import { Header } from "@/components/header";
 import { organization, organizationJsonLd } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 import { jsonLd, siteUrl } from "@/lib/site";
+
+// Self-hosted at build time with preload and a metric-matched fallback (no layout shift on swap).
+const sans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
+const display = Source_Serif_4({ subsets: ["latin"], axes: ["opsz"], variable: "--font-display" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -45,7 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const structuredData = organizationJsonLd(organization, { url: siteUrl, email });
 
   return (
-    <html lang="en-CA" data-scroll-behavior="smooth">
+    <html lang="en-CA" data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable}`}>
       <body>
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <Header />
