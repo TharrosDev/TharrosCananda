@@ -4,6 +4,7 @@ import "@fontsource-variable/source-serif-4/opsz.css";
 import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { organization, organizationJsonLd } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
@@ -42,14 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const email = researchEmail();
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Tharros Canada",
-    url: siteUrl,
-    description: "Independent research organization focused on Canada–Europe relations.",
-    ...(email ? { email } : {}),
-  };
+  const structuredData = organizationJsonLd(organization, { url: siteUrl, email });
 
   return (
     <html lang="en-CA" data-scroll-behavior="smooth">
