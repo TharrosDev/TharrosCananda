@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
-const links = [
+const links: { href: string; label: string; prefetch?: boolean }[] = [
   { href: "/research-services", label: "Services" },
   { href: "/research", label: "Research" },
-  { href: "/live-monitor", label: "Live Monitor" },
+  { href: "/live-monitor", label: "Live Monitor", prefetch: false },
   { href: "/market-explorer", label: "Market Data" },
   { href: "/about", label: "About" },
 ];
@@ -62,7 +62,7 @@ export function Header() {
         </button>
         <nav id="primary-navigation" className={open ? "main-nav is-open" : "main-nav"} aria-label="Primary">
           <div className="nav-links">
-            {links.map((link) => <Link key={link.href} href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined} onClick={() => setOpen(false)}>{link.label}</Link>)}
+            {links.map((link) => <Link key={link.href} href={link.href} prefetch={link.prefetch} aria-current={isCurrent(link.href) ? "page" : undefined} onClick={() => setOpen(false)}>{link.label}</Link>)}
           </div>
           <Link className="nav-action" href="/request-research" onClick={() => setOpen(false)}>Commission research</Link>
         </nav>

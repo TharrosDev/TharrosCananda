@@ -38,6 +38,20 @@ Because the Tharros interface is a value-added product, every live result must r
 
 Do not use Statistics Canada or Government of Canada logos/wordmarks.
 
+## GDELT Live Monitor
+
+The `/live-monitor` page uses the GDELT DOC API as a current-news discovery layer. GDELT is not treated as the publisher or as evidence that a surfaced claim is true. Every result links to the original publisher and retains the publisher domain, source country, language and GDELT index time.
+
+Implementation is split between `src/lib/gdelt.ts` (query construction, transport and runtime parsing) and `src/lib/gdelt-data.ts` (Next.js caching, aggregation, deduplication and fallback state). The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
+
+The normal path issues one seven-day query for each Tharros research area. Successful topic responses are cached for 15 minutes. Transient failures are retried once. Tracking parameters are removed from article URLs before deduplication. A valid empty response is treated as zero coverage rather than a provider failure.
+
+If every topic-specific query fails, the adapter may attempt one broader Canada–Europe query. That state is labelled as degraded coverage, and research-area tags are inferred from headline terms only when possible. If the broader request also fails, no substitute headlines are shown.
+
+GDELT `seendate` is displayed as **indexed time**, not asserted to be the publisher's publication timestamp. Article bodies are not copied and discovered headlines are never represented as Tharros analysis or verification.
+
+Reference: https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
+
 ## Government of Canada Open Data
 
 The Market Data page offers a collapsed, secondary "Find related federal datasets" panel that queries the official Open Government CKAN Action API (`package_search`) only when opened.
@@ -75,7 +89,7 @@ If values are transformed (for example, Statistics Canada's scalar-factor codes)
 
 - Never replace unavailable official data with plausible demonstration values.
 - Never silently change a requested classification, flow, commodity or country grouping.
-- Return a clear unavailable/error state when the publisher cannot be reached.
+- Return a clear unavailable/error state when a publisher or discovery provider cannot be reached; any degraded discovery fallback must be visibly labelled.
 - Cache official responses only for a bounded period appropriate to the publisher's update frequency.
 - Treat schema changes as failures until inspected.
 - Do not call a value current/live unless the request path and retrieval time are observable.

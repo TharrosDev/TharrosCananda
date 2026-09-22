@@ -30,11 +30,22 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
 
-test("live monitor renders attributed GDELT coverage",async({page})=>{
+test("Live Monitor navigation opens the route",async({page,isMobile})=>{
+  await page.goto("/");
+  if(isMobile) await page.getByRole("button",{name:/menu/i}).click();
+  await page.getByRole("link",{name:"Live Monitor",exact:true}).first().click();
+  await expect(page).toHaveURL(/\/live-monitor$/);
+  await expect(page.getByRole("heading",{name:"Live Canada–Europe Monitor."})).toBeVisible();
+});
+
+test("live monitor renders attributed GDELT coverage and filters research areas",async({page})=>{
   await page.goto("/live-monitor");
-  await expect(page.getByRole("heading",{name:/Canada.Europe developments/i})).toBeVisible();
-  await expect(page.getByText("GDELT",{exact:true}).first()).toBeVisible();
+  await expect(page.getByRole("heading",{name:"Live Canada–Europe Monitor."})).toBeVisible();
+  await expect(page.getByText(/GDELT discovery/i)).toBeVisible();
   await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();
+  await page.getByLabel("Research area",{exact:true}).selectOption("defence-security");
+  await expect(page.getByRole("link",{name:/Canadian and European defence suppliers expand cooperation/i})).toBeVisible();
+  await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toHaveCount(0);
 });
 
 test("nested research route keeps Research navigation state",async({page,isMobile})=>{
