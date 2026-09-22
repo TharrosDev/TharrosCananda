@@ -37,8 +37,8 @@ export function LiveMarketExplorer({initialData=null}:{initialData?:TradeExplore
 
   const selectedCommodityLabel=status==="ready"?data?.query.commodity.label??"":"";
   useEffect(()=>{
-    if(!selectedCommodityLabel){setDatasets([]);setDatasetsStatus("idle");return;}
-    const controller=new AbortController();setDatasetsStatus("loading");
+    if(!selectedCommodityLabel)return;
+    const controller=new AbortController();
     const query=`${selectedCommodityLabel} international trade`;
     fetch(`/api/open-data/search?q=${encodeURIComponent(query)}`,{signal:controller.signal}).then(async(response)=>{
       const payload=(await response.json()) as OfficialDatasetSearchResponse;
@@ -75,7 +75,6 @@ export function LiveMarketExplorer({initialData=null}:{initialData?:TradeExplore
         <div><h3>What this does not establish</h3><ul>{data.limitations.map((item)=><li key={item}>{item}</li>)}</ul></div>
       </div>
       <div className="official-dataset-register"><div><h3>Open Government dataset search</h3><p>A keyword search of the federal Open Government catalogue using the selected commodity. Results are discovery leads, not evidence for a Tharros conclusion.</p></div><div>
-        {datasetsStatus==="loading"&&<p>Searching the federal dataset catalogue…</p>}
         {datasetsStatus==="error"&&<p>Open Government dataset search is temporarily unavailable.</p>}
         {datasetsStatus==="ready"&&datasets.length===0&&<p>No matching federal catalogue records were returned for this search.</p>}
         {datasetsStatus==="ready"&&datasets.map((dataset)=><a key={dataset.id} href={dataset.url} target="_blank" rel="noreferrer"><strong>{dataset.title}</strong><span>{dataset.publisher}</span><small>{dataset.formats.length?dataset.formats.join(" · "):"Open Government record"}</small><ArrowIcon/></a>)}
