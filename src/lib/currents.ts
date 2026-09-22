@@ -154,7 +154,6 @@ export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
     throw new CurrentsError("Currents response did not include a news array.", "invalid-response");
   }
 
-  const seen = new Set<string>();
   const articles: MonitorArticle[] = [];
 
   for (const raw of object.news as CurrentsArticle[]) {
@@ -163,8 +162,7 @@ export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
     const title = clean(raw.title);
     const description = clean(raw.description);
     const publishedAt = parsePublished(raw.published);
-    if (!url || !title || !publishedAt || seen.has(url)) continue;
-    seen.add(url);
+    if (!url || !title || !publishedAt) continue;
 
     const categories = categoryText(raw.category);
     articles.push({
@@ -323,9 +321,16 @@ export async function fetchCurrentsMonitor(options: CurrentsOptions = {}) {
   const url = buildSearchUrl(baseUrl, start, end);
   const articles = await requestCurrents(url, apiKey, fetcher, timeoutMs, retryDelayMs);
   const endTime = end.getTime();
+  const seen = new Set<string>();
+  const currentArticles = articles.filter((article) => {
+    const published = Date.parse(article.publishedAt);
+    if (!Number.isFinite(published) || published > endTime || seen.has(article.url)) return false;
+    seen.add(article.url);
+    return true;
+  });
 
   return {
     retrievedAt: end.toISOString(),
-    articles: articles.filter((article) => Date.parse(article.publishedAt) <= endTime),
+    articles: currentArticles,
   };
 }
