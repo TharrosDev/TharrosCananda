@@ -105,6 +105,7 @@ export const publications: Publication[] = [
     suggestedCitation:
       "Tharros Canada. (2026, September 1). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tharros Canada Research Report.",
     tags: ["Trade & Economic Integration"],
+    pdfUrl: "/research/reports/example-report.pdf",
   },
 ];
 
