@@ -8,7 +8,6 @@ const load = (name) => JSON.parse(readFileSync(new URL(`../tests/fixtures/${name
 const metadata = load("statcan/getCubeMetadata");
 const pools = { getDataFromCubePidCoordAndLatestNPeriods: load("statcan/getDataFromCubePidCoordAndLatestNPeriods"), getSeriesInfoFromCubePidCoord: load("statcan/getSeriesInfoFromCubePidCoord") };
 const openData = load("open-data-search");
-const gdeltStamp = (hoursAgo) => new Date(Date.now() - hoursAgo * 60 * 60 * 1000).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
 
 createServer((req, res) => {
   const url = new URL(req.url ?? "/", "http://mock");
@@ -20,6 +19,14 @@ createServer((req, res) => {
     const method = url.pathname.split("/").pop();
 
     if (url.pathname === "/v2/search") {
+      if (req.headers.authorization !== "Bearer playwright-test-key") {
+        res.statusCode = 401;
+        return res.end(JSON.stringify({ status: "error", msg: "Invalid token" }));
+      }
+      if (!url.searchParams.get("query")?.includes("Canada") || !url.searchParams.get("start_date") || !url.searchParams.get("end_date")) {
+        res.statusCode = 400;
+        return res.end(JSON.stringify({ status: "error", msg: "Invalid parameters" }));
+      }
       const samples = [
         {
           id: "trade-1",
