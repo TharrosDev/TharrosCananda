@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowIcon } from "@/components/icons";
 import {
   monitorTopics,
@@ -34,12 +35,13 @@ function languageLabel(value: string) {
 }
 
 export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
+  const router = useRouter();
   const [topic, setTopic] = useState<MonitorTopicId | "all">("all");
-  const [windowId, setWindowId] = useState<MonitorWindowId>("72h");
+  const [windowId, setWindowId] = useState<MonitorWindowId>("7d");
   const [query, setQuery] = useState("");
   const [limit, setLimit] = useState(18);
 
-  const window = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[1];
+  const window = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[2];
   const referenceTime = Date.parse(data.retrievedAt);
   const cutoff = referenceTime - window.hours * 60 * 60 * 1000;
 
@@ -47,11 +49,6 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     () => data.articles.filter((article) => Date.parse(article.seenAt) >= cutoff),
     [cutoff, data.articles],
   );
-
-  const counts = useMemo(
-    () => Object.fromEntries(monitorTopics.map((item) => [item.id, inWindow.filter((article) => article.topics.includes(item.id)).length])),
-    [inWindow],
-  ) as Record<MonitorTopicId, number>;
 
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -67,143 +64,116 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     });
   }, [inWindow, query, topic]);
 
-  function chooseTopic(value: MonitorTopicId | "all") {
-    setTopic(value);
-    setLimit(18);
-  }
-
-  function chooseWindow(value: MonitorWindowId) {
-    setWindowId(value);
+  function resetLimit() {
     setLimit(18);
   }
 
   if (data.kind === "error" && !data.articles.length) {
     return (
-      <section className="monitor-unavailable" aria-labelledby="monitor-unavailable-title">
-        <p>Live Monitor</p>
-        <h2 id="monitor-unavailable-title">Current coverage is temporarily unavailable.</h2>
-        <p>GDELT did not return a usable feed. No substitute headlines or synthetic stories are shown.</p>
-        <a href="https://www.gdeltproject.org/" target="_blank" rel="noreferrer">
-          About the GDELT Project <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
-        </a>
+      <section className="monitor-error" aria-labelledby="monitor-error-title">
+        <p className="monitor-kicker">Live coverage</p>
+        <h2 id="monitor-error-title">The GDELT feed is not responding.</h2>
+        <p>The Live Monitor page is available, but the upstream discovery service did not return usable coverage. No substitute headlines or synthetic stories are shown.</p>
+        <div className="monitor-error-actions">
+          <button className="button-secondary" type="button" onClick={() => router.refresh()}>Retry live coverage</button>
+          <a className="text-link" href="https://www.gdeltproject.org/" target="_blank" rel="noreferrer">
+            About GDELT <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </div>
       </section>
     );
   }
 
-  const lead = visible[0];
-  const remainder = visible.slice(1, limit);
-
   return (
     <section className="monitor-workspace" aria-label="Canada Europe live news monitor">
+      <div className="monitor-status-line">
+        <span><i aria-hidden="true" />GDELT discovery · 7-day rolling source window</span>
+        <span data-volatile>Retrieved {displayDate(data.retrievedAt)} ET</span>
+      </div>
+
       {data.kind === "partial" && (
-        <p className="monitor-partial" role="status">
-          Some topic feeds could not be refreshed. Available GDELT coverage is still shown.
+        <p className="monitor-notice" role="status">
+          {data.broadFallback
+            ? "Topic-specific GDELT feeds were unavailable, so a broader Canada–Europe discovery feed is shown. Research-area tags are inferred from headlines when possible."
+            : "Some research-area feeds could not be refreshed. Available coverage is shown."}
         </p>
       )}
 
-      <div className="monitor-topic-register" aria-label="Coverage by research area">
-        {monitorTopics.map((item, index) => (
-          <button
-            key={item.id}
-            type="button"
-            className={topic === item.id ? "is-active" : ""}
-            aria-pressed={topic === item.id}
-            onClick={() => chooseTopic(item.id)}
-          >
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <strong>{item.label}</strong>
-            <small>{counts[item.id]} signals</small>
-          </button>
-        ))}
-      </div>
-
-      <div className="monitor-controls">
-        <div className="monitor-filter-group" aria-label="Topic filter">
-          <span>View</span>
-          <button type="button" className={topic === "all" ? "is-active" : ""} aria-pressed={topic === "all"} onClick={() => chooseTopic("all")}>All coverage</button>
-          {monitorTopics.map((item) => (
-            <button key={item.id} type="button" className={topic === item.id ? "is-active" : ""} aria-pressed={topic === item.id} onClick={() => chooseTopic(item.id)}>
-              {item.shortLabel}
-            </button>
-          ))}
-        </div>
-        <div className="monitor-filter-group monitor-window" aria-label="Time window">
-          <span>Period</span>
-          {monitorWindows.map((item) => (
-            <button key={item.id} type="button" className={windowId === item.id ? "is-active" : ""} aria-pressed={windowId === item.id} onClick={() => chooseWindow(item.id)}>
-              {item.label}
-            </button>
-          ))}
-        </div>
-        <label className="monitor-search">
-          <span>Search current coverage</span>
+      <form className="archive-controls monitor-controls" onSubmit={(event) => event.preventDefault()}>
+        <label>
+          <span>Search coverage</span>
           <input
             type="search"
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
-              setLimit(18);
+              resetLimit();
             }}
             placeholder="Company, country, sector or term"
           />
         </label>
-      </div>
+        <label>
+          <span>Research area</span>
+          <select
+            aria-label="Research area"
+            value={topic}
+            onChange={(event) => {
+              setTopic(event.target.value as MonitorTopicId | "all");
+              resetLimit();
+            }}
+          >
+            <option value="all">All areas</option>
+            {monitorTopics.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Time period</span>
+          <select
+            aria-label="Time period"
+            value={windowId}
+            onChange={(event) => {
+              setWindowId(event.target.value as MonitorWindowId);
+              resetLimit();
+            }}
+          >
+            {monitorWindows.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+          </select>
+        </label>
+      </form>
 
-      <div className="monitor-result-line" aria-live="polite">
+      <div className="archive-result-count" aria-live="polite">
         <span>{visible.length} {visible.length === 1 ? "development" : "developments"}</span>
         <span>{topic === "all" ? "All research areas" : topicLabel(topic)} · {window.label}</span>
       </div>
 
-      {lead ? (
-        <>
-          <article className="monitor-lead-story">
-            <div className="monitor-story-index">01</div>
-            <div>
-              <div className="monitor-story-meta">
-                <span>{lead.topics.map(topicLabel).join(" · ")}</span>
-                <time dateTime={lead.seenAt}>{displayDate(lead.seenAt)}</time>
-              </div>
-              <h2><a href={lead.url} target="_blank" rel="noreferrer">{lead.title}</a></h2>
-              <div className="monitor-source-line">
-                <strong>{lead.domain}</strong>
-                <span>{lead.sourceCountry}</span>
-                <span>{languageLabel(lead.language)}</span>
-                <a href={lead.url} target="_blank" rel="noreferrer">Open original <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span></a>
-              </div>
+      <ol className="archive-list monitor-article-list">
+        {visible.slice(0, limit).map((article) => (
+          <li key={article.id}>
+            <div className="archive-meta">
+              <span>{article.topics.length ? article.topics.map(topicLabel).join(" · ") : "Canada–Europe"}</span>
+              <time dateTime={article.seenAt}>Indexed {displayDate(article.seenAt)} ET</time>
             </div>
-          </article>
-
-          <ol className="monitor-story-list" start={2}>
-            {remainder.map((article, index) => (
-              <li key={article.id}>
-                <span className="monitor-story-number">{String(index + 2).padStart(2, "0")}</span>
-                <article>
-                  <div className="monitor-story-meta">
-                    <span>{article.topics.map(topicLabel).join(" · ")}</span>
-                    <time dateTime={article.seenAt}>{displayDate(article.seenAt)}</time>
-                  </div>
-                  <h3><a href={article.url} target="_blank" rel="noreferrer">{article.title}</a></h3>
-                  <div className="monitor-source-line">
-                    <strong>{article.domain}</strong>
-                    <span>{article.sourceCountry}</span>
-                    <span>{languageLabel(article.language)}</span>
-                    <a href={article.url} target="_blank" rel="noreferrer" aria-label={"Open original article from " + article.domain}>Open <ArrowIcon /></a>
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ol>
-
-          {visible.length > limit && (
-            <div className="monitor-more">
-              <button className="button-secondary" type="button" onClick={() => setLimit((current) => current + 18)}>Load more coverage</button>
+            <h2><a href={article.url} target="_blank" rel="noreferrer">{article.title}</a></h2>
+            <div className="monitor-source-meta">
+              <strong>{article.domain}</strong>
+              <span>{article.sourceCountry}</span>
+              <span>{languageLabel(article.language)}</span>
             </div>
-          )}
-        </>
-      ) : (
-        <div className="monitor-empty">
-          <h2>No matching developments in this view.</h2>
-          <p>Change the research area, time period or search term. The monitor never inserts placeholder stories.</p>
+            <a className="text-link monitor-open-link" href={article.url} target="_blank" rel="noreferrer">
+              Open original <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </li>
+        ))}
+        {!visible.length && (
+          <li className="archive-no-results">
+            No developments match these filters. Change the research area, time period or search term.
+          </li>
+        )}
+      </ol>
+
+      {visible.length > limit && (
+        <div className="monitor-more">
+          <button className="button-secondary" type="button" onClick={() => setLimit((current) => current + 18)}>Load more coverage</button>
         </div>
       )}
     </section>

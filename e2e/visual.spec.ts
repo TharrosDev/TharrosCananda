@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 // Key routes on desktop and mobile. Data comes from recorded fixtures; retrieval times and the year are masked.
 const routes = [
   ["home", "/"],
+  ["live-monitor", "/live-monitor"],
   ["market-data", "/market-explorer"],
   ["services", "/research-services"],
   ["request", "/request-research"],
