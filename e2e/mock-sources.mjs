@@ -93,6 +93,19 @@ createServer((req, res) => {
             .replace("T", " ")
             .replace(/\.\d{3}Z$/, " +0000"),
         },
+        {
+          // Older than a day, so the compact view shows more than one day group.
+          id: "trade-2",
+          title: "European importers review Canadian agri-food tariff schedules",
+          description: "Trade officials compare CETA quotas ahead of the next review.",
+          url: "https://example-trade.eu/story-tariffs",
+          language: "en",
+          category: ["economy_business_finance"],
+          published: new Date(Date.now() - 50 * 60 * 60 * 1000)
+            .toISOString()
+            .replace("T", " ")
+            .replace(/\.\d{3}Z$/, " +0000"),
+        },
       ];
       return res.end(JSON.stringify({ status: "ok", page: 1, next_cursor: null, news: samples }));
     }
