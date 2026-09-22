@@ -1,0 +1,45 @@
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+
+const paths=["/","/research-services","/request-research","/market-explorer"];
+const viewports=[{width:1440,height:900},{width:1024,height:768},{width:390,height:844},{width:320,height:720}];
+
+for(const path of paths){
+  test(`${path} has no horizontal overflow at core breakpoints`,async({page})=>{
+    for(const viewport of viewports){
+      await page.setViewportSize(viewport);await page.goto(path);
+      const size=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+      expect(size.scroll,`${path} at ${viewport.width}px`).toBeLessThanOrEqual(size.client+1);
+    }
+  });
+}
+
+test("commissioning reaches a complete review without forcing a product classification",async({page})=>{
+  await page.goto("/request-research");
+  await page.getByLabel("Organization").fill("Example GmbH");
+  await page.getByLabel("Country").fill("Germany");
+  await page.getByLabel("Business email").fill("research@example.com");
+  await page.getByRole("button",{name:/continue/i}).click();
+  await page.getByLabel("Subject, product or sector").fill("Industrial components");
+  await page.getByLabel("Enter the Canadian market").check();
+  await page.getByRole("button",{name:/continue/i}).click();
+  await expect(page.getByText("research@example.com")).toBeVisible();
+  await expect(page.getByText("Industrial components")).toBeVisible();
+  await expect(page.getByText("Research format to be suggested by Tharros")).toBeVisible();
+  await page.getByRole("button",{name:"Edit"}).first().click();
+  await expect(page.getByText("Who is the research for?")).toBeVisible();
+});
+
+test("nested research route keeps Research navigation state",async({page})=>{
+  await page.goto("/research/not-a-real-publication");
+  await expect(page.getByRole("link",{name:"Research",exact:true})).toHaveAttribute("aria-current","page");
+});
+
+for(const path of ["/","/research-services","/request-research"]){
+  test(`${path} has no serious or critical automated accessibility violations`,async({page})=>{
+    await page.goto(path);
+    const results=await new AxeBuilder({page}).analyze();
+    const blocking=results.violations.filter((violation)=>["serious","critical"].includes(violation.impact??""));
+    expect(blocking.map((violation)=>({id:violation.id,impact:violation.impact,nodes:violation.nodes.length}))).toEqual([]);
+  });
+}

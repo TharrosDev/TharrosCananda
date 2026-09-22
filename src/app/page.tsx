@@ -8,39 +8,47 @@ import { services } from "@/lib/services";
 
 const clientQuestions = [
   {
-    title: "Enter a market",
+    title: "Enter or assess a market",
     copy: "Understand market structure, trade signals, geography, routes to market and the questions that still require verification.",
     href: "/research-services#market-scan",
   },
   {
     title: "Find buyers or partners",
-    copy: "Build a sourced view of organizations that may buy, import, distribute or otherwise matter to a commercial route.",
+    copy: "Build a sourced view of organizations that may buy, import, distribute, integrate or otherwise matter to a commercial route.",
     href: "/research-services#buyer-distributor",
   },
   {
     title: "Understand competitors",
-    copy: "Map comparable offers, positioning, geography, channels and public evidence without presenting estimates as fact.",
+    copy: "Map comparable offers, positioning, geography, channels and public evidence in the relevant Canadian or European market.",
     href: "/research-services#competitor-intelligence",
   },
   {
-    title: "Track a sector or policy shift",
-    copy: "Commission a focused answer when the commercial question crosses trade, defence, industry, energy or technology.",
+    title: "Answer a cross-Atlantic question",
+    copy: "Commission focused research when the issue crosses trade, defence, industry, energy, technology or multiple markets.",
     href: "/research-services#commissioned-research",
   },
+] as const;
+
+const customerScope = [
+  ["European companies", "Assess Canada, identify buyers or distributors, understand competition or validate a route to market."],
+  ["Canadian businesses", "Understand European markets, programmes, competitors, partners or sector developments."],
+  ["Advisers & professional firms", "Add external research capacity for a client engagement, including white-label work."],
+  ["Organizations & investors", "Commission a focused brief, data note, sector map or strategic research question."],
 ] as const;
 
 export default function HomePage() {
   const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
   const researchToShow = featuredResearch.length ? featuredResearch : publications.slice(0, 3);
+  const homeServices = services.filter((service) => service.homeFeatured);
 
   return (
     <>
       <PageHero
         variant="home"
         title="Commercial research and intelligence connecting Canada and Europe."
-        description="Tharros Canada turns public data, procurement records, company evidence and policy material into focused research for organizations making decisions across the relationship."
+        description="Tharros Canada researches commercial, economic, industrial, technological and strategic developments across the Canada–Europe relationship, turning public evidence into focused decision-useful work."
         index={clientQuestions.map((item) => ({ label: item.title, href: item.href }))}
-        indexLabel="What clients ask us to answer"
+        indexLabel="Questions Tharros is built to answer"
       >
         <div className="hero-actions">
           <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
@@ -51,7 +59,7 @@ export default function HomePage() {
       <section className="section decision-section">
         <div className="section-intro">
           <h2>Start with the decision.</h2>
-          <p>Services are organized around the question being answered, not around a generic consulting package.</p>
+          <p>Services are organized around the question being answered, not a generic consulting package.</p>
         </div>
         <ol className="decision-list">
           {clientQuestions.map((item, index) => (
@@ -63,10 +71,20 @@ export default function HomePage() {
         </ol>
       </section>
 
-      <section className="section expertise-home">
+      <section className="section section--compact client-scope">
+        <div className="section-intro">
+          <h2>Built for cross-Atlantic work.</h2>
+          <p>Tharros can work on either side of the relationship and can sit behind another firm's engagement where appropriate.</p>
+        </div>
+        <div className="client-scope-grid">
+          {customerScope.map(([name, need]) => <div key={name}><strong>{name}</strong><p>{need}</p></div>)}
+        </div>
+      </section>
+
+      <section className="section section--compact expertise-home">
         <div className="section-intro">
           <h2>Canada–Europe expertise.</h2>
-          <p>Four research areas organize the evidence. Commercial questions can sit across more than one.</p>
+          <p>Four research pillars organize the evidence. Commercial questions can sit across more than one.</p>
           <Link className="text-link" href="/research-areas">Explore expertise <ArrowIcon /></Link>
         </div>
         <div className="expertise-register">
@@ -83,8 +101,8 @@ export default function HomePage() {
       <section className="band data-proof">
         <div className="band-inner data-proof-inner">
           <div>
-            <h2>Use the source before the story.</h2>
-            <p>The public data interface now reads official Statistics Canada CETA merchandise-trade series. If the source is unavailable, the interface says so instead of substituting synthetic values.</p>
+            <h2>Inspect the source before the story.</h2>
+            <p>The public data interface is a narrow proof of the research infrastructure behind Tharros. It reads official Statistics Canada CETA merchandise-trade series and fails visibly rather than substituting synthetic values.</p>
           </div>
           <TradeSignalPreview />
         </div>
@@ -93,13 +111,14 @@ export default function HomePage() {
       <section className="section services-home">
         <div className="section-intro">
           <h2>Commissioned research.</h2>
-          <p>Three standardized starting points plus custom research. Indicative pricing stays visible in the service detail rather than defining the proposition.</p>
-          <Link className="text-link" href="/research-services">Services and indicative prices <ArrowIcon /></Link>
+          <p>Four common starting points are shown here. Partner, ecosystem and white-label research are available for broader engagements.</p>
+          <Link className="text-link" href="/research-services">All services and pricing <ArrowIcon /></Link>
         </div>
         <ul className="product-list" aria-label="Research services">
-          {services.map((service) => (
-            <li key={service.slug}>
+          {homeServices.map((service) => (
+            <li key={service.slug} className={service.flagship ? "is-flagship" : undefined}>
               <Link href={`/research-services#${service.slug}`}>
+                {service.flagship && <small>Flagship</small>}
                 <strong>{service.name}</strong>
                 <span>{service.question}</span>
               </Link>
@@ -108,13 +127,13 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section className="section archive-home">
+      <section className="section section--compact archive-home">
         <div>
           <h2>{researchToShow.length ? "Selected research." : "Research archive."}</h2>
           {researchToShow.length ? (
             <p>Recent verified work from the Tharros Canada research archive.</p>
           ) : (
-            <p>The archive is ready for real papers, briefs and data notes as they are published. It remains deliberately empty until that work exists.</p>
+            <p>Publications will appear here as independent Tharros research is released.</p>
           )}
         </div>
         <div className={researchToShow.length ? "home-research-list" : undefined}>

@@ -9,10 +9,7 @@ export type TradePoint = {
   statusCode: number;
 };
 
-export type TradeOption = {
-  id: string;
-  label: string;
-};
+export type TradeOption = { id: string; label: string };
 
 export type TradeExplorerResponse = {
   status: "live";
@@ -29,18 +26,11 @@ export type TradeExplorerResponse = {
     frequency: "Monthly";
     basis: "Customs basis, not seasonally adjusted";
   };
-  query: {
-    flow: TradeFlow;
-    agreement: string;
-    commodity: TradeOption;
-  };
+  query: { flow: TradeFlow; agreement: string; commodity: TradeOption };
   coordinate: string;
   seriesTitle: string;
   points: TradePoint[];
-  options: {
-    flows: TradeFlow[];
-    commodities: TradeOption[];
-  };
+  options: { flows: TradeFlow[]; commodities: TradeOption[] };
   limitations: string[];
 };
 
@@ -56,4 +46,5 @@ export type OfficialDatasetResult = {
 export type OfficialDatasetSearchResponse = {
   query: string;
   results: OfficialDatasetResult[];
+  error?: string;
 };

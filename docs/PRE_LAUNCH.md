@@ -5,8 +5,8 @@ Operational and legal items that remain outside the codebase.
 ## Research intake
 
 - [ ] Configure `RESEARCH_INTAKE_WEBHOOK_URL` and test success, validation failure, upstream failure and timeout paths.
-- [ ] Authenticate/sign the receiver so only the intended application can submit requests.
-- [ ] Add platform/receiver rate limiting for `/api/research-request`.
+- [x] Application signs each webhook payload with HMAC-SHA256 when `RESEARCH_INTAKE_WEBHOOK_SECRET` is configured. Configure the receiver with the same secret and verify the timestamp/signature before accepting requests.
+- [ ] Add distributed platform/receiver rate limiting for `/api/research-request`. Do not substitute process-memory throttling on serverless instances.
 - [ ] Define storage, access and retention for submitted research briefs.
 
 ## Identity and contact
@@ -35,6 +35,6 @@ Operational and legal items that remain outside the codebase.
 
 - [ ] Confirm canonical `tharros.ca` / `www` redirect.
 - [ ] Confirm HSTS configuration before any preload request.
-- [ ] Add and test a Content-Security-Policy.
+- [x] Add a production Content-Security-Policy in `next.config.ts`; confirm the deployed header once final production deployment is available.
 - [ ] Run deployed Lighthouse/Core Web Vitals checks.
-- [ ] Run keyboard, screen-reader and zoom/reflow accessibility checks against production.
+- [ ] Run keyboard, screen-reader and zoom/reflow accessibility checks against production.\n- [ ] Capture and approve the initial Playwright visual-regression baseline after the final polish branch is reviewed.\n- [ ] Add verified founder/research-lead biography details only after the public wording and identity details are explicitly approved; do not infer them from repository/account metadata.

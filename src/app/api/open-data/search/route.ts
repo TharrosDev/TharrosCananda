@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { OfficialDatasetSearchResponse } from "@/types/official-data";
 
-type CkanPackage = {
-  id: string;
-  title?: string;
-  metadata_modified?: string;
-  organization?: { title?: string };
-  resources?: Array<{ format?: string }>;
-};
-
-type CkanResponse = {
-  success?: boolean;
-  result?: { results?: CkanPackage[] };
-};
+type CkanPackage = { id: string; title?: string; metadata_modified?: string; organization?: { title?: string }; resources?: Array<{ format?: string }> };
+type CkanResponse = { success?: boolean; result?: { results?: CkanPackage[] } };
 
 export async function GET(request: NextRequest) {
   const query = (request.nextUrl.searchParams.get("q") ?? "international trade").trim().slice(0, 100);
@@ -21,10 +11,7 @@ export async function GET(request: NextRequest) {
   url.searchParams.set("rows", "5");
 
   try {
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(8000),
-      next: { revalidate: 21600 },
-    });
+    const response = await fetch(url, { signal: AbortSignal.timeout(8000), next: { revalidate: 21600 } });
     if (!response.ok) throw new Error(`Open Government returned HTTP ${response.status}`);
     const payload = (await response.json()) as CkanResponse;
     if (!payload.success) throw new Error("Open Government API returned an unsuccessful response");
@@ -40,13 +27,9 @@ export async function GET(request: NextRequest) {
         formats: [...new Set((item.resources ?? []).map((resource) => resource.format).filter(Boolean) as string[])].slice(0, 5),
       })),
     };
-    return NextResponse.json(result, {
-      headers: {
-        "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=86400",
-      },
-    });
+    return NextResponse.json(result, { headers: { "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=86400" } });
   } catch (error) {
     console.error("Open Government dataset search failed", error);
-    return NextResponse.json({ query, results: [] } satisfies OfficialDatasetSearchResponse, { status: 502 });
+    return NextResponse.json({ query, results: [], error: "Open Government dataset search is temporarily unavailable." } satisfies OfficialDatasetSearchResponse, { status: 502 });
   }
 }

@@ -23,3 +23,29 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+
+  browser:
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install browser QA dependencies
+        run: npm install --no-save --package-lock=false @playwright/test@1.55.0 @axe-core/playwright@4.10.2
+      - run: npx playwright install --with-deps chromium
+      - name: Start application
+        run: |
+          npm run dev -- --hostname 127.0.0.1 > /tmp/tharros-next.log 2>&1 &
+          for i in {1..45}; do
+            if curl -fsS http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/tharros-next.log
+          exit 1
+      - name: Browser, responsive and accessibility checks
+        run: npx playwright test --grep-invert @visual

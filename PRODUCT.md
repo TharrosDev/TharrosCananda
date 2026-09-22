@@ -41,7 +41,7 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 
 ## Commercial products
 
-Canada Market Scan, Buyer & Distributor Intelligence, Competitor Intelligence and Commissioned Research are defined once in `src/lib/services.ts`. Prices are indicative and are confirmed with scope/timing in writing.
+Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research are defined once in `src/lib/services.ts`. Canadian Buyer Intelligence is the flagship entry product and retains explicit Core, Expanded and Comprehensive coverage tiers. Prices are confirmed with scope/timing in writing.
 
 ## Brand
 
@@ -60,3 +60,8 @@ Warm ivory, graphite/soft black, slate, muted Canadian red for action, steel for
 ## Accessibility
 
 Target WCAG 2.2 AA with semantic structure, keyboard access, visible focus, sufficient contrast, labelled controls, error recovery, reduced-motion support, chart/table equivalents and deliberate mobile layouts.
+
+
+## Browser quality
+
+Responsive overflow, core commissioning interactions and automated accessibility checks are covered at browser level. Visual snapshot specs are maintained separately so screenshot baselines change only during an intentional design review.

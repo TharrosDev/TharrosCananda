@@ -18,7 +18,7 @@ The public Market Data interface uses **real Statistics Canada data**. It does n
 
 Implementation: `src/lib/statcan.ts`.
 
-The adapter calls `getCubeMetadata`, `getSeriesInfoFromCubePidCoord`, and `getDataFromCubePidCoordAndLatestNPeriods`. Coordinates are built from the publisher's dimension/member metadata rather than relying on undocumented hard-coded coordinates. The WDS base PID is used for metadata/series calls; the public table view and DOI use the catalogue/issue identifier ending in `01`.
+The adapter calls `getCubeMetadata`, `getSeriesInfoFromCubePidCoord`, and `getDataFromCubePidCoordAndLatestNPeriods`. Coordinates are built from the publisher's dimension/member metadata rather than relying on undocumented hard-coded coordinates. Required semantic members must be positively identified; an unrecognized dimension is allowed to default only when it has exactly one active member. The WDS base PID is used for metadata/series calls; the public table view and DOI use the catalogue/issue identifier ending in `01`.
 
 The table publishes values with scalar-factor metadata. The adapter applies `10 ** scalarFactorCode` before presenting Canadian-dollar values.
 
@@ -36,7 +36,7 @@ The Market Data page also queries the official Open Government CKAN Action API u
 
 Implementation: `src/app/api/open-data/search/route.ts`.
 
-Purpose: discover related federal datasets and link users back to official records. Search results are not automatically treated as evidence and are not merged into Statistics Canada values.
+Purpose: run a keyword discovery search of the federal catalogue and link users back to official records. Results are labelled as discovery leads, not automatically treated as evidence, and are not merged into Statistics Canada values.
 
 The CKAN service supports GET requests; query parameters are placed in the request URL.
 
@@ -66,7 +66,7 @@ If values are transformed (for example, Statistics Canada's scalar-factor codes)
 ## API failure rules
 
 - Never replace unavailable official data with plausible demonstration values.
-- Never silently change a requested classification or country grouping.
+- Never silently change a requested classification, flow, commodity or country grouping.
 - Return a clear unavailable/error state when the publisher cannot be reached.
 - Cache official responses only for a bounded period appropriate to the publisher's update frequency.
 - Treat schema changes as failures until inspected.

@@ -44,7 +44,7 @@ A visually prominent data point must identify its source context. Real publisher
 
 ### Red means act
 
-Red is used for primary actions and interactive selection, not for decorative headings or data series.
+Red is used for primary actions and interactive selection, not for decorative headings or data series. The wordmark slash is the sole standing brand-mark exception.
 
 ### One rule per boundary
 
@@ -121,7 +121,7 @@ The homepage proves the operation with live source material. It must not pretend
 
 The archive is a permanent structure for real work.
 
-When empty, it shows one expandable explanation of how the archive will work and explicitly states that no publications exist yet.
+When empty, it states the absence once, calmly, and shows the publication formats without defensive anti-fabrication copy.
 
 When populated, it supports:
 
@@ -165,7 +165,7 @@ As real work is produced, evidence artifacts may be added to make areas visually
 
 ## Services
 
-Pricing is secondary product information, not hero-level positioning. Lead with the decision/question the work answers and explain the outputs and exclusions.
+Pricing is secondary product information, not hero-level positioning. Lead with the decision/question the work answers and explain the outputs and exclusions. Canadian Buyer Intelligence is the flagship entry product; higher tiers increase coverage, not research quality.
 
 ## About
 
@@ -206,3 +206,14 @@ No page should require horizontal scrolling at an equivalent 320 CSS px viewport
 - Create decorative dashboard cards.
 - Use large dark heroes on every page.
 - Let pricing dominate the first impression of the business.
+
+
+## Density and rules
+
+Use three pacing modes rather than applying one section rhythm everywhere:
+
+- **Compact** for archives, supporting evidence and secondary editorial sections.
+- **Standard** for normal commercial and expertise content.
+- **Feature** only for major brand transitions.
+
+Horizontal rules should communicate actual structure. If proximity and whitespace already establish a relationship, do not add another rule. The 12-column construction grid may be exposed as texture only in the homepage hero; elsewhere it should remain invisible.

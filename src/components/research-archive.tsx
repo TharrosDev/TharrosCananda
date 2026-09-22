@@ -35,27 +35,13 @@ export function ResearchArchive({
     return (
       <div className="archive-empty">
         <div>
-          <h2>Research archive</h2>
-          <p>
-            No Tharros Canada papers or reports have been published yet. The archive is already structured so verified work can
-            be added without changing the information architecture.
-          </p>
+          <h2>First publications in preparation</h2>
+          <p>The archive structure is ready for the first completed Tharros Canada research. Each release will carry its authorship, date, methodology, sources, limitations and suggested citation.</p>
         </div>
         <details className="archive-placeholder">
-          <summary>How this archive will work</summary>
+          <summary>Publication formats</summary>
           <div>
-            <p>
-              As research is released, this page will index it by research area, publication type and date, with search across
-              titles, summaries and tags.
-            </p>
-            <p>
-              Each publication entry is designed to carry named authorship where applicable, publication date, executive
-              summary, methodology, sources, limitations and a stable URL. Reports will appear here only when the underlying
-              work actually exists.
-            </p>
-            <p>
-              Planned formats include {publicationTypes.map((item) => item.name).join(", ")}. More research is on the way.
-            </p>
+            {publicationTypes.map((item) => <p key={item.name}><strong>{item.name}</strong> — {item.description}</p>)}
           </div>
         </details>
       </div>

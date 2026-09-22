@@ -6,7 +6,7 @@ import { researchEmail } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Tharros Canada is an independent commercial research and intelligence company focused on Canada–Europe relations.",
+  description: "Tharros Canada is an independent commercial research and intelligence business focused on Canada–Europe relations.",
   alternates: { canonical: "/about" },
 };
 
@@ -18,7 +18,7 @@ export default function AboutPage() {
       <PageHero
         variant="document"
         title="Independent commercial research between Canada and Europe."
-        description="Tharros Canada is built to assemble scattered public evidence into concise, decision-oriented commercial research without pretending that public indicators establish more than they do."
+        description="Tharros Canada assembles scattered public evidence into concise, decision-oriented commercial research across trade, defence, energy, industry and strategic technology."
         index={[
           { label: "Why Canada–Europe", href: "#relationship" },
           { label: "How the work is done", href: "#method" },
@@ -29,14 +29,14 @@ export default function AboutPage() {
       <section className="section about-story">
         <div>
           <h2 id="relationship">Why Canada–Europe</h2>
-          <p>Commercial questions across Canada and Europe cut across trade agreements, procurement systems, industrial strategies, company activity and public data held by different institutions. Tharros focuses on that relationship rather than presenting itself as a general-purpose consultancy.</p>
+          <p>Commercial questions across Canada and Europe cut across trade agreements, procurement systems, industrial strategies, company activity and public data held by different institutions. Tharros focuses on that relationship rather than operating as a general-purpose consultancy.</p>
 
           <h2 id="method">How the work is done</h2>
-          <p>Evidence is assembled from public datasets, procurement notices, company records, policy documents and sector sources on both sides of the Atlantic. Material facts are sourced and dated; interpretation is labelled as interpretation.</p>
-          <p>Commissioned work starts from a written scope you approve. The deliverable, source approach, exclusions, price and timing are agreed before research begins.</p>
+          <p>Evidence is assembled from public datasets, procurement notices, company records, policy documents and sector sources on both sides of the Atlantic. Material facts are sourced and dated; interpretation and unresolved uncertainty are kept distinct from verified facts.</p>
+          <p>Commissioned work starts from a written scope. The deliverable, source approach, exclusions, price and timing are agreed before research begins.</p>
 
           <h2 id="accountability">Research accountability</h2>
-          <p>Public research is structured to carry named authorship when a piece is released. Commissioned work identifies responsibility in the approved scope. The site does not publish invented team profiles, client logos, testimonials or institutional affiliations to imply scale that has not been verified.</p>
+          <p>Public Tharros research identifies authorship, publication date, sources, methodology and material limitations. Internally initiated work is presented as independent Tharros research; commissioned work is described as such only where that is factually accurate and publication is permitted.</p>
         </div>
         <aside id="independence">
           <strong>Independent of government.</strong>

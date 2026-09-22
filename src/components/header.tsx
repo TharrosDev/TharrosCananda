@@ -16,55 +16,57 @@ const links = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
-  // Escape closes the open menu and returns focus to the toggle.
+  useEffect(() => setOpen(false), [pathname]);
+
   useEffect(() => {
     if (!open) return;
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== "Escape") return;
-      setOpen(false);
-      toggleRef.current?.focus();
+    function onPointerDown(event: PointerEvent) {
+      if (!headerRef.current?.contains(event.target as Node)) setOpen(false);
     }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = [...(headerRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? [])].filter((element) => element.offsetParent !== null);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable.at(-1)!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, [open]);
 
+  const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
   return (
-    <header className="site-header">
+    <header className="site-header" ref={headerRef}>
       <div className="nav-shell">
-        <Link className="wordmark" href="/" aria-label="Tharros Canada home">
-          <span>THARROS</span>
-          <span className="wordmark-slash">/</span>
-          <span>CANADA</span>
-        </Link>
-        <button
-          ref={toggleRef}
-          className="menu-toggle"
-          type="button"
-          aria-expanded={open}
-          aria-controls="primary-navigation"
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="menu-toggle-label">{open ? "Close" : "Menu"}</span>
-          <MenuIcon open={open} />
+        <Link className="wordmark" href="/" aria-label="Tharros Canada home"><span>THARROS</span><span className="wordmark-slash">/</span><span>CANADA</span></Link>
+        <button ref={toggleRef} className="menu-toggle" type="button" aria-expanded={open} aria-controls="primary-navigation" onClick={() => setOpen((value) => !value)}>
+          <span className="menu-toggle-label">{open ? "Close" : "Menu"}</span><MenuIcon open={open} />
         </button>
         <nav id="primary-navigation" className={open ? "main-nav is-open" : "main-nav"} aria-label="Primary">
           <div className="nav-links">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={pathname === link.href ? "page" : undefined}
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => <Link key={link.href} href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>{link.label}</Link>)}
           </div>
-          <Link className="nav-action" href="/request-research" onClick={() => setOpen(false)}>
-            Commission research
-          </Link>
+          <Link className="nav-action" href="/request-research">Commission research</Link>
         </nav>
       </div>
     </header>

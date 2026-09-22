@@ -8,7 +8,7 @@ The production domain is intended to be [tharros.ca](https://tharros.ca).
 
 The site is deliberately small and evidence-led:
 
-- **Services** — Canada Market Scan, Buyer & Distributor Intelligence, Competitor Intelligence, and custom Commissioned Research. Indicative prices live in `src/lib/services.ts`.
+- **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
 - **Expertise** — Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; Technology & Strategic Industries.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Add verified entries to `src/data/publications.ts`.
 - **Market Data** — a live Canada–CETA merchandise-trade interface backed by Statistics Canada Table 12-10-0174-01 through the Statistics Canada Web Data Service (WDS). Related federal datasets are discovered through the Government of Canada Open Data CKAN API.
@@ -111,7 +111,7 @@ npm run build
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`. |
-| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |
+| `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |\n| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Recommended | Verified monitored contact address used in About/footer/intake fallback. |
 
@@ -136,6 +136,25 @@ docs/
 
 ## Commercial and evidence boundaries
 
-Tharros provides commercial research, market intelligence, data aggregation, buyer research, competitor research and public-source analysis. It does not provide legal, tax, customs brokerage, regulated financial, immigration or formal regulatory-compliance advice.
+Tharros provides commercial research, market intelligence, market scans in Canada or Europe, buyer research, competitor and ecosystem research, white-label research capacity and public-source analysis. It does not provide legal, tax, customs brokerage, regulated financial, immigration or formal regulatory-compliance advice.
 
 Public-source names identify publishers only. They must never be used to imply endorsement, partnership, privileged access or government affiliation.
+
+
+## Browser quality checks
+
+Browser-level responsive, interaction and automated accessibility checks live in `e2e/`. CI installs pinned browser-test tooling without adding runtime dependencies to the product bundle.
+
+To run locally after installing the QA-only packages:
+
+```bash
+npm install --no-save --package-lock=false @playwright/test@1.55.0 @axe-core/playwright@4.10.2
+npx playwright install chromium
+npx playwright test --grep-invert @visual
+```
+
+Visual-regression specs are tagged `@visual` and deliberately excluded from normal CI until an approved baseline is captured. Generate or refresh the baseline only during an intentional design review:
+
+```bash
+npx playwright test --grep @visual --update-snapshots
+```
