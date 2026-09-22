@@ -1,0 +1,32 @@
+name: Update visual baselines
+
+# Run after an approved visual change: manually, or by pushing a commit whose message contains
+# [update-baselines]. Regenerates the Linux screenshots CI compares against and commits them to that
+# branch, so the new baselines are reviewed in the pull request diff.
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[update-baselines]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test e2e/visual.spec.ts --update-snapshots
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add e2e/visual.spec.ts-snapshots
+          git diff --cached --quiet || git commit -m "test: update visual baselines"
+          git push

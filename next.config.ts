@@ -9,6 +9,8 @@ const contentSecurityPolicy=[
 
 const nextConfig:NextConfig={
   poweredByHeader:false,reactStrictMode:true,turbopack:{root:process.cwd()},experimental:{typedEnv:true},
+  // Retired route: the cross-border checklist folded into the Canada Market Scan. 308 keeps old links and search results working.
+  async redirects(){return[{source:"/ecommerce-readiness",destination:"/research-services#market-scan",permanent:true}];},
   async headers(){return[{source:"/(.*)",headers:[
     {key:"X-Content-Type-Options",value:"nosniff"},{key:"X-Frame-Options",value:"DENY"},
     {key:"Strict-Transport-Security",value:"max-age=63072000; includeSubDomains"},{key:"Referrer-Policy",value:"strict-origin-when-cross-origin"},

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
+import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 
 export const metadata: Metadata = {
@@ -11,6 +12,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const contactEmail = researchEmail();
+  const { lead, legal, profiles } = organization;
+  const links = (items: { label: string; url: string }[]) => (
+    <p className="about-links">{items.map((link, index) => <span key={link.url}>{index > 0 && " · "}<a href={link.url} target="_blank" rel="noreferrer">{link.label}<span className="sr-only"> (opens in a new tab)</span></a></span>)}</p>
+  );
 
   return (
     <>
@@ -25,7 +30,34 @@ export default function AboutPage() {
           <li><span>04</span><h3>Stay relevant.</h3><p>Research is organized around the question, not the volume of material collected.</p></li>
         </ol>
       </section>
-      <section className="about-independence" id="independence"><div><p>Independence</p><h2>Independent from the sources it studies.</h2></div><div><p>Tharros Canada is not a government body or think tank. Source names do not imply endorsement or affiliation.</p><p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p>{contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}</div></section>
+      <section className="about-independence" id="independence"><div><p>Independence</p><h2>Independent from the sources it studies.</h2></div><div><p>Tharros Canada is not a government body or think tank. Source names do not imply endorsement or affiliation.</p><p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p></div></section>
+      <section className="about-independence about-accountability" id="contact">
+        <div><p>Accountability</p><h2>{lead ? "Who is accountable." : "Contact."}</h2></div>
+        <div><div className="about-contact">
+          {lead && (
+            <div className="about-lead">
+              <h3>{lead.name}</h3>
+              <p className="about-lead-role">{lead.role}</p>
+              <p>{lead.bio}</p>
+              {lead.links.length > 0 && links(lead.links)}
+            </div>
+          )}
+          {contactEmail ? (
+            <p>Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+          ) : (
+            <p>Send research questions through the <Link href="/request-research">research request form</Link>. Every request receives a written reply.</p>
+          )}
+          {legal && (
+            <dl className="company-details">
+              <div><dt>Legal name</dt><dd>{legal.legalName}</dd></div>
+              {legal.jurisdiction && <div><dt>Jurisdiction</dt><dd>{legal.jurisdiction}</dd></div>}
+              {legal.registration && <div><dt>Registration</dt><dd>{legal.registration}</dd></div>}
+              {legal.address && <div><dt>Address</dt><dd>{legal.address}</dd></div>}
+            </dl>
+          )}
+          {profiles.length > 0 && links(profiles)}
+        </div></div>
+      </section>
       <section className="closing-cta">
         <h2>Have a question that needs research?</h2>
         <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>

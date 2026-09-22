@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowIcon } from "@/components/icons";
-import { TradeSignalPreview } from "@/components/trade-signal-preview";
+import { TradeSignalPreview, TradeSignalPreviewSkeleton } from "@/components/trade-signal-preview";
 import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
@@ -25,29 +26,29 @@ export default function HomePage() {
         <div className="home-intro-grid">
           <div className="home-intro-copy">
             <h1>Independent Canada–Europe research.</h1>
-            <p className="home-intro-deck">Research on trade, defence, energy, industry and technology across Canada and Europe.</p>
+            <p className="home-intro-deck">Market assessments, buyer and competitor research, and commissioned studies on trade, defence, energy, industry and technology between Canada and Europe.</p>
             <div className="hero-actions">
               <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
               <Link className="text-link" href="/research">View research <ArrowIcon /></Link>
             </div>
           </div>
-          <div className="evidence-atlas" aria-label="Tharros research process: Canada and Europe connected through sourced evidence">
-            <div className="atlas-head"><span>Evidence route</span><span>CA ↔ EU</span></div>
+          <div className="evidence-atlas" aria-label="How Tharros research works: sources from both sides are checked before they reach a finding">
+            <div className="atlas-head"><span>Research process</span><span>CA ↔ EU</span></div>
             <svg className="atlas-field" viewBox="0 0 720 430" role="img" aria-labelledby="atlas-title atlas-description">
-              <title id="atlas-title">Canada to Europe evidence route</title>
-              <desc id="atlas-description">A diagram connecting Canadian and European source records through verification and analysis.</desc>
-              <path className="atlas-contour" d="M45 91c45-37 89-48 143-42 30 4 53 18 80 18 26 0 49-15 75-12 22 3 35 21 57 24" />
-              <path className="atlas-contour atlas-contour-east" d="M475 116c35-13 55-44 96-47 50-3 71 34 105 55" />
+              <title id="atlas-title">From source records to a finding</title>
+              <desc id="atlas-description">Canadian and European source records are each checked, dated and attributed, then combined into a written finding.</desc>
               <path className="atlas-route" pathLength="1" d="M128 221C249 129 386 125 580 205" />
               <circle className="atlas-node atlas-node-origin" cx="128" cy="221" r="7" />
               <circle className="atlas-node" cx="352" cy="155" r="5" />
               <circle className="atlas-node atlas-node-destination" cx="580" cy="205" r="7" />
               <line className="atlas-rule" x1="128" y1="221" x2="128" y2="331" />
+              <line className="atlas-rule" x1="352" y1="155" x2="352" y2="100" />
               <line className="atlas-rule" x1="580" y1="205" x2="580" y2="331" />
+              <text className="atlas-step" x="352" y="84" textAnchor="middle">CHECKED · DATED · ATTRIBUTED</text>
               <text className="atlas-label" x="72" y="360">CANADA</text>
               <text className="atlas-label" x="521" y="360">EUROPE</text>
-              <text className="atlas-coordinate" x="72" y="386">45.4215° N</text>
-              <text className="atlas-coordinate" x="521" y="386">50.8503° N</text>
+              <text className="atlas-coordinate" x="72" y="386">Canadian source records</text>
+              <text className="atlas-coordinate" x="521" y="386">European source records</text>
             </svg>
             <div className="atlas-register">
               {evidenceSources.map((source, index) => <span key={source}><b>{String(index + 1).padStart(2, "0")}</b>{source}</span>)}
@@ -77,7 +78,7 @@ export default function HomePage() {
 
       <section className="data-stage">
         <div className="data-stage-intro"><p>Market data</p><h2>Canada–CETA merchandise trade.</h2><p>Explore current Statistics Canada series by trade flow and commodity group.</p><Link className="text-link" href="/market-explorer">Explore market data <ArrowIcon /></Link></div>
-        <div className="data-stage-preview"><TradeSignalPreview /></div>
+        <div className="data-stage-preview"><Suspense fallback={<TradeSignalPreviewSkeleton />}><TradeSignalPreview /></Suspense></div>
       </section>
 
       <section className="section home-services">

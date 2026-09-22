@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./request.css";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { ResearchRequestForm } from "@/components/research-request-form";

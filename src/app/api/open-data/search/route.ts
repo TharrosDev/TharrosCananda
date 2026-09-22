@@ -6,7 +6,7 @@ type CkanResponse = { success?: boolean; result?: { results?: CkanPackage[] } };
 
 export async function GET(request: NextRequest) {
   const query = (request.nextUrl.searchParams.get("q") ?? "international trade").trim().slice(0, 100);
-  const url = new URL("https://open.canada.ca/data/en/api/3/action/package_search");
+  const url = new URL(`${process.env.OPEN_DATA_BASE_URL ?? "https://open.canada.ca/data/en"}/api/3/action/package_search`);
   url.searchParams.set("q", query || "international trade");
   url.searchParams.set("rows", "5");
 

@@ -10,7 +10,7 @@ The site is deliberately small and evidence-led:
 
 - **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
-- **Market Data** — a live Canada–CETA merchandise-trade interface backed by Statistics Canada Table 12-10-0174-01 through the Statistics Canada Web Data Service (WDS). Related federal datasets are discovered through the Government of Canada Open Data CKAN API.
+- **Market Data**: live Canada–CETA merchandise trade from Statistics Canada Table 12-10-0174-01 through the Web Data Service (WDS). Flow, commodity group and period live in the URL; a ranked comparison of every commodity group sits beside the chart; publisher flags, table notes and provenance are shown with the figures. A keyword search of the federal Open Government catalogue is available as a secondary, collapsed "find related datasets" panel.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.
 - Dedicated **About**, **Privacy**, **Accessibility**, and **How It Works** pages.
@@ -53,17 +53,17 @@ When a real publication is added, build its article/report page with the actual 
 
 The public interface:
 
-- requests live table metadata;
-- identifies the imports/exports, free-trade-agreement and NAPCS commodity dimensions from publisher metadata;
-- selects the CETA/EU agreement member from that metadata;
-- builds the 10-position Statistics Canada coordinate;
-- requests the latest 24 periods;
-- applies the publisher scalar-factor code before displaying Canadian-dollar values;
-- exposes release/retrieval metadata and limitations;
-- uses the required Statistics Canada value-added-product acknowledgement;
-- fails closed if the publisher is unavailable or the table structure no longer matches expectations.
+- requests live table metadata and validates it at runtime (envelope, product id, dimensions, members, positions) instead of casting;
+- identifies the trade, free-trade-agreement and NAPCS dimensions and the CETA member by name, so renamed, renumbered or terminated members fail closed;
+- builds the 10-position coordinate and accepts only publisher-listed commodity groups from the URL;
+- validates every series and datapoint (coordinate, vector id, monthly reference period, finite values, scalar factor, unit of measure);
+- keeps Statistics Canada symbol, status and suppression codes: flagged values are labelled, withheld months (x, F, `..`) are never charted as numbers;
+- requests 37 months per series, plus one batched request for all commodity groups (12-month totals, change and share);
+- caches successful retrievals for 6 hours with `unstable_cache` (`src/lib/statcan-data.ts`). Failures are never cached. If a refresh fails, the last good copy keeps serving and is labelled stale after 24 hours using its own `retrievedAt`;
+- streams inside `<Suspense>`, so page chrome renders immediately and a slow WDS cannot hang the page;
+- uses the required Statistics Canada value-added-product acknowledgement.
 
-No synthetic values are substituted.
+No synthetic or fallback values exist anywhere in the site. Tests run against recorded real responses in `tests/fixtures/statcan/` (re-record with `node scripts/record-statcan-fixtures.mjs`). `npm run test:contract` checks the live service, and a weekly workflow runs it.
 
 Official references:
 
@@ -74,7 +74,7 @@ Official references:
 
 ### Government of Canada Open Data
 
-`src/app/api/open-data/search/route.ts` uses the official CKAN `package_search` GET API to discover related federal datasets. It is a discovery layer only; a returned record is not automatically evidence for a Tharros conclusion.
+`src/app/api/open-data/search/route.ts` uses the official CKAN `package_search` GET API. The Market Data page calls it only when a visitor opens the collapsed "Find related federal datasets" panel. It is a discovery layer only; a returned record is not evidence for a Tharros conclusion.
 
 Official API entry point:
 
@@ -105,8 +105,12 @@ Quality checks:
 ```bash
 npm run lint
 npm run typecheck
-npm test
+npm test                  # unit and fixture-based contract tests
 npm run build
+npx playwright install chromium
+npm run test:e2e          # functional, axe and visual tests on a production build with mocked sources
+npm run test:contract     # live Statistics Canada contract (bash / CI)
+npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart from one rejected POST)
 ```
 
 ## Environment variables
@@ -117,19 +121,19 @@ npm run build
 | `RESEARCH_INTAKE_WEBHOOK_URL` | Required for live intake | Server-only HTTPS endpoint receiving validated research requests. |
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
-| `NEXT_PUBLIC_RESEARCH_EMAIL` | Recommended | Verified monitored contact address used in About/footer/intake fallback. |
+| `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
+| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL` | Tests only | Point the adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
 
 ## Architecture
 
 ```text
 src/
   app/
-    api/market-data/trade/  Statistics Canada-backed public data endpoint
     api/open-data/search/   Government of Canada CKAN discovery endpoint
     research/               research archive
     market-explorer/        live Canada–CETA data interface
   components/              site UI, archive, chart, intake and live-data components
-  data/                    publications and verified source registry
+  data/                    publications, verified source registry, organization (accountability) details
   lib/                     services, research request, contact, analytics, Statistics Canada adapter
   types/                   official-data contracts
 docs/
@@ -147,18 +151,10 @@ Public-source names identify publishers only. They must never be used to imply e
 
 ## Browser quality checks
 
-Browser-level responsive, interaction and automated accessibility checks live in `e2e/`. CI installs pinned browser-test tooling without adding runtime dependencies to the product bundle.
+`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves the recorded Statistics Canada and Open Government responses, so screenshots never depend on live data. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
 
-To run locally after installing the QA-only packages:
+Baselines are Linux screenshots in `e2e/visual.spec.ts-snapshots/`. After an approved visual change, run the **Update visual baselines** workflow on the branch and review the committed images in the pull request. Local non-Linux snapshots are git-ignored and useful only for local comparison.
 
-```bash
-npm install --no-save --package-lock=false @playwright/test@1.55.0 @axe-core/playwright@4.10.2
-npx playwright install chromium
-npx playwright test --grep-invert @visual
-```
+### Accountability details
 
-Visual-regression specs are tagged `@visual` and deliberately excluded from normal CI until an approved baseline is captured. Generate or refresh the baseline only during an intentional design review:
-
-```bash
-npx playwright test --grep @visual --update-snapshots
-```
+`src/data/organization.ts` holds the research lead, legal entity, company profiles and intake retention period. Every field is empty until verified information is supplied. About, the footer, `/privacy` and the JSON-LD render each item only when it is set.

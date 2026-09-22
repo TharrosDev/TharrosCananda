@@ -4,16 +4,33 @@ Operational and legal items that remain outside the codebase.
 
 ## Research intake
 
-- [ ] Configure `RESEARCH_INTAKE_WEBHOOK_URL` and test success, validation failure, upstream failure and timeout paths.
-- [x] Application signs each webhook payload with HMAC-SHA256 when `RESEARCH_INTAKE_WEBHOOK_SECRET` is configured. Configure the receiver with the same secret and verify the timestamp/signature before accepting requests.
-- [ ] Add distributed platform/receiver rate limiting for `/api/research-request`. Do not substitute process-memory throttling on serverless instances.
-- [ ] Define storage, access and retention for submitted research briefs.
+- [ ] Configure `RESEARCH_INTAKE_WEBHOOK_URL` (https) and `RESEARCH_INTAKE_WEBHOOK_SECRET`. Without both, the API returns 503 and the form says the request was not sent.
+- [ ] On the receiver, verify `X-Tharros-Signature: sha256=<hex HMAC-SHA256 of "<X-Tharros-Timestamp>.<raw body>">` and reject stale timestamps (for example, older than 5 minutes). `X-Tharros-Request-Id` and the payload `reference` match the reference the visitor sees.
+- [ ] The receiver must return 2xx only once the request is stored. Any other status, a redirect or no answer within 8 s is shown to the visitor as not sent (502 / 504), with their answers kept.
+- [ ] After deploying, run `npm run smoke -- https://tharros.ca`, then submit one real request and confirm it arrives with its reference.
+- [ ] Add the Vercel Firewall rate limit below.
+- [ ] Define storage, access and retention for submitted requests, then set `intakeRetention` in `src/data/organization.ts` so `/privacy` states it.
+
+### Rate limit (Vercel Firewall)
+
+There is no in-process limiter (it would be per instance on serverless). The limit is a Vercel WAF rule, which counts per client across instances. Link the project (`vercel link`) and stage it in log mode first:
+
+```bash
+vercel firewall rules add "Rate limit research intake" \
+  --condition '{"type":"path","op":"eq","value":"/api/research-request"}' \
+  --condition '{"type":"method","op":"eq","value":"POST"}' \
+  --action rate_limit --rate-limit-window 600 --rate-limit-requests 20 \
+  --rate-limit-keys ip --rate-limit-action log --yes
+vercel firewall diff
+vercel firewall publish --yes
+```
+
+After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tighten to about 5 requests per 10 minutes and switch `--rate-limit-action` to `rate_limit` (HTTP 429). The form treats any non-201 response as not sent. Counters are per region.
 
 ## Identity and contact
 
-- [ ] Set `NEXT_PUBLIC_RESEARCH_EMAIL` to a verified monitored address.
-- [ ] Confirm the legal business name/registration status before adding legal identifiers or an address.
-- [ ] Add verified founder/research-lead biography details only when the public wording has been approved.
+- [x] Public contact address: TharrosDev@gmail.com (default in `src/lib/contact.ts`; `NEXT_PUBLIC_RESEARCH_EMAIL` overrides it). Confirm the inbox is monitored.
+- [ ] Fill `src/data/organization.ts` with verified details only: research lead (name, role, short approved bio, real profile links), legal entity (legal name, jurisdiction, registration, address) and company profiles. Each block stays hidden until it is set.
 - [ ] Add real author profiles only when actual publications identify those authors.
 
 ## Privacy and legal
@@ -37,4 +54,5 @@ Operational and legal items that remain outside the codebase.
 - [ ] Confirm HSTS configuration before any preload request.
 - [x] Add a production Content-Security-Policy in `next.config.ts`; confirm the deployed header once final production deployment is available.
 - [ ] Run deployed Lighthouse/Core Web Vitals checks.
-- [ ] Run keyboard, screen-reader and zoom/reflow accessibility checks against production.\n- [ ] Capture and approve the initial Playwright visual-regression baseline after the final polish branch is reviewed.\n- [ ] Add verified founder/research-lead biography details only after the public wording and identity details are explicitly approved; do not infer them from repository/account metadata.
+- [ ] Run keyboard, screen-reader and zoom/reflow accessibility checks against production.
+- [ ] Run the **Update visual baselines** workflow on the release branch and approve the Linux baselines in the pull request.

@@ -22,6 +22,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const [errors,setErrors]=useState<ResearchRequestErrors>({});
   const [status,setStatus]=useState<"idle"|"submitting"|"success"|"error">("idle");
   const [serverMessage,setServerMessage]=useState("");
+  const [reference,setReference]=useState("");
   const formRef=useRef<HTMLFormElement>(null);
   const moved=useRef(false);
   const preselectedNeed=initial.researchNeed;
@@ -51,10 +52,11 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
     setStatus("submitting"); setServerMessage("");
     try{
       const response=await fetch("/api/research-request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...values,[honeypotField]:trap})});
-      const data=(await response.json().catch(()=>({}))) as {message?:string;errors?:ResearchRequestErrors};
+      const data=(await response.json().catch(()=>({}))) as {ok?:boolean;reference?:string;message?:string;errors?:ResearchRequestErrors};
       if(response.status===422 && data.errors){ setStatus("idle"); showErrors(data.errors); return; }
-      if(!response.ok) throw new Error(data.message);
-      setStatus("success"); track("research_request_submitted",{need:values.researchNeed||"unclassified"});
+      // Success only when the API confirms the intake receiver accepted the request.
+      if(response.status!==201||data.ok!==true||typeof data.reference!=="string") throw new Error(data.message);
+      setReference(data.reference); setStatus("success"); track("research_request_submitted",{need:values.researchNeed||"unclassified"});
     }catch(error){
       setStatus("error");
       setServerMessage(error instanceof Error && error.message?error.message:"We couldn’t send your request right now. Your answers are still in the form.");
@@ -63,7 +65,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
 
   if(status==="success") return <div className="form-success" role="status">
     <span className="success-mark"><CheckIcon /></span><h2>Your research request has been received.</h2>
-      <p>Nothing has been purchased.</p>
+      <p>Reference <strong>{reference.slice(0,8).toUpperCase()}</strong>. Nothing has been purchased.</p>
       <ol className="success-steps"><li>Tharros reviews the request.</li><li>You receive a proposed scope, price and timeline at <strong>{values.email}</strong>.</li><li>Research begins after written approval.</li></ol>
     {contactEmail&&<p>To add information, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>}
   </div>;
@@ -91,8 +93,8 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
       <div className="form-field"><label>What will the research support? <em>Required</em></label><div className="choice-grid">
         {objectives.map((objective)=><label key={objective} className={values.objectives.includes(objective)?"choice is-selected":"choice"}><input type="checkbox" checked={values.objectives.includes(objective)} onChange={()=>toggleObjective(objective)} aria-invalid={Boolean(errors.objectives)} aria-describedby={errors.objectives?"objectives-error":undefined}/><span className="choice-check"><CheckIcon/></span><span>{objective}</span></label>)}
       </div>{errors.objectives&&<p className="field-message is-error" id="objectives-error">{errors.objectives}</p>}</div>
-      <FormField id="research-format" label="Research format" hint={preselectedNeed?"Prefilled from the service you selected; change it if needed":"Optional — Tharros can suggest the smallest useful scope"} error={errors.researchNeed}>
-        <select value={values.researchNeed} onChange={(e)=>update("researchNeed",e.target.value as ResearchRequestPayload["researchNeed"])}><option value="">Let Tharros suggest a format</option>{researchNeeds.map((need)=><option key={need} value={need}>{need}{need==="Not sure yet"?"":` — ${needSummary(need)}`}</option>)}</select>
+      <FormField id="research-format" label="Research format" hint={preselectedNeed?"Prefilled from the service you selected; change it if needed":"Optional. Tharros can suggest the smallest useful scope"} error={errors.researchNeed}>
+        <select value={values.researchNeed} onChange={(e)=>update("researchNeed",e.target.value as ResearchRequestPayload["researchNeed"])}><option value="">Let Tharros suggest a format</option>{researchNeeds.map((need)=><option key={need} value={need}>{need}{need==="Not sure yet"?"":`: ${needSummary(need)}`}</option>)}</select>
       </FormField>
     </fieldset>}
 
