@@ -22,6 +22,7 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 
 - Services
 - Research archive
+- Live Monitor
 - Market Data
 - About
 - Sources & Methodology
@@ -33,6 +34,7 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 ## Evidence commitments
 
 - The Research archive is empty until actual Tharros publications exist.
+- Live Monitor uses GDELT as an attributed discovery layer; surfaced publisher headlines are not Tharros verification, endorsement or analysis.
 - Market Data uses official Statistics Canada values and Government of Canada dataset discovery; synthetic market scenarios are retired.
 - Publisher, table/source, period, release/retrieval context, licence and limitations must remain visible.
 - If an official API fails or its schema changes, fail closed rather than inventing fallback values.
@@ -52,6 +54,7 @@ Warm ivory, graphite/soft black, slate, muted Canadian red for action, steel for
 - Use research/data as the visual material.
 - Keep the four Canada–Europe research areas as a concise homepage overview and archive taxonomy rather than a standalone destination.
 - Prefer a narrow real capability over a broad simulated one.
+- Keep automated discovery separate from published Tharros research and interpretation.
 - Preserve provenance as part of the UI and data model.
 - Make public research easy to archive and navigate as the body of work grows.
 - Keep commissioned research usable without an account or mandatory call.
