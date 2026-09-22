@@ -27,7 +27,8 @@ export default defineConfig({
       env: {
         STATCAN_WDS_BASE_URL: `http://127.0.0.1:${mockPort}/t1/wds/rest`,
         OPEN_DATA_BASE_URL: `http://127.0.0.1:${mockPort}/data/en`,
-        CURRENTS_API_BASE_URL: `http://127.0.0.1:${mockPort}`,\n        CURRENTS_API_KEY: "playwright-test-key",
+        CURRENTS_API_BASE_URL: `http://127.0.0.1:${mockPort}`,
+        CURRENTS_API_KEY: "playwright-test-key",
         NEXT_PUBLIC_SITE_URL: "https://tharros.ca",
         RESEARCH_INTAKE_WEBHOOK_URL: "",
         RESEARCH_INTAKE_WEBHOOK_SECRET: "",
