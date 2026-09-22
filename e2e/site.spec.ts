@@ -41,7 +41,7 @@ test("Live Monitor navigation opens the route",async({page,isMobile})=>{
 test("live monitor renders attributed GDELT coverage and filters research areas",async({page})=>{
   await page.goto("/live-monitor");
   await expect(page.getByRole("heading",{name:"Live Canada–Europe Monitor."})).toBeVisible();
-  await expect(page.getByText(/GDELT discovery/i)).toBeVisible();
+  await expect(page.getByText(/GDELT · primary live source/i)).toBeVisible();
   await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();
   await page.getByLabel("Research area",{exact:true}).selectOption("defence-security");
   await expect(page.getByRole("link",{name:/Canadian and European defence suppliers expand cooperation/i})).toBeVisible();
