@@ -30,7 +30,14 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
 
-test("live monitor renders attributed GDELT coverage",async({page})=>{\n  await page.goto("/live-monitor");\n  await expect(page.getByRole("heading",{name:/Canada.Europe developments/i})).toBeVisible();\n  await expect(page.getByText("GDELT",{exact:true}).first()).toBeVisible();\n  await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();\n});\n\ntest("nested research route keeps Research navigation state",async({page,isMobile})=>{
+test("live monitor renders attributed GDELT coverage",async({page})=>{
+  await page.goto("/live-monitor");
+  await expect(page.getByRole("heading",{name:/Canada.Europe developments/i})).toBeVisible();
+  await expect(page.getByText("GDELT",{exact:true}).first()).toBeVisible();
+  await expect(page.getByRole("link",{name:/Canada and European firms deepen transatlantic trade links/i})).toBeVisible();
+});
+
+test("nested research route keeps Research navigation state",async({page,isMobile})=>{
   test.skip(isMobile,"Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
   await expect(page.getByRole("link",{name:"Research",exact:true})).toHaveAttribute("aria-current","page");
