@@ -26,12 +26,19 @@ function displayDate(value: string) {
 
 function languageLabel(value: string) {
   const normalised = value.toLowerCase();
-  if (normalised === "english") return "EN";
-  if (normalised === "french") return "FR";
-  if (normalised === "german") return "DE";
-  if (normalised === "italian") return "IT";
-  if (normalised === "spanish") return "ES";
+  if (normalised === "en" || normalised === "english") return "EN";
+  if (normalised === "fr" || normalised === "french") return "FR";
+  if (normalised === "de" || normalised === "german") return "DE";
+  if (normalised === "it" || normalised === "italian") return "IT";
+  if (normalised === "es" || normalised === "spanish") return "ES";
   return value.length <= 4 ? value.toUpperCase() : value;
+}
+
+function errorCopy(code: LiveMonitorSnapshot["errorCode"]) {
+  if (code === "not-configured") return "The Currents API key has not been configured on this deployment.";
+  if (code === "unauthorized") return "Currents rejected the configured API key.";
+  if (code === "quota") return "The Currents request quota has been reached for the current billing period.";
+  return "Currents did not return usable coverage. No substitute headlines or synthetic stories are shown.";
 }
 
 export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
@@ -46,7 +53,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   const cutoff = referenceTime - window.hours * 60 * 60 * 1000;
 
   const inWindow = useMemo(
-    () => data.articles.filter((article) => Date.parse(article.seenAt) >= cutoff),
+    () => data.articles.filter((article) => Date.parse(article.publishedAt) >= cutoff),
     [cutoff, data.articles],
   );
 
@@ -56,7 +63,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
       const topicMatch = topic === "all" || article.topics.includes(topic);
       const searchMatch =
         !needle ||
-        [article.title, article.domain, article.sourceCountry, article.language]
+        [article.title, article.description, article.domain, article.language]
           .join(" ")
           .toLowerCase()
           .includes(needle);
@@ -72,12 +79,12 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     return (
       <section className="monitor-error" aria-labelledby="monitor-error-title">
         <p className="monitor-kicker">Live coverage</p>
-        <h2 id="monitor-error-title">The GDELT feed is not responding.</h2>
-        <p>The Live Monitor page is available, but the upstream discovery service did not return usable coverage. No substitute headlines or synthetic stories are shown.</p>
+        <h2 id="monitor-error-title">Live coverage is temporarily unavailable.</h2>
+        <p>{errorCopy(data.errorCode)}</p>
         <div className="monitor-error-actions">
           <button className="button-secondary" type="button" onClick={() => router.refresh()}>Retry live coverage</button>
-          <a className="text-link" href="https://www.gdeltproject.org/" target="_blank" rel="noreferrer">
-            About GDELT <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
+          <a className="text-link" href="https://currentsapi.services/" target="_blank" rel="noreferrer">
+            About Currents <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </section>
@@ -87,17 +94,9 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   return (
     <section className="monitor-workspace" aria-label="Canada Europe live news monitor">
       <div className="monitor-status-line">
-        <span><i aria-hidden="true" />GDELT discovery · 7-day rolling source window</span>
+        <span><i aria-hidden="true" />Currents · live news search</span>
         <span data-volatile>Retrieved {displayDate(data.retrievedAt)} ET</span>
       </div>
-
-      {data.kind === "partial" && (
-        <p className="monitor-notice" role="status">
-          {data.broadFallback
-            ? "Topic-specific GDELT feeds were unavailable, so a broader Canada–Europe discovery feed is shown. Research-area tags are inferred from headlines when possible."
-            : "Some research-area feeds could not be refreshed. Available coverage is shown."}
-        </p>
-      )}
 
       <form className="archive-controls monitor-controls" onSubmit={(event) => event.preventDefault()}>
         <label>
@@ -151,13 +150,13 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
           <li key={article.id}>
             <div className="archive-meta">
               <span>{article.topics.length ? article.topics.map(topicLabel).join(" · ") : "Canada–Europe"}</span>
-              <time dateTime={article.seenAt}>Indexed {displayDate(article.seenAt)} ET</time>
+              <time dateTime={article.publishedAt}>Published {displayDate(article.publishedAt)} ET</time>
             </div>
             <h2><a href={article.url} target="_blank" rel="noreferrer">{article.title}</a></h2>
+            {article.description && <p className="monitor-description">{article.description}</p>}
             <div className="monitor-source-meta">
               <strong>{article.domain}</strong>
-              <span>{article.sourceCountry}</span>
-              <span>{languageLabel(article.language)}</span>
+              {article.language !== "Not supplied" && <span>{languageLabel(article.language)}</span>}
             </div>
             <a className="text-link monitor-open-link" href={article.url} target="_blank" rel="noreferrer">
               Open original <ArrowIcon /><span className="sr-only"> (opens in a new tab)</span>

@@ -3,29 +3,25 @@ export const monitorTopics = [
     id: "trade-economy",
     label: "Trade & Economic Integration",
     shortLabel: "Trade",
-    query: '(trade OR CETA OR tariff OR tariffs OR export OR exports OR import OR imports OR investment OR economy OR commerce)',
-    matchKeywords: ["trade", "ceta", "tariff", "export", "import", "investment", "economy", "commerce"],
+    matchKeywords: ["trade", "ceta", "tariff", "export", "import", "investment", "economy", "economic", "commerce", "business", "finance", "market"],
   },
   {
     id: "defence-security",
     label: "Defence & Security",
     shortLabel: "Defence",
-    query: '(defence OR defense OR NATO OR military OR security OR procurement OR "defence industry" OR "defense industry")',
-    matchKeywords: ["defence", "defense", "nato", "military", "security", "procurement"],
+    matchKeywords: ["defence", "defense", "nato", "military", "security", "procurement", "armed forces", "weapon", "aerospace"],
   },
   {
     id: "energy-industry",
     label: "Energy, Resources & Industry",
     shortLabel: "Industry",
-    query: '(energy OR "critical minerals" OR mining OR resources OR manufacturing OR industrial OR infrastructure OR hydrogen OR nuclear)',
-    matchKeywords: ["energy", "critical mineral", "mining", "manufactur", "industrial", "infrastructure", "hydrogen", "nuclear"],
+    matchKeywords: ["energy", "critical mineral", "mining", "resource", "manufactur", "industrial", "industry", "infrastructure", "hydrogen", "nuclear", "automotive"],
   },
   {
     id: "technology-strategic",
     label: "Technology & Strategic Industries",
     shortLabel: "Technology",
-    query: '(technology OR "artificial intelligence" OR cyber OR cybersecurity OR space OR semiconductor OR semiconductors OR telecom OR digital)',
-    matchKeywords: ["technology", "artificial intelligence", "cyber", "space", "semiconductor", "telecom", "digital"],
+    matchKeywords: ["technology", "artificial intelligence", " ai ", "cyber", "space", "semiconductor", "telecom", "digital", "chip", "quantum"],
   },
 ] as const;
 
@@ -41,22 +37,29 @@ export type MonitorWindowId = (typeof monitorWindows)[number]["id"];
 export type MonitorArticle = {
   id: string;
   title: string;
+  description: string;
   url: string;
   domain: string;
-  sourceCountry: string;
   language: string;
-  seenAt: string;
+  publishedAt: string;
   topics: MonitorTopicId[];
 };
 
+export type LiveMonitorErrorCode =
+  | "not-configured"
+  | "unauthorized"
+  | "quota"
+  | "upstream"
+  | "invalid-response"
+  | null;
+
 export type LiveMonitorSnapshot = {
-  kind: "ok" | "partial" | "error";
+  kind: "ok" | "error";
   articles: MonitorArticle[];
   retrievedAt: string;
-  failedTopics: MonitorTopicId[];
-  broadFallback: boolean;
-  provider: "GDELT";
+  provider: "Currents";
   coverageWindow: "7 days";
+  errorCode: LiveMonitorErrorCode;
 };
 
 export function topicLabel(id: MonitorTopicId) {
