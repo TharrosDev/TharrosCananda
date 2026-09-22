@@ -48,7 +48,7 @@ When a real publication is added, build its article/report page with the actual 
 
 ## Live Monitor
 
-`src/lib/gdelt.ts` is the GDELT DOC API adapter and `src/lib/gdelt-data.ts` owns the 15-minute Next.js cache and aggregation layer. Four research-area queries run against a rolling seven-day window and are deduplicated before display. Transient provider failures are retried once; if every topic query fails, a single broader Canada–Europe query can provide clearly labelled degraded discovery coverage. If GDELT remains unavailable, the page shows no substitute headlines.
+`src/lib/gdelt.ts` is the primary GDELT DOC API adapter. The monitor now uses one broad seven-day Canada–Europe query and classifies returned headlines into the four Tharros research areas locally, reducing upstream request load. `src/lib/gdelt-data.ts` owns bounded caching and provider selection. If GDELT is unavailable or returns no usable coverage, `src/lib/google-news.ts` supplies an explicitly labelled Google News RSS fallback. If both sources fail, the page shows no substitute headlines.
 
 The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for upstream GDELT requests before rendering the Tharros page shell.
 
@@ -129,7 +129,7 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
-| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `GDELT_DOC_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
+| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `GDELT_DOC_BASE_URL`, `NEWS_RSS_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
 
 ## Architecture
 
