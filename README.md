@@ -10,7 +10,7 @@ The site is deliberately small and evidence-led:
 
 - **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
-- **Live Monitor** — a GDELT-backed discovery surface for recent Canada–Europe reporting across the same four research areas. It streams behind the page shell, links to original publishers, displays source metadata and GDELT index time, and never presents discovered headlines as Tharros findings.
+- **Live Monitor** — a Currents-powered discovery surface for recent Canada–Europe reporting across the four Tharros research areas. It streams behind the page shell, preserves direct publisher links and publication times, and never presents discovered headlines as Tharros findings.
 - **Market Data**: live Canada–CETA merchandise trade from Statistics Canada Table 12-10-0174-01 through the Web Data Service (WDS). Flow, commodity group and period live in the URL; a ranked comparison of every commodity group sits beside the chart; publisher flags, table notes and provenance are shown with the figures. A keyword search of the federal Open Government catalogue is available as a secondary, collapsed "find related datasets" panel.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.
@@ -48,9 +48,9 @@ When a real publication is added, build its article/report page with the actual 
 
 ## Live Monitor
 
-`src/lib/gdelt.ts` is the GDELT DOC API adapter and `src/lib/gdelt-data.ts` owns the 15-minute Next.js cache and aggregation layer. Four research-area queries run against a rolling seven-day window and are deduplicated before display. Transient provider failures are retried once; if every topic query fails, a single broader Canada–Europe query can provide clearly labelled degraded discovery coverage. If GDELT remains unavailable, the page shows no substitute headlines.
+`src/lib/currents.ts` integrates the Currents V2 Search API. One rolling seven-day Boolean query looks for reporting that connects Canada with Europe across trade, defence, energy/industry and strategic technology. `src/lib/currents-data.ts` owns the 15-minute server cache and explicit failure states. Results are classified into the four research areas locally from article title, description and Currents categories.
 
-The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for upstream GDELT requests before rendering the Tharros page shell.
+The route streams the live panel through `<Suspense>`, so navigating to `/live-monitor` does not wait for Currents before rendering the Tharros page shell.
 
 ## Official data integration
 
@@ -129,7 +129,8 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake | Shared secret used to HMAC-sign the exact webhook payload and timestamp. |
 | `NEXT_PUBLIC_ANALYTICS_ENDPOINT` | Optional | Minimal same-origin/trusted event endpoint. Nothing is sent when empty or when Global Privacy Control is enabled. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Optional | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
-| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `GDELT_DOC_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
+| `CURRENTS_API_KEY` | Required for Live Monitor | Server-only Currents API key. Never expose through a `NEXT_PUBLIC_*` variable or commit it to source control. |
+| `STATCAN_WDS_BASE_URL`, `OPEN_DATA_BASE_URL`, `CURRENTS_API_BASE_URL` | Tests only | Point the public-source adapters at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment. |
 
 ## Architecture
 
@@ -138,11 +139,11 @@ src/
   app/
     api/open-data/search/   Government of Canada CKAN discovery endpoint
     research/               research archive
-    live-monitor/           GDELT-backed current-coverage monitor
+    live-monitor/           Currents-powered current-coverage monitor
     market-explorer/        live Canada–CETA data interface
   components/              site UI, archive, chart, intake and live-data components
   data/                    publications, verified source registry, organization (accountability) details
-  lib/                     services, research request, contact, analytics, Statistics Canada and GDELT adapters
+  lib/                     services, research request, contact, analytics, Statistics Canada and Currents adapters
   types/                   official-data contracts
 docs/
   DATA_SOURCES.md          integration and provenance policy
@@ -159,7 +160,7 @@ Public-source names identify publishers only. They must never be used to imply e
 
 ## Browser quality checks
 
-`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves controlled Statistics Canada, Open Government and GDELT responses, so screenshots never depend on live data. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
+`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves controlled Statistics Canada, Open Government and Currents responses, so screenshots never depend on live data. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
 
 Baselines are Linux screenshots in `e2e/visual.spec.ts-snapshots/`. After an approved visual change, run the **Update visual baselines** workflow on the branch and review the committed images in the pull request. Local non-Linux snapshots are git-ignored and useful only for local comparison.
 
