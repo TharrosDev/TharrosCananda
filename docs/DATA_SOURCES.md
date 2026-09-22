@@ -42,11 +42,11 @@ Do not use Statistics Canada or Government of Canada logos/wordmarks.
 
 The `/live-monitor` page uses the GDELT DOC API as a current-news discovery layer. GDELT is not treated as the publisher or as evidence that a surfaced claim is true. Every result links to the original publisher and retains the publisher domain, source country, language and GDELT index time.
 
-Implementation is split between `src/lib/gdelt.ts` (query construction, transport and runtime parsing) and `src/lib/gdelt-data.ts` (Next.js caching, aggregation, deduplication and fallback state). The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
+Primary discovery is implemented in `src/lib/gdelt.ts`; `src/lib/gdelt-data.ts` owns Next.js caching, provider selection and result aggregation. The primary path makes one broad seven-day GDELT query and classifies results into the four Tharros research areas locally, rather than issuing four simultaneous search requests. The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
 
-The normal path issues one seven-day query for each Tharros research area. Successful topic responses are cached for 15 minutes. Transient failures are retried once. Tracking parameters are removed from article URLs before deduplication. A valid empty response is treated as zero coverage rather than a provider failure.
+Successful GDELT coverage is cached for 15 minutes and transient failures are retried once. Tracking parameters are removed from article URLs before deduplication. A valid empty response is treated as zero coverage and triggers the secondary discovery path.
 
-If every topic-specific query fails, the adapter may attempt one broader Canada–Europe query. That state is labelled as degraded coverage, and research-area tags are inferred from headline terms only when possible. If the broader request also fails, no substitute headlines are shown.
+If GDELT fails or returns no usable articles, `src/lib/google-news.ts` queries Google News RSS separately for the four research areas. That provider is clearly labelled as a fallback. Its item timestamp is displayed as publication time and its Google News redirect is labelled `Open coverage`, not presented as a direct publisher URL. If both providers fail, no substitute headlines are shown.
 
 GDELT `seendate` is displayed as **indexed time**, not asserted to be the publisher's publication timestamp. Article bodies are not copied and discovered headlines are never represented as Tharros analysis or verification.
 
