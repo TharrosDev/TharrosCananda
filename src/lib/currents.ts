@@ -188,7 +188,8 @@ async function requestCurrents(
   const start = new Date(end.getTime() - 7 * 24 * 60 * 60 * 1000);
   const url = new URL(SEARCH_PATH, baseUrl);
   url.searchParams.set("query", buildCurrentsQuery());
-  url.searchParams.set("language", "en");\n  url.searchParams.set("type", "1");
+  url.searchParams.set("language", "en");
+  url.searchParams.set("type", "1");
   url.searchParams.set("start_date", formatDate(start));
   url.searchParams.set("end_date", formatDate(end));
   url.searchParams.set("page_number", "1");
