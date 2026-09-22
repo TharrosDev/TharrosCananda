@@ -71,7 +71,8 @@ describe("Currents Live Monitor adapter", () => {
     expect(url.pathname).toBe("/v2/search");
     expect(url.searchParams.get("start_date")).toBe("2026-09-15T05:00:00Z");
     expect(url.searchParams.get("end_date")).toBe("2026-09-22T05:00:00Z");
-    expect(url.searchParams.get("type")).toBe("1");\n    expect(url.searchParams.has("apiKey")).toBe(false);
+    expect(url.searchParams.get("type")).toBe("1");
+    expect(url.searchParams.has("apiKey")).toBe(false);
     expect(auth).toBe("Bearer test-secret");
     expect(result.articles).toHaveLength(1);
   });
