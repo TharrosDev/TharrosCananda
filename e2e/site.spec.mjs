@@ -21,7 +21,7 @@ test("commissioning reaches a complete review without forcing a product classifi
   await page.getByLabel("Business email").fill("research@example.com");
   await page.getByRole("button",{name:/continue/i}).click();
   await page.getByLabel("Subject, product or sector").fill("Industrial components");
-  await page.getByLabel("Enter the Canadian market").check();
+  await page.locator("label.choice").filter({ hasText: "Enter the Canadian market" }).click();
   await page.getByRole("button",{name:/continue/i}).click();
   await expect(page.getByText("research@example.com")).toBeVisible();
   await expect(page.getByText("Industrial components")).toBeVisible();
