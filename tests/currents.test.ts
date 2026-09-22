@@ -18,14 +18,15 @@ const news = {
 };
 
 describe("Currents Live Monitor adapter", () => {
-  it("builds one Canada-Europe Boolean query spanning the monitor subjects", () => {
+  it("builds one focused Canada-Europe query spanning the monitor subjects", () => {
     const query = buildCurrentsQuery();
     expect(query).toContain("(Canada OR Canadian)");
     expect(query).toContain('"European Union"');
-    expect(query).toContain("CETA");
-    expect(query).toContain("NATO");
-    expect(query).toContain("critical minerals");
-    expect(query).toContain("artificial intelligence");
+    expect(query).toContain("trade");
+    expect(query).toContain("defence");
+    expect(query).toContain("energy");
+    expect(query).toContain("technology");
+    expect(query.length).toBeLessThan(240);
   });
 
   it("parses direct article URLs and publication times", () => {

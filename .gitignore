@@ -16,3 +16,4 @@ playwright-report/
 # Local non-Linux snapshots are for developer comparison only; CI baselines are Linux.
 e2e/**/*-win32.png
 e2e/**/*-darwin.png
+.vercel

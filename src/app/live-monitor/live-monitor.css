@@ -119,37 +119,13 @@
 .monitor-method dl > div { padding: 17px 0; display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 20px; border-bottom: 1px solid var(--rule-dark); }
 .monitor-method dt { color: var(--red-on-dark); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .monitor-method dd { margin: 0; color: var(--on-dark-soft); font-size: 14px; }
-.monitor-loading-card { padding: clamp(30px, 5vw, 62px); color: var(--on-dark); background: var(--graphite); border-top: 1px solid var(--soft-black); }
-.monitor-loading-heading { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 24px; align-items: start; }
-.monitor-loading-heading p:first-child { margin: 0 0 10px; color: var(--red-on-dark); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.monitor-loading-heading h2 { max-width: 24ch; margin: 0 0 10px; color: var(--on-dark); font-size: clamp(32px, 4vw, 54px); }
-.monitor-loading-heading p:last-child { max-width: var(--measure-reading); margin: 0; color: var(--on-dark-soft); }
-.monitor-loading-signal { position: relative; width: 54px; height: 54px; display: grid; place-items: center; border: 1px solid var(--rule-dark); border-radius: 50%; }
-.monitor-loading-signal::before, .monitor-loading-signal::after { content: ""; position: absolute; inset: 7px; border: 1px solid var(--rule-dark); border-radius: 50%; animation: monitor-node 1.8s var(--ease-out) infinite; }
-.monitor-loading-signal::after { animation-delay: .6s; }
-.monitor-loading-signal i { width: 9px; height: 9px; border-radius: 50%; background: var(--red-on-dark); }
-.monitor-loading-progress { position: relative; height: 2px; margin: 32px 0 24px; overflow: hidden; background: var(--rule-dark); }
-.monitor-loading-progress span { position: absolute; inset: 0 auto 0 -30%; width: 30%; background: var(--red-on-dark); animation: monitor-progress 1.5s var(--ease-out) infinite; }
-.monitor-loading-stages { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; border-top: 1px solid var(--rule-dark); }
-.monitor-loading-stages li { min-height: 96px; padding: 16px 18px 14px 0; display: grid; grid-template-columns: 28px minmax(0,1fr); column-gap: 10px; align-content: start; border-right: 1px solid var(--rule-dark); color: var(--on-dark-soft); }
-.monitor-loading-stages li + li { padding-left: 18px; }
-.monitor-loading-stages li:last-child { border-right: 0; }
-.monitor-loading-stages li > span { color: var(--on-dark-soft); font-size: 12px; font-weight: 700; }
-.monitor-loading-stages strong { color: var(--on-dark); font-size: 14px; font-weight: 600; }
-.monitor-loading-stages small { grid-column: 2; margin-top: 5px; color: var(--on-dark-soft); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-.monitor-loading-stages .is-active small { color: var(--red-on-dark); }
-.monitor-loading-preview { padding-top: 22px; opacity: .75; }
-.monitor-skeleton-command { height: 56px; background: linear-gradient(90deg,var(--ivory-deep) 0%,var(--ivory-light) 50%,var(--ivory-deep) 100%); background-size: 220% 100%; animation: monitor-shimmer 1.5s linear infinite; }
-.monitor-skeleton-lead { min-height: 380px; padding: 54px; display: grid; align-content: center; gap: 16px; background: var(--graphite); }
-.monitor-skeleton-line { display: block; height: 12px; background: linear-gradient(90deg,var(--rule-dark) 0%,rgba(236,232,223,.22) 50%,var(--rule-dark) 100%); background-size: 220% 100%; animation: monitor-shimmer 1.5s linear infinite; }
-.monitor-skeleton-meta { width: 34%; }
-.monitor-skeleton-title { width: min(78%, 740px); height: 34px; }
-.monitor-skeleton-title--short { width: min(58%, 560px); }
-.monitor-skeleton-source { width: 26%; margin-top: 30px; }
+.monitor-loading-minimal { min-height: 270px; padding: clamp(32px, 5vw, 60px) 0; display: flex; flex-direction: column; justify-content: center; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule-strong); }
+.monitor-loading-status { display: flex; align-items: center; gap: 10px; color: var(--slate); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.monitor-loading-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--steel); }
+.monitor-loading-minimal h2 { max-width: 24ch; margin: 28px 0 10px; font-size: clamp(34px, 4vw, 54px); font-weight: 420; letter-spacing: -.025em; line-height: 1; }
+.monitor-loading-minimal > p { max-width: 56ch; margin: 0; color: var(--ink-soft); }
 @keyframes monitor-route { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes monitor-node { 0% { opacity: .35; transform: scale(.72); } 55% { opacity: 1; transform: scale(1.18); } 100% { opacity: .35; transform: scale(.72); } }
-@keyframes monitor-progress { from { left: -30%; } to { left: 100%; } }
-@keyframes monitor-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
 @keyframes monitor-feed-in { from { transform: translateY(12px); } to { transform: translateY(0); } }
 @media (max-width: 1100px) {
   .monitor-hero-inner { align-items: end; }
@@ -211,18 +187,11 @@
   .monitor-error-actions { align-items: stretch; flex-direction: column; gap: 10px; }
   .monitor-error-actions .button-secondary, .monitor-error-actions .text-link, .monitor-empty .button-secondary { width: 100%; }
   .monitor-method dl > div { grid-template-columns: 72px minmax(0, 1fr); }
-  .monitor-loading-card { padding: 28px 20px; }
-  .monitor-loading-heading { grid-template-columns: 44px minmax(0, 1fr); gap: 14px; }
-  .monitor-loading-signal { width: 42px; height: 42px; }
-  .monitor-loading-stages { grid-template-columns: 1fr; }
-  .monitor-loading-stages li, .monitor-loading-stages li + li { min-height: 0; padding: 12px 0; border-right: 0; border-bottom: 1px solid var(--rule-dark); }
-  .monitor-loading-stages li:last-child { border-bottom: 0; }
-  .monitor-skeleton-lead { min-height: 300px; padding: 32px 22px; }
+  .monitor-loading-minimal { min-height: 220px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .signal-route--active, .signal-pulse, .monitor-loading-signal::before, .monitor-loading-signal::after, .monitor-loading-progress span, .monitor-skeleton-command, .monitor-skeleton-line, .monitor-feed { animation: none; }
+  .signal-route--active, .signal-pulse, .monitor-feed { animation: none; }
   .signal-route--active { stroke-dashoffset: 0; }
-  .monitor-loading-progress span { left: 0; width: 55%; }
 }
 @media (forced-colors: active) {
   .monitor-hero-state i, .monitor-status-line i, .monitor-topic-rail button[aria-pressed="true"] span::before { forced-color-adjust: none; background: Highlight; box-shadow: none; }

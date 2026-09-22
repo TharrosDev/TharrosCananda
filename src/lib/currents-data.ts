@@ -3,15 +3,9 @@ import { unstable_cache } from "next/cache";
 import { CurrentsError, fetchCurrentsMonitor } from "@/lib/currents";
 import type { LiveMonitorSnapshot } from "@/lib/live-monitor";
 
-const cachedCurrents = unstable_cache(
-  () => fetchCurrentsMonitor(),
-  ["currents-live-monitor-v2"],
-  { revalidate: 900, tags: ["currents-live-monitor"] },
-);
-
-export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
+async function loadLiveMonitor(): Promise<LiveMonitorSnapshot> {
   try {
-    const data = await cachedCurrents();
+    const data = await fetchCurrentsMonitor();
     return {
       kind: "ok",
       articles: data.articles,
@@ -37,4 +31,13 @@ export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
       errorCode: code,
     };
   }
+}
+
+const cachedLiveMonitor = unstable_cache(loadLiveMonitor, ["currents-live-monitor-v3"], {
+  revalidate: 900,
+  tags: ["currents-live-monitor"],
+});
+
+export async function getLiveMonitor(): Promise<LiveMonitorSnapshot> {
+  return cachedLiveMonitor();
 }

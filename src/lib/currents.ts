@@ -2,7 +2,7 @@ import { monitorTopics, type MonitorArticle, type MonitorTopicId } from "@/lib/l
 
 export const CURRENTS_API_BASE_URL = "https://api.currentsapi.services";
 const SEARCH_PATH = "/v2/search";
-const FETCH_TIMEOUT_MS = 10_000;
+const FETCH_TIMEOUT_MS = 15_000;
 const PAGE_SIZE = 20;
 const MAX_ATTEMPTS = 2;
 const DEFAULT_RETRY_DELAY_MS = 250;
@@ -16,98 +16,17 @@ const MAX_LANGUAGE_LENGTH = 40;
 const MAX_CATEGORY_TEXT_LENGTH = 1_000;
 const RETRYABLE_STATUSES = new Set([408, 425, 500, 502, 503, 504]);
 
-const EUROPE_TERMS = [
-  '"European Union"',
-  "Europe",
-  "European",
-  "EU",
-  "Germany",
-  "German",
-  "France",
-  "French",
-  "Italy",
-  "Italian",
-  "Spain",
-  "Spanish",
-  "Poland",
-  "Polish",
-  "Netherlands",
-  "Dutch",
-  "Belgium",
-  "Belgian",
-  "Sweden",
-  "Swedish",
-  "Finland",
-  "Finnish",
-  "Denmark",
-  "Danish",
-  "Norway",
-  "Norwegian",
-  "Ireland",
-  "Irish",
-  "Portugal",
-  "Portuguese",
-  "Austria",
-  "Austrian",
-  "Czechia",
-  "Czech",
-  "Romania",
-  "Romanian",
-  "Greece",
-  "Greek",
-  "Hungary",
-  "Hungarian",
-  "Bulgaria",
-  "Bulgarian",
-  "Croatia",
-  "Croatian",
-  "Slovakia",
-  "Slovak",
-  "Slovenia",
-  "Slovenian",
-  "Estonia",
-  "Estonian",
-  "Latvia",
-  "Latvian",
-  "Lithuania",
-  "Lithuanian",
-  "Luxembourg",
-  "Malta",
-  "Cyprus",
-  "Iceland",
-  "Switzerland",
-  "Swiss",
-  '"United Kingdom"',
-  "Britain",
-  "British",
-  "Ukraine",
-  "Ukrainian",
-].join(" OR ");
+const EUROPE_TERMS = ['"European Union"', "Europe", "European"].join(" OR ");
 
 const SUBJECT_TERMS = [
   "trade",
-  "CETA",
-  "tariff",
   "investment",
-  "economy",
-  "business",
   "defence",
   "defense",
-  "NATO",
   "security",
-  "procurement",
   "energy",
-  '"critical minerals"',
-  "mining",
-  "manufacturing",
   "industry",
   "technology",
-  '"artificial intelligence"',
-  "AI",
-  "cyber",
-  "semiconductor",
-  "telecom",
-  "space",
 ].join(" OR ");
 
 type CurrentsArticle = {
@@ -235,9 +154,7 @@ export function inferCurrentsTopics(
     .filter((topic) =>
       topic.matchKeywords.some((keyword) => {
         const needle = keyword.trim().toLowerCase();
-        return keyword === keyword.trim()
-          ? value.includes(needle)
-          : value.includes(` ${needle} `);
+        return keyword === keyword.trim() ? value.includes(needle) : value.includes(` ${needle} `);
       }),
     )
     .map((topic) => topic.id);

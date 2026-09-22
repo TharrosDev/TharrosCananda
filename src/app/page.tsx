@@ -27,7 +27,7 @@ const clientQuestions = [
   },
 ] as const;
 
-const evidenceSources = [
+const folioSources = [
   "Official data",
   "Procurement",
   "Company records",
@@ -59,53 +59,50 @@ export default function HomePage() {
             </div>
           </div>
           <div
-            className="evidence-atlas"
-            aria-label="How Tharros research works: sources from both sides are checked before they reach a finding"
+            className="evidence-folio"
+            aria-label="A specimen of the Tharros evidence review process"
           >
-            <div className="atlas-head">
-              <span>Research process</span>
-              <span>CA ↔ EU</span>
+            <div className="folio-head">
+              <span>Evidence folio</span>
+              <span>Working specimen · not a finding</span>
             </div>
-            <svg
-              className="atlas-field"
-              viewBox="0 0 720 430"
-              role="img"
-              aria-labelledby="atlas-title atlas-description"
-            >
-              <title id="atlas-title">From source records to a finding</title>
-              <desc id="atlas-description">
-                Canadian and European source records are each checked, dated and attributed, then
-                combined into a written finding.
-              </desc>
-              <path className="atlas-route" pathLength="1" d="M128 221C249 129 386 125 580 205" />
-              <circle className="atlas-node atlas-node-origin" cx="128" cy="221" r="7" />
-              <circle className="atlas-node" cx="352" cy="155" r="5" />
-              <circle className="atlas-node atlas-node-destination" cx="580" cy="205" r="7" />
-              <line className="atlas-rule" x1="128" y1="221" x2="128" y2="331" />
-              <line className="atlas-rule" x1="352" y1="155" x2="352" y2="100" />
-              <line className="atlas-rule" x1="580" y1="205" x2="580" y2="331" />
-              <text className="atlas-step" x="352" y="84" textAnchor="middle">
-                CHECKED · DATED · ATTRIBUTED
-              </text>
-              <text className="atlas-label" x="72" y="360">
-                CANADA
-              </text>
-              <text className="atlas-label" x="521" y="360">
-                EUROPE
-              </text>
-              <text className="atlas-coordinate" x="72" y="386">
-                Canadian source records
-              </text>
-              <text className="atlas-coordinate" x="521" y="386">
-                European source records
-              </text>
-            </svg>
-            <div className="atlas-register">
-              {evidenceSources.map((source, index) => (
-                <span key={source}>
-                  <b>{String(index + 1).padStart(2, "0")}</b>
-                  {source}
-                </span>
+            <div className="folio-stage">
+              <article className="folio-sheet">
+                <div className="folio-reference">
+                  <span>TC / REVIEW NOTE</span>
+                  <span>Source-led analysis</span>
+                </div>
+                <h2>Evidence before conclusion.</h2>
+                <p>
+                  A research question is tested against attributed records before it becomes a
+                  written finding.
+                </p>
+                <div className="folio-extract" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+                <footer>
+                  <span>Scope</span>
+                  <strong>Canada–Europe</strong>
+                  <span>Status</span>
+                  <strong>Under review</strong>
+                </footer>
+              </article>
+              <aside className="folio-margin" aria-label="Review checks">
+                <span>01</span>
+                <p>Source named</p>
+                <span>02</span>
+                <p>Date checked</p>
+                <span>03</span>
+                <p>Limits recorded</p>
+              </aside>
+            </div>
+            <div className="folio-register">
+              {folioSources.map((source) => (
+                <span key={source}>{source}</span>
               ))}
             </div>
           </div>
