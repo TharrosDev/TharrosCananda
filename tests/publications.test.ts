@@ -27,4 +27,9 @@ describe("publication records", () => {
     expect(reportSourceHash(researchSpecimenPublication, ".y{}")).not.toBe(a);
     expect(reportSourceHash({ ...researchSpecimenPublication, title: "Changed" }, ".x{}")).not.toBe(a);
   });
+
+  it("ignores line-ending differences between Windows and Linux checkouts", () => {
+    const windows = reportSourceHash(researchSpecimenPublication, ".x{}\r\n.y{}\r\n");
+    expect(windows).toBe(reportSourceHash(researchSpecimenPublication, ".x{}\n.y{}\n"));
+  });
 });

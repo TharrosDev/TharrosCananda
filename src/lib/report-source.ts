@@ -7,5 +7,5 @@ export const REPORT_CSS_PATH = "src/components/report/report.css";
 export function reportSourceHash(p: Publication, css: string) {
   const { slug, reference, title, subtitle, type, area, origin, publishedAt, authors, summary, tags, sources, body } = p;
   const content = JSON.stringify({ slug, reference, title, subtitle, type, area, origin, publishedAt, authors, summary, tags, sources, body });
-  return createHash("sha256").update(content).update("\0").update(css).digest("hex").slice(0, 16);
+  return createHash("sha256").update(content).update("\0").update(css.replaceAll("\r\n", "\n")).digest("hex").slice(0, 16);
 }
