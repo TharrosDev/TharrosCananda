@@ -254,13 +254,15 @@ legend:focus:not(:focus-visible) { outline: none; }
 .archive-controls label > span { font-size: 14px; font-weight: 600; }
 .archive-controls input, .archive-controls select { width: 100%; height: 48px; padding: 0 12px; border: 1px solid var(--rule-strong); border-radius: 0; background: white; }
 .archive-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
-.archive-list > li { padding: 28px 0; border-bottom: 1px solid var(--rule); }
-.archive-meta { margin-bottom: 8px; display: flex; gap: 14px; color: var(--slate); font-size: 14px; }
-.archive-list h2 { max-width: 24ch; margin-bottom: 8px; font-size: 30px; }
+.archive-list > li { padding: 22px 0; border-bottom: 1px solid var(--rule); transition: background-color 160ms var(--ease-out); }
+.archive-list > li:hover { background-color: var(--ivory-deep); }
+.archive-meta { margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.archive-meta-fields { display: flex; gap: 14px; color: var(--slate); font-size: 13px; }
+.archive-list h2 { max-width: 46ch; margin-bottom: 6px; font-size: 24px; font-weight: 500; }
 .archive-list h2 a { text-decoration: none; }
-.archive-list p { max-width: var(--measure-reading); margin: 0; color: var(--ink-soft); }
-.archive-tags { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-.archive-tags span { padding: 3px 8px; border: 1px solid var(--rule-strong); font-size: 13px; }
+.archive-summary { max-width: var(--measure-reading); margin: 0; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: var(--ink-soft); font-size: 16px; }
+.archive-tags { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+.archive-tags span { padding: 3px 8px; border: 1px solid var(--rule-strong); font-size: 12px; color: var(--slate); }
 .archive-no-results { color: var(--slate); }
 
 /* ---------- Evidence-led expertise and methodology ---------- */
@@ -285,12 +287,12 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 /* ---------- Research articles ---------- */
 
-.research-article { max-width: min(1100px, var(--shell)); display: grid; gap: var(--space-section); }
+.research-article-layout { max-width: min(1100px, var(--shell)); display: grid; grid-template-columns: minmax(0, 780px) minmax(240px, 1fr); column-gap: 48px; align-items: start; }
+.research-article { display: grid; gap: var(--space-section); min-width: 0; }
 .research-article-meta { padding-bottom: 28px; border-bottom: 1px solid var(--ink); display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
 .research-article-meta dl { flex: 1; margin: 0; display: grid; gap: 18px; }
 .research-article-meta dt { color: var(--slate); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .research-article-meta dd { margin: 4px 0 0; font-size: 16px; }
-.research-article > section { max-width: 780px; }
 .research-article > section h2 { margin-bottom: 18px; font-size: clamp(30px, 3vw, 42px); }
 .research-article > section p { color: var(--ink-soft); }
 .research-lede { font-family: var(--display); font-size: clamp(22px, 2.3vw, 30px); line-height: 1.45; color: var(--ink) !important; }
@@ -305,6 +307,26 @@ legend:focus:not(:focus-visible) { outline: none; }
 .research-sources small { display: block; margin-top: 3px; color: var(--slate); }
 .research-article-footer { padding-top: 28px; border-top: 1px solid var(--ink); display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .research-article-footer > a:first-child { font-weight: 600; }
+
+/* ---------- Citation ---------- */
+
+.citation-sidebar-sticky { position: sticky; top: calc(var(--header-height) + 24px); border: 1px solid var(--ink); }
+.citation-sidebar-label { margin: 0; padding: 14px 18px; border-bottom: 1px solid var(--ink); background: var(--ink); color: var(--ivory-light); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.citation-panel { padding: 18px; display: grid; gap: 14px; }
+.citation-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.citation-tab { padding: 6px 10px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-soft); font-size: 13px; font-weight: 600; cursor: pointer; }
+.citation-tab[aria-selected="true"] { border-color: var(--red); background: var(--red); color: var(--ivory-light); }
+.citation-text { margin: 0; padding: 12px; border: 1px solid var(--rule); background: var(--ivory-light); color: var(--ink); font-size: 13px; line-height: 1.55; }
+.citation-copy { height: 40px; padding: 0 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-size: 13px; font-weight: 600; cursor: pointer; }
+.citation-copy:hover { background: var(--ink); color: var(--ivory-light); }
+
+.cite-popover { position: relative; }
+.cite-popover > summary { min-height: 30px; padding: 0 10px; display: inline-flex; align-items: center; border: 1px solid var(--rule-strong); color: var(--ink-soft); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; list-style: none; }
+.cite-popover > summary::-webkit-details-marker { display: none; }
+.cite-popover[open] > summary { border-color: var(--ink); color: var(--ink); }
+.cite-popover-body { position: absolute; top: calc(100% + 8px); right: 0; z-index: 5; width: min(320px, calc(100vw - 32px)); border: 1px solid var(--ink); background: var(--ivory); box-shadow: 0 18px 40px -24px rgba(0,0,0,.5); }
+.cite-popover .citation-panel { padding: 16px; }
+.cite-popover .citation-text { font-size: 12px; }
 
 /* ---------- Policy pages ---------- */
 .policy-page { max-width: min(960px, var(--shell)); }
@@ -535,6 +557,9 @@ legend:focus:not(:focus-visible) { outline: none; }
   .archive-controls { grid-template-columns: 1fr 1fr; }
   .about-thesis > div, .about-thesis > p, .about-principles-lead, .about-principles ol, .about-independence > div:first-child, .about-independence > div:last-child { grid-column: 1 / -1; }
   .about-thesis > p, .about-principles ol, .about-independence > div:last-child { margin-top: 38px; }
+  .research-article-layout { grid-template-columns: 1fr; row-gap: 42px; }
+  .citation-sidebar { order: -1; }
+  .citation-sidebar-sticky { position: static; max-width: 420px; }
 }
 
 @media (max-width: 700px) {

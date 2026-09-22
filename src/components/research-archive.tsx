@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { CiteButton } from "@/components/cite-button";
 import type { Publication } from "@/data/publications";
 import type { ResearchArea } from "@/lib/research-areas";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 
 export function ResearchArchive({
   publications,
@@ -127,25 +130,38 @@ export function ResearchArchive({
         {results.map((item) => (
           <li key={item.slug}>
             <div className="archive-meta">
-              <span>{item.specimen ? `Example · ${item.type}` : item.type}</span>
-              <time dateTime={item.publishedAt}>
-                {new Date(item.publishedAt).toLocaleDateString("en-CA", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  timeZone: "UTC",
-                })}
-              </time>
+              <div className="archive-meta-fields">
+                <span>{item.specimen ? `Example · ${item.type}` : item.type}</span>
+                <time dateTime={item.publishedAt}>
+                  {new Date(item.publishedAt).toLocaleDateString("en-CA", {
+                    year: "numeric",
+                    month: "short",
+                    timeZone: "UTC",
+                  })}
+                </time>
+              </div>
+              {!item.specimen && (
+                <CiteButton
+                  input={{
+                    title: item.title,
+                    authors: item.authors,
+                    publishedAt: item.publishedAt,
+                    url: `${siteUrl}/research/${item.slug}`,
+                  }}
+                />
+              )}
             </div>
             <h2>
               <Link href={`/research/${item.slug}`}>{item.title}</Link>
             </h2>
-            <p>{item.summary}</p>
-            <div className="archive-tags">
-              {(item.tags ?? []).map((tag) => (
-                <span key={tag}>{tag}</span>
-              ))}
-            </div>
+            <p className="archive-summary">{item.summary}</p>
+            {item.tags && item.tags.length > 0 && (
+              <div className="archive-tags">
+                {item.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            )}
           </li>
         ))}
         {!results.length && (

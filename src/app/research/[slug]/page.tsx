@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowIcon } from "@/components/icons";
+import { CitationSidebar } from "@/components/citation-sidebar";
 import { PageHero } from "@/components/page-hero";
 import { publicationBySlug, publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca";
 
 export function generateStaticParams() {
   return publications.map((publication) => ({ slug: publication.slug }));
@@ -58,7 +61,8 @@ export default async function ResearchArticlePage({
   return (
     <>
       <PageHero variant="document" title={publication.title} description={publication.summary} />
-      <article className="section research-article">
+      <div className="section research-article-layout">
+      <article className="research-article">
         <header className="research-article-meta">
           <dl>
             <div><dt>Format</dt><dd>{publication.type}</dd></div>
@@ -112,6 +116,15 @@ export default async function ResearchArticlePage({
           <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
         </footer>
       </article>
+      <CitationSidebar
+        input={{
+          title: publication.title,
+          authors: publication.authors,
+          publishedAt: publication.publishedAt,
+          url: `${siteUrl}/research/${publication.slug}`,
+        }}
+      />
+      </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>
   );
