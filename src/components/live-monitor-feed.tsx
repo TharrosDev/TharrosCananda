@@ -38,6 +38,8 @@ function errorCopy(code: LiveMonitorSnapshot["errorCode"]) {
   if (code === "not-configured") return "The Currents API key has not been configured on this deployment.";
   if (code === "unauthorized") return "Currents rejected the configured API key.";
   if (code === "quota") return "The Currents request quota has been reached for the current billing period.";
+  if (code === "invalid-request") return "Currents rejected the monitor search request. The integration needs attention before live coverage can resume.";
+  if (code === "invalid-response") return "Currents returned an unexpected response shape. No unverified fallback content is being substituted.";
   return "Currents did not return usable coverage. No substitute headlines or synthetic stories are shown.";
 }
 
@@ -49,12 +51,16 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   const [limit, setLimit] = useState(18);
 
   const window = monitorWindows.find((item) => item.id === windowId) ?? monitorWindows[2];
-  const referenceTime = Date.parse(data.retrievedAt);
+  const parsedReferenceTime = Date.parse(data.retrievedAt);
+  const referenceTime = Number.isFinite(parsedReferenceTime) ? parsedReferenceTime : Date.now();
   const cutoff = referenceTime - window.hours * 60 * 60 * 1000;
 
   const inWindow = useMemo(
-    () => data.articles.filter((article) => Date.parse(article.publishedAt) >= cutoff),
-    [cutoff, data.articles],
+    () => data.articles.filter((article) => {
+      const published = Date.parse(article.publishedAt);
+      return Number.isFinite(published) && published >= cutoff && published <= referenceTime;
+    }),
+    [cutoff, data.articles, referenceTime],
   );
 
   const visible = useMemo(() => {
@@ -94,7 +100,10 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   return (
     <section className="monitor-workspace" aria-label="Canada Europe live news monitor">
       <div className="monitor-status-line">
-        <span><i aria-hidden="true" />Currents · live news search</span>
+        <span>
+          <i aria-hidden="true" />
+          Powered by <a className="monitor-provider-link" href="https://currentsapi.services/" target="_blank" rel="noreferrer">Currents News API<span className="sr-only"> (opens in a new tab)</span></a>
+        </span>
         <span data-volatile>Retrieved {displayDate(data.retrievedAt)} ET</span>
       </div>
 
