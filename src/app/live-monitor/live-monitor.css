@@ -5,6 +5,8 @@
 .monitor-status-line { min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: var(--slate); font-size: 14px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); }
 .monitor-status-line > span:first-child { display: inline-flex; align-items: center; gap: 9px; }
 .monitor-status-line i { width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 16%, transparent); }
+.monitor-provider-link { color: inherit; text-decoration: none; }
+.monitor-provider-link:hover, .monitor-provider-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 .monitor-controls { grid-template-columns: minmax(240px, 2fr) minmax(190px, 1fr) minmax(150px, .75fr); }
 .monitor-article-list h2 { max-width: 38ch; }
 .monitor-article-list > li { position: relative; }
