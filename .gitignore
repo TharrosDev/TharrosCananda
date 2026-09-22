@@ -17,3 +17,5 @@ playwright-report/
 e2e/**/*-win32.png
 e2e/**/*-darwin.png
 .vercel
+# Copied from pdfjs-dist on install (postinstall); version-locked to the dependency.
+public/pdf.worker.min.mjs

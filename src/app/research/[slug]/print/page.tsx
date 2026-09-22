@@ -51,11 +51,11 @@ export default async function ReportPrintPage({ params }: Props) {
   // Custom properties do not resolve inside margin boxes, so token values are literal here.
   const runningText = `font-family: ${sans.style.fontFamily}; font-size: 8pt; font-weight: 600; letter-spacing: .1em; color: #5d6166;`;
   const pageCss = `
-    @page { size: Letter; margin: 0.78in 0.75in 0.72in; background: #faf8f3;
-      @top-left { content: "THARROS / CANADA"; font-family: ${display.style.fontFamily}; font-size: 9.5pt; letter-spacing: .16em; color: #1c1d1f; vertical-align: bottom; padding-bottom: 10pt; border-bottom: 0.75pt solid #1c1d1f; }
-      @top-right { content: ${JSON.stringify(head.toUpperCase())}; ${runningText} vertical-align: bottom; padding-bottom: 10pt; border-bottom: 0.75pt solid #1c1d1f; }
-      @bottom-left { content: ${JSON.stringify(foot.toUpperCase())}; ${runningText} vertical-align: top; padding-top: 10pt; border-top: 0.75pt solid rgba(28, 29, 31, 0.13); }
-      @bottom-right { content: counter(page) " / " counter(pages); ${runningText} vertical-align: top; padding-top: 10pt; border-top: 0.75pt solid rgba(28, 29, 31, 0.13); }
+    @page { size: Letter; margin: 1in 0.75in 0.9in; background: #faf8f3;
+      @top-left { content: "THARROS / CANADA"; font-family: ${display.style.fontFamily}; font-size: 9.5pt; letter-spacing: .16em; color: #1c1d1f; vertical-align: bottom; padding-bottom: 10pt; margin-bottom: 18pt; border-bottom: 0.75pt solid #1c1d1f; }
+      @top-right { content: ${JSON.stringify(head.toUpperCase())}; ${runningText} vertical-align: bottom; padding-bottom: 10pt; margin-bottom: 18pt; border-bottom: 0.75pt solid #1c1d1f; }
+      @bottom-left { content: ${JSON.stringify(foot.toUpperCase())}; ${runningText} vertical-align: top; padding-top: 10pt; margin-top: 14pt; border-top: 0.75pt solid rgba(28, 29, 31, 0.13); }
+      @bottom-right { content: counter(page) " / " counter(pages); ${runningText} vertical-align: top; padding-top: 10pt; margin-top: 14pt; border-top: 0.75pt solid rgba(28, 29, 31, 0.13); }
     }`;
   return (
     <>
