@@ -169,7 +169,7 @@ export function parseCurrentsPayload(payload: unknown): MonitorArticle[] {
 }
 
 function formatDate(date: Date) {
-  return date.toISOString();
+  return date.toISOString().replace(/\.\d{3}Z$/, "Z");
 }
 
 async function requestCurrents(
