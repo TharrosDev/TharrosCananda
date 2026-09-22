@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <PageHero
         variant="document"
         title="Privacy."
-        description="A concise statement of what the site collects, why it is collected and what is not collected by default."
+        description="What the site collects and how submitted information is used."
       />
       <section className="section policy-page">
         <article>
@@ -26,11 +26,11 @@ export default function PrivacyPage() {
         </article>
         <article>
           <h2>What not to submit</h2>
-          <p>Do not submit passwords, unrelated personal information, confidential customer lists or trade secrets through the public intake form. A later engagement can define a more appropriate exchange method if sensitive material is genuinely required.</p>
+          <p>Do not submit passwords, unrelated personal information, confidential customer lists or trade secrets through the public form.</p>
         </article>
         <article>
           <h2>Site measurement</h2>
-          <p>If usage measurement is enabled, the site can record a small set of product events with the page path. No analytics vendor is installed by default, and nothing is sent when the configured endpoint is absent or when the browser sends a Global Privacy Control signal.</p>
+          <p>If usage measurement is enabled, the site may record a small set of events and the page path. Nothing is sent when no endpoint is configured or when the browser sends a Global Privacy Control signal.</p>
         </article>
         <article>
           <h2>Contact and deletion requests</h2>
@@ -39,10 +39,6 @@ export default function PrivacyPage() {
           ) : (
             <p>To ask about information you submitted or request deletion, reply to any email you receive from Tharros Canada. A public contact address will appear here only when one is configured and monitored.</p>
           )}
-        </article>
-        <article>
-          <h2>Operational note</h2>
-          <p>Storage, retention and access controls must match the actual intake system used in production. The public wording should be reviewed again whenever that operational setup changes.</p>
         </article>
       </section>
     </>

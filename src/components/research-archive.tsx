@@ -38,7 +38,7 @@ export function ResearchArchive({
     return (
       <div className="archive-empty">
         <div className="archive-empty-status"><span>Archive status</span><strong>0</strong><p>Published records</p></div>
-        <div className="archive-empty-copy"><h2>Ready for the first release.</h2><p>The archive is deliberately empty until the underlying Tharros work exists. When research is released, this page will index it by area, publication type and date, with search across titles, summaries and tags.</p><p>Every entry is structured to carry named authorship where applicable, an executive summary, methodology, sources, limitations and a stable URL.</p></div>
+        <div className="archive-empty-copy"><h2>No publications yet.</h2><p>New work will be indexed by area, format and date. Each entry will include authorship, a summary, methodology, sources, limitations and a stable URL.</p></div>
         <div className="archive-format-grid">
           {publicationTypes.map((item, index) => <div key={item.name}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.name}</h3><p>{item.description}</p></div>)}
         </div>

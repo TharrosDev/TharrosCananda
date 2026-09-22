@@ -63,8 +63,8 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
 
   if(status==="success") return <div className="form-success" role="status">
     <span className="success-mark"><CheckIcon /></span><h2>Your research request has been received.</h2>
-    <p>Nothing has been purchased. Here is what happens next:</p>
-    <ol className="success-steps"><li>Tharros Canada reviews the question and available source routes.</li><li>You receive a reply at <strong>{values.email}</strong> with clarifying questions if needed, the proposed deliverable, a price and an estimated timeline.</li><li>Research begins only after you approve that written scope. No call is required.</li></ol>
+      <p>Nothing has been purchased.</p>
+      <ol className="success-steps"><li>Tharros reviews the request.</li><li>You receive a proposed scope, price and timeline at <strong>{values.email}</strong>.</li><li>Research begins after written approval.</li></ol>
     {contactEmail&&<p>To add information, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>}
   </div>;
 
@@ -75,7 +75,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
     <div className="form-trap" aria-hidden="true"><label htmlFor="request-fax">Fax</label><input id="request-fax" name={honeypotField} tabIndex={-1} autoComplete="off" value={trap} onChange={(e)=>setTrap(e.target.value)} /></div>
 
     {step===0&&<fieldset>
-      <legend tabIndex={-1}>Who is the research for?</legend><p className="field-intro">No account is created and no sales call is required.</p>
+      <legend tabIndex={-1}>Who is the research for?</legend>
       <FormField id="company-name" label="Organization" error={errors.companyName} required><input value={values.companyName} onChange={(e)=>update("companyName",e.target.value)} autoComplete="organization" maxLength={maxLengths.companyName}/></FormField>
       <FormField id="company-country" label="Country" error={errors.country} required><input value={values.country} onChange={(e)=>update("country",e.target.value)} autoComplete="country-name" placeholder="e.g. Germany" maxLength={maxLengths.country}/></FormField>
       <FormField id="company-website" label="Company website" hint="Optional" error={errors.website}><input type="url" value={values.website} onChange={(e)=>update("website",e.target.value)} autoComplete="url" placeholder="example.com" maxLength={maxLengths.website}/></FormField>
@@ -83,7 +83,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
     </fieldset>}
 
     {step===1&&<fieldset aria-describedby={errors.objectives?"objectives-error":undefined}>
-      <legend tabIndex={-1}>What should Tharros answer?</legend><p className="field-intro">Describe the subject and the decision the research should support. Tharros can suggest the right format.</p>
+      <legend tabIndex={-1}>What should Tharros answer?</legend><p className="field-intro">Describe the subject and intended use.</p>
       <FormField id="product-service" label="Subject, product or sector" error={errors.product} required><input value={values.product} onChange={(e)=>update("product",e.target.value)} placeholder="e.g. Critical-mineral offtake in Quebec" maxLength={maxLengths.product}/></FormField>
       <FormField id="product-description" label="The question in a sentence or two" hint="Recommended" error={errors.description}><textarea rows={4} value={values.description} onChange={(e)=>update("description",e.target.value)} placeholder="What do you need to know, and what decision does it support?" maxLength={maxLengths.description}/></FormField>
       <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}><input value={values.industry} onChange={(e)=>update("industry",e.target.value)} maxLength={maxLengths.industry}/></FormField>
@@ -97,7 +97,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
     </fieldset>}
 
     {step===2&&<fieldset>
-      <legend tabIndex={-1}>Review and send.</legend><p className="field-intro">Check the request below. Tharros replies in writing with a proposed scope, price and timeline.</p>
+      <legend tabIndex={-1}>Review and send.</legend><p className="field-intro">Check the request before sending it.</p>
       <div className="request-review">
         <div className="request-review-block"><h3>Organization</h3><p><strong>{values.companyName}</strong> · {values.country}</p><p>{values.email}{values.website?` · ${values.website}`:""}</p><button className="request-review-edit" type="button" onClick={()=>goTo(0)}>Edit</button></div>
         <div className="request-review-block"><h3>Research question</h3><p><strong>{values.product}</strong>{values.industry?` · ${values.industry}`:""}</p>{values.description&&<p>{values.description}</p>}<p>{values.objectives.join(" · ")}</p><p>{values.researchNeed||"Research format to be suggested by Tharros"}{values.hsCode?` · HS ${values.hsCode}`:""}</p><button className="request-review-edit" type="button" onClick={()=>goTo(1)}>Edit</button></div>

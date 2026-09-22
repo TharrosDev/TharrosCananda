@@ -1,9 +1,9 @@
 import type { ResearchArea } from "@/lib/research-areas";
 
 export const publicationTypes = [
-  { name: "Intelligence Brief", description: "A concise, decision-oriented reading of a current Canada–Europe development." },
-  { name: "Research Report", description: "Substantial sourced analysis of a defined commercial, economic, industrial, technological or strategic question." },
-  { name: "Market Note", description: "A focused examination of market structure, movement or commercial context." },
+  { name: "Intelligence Brief", description: "A concise review of a current Canada–Europe development." },
+  { name: "Research Report", description: "Sourced analysis of a defined Canada–Europe question." },
+  { name: "Market Note", description: "A focused review of market structure or movement." },
   { name: "Data Note", description: "Chart- or dataset-led analysis with concise interpretation and explicit source limits." },
   { name: "Sector Analysis", description: "A structured view of an industry, ecosystem or strategic sector across Canada and Europe." },
 ] as const;

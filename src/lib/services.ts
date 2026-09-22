@@ -1,4 +1,4 @@
-/** Single source of truth for commercial offers, service pages and research-request prefill. */
+/** Single source of truth for services, service pages and research-request prefill. */
 export const buyerIntelligenceTiers = [
   { name: "Core", maxTargets: 10, price: "C$295", bestFor: "A focused shortlist for a company validating a Canadian opportunity." },
   { name: "Expanded", maxTargets: 20, price: "C$495", bestFor: "Broader coverage across buyer types, provinces or channels." },
@@ -8,15 +8,15 @@ export const buyerIntelligenceTiers = [
 export const services = [
   {
     slug: "market-scan", name: "Canada / Europe Market Scan", priceLabel: "Indicative C$250–400",
-    group: "Productized research", homeFeatured: true, flagship: false,
+    group: "Defined research", homeFeatured: true, flagship: false,
     question: "How is the target market structured in Canada or Europe, and what deserves deeper investigation?",
     outputs: ["Market structure and official demand or trade signals where available", "Customer groups, geographic concentration and routes to market", "Competitors, relevant organizations and open questions requiring verification"],
     excludes: "Legal or tariff rulings, regulatory-compliance determinations, and demand forecasts presented as fact.",
-    formSummary: "Market structure, signals, geography, channels and commercial context in Canada or Europe.",
+    formSummary: "Market structure, signals, geography and channels in Canada or Europe.",
   },
   {
     slug: "buyer-distributor", name: "Canadian Buyer Intelligence", priceLabel: "Core C$295 · Expanded C$495 · Comprehensive C$695",
-    group: "Productized research", homeFeatured: true, flagship: true,
+    group: "Defined research", homeFeatured: true, flagship: true,
     question: "Which Canadian organizations could realistically buy, import, distribute or integrate this product?",
     outputs: ["Manually qualified organizations with location, website and business type", "A fit rationale and public evidence for each target", "Decision-maker or contact research where publicly available"],
     excludes: "Introductions, outreach on your behalf, guaranteed interest or padded lead lists.",
@@ -24,7 +24,7 @@ export const services = [
   },
   {
     slug: "competitor-intelligence", name: "Competitor Intelligence", priceLabel: "Indicative C$300–600",
-    group: "Productized research", homeFeatured: true, flagship: false,
+    group: "Defined research", homeFeatured: true, flagship: false,
     question: "Who already offers a comparable product in the relevant Canadian or European market, and how are they positioned?",
     outputs: ["Competitor and offer landscape", "Positioning, geography, channels and visible pricing signals", "Supporting sources, with observations and analyst inferences separated"],
     excludes: "Non-public information, market-share estimates presented as fact, and legal assessments.",
@@ -36,12 +36,12 @@ export const services = [
     question: "Which distributors, suppliers, institutions, primes, associations or other ecosystem actors matter to this Canada–Europe question?",
     outputs: ["Relevant organizations and actors on either side of the Atlantic", "Role, relevance and relationship mapping", "Sources and stated confidence or uncertainty where evidence is incomplete"],
     excludes: "Introductions, endorsement claims, non-public relationship data or guaranteed partnership outcomes.",
-    formSummary: "Relevant commercial, institutional and ecosystem actors with sourced fit rationale.",
+    formSummary: "Relevant organizations and ecosystem actors with sourced fit rationale.",
   },
   {
     slug: "commissioned-research", name: "Commissioned Research", priceLabel: "Quoted per scope",
     group: "Custom & partner research", homeFeatured: true, flagship: false,
-    question: "What does the available evidence say about a specific Canada–Europe commercial, economic, industrial, technological or strategic question?",
+    question: "What does the available evidence say about a specific Canada–Europe question?",
     outputs: ["A written scope agreed before work starts", "Sourced findings with fact, interpretation and uncertainty kept distinct", "Stated limitations and the questions that remain open"],
     excludes: "Legal, tax, regulatory, lobbying, investment or other licensed professional advice.",
     formSummary: "A custom Canada–Europe question across the four research pillars.",
@@ -50,15 +50,15 @@ export const services = [
     slug: "white-label-research", name: "White-label Research", priceLabel: "Project or recurring arrangement",
     group: "Custom & partner research", homeFeatured: false, flagship: false,
     question: "Does your firm need external research capacity behind a client engagement without building an internal analyst function?",
-    outputs: ["Research adapted to the partner firm's agreed scope and deliverable format", "Company mapping, background research, data notes or recurring intelligence", "Source records, limitations and hand-off material suitable for partner workflows"],
+    outputs: ["Research adapted to the partner firm's agreed scope and deliverable format", "Company mapping, background research, data notes or recurring research updates", "Source records, limitations and hand-off material suitable for partner workflows"],
     excludes: "Claims of partnership, client ownership or endorsement beyond the actual engagement.",
     formSummary: "External research capacity for consultancies, export advisers and professional firms.",
   },
 ] as const;
 
 export const serviceGroups = [
-  { name: "Productized research", description: "Defined starting points for common commercial questions, with a clear output before work begins." },
-  { name: "Custom & partner research", description: "Scoped work for broader questions, ecosystem mapping and external research capacity." },
+  { name: "Defined research", description: "Fixed starting points for common market questions." },
+  { name: "Custom & partner research", description: "Scoped work for broader questions and external research support." },
 ] as const;
 
 export type Service = (typeof services)[number];

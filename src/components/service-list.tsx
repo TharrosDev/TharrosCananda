@@ -32,7 +32,7 @@ export function ServiceList() {
                           <small>{tier.bestFor}</small>
                         </div>
                       ))}
-                      <p><strong>Quality rule:</strong> relevance over volume. If fewer strong matches exist than the package maximum, Tharros delivers the strongest verified targets rather than padding the report.</p>
+                      <p>Package totals are maximums. Reports include only relevant, verified targets.</p>
                     </div>
                   )}
                   <p className="service-excludes"><strong>Not included:</strong> {service.excludes}</p>

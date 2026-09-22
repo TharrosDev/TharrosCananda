@@ -16,12 +16,12 @@ export default function AccessibilityPage() {
       <PageHero
         variant="document"
         title="Accessibility."
-        description="The site is designed to keep research, data and commissioning flows usable with keyboard navigation, assistive technology and reduced motion."
+        description="How the site supports keyboard navigation, assistive technology and reduced motion."
       />
       <section className="section policy-page">
         <article>
           <h2>Target</h2>
-          <p>Tharros Canada aims to meet WCAG 2.2 AA. Accessibility problems are treated as product defects rather than optional polish.</p>
+          <p>Tharros Canada aims to meet WCAG 2.2 AA.</p>
         </article>
         <article>
           <h2>Current interface practices</h2>
@@ -29,7 +29,7 @@ export default function AccessibilityPage() {
         </article>
         <article>
           <h2>Data and document formats</h2>
-          <p>Public research pages are intended to carry usable HTML even when a downloadable report is also provided. Data interfaces should retain source text and tabular equivalents rather than relying on charts alone.</p>
+          <p>Research remains available in HTML when a downloadable report is provided. Data interfaces include text or table equivalents for charts.</p>
         </article>
         <article>
           <h2>Report a problem</h2>

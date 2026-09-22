@@ -17,8 +17,8 @@ export default function ResearchServicesPage() {
     <>
       <AnalyticsBeacon event="research_service_viewed" />
       <PageHero
-        title="Research built around the decision."
-        description="Productized intelligence for common market questions, plus custom and white-label research across the Canada–Europe relationship. Everything is scoped in writing; a call is optional."
+        title="Commissioned Canada–Europe research."
+        description="Defined services and custom research, scoped in writing."
         index={services.map((service) => ({ label: service.name, href: `#${service.slug}` }))}
       />
       <section className="section section--compact services-page">
@@ -32,7 +32,7 @@ export default function ResearchServicesPage() {
         <ServiceList />
       </section>
       <section className="closing-cta">
-        <h2>Not sure which format fits? Describe the question.</h2>
+        <h2>Not sure which service fits?</h2>
         <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
       </section>
     </>
