@@ -1,3 +1,4 @@
+// Keywords match whole words (plus a plural "s"); a trailing "*" matches any word starting with the stem.
 export const monitorTopics = [
   {
     id: "trade-economy",
@@ -15,13 +16,13 @@ export const monitorTopics = [
     id: "energy-industry",
     label: "Energy, Resources & Industry",
     shortLabel: "Industry",
-    matchKeywords: ["energy", "critical mineral", "mining", "resource", "manufactur", "industrial", "industry", "infrastructure", "hydrogen", "nuclear", "automotive"],
+    matchKeywords: ["energy", "critical mineral", "mining", "resource", "manufactur*", "industr*", "infrastructure", "hydrogen", "nuclear", "automotive"],
   },
   {
     id: "technology-strategic",
     label: "Technology & Strategic Industries",
     shortLabel: "Technology",
-    matchKeywords: ["technology", "artificial intelligence", " ai ", "cyber", "space", "semiconductor", "telecom", "digital", "chip", "quantum"],
+    matchKeywords: ["technology", "artificial intelligence", "ai", "cyber", "space", "semiconductor", "telecom", "digital", "chip", "quantum"],
   },
 ] as const;
 

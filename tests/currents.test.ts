@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+vi.mock("server-only", () => ({}));
 import {
   buildCurrentsQuery,
   CurrentsError,
@@ -53,6 +54,14 @@ describe("Currents Live Monitor adapter", () => {
     ).toEqual(["trade-economy", "technology-strategic"]);
     expect(inferCurrentsTopics("AI-driven Canadian venture", "European launch", "")).toEqual([
       "technology-strategic",
+    ]);
+  });
+
+  it("matches keywords as whole words, not substrings", () => {
+    expect(inferCurrentsTopics("An important aerospace update", "", "")).toEqual(["defence-security"]);
+    expect(inferCurrentsTopics("Canada tariffs and manufacturing", "", "")).toEqual([
+      "trade-economy",
+      "energy-industry",
     ]);
   });
 
@@ -148,6 +157,19 @@ describe("Currents Live Monitor adapter", () => {
 
     expect(attempts).toBe(2);
     expect(result.articles).toHaveLength(1);
+  });
+
+  it("does not retry a request that timed out", async () => {
+    let attempts = 0;
+    const fetcher = (async () => {
+      attempts += 1;
+      throw new DOMException("The operation timed out.", "TimeoutError");
+    }) as typeof fetch;
+
+    await expect(
+      fetchCurrentsMonitor({ fetcher, apiKey: "secret", baseUrl: "https://currents.test", retryDelayMs: 0 }),
+    ).rejects.toMatchObject({ code: "upstream" });
+    expect(attempts).toBe(1);
   });
 
   it("rejects malformed successful responses instead of inventing coverage", async () => {
