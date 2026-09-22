@@ -12,7 +12,7 @@ The visual world comes from research artifacts: customs tables, procurement regi
 
 ## STORY
 
-The visitor begins with the commercial decision, sees the four areas of expertise, inspects a real official-data interface and source methodology, then either reads verified Tharros research when it exists or commissions a focused answer. An empty research archive is honest infrastructure, not a weakness to hide with dummy publications.
+The visitor begins with the commercial decision, sees the four areas of expertise, inspects a real official-data interface and source methodology, then either reads verified Tharros research when it exists or commissions a focused answer. An empty research archive is honest infrastructure, stated once without defensive repetition.
 
 ## FIRST VIEWPORT
 
@@ -20,4 +20,9 @@ The homepage keeps the strongest dark hero. Task pages use compact dark heroes. 
 
 ## FORM
 
-Primary navigation is Services · Expertise · Research · Market Data · About, with Commission research as the one filled action. The Market Data interface uses official Statistics Canada values and fails closed when unavailable. Research archive controls appear automatically once real publications exist. Dense information remains ruled and flat rather than boxed into cards.
+Primary navigation is Services · Expertise · Research · Market Data · About, with Commission research as the one filled action. The Market Data interface uses official Statistics Canada values and fails closed when unavailable. Research archive controls appear automatically once real publications exist. Dense information remains flat rather than boxed into cards, but rules are reserved for meaningful boundaries and whitespace carries secondary grouping.
+
+
+## COMMERCIAL MODEL
+
+The public service model covers both directions of the Canada–Europe relationship. Canadian Buyer Intelligence is the flagship entry product. Partner/Ecosystem Research and White-label Research are first-class commercial capabilities, not hidden inside a generic custom bucket.

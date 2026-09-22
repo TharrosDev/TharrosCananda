@@ -26,12 +26,14 @@ Tharros Canada is an independent commercial research and intelligence business f
 
 Defined only in `src/lib/services.ts`:
 
-- Canada Market Scan
-- Buyer & Distributor Intelligence
+- Canada / Europe Market Scan
+- Canadian Buyer Intelligence
 - Competitor Intelligence
+- Partner & Ecosystem Research
 - Commissioned Research
+- White-label Research
 
-Indicative prices are visible in service detail, not used as the lead brand proposition. Scope, price, exclusions and timing are confirmed in writing before work starts.
+Indicative prices are visible in service detail, not used as the lead brand proposition. Canadian Buyer Intelligence is the flagship entry product with Core, Expanded and Comprehensive coverage tiers; higher tiers expand coverage rather than changing the research standard. Scope, price, exclusions and timing are confirmed in writing before work starts.
 
 ## Research archive
 
@@ -48,7 +50,7 @@ Archive capabilities:
 - structured executive summary, findings, methodology, limitations and source records;
 - optional tags/PDF metadata.
 
-The research article template requires actual authorship, date, executive summary, key findings, methodology, sources and limitations. No placeholder publication may be represented as completed research.
+The research article template requires actual authorship, date, origin (independent or genuinely commissioned), executive summary, key findings, methodology, sources, limitations and a suggested citation. No placeholder publication may be represented as completed research.
 
 ## Market Data
 
@@ -90,3 +92,8 @@ Do not build until justified by real demand:
 Target WCAG 2.2 AA. Keep HTML equivalents for data graphics, keyboard access, visible focus, reduced motion, good target sizing and responsive layouts.
 
 Performance targets remain LCP ≤ 2.5 s, INP ≤ 200 ms and CLS ≤ 0.1 where practical. External government API calls run through server routes with explicit timeouts and bounded caching.
+
+
+## Browser quality
+
+Core responsive and interaction paths are exercised with Playwright/Chromium and automated axe checks. Visual-regression specs are tagged separately so baselines are reviewed rather than silently rewritten.

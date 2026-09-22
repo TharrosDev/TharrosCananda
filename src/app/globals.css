@@ -1,4 +1,4 @@
-/* Tharros Canada — "The Tariff Schedule". Warm-ivory stock, graphite ink, charcoal chapter bands. */
+/* Tharros Canada — The Evidence Ledger. Warm ivory, graphite ink and source-led editorial structure. */
 :root {
   --ivory: #f4f1ea;
   --ivory-deep: #ebe6db;
@@ -698,4 +698,93 @@ legend:focus:not(:focus-visible) { outline: none; }
   .footer-links { grid-template-columns: 1fr; row-gap: 24px; }
   .footer-links a { min-height: 40px; }
   .page-hero h1, .page-hero-home h1, .page-hero-task h1 { font-size: 40px; }
+}
+
+
+/* ---------- Production polish pass ---------- */
+.section.section--compact { padding-top: var(--space-section); padding-bottom: var(--space-section); }
+.section.section--feature { padding-top: calc(var(--space-page) * 1.12); padding-bottom: calc(var(--space-page) * 1.12); }
+
+/* Construction lines stay subordinate to content. Only the homepage exposes the 12-column scaffold. */
+.page-hero::after { display: none; }
+.page-hero-home::after { display: block; opacity: .18; }
+.page-hero-copy > p { background-image: linear-gradient(var(--on-dark-soft), var(--on-dark-soft)); }
+.page-hero-document .page-hero-copy > p { background-image: linear-gradient(var(--rule-strong), var(--rule-strong)); }
+.page-hero .hero-index-body > a,
+.page-hero .hero-index-body > span { font-size: 18px; }
+.page-hero .hero-index { opacity: .94; }
+
+/* Semantic colour discipline: red is action/brand, steel is data, green is success. */
+.trade-preview-heading > span { color: var(--steel-on-dark); }
+.data-status { color: var(--steel); }
+.data-status-loading { color: var(--slate); }
+.data-status-error { color: var(--error); }
+.service-copy li svg { color: var(--steel); }
+
+/* Customer scope is a quiet editorial register rather than another card grid. */
+.client-scope { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 36px; }
+.client-scope-grid { grid-column: 6 / span 7; display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--col-gap); row-gap: 30px; }
+.client-scope-grid > div { padding-top: 14px; border-top: 1px solid var(--rule-strong); }
+.client-scope-grid strong { display: block; margin-bottom: 7px; font-family: var(--display); font-size: 23px; font-weight: 500; }
+.client-scope-grid p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+
+/* Service architecture: productized work first, then custom/partner work. */
+.service-groups { display: grid; gap: var(--space-section); }
+.service-group-heading { margin-bottom: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--col-gap); align-items: end; }
+.service-group-heading h2 { margin: 0; font-size: clamp(30px, 3vw, 42px); }
+.service-group-heading p { max-width: var(--measure-reading); margin: 0; color: var(--ink-soft); }
+.service-name h3 { margin: 0 0 8px; font-family: var(--display); font-size: 30px; font-weight: 500; line-height: 1.15; }
+.service-flag { display: block; margin-bottom: 9px; color: var(--steel); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.service-row-flagship { padding-top: 42px; padding-bottom: 42px; }
+.buyer-tiers { margin: 24px 0; border-top: 1px solid var(--ink); }
+.buyer-tiers > div { padding: 13px 0; display: grid; grid-template-columns: minmax(0, 8em) minmax(0, 1fr); gap: 3px 18px; border-bottom: 1px solid var(--rule); }
+.buyer-tiers > div > strong { font-family: var(--display); font-size: 19px; font-weight: 500; }
+.buyer-tiers > div > span { font-weight: 600; }
+.buyer-tiers > div > small { grid-column: 2; color: var(--slate); font-size: 14px; }
+.buyer-tiers > p { margin: 16px 0 0; color: var(--ink-soft); font-size: 15px; }
+.product-list small { color: var(--steel); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.product-list .is-flagship a { border-top-color: var(--steel); }
+
+/* Reduce rule density where spacing already communicates the relationship. */
+.archive-home { border-top: 0; }
+.archive-empty { border-top-color: var(--rule-strong); }
+.expertise-register { border-top-color: var(--rule-strong); }
+.client-scope + .expertise-home { padding-top: var(--space-section); }
+
+/* Data controls and exact-value inspection. */
+.official-explorer-controls label > small { margin-top: -1px; color: var(--slate); font-size: 13px; line-height: 1.4; }
+.chart-scale-note { margin: 8px 0 0; color: var(--slate); font-size: 13px; }
+.chart-data { margin-top: 14px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.chart-data summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-size: 14px; font-weight: 600; }
+.chart-data > div { max-height: 320px; overflow: auto; border-top: 1px solid var(--rule); }
+.chart-data table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.chart-data th, .chart-data td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); text-align: left; }
+.chart-data th:last-child, .chart-data td:last-child { text-align: right; }
+
+/* A real review stage with direct edit routes. */
+.request-review { margin-bottom: 28px; }
+.request-review-block { position: relative; padding: 18px 92px 18px 0; border-top: 1px solid var(--rule); }
+.request-review-block:last-child { border-bottom: 1px solid var(--rule); }
+.request-review-block h3 { margin: 0 0 8px; font-family: var(--sans); font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.request-review-block p { margin: 3px 0; color: var(--ink-soft); }
+.request-review-block strong { color: var(--ink); }
+.request-review-edit { position: absolute; top: 14px; right: 0; min-height: 36px; padding: 0; border: 0; border-bottom: 1px solid var(--ink); background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; }
+.form-field select { width: 100%; height: 52px; padding: 0 14px; border: 1px solid var(--rule-strong); border-radius: 0; background: white; }
+
+/* Publication provenance now carries origin and a stable citation field. */
+.research-article-meta dl { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.research-citation p { font-family: var(--display); font-size: 20px; color: var(--ink) !important; }
+
+@media (max-width: 980px) {
+  .client-scope .section-intro, .client-scope-grid { grid-column: 1 / -1; }
+  .service-group-heading { grid-template-columns: 1fr; }
+  .research-article-meta dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .client-scope-grid { grid-template-columns: 1fr; row-gap: 20px; }
+  .buyer-tiers > div { grid-template-columns: 1fr; }
+  .buyer-tiers > div > small { grid-column: 1; }
+  .request-review-block { padding-right: 72px; }
+  .research-article-meta dl { grid-template-columns: 1fr 1fr; }
 }

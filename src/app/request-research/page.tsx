@@ -8,34 +8,21 @@ import { prefillFromSearchParams } from "@/lib/research-request";
 
 export const metadata: Metadata = {
   title: "Commission Research",
-  description: "Commission focused Canada–Europe research in writing: market, buyer, competitor or custom research. No account or call required.",
+  description: "Commission focused Canada–Europe research in writing. Describe the question and decision; Tharros returns a proposed scope, price and timeline.",
   alternates: { canonical: "/request-research" },
 };
 
-export default async function RequestResearchPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const initial = prefillFromSearchParams(await searchParams);
-  const contactEmail = researchEmail();
-
-  return (
-    <>
-      <PageHero variant="task" title="Commission research." description="Describe the question. Tharros replies in writing with a proposed scope, price and timeline. Submitting is a request for review, not a purchase." />
-      <section className="section request-layout">
-        <ResearchRequestForm key={JSON.stringify(initial)} initial={initial} contactEmail={contactEmail} />
-        <aside className="request-sidebar">
-          <h2>Useful to have</h2><p>A plain-language description of the question and the decision it supports.</p>
-          <h2>What not to send</h2><p>Do not include trade secrets, personal information unrelated to the request, passwords or confidential customer lists.</p>
-          <h2>Commercial boundaries</h2><p>Commercial research and intelligence only; not legal, tax, regulatory, lobbying or investment advice.</p>
-          {contactEmail && <><h2>Prefer email?</h2><p>Write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the same information.</p></>}
-          <nav className="request-trust-links" aria-label="Before commissioning">
-            <Link href="/how-it-works">How commissions work <ArrowIcon /></Link>
-            <Link href="/methodology">Sources & methodology <ArrowIcon /></Link>
-          </nav>
-        </aside>
-      </section>
-    </>
-  );
+export default async function RequestResearchPage({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}){
+  const initial=prefillFromSearchParams(await searchParams);
+  const contactEmail=researchEmail();
+  return <>
+    <PageHero variant="task" title="Commission research." description="Describe the question and the decision it supports. Tharros replies in writing with a proposed scope, price and timeline. Submitting is a request for review, not a purchase."/>
+    <section className="section section--compact request-layout"><ResearchRequestForm key={JSON.stringify(initial)} initial={initial} contactEmail={contactEmail}/><aside className="request-sidebar">
+      <h2>Useful to have</h2><p>A plain-language description of the question, geography, timing and the decision it supports.</p>
+      <h2>What not to send</h2><p>Do not include trade secrets, unrelated personal information, passwords or confidential customer lists.</p>
+      <h2>Commercial boundaries</h2><p>Commercial research and intelligence only; not legal, tax, regulatory, lobbying or investment advice.</p>
+      {contactEmail&&<><h2>Prefer email?</h2><p>Write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the same information.</p></>}
+      <nav className="request-trust-links" aria-label="Before commissioning"><Link href="/how-it-works">How commissions work <ArrowIcon/></Link><Link href="/methodology">Sources & methodology <ArrowIcon/></Link></nav>
+    </aside></section>
+  </>;
 }

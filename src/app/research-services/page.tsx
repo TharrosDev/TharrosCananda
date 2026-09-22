@@ -8,7 +8,7 @@ import { pricingTerms, services } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Commissioned Research",
-  description: "Commissioned Canada–Europe research: market scans, buyer and distributor intelligence, competitor intelligence and custom research, with indicative prices.",
+  description: "Commissioned Canada–Europe research: market scans, buyer intelligence, competitor and ecosystem research, white-label support and custom research.",
   alternates: { canonical: "/research-services" },
 };
 
@@ -17,11 +17,11 @@ export default function ResearchServicesPage() {
     <>
       <AnalyticsBeacon event="research_service_viewed" />
       <PageHero
-        title="Commissioned research, scoped to the decision."
-        description="Three standard products for market work in Canada, and custom research for any other Canada–Europe question. Everything is agreed in writing; a call is optional."
+        title="Research built around the decision."
+        description="Productized intelligence for common market questions, plus custom and white-label research across the Canada–Europe relationship. Everything is scoped in writing; a call is optional."
         index={services.map((service) => ({ label: service.name, href: `#${service.slug}` }))}
       />
-      <section className="section services-page">
+      <section className="section section--compact services-page">
         <div className="service-context">
           <p className="pricing-note">{pricingTerms}</p>
           <nav className="context-links" aria-label="Commissioning information">
@@ -32,7 +32,7 @@ export default function ResearchServicesPage() {
         <ServiceList />
       </section>
       <section className="closing-cta">
-        <h2>Not sure which fits? Describe the question.</h2>
+        <h2>Not sure which format fits? Describe the question.</h2>
         <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
       </section>
     </>

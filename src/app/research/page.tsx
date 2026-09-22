@@ -8,7 +8,7 @@ import { researchAreas } from "@/lib/research-areas";
 
 export const metadata: Metadata = {
   title: "Research Archive",
-  description: "The Tharros Canada research archive for Canada–Europe trade, defence, energy, industry and technology research.",
+  description: "Independent Tharros Canada research on Canada–Europe trade, defence, energy, industry and technology.",
   alternates: { canonical: "/research" },
 };
 
@@ -18,14 +18,11 @@ export default function ResearchPage() {
       <PageHero
         variant="document"
         title="Research archive."
-        description="A permanent index for Tharros Canada papers, briefs, data notes and sector analyses as verified work is published."
+        description="Independent Tharros Canada insights, briefs, data notes and reports are indexed here as they are released."
       />
-      <section className="section archive-page">
+      <section className="section section--compact archive-page">
         <div className="archive-intro">
-          <p>
-            The archive is intentionally empty until the first public research is complete. No placeholder reports, invented
-            findings or synthetic publications are listed as evidence.
-          </p>
+          <p>Publications are added only when the underlying research is complete and ready to source, date and attribute.</p>
           <Link href="/methodology" className="text-link">Research standards and sources <ArrowIcon /></Link>
         </div>
         <ResearchArchive publications={publications} areas={researchAreas} publicationTypes={publicationTypes} />

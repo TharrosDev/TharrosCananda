@@ -23,6 +23,6 @@ STORY: Understand the proposition → start from a decision/service → inspect 
 
 FIRST VIEWPORT: Dark brand hero on home. Compact dark hero on task pages. Light editorial document headers on archive, expertise, methodology, about, process and policy routes. Homepage includes a live Statistics Canada evidence block.
 
-FORM: Primary navigation is Services · Expertise · Research · Market Data · About. The research archive stays empty until genuine publications exist. Market Data uses Statistics Canada WDS and Government of Canada CKAN; failed source calls show an unavailable state rather than synthetic data.
+FORM: Primary navigation is Services · Expertise · Research · Market Data · About. Canadian Buyer Intelligence is the flagship entry product; market, ecosystem, commissioned and white-label research remain visible. The archive stays empty until genuine publications exist. Market Data uses Statistics Canada WDS and Government of Canada CKAN; failed or updating source calls never leave stale values presented as the newly selected query.
 
 FINISH: unreviewed or undocumented work is unfinished. A production pass ends with lint, typecheck, tests and build passing and agent-facing documentation aligned to the shipped architecture.

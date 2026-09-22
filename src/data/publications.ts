@@ -1,11 +1,10 @@
 import type { ResearchArea } from "@/lib/research-areas";
 
 export const publicationTypes = [
-  { name: "Intelligence Briefs", description: "Short analyses of a single development and what it means commercially." },
-  { name: "Research Reports", description: "Longer, sourced studies of a sector, policy or relationship." },
-  { name: "Market Notes", description: "Focused notes on a market, segment or route to market." },
-  { name: "Data Notes", description: "One dataset or indicator, explained with its source and limits." },
-  { name: "Sector Analyses", description: "Structure, actors and trends across a Canada–Europe sector." },
+  { name: "Tharros Insight", description: "Short, focused analysis of a current Canada–Europe development." },
+  { name: "Tharros Brief", description: "Substantial sourced analysis of a defined commercial, economic, industrial, technological or strategic question." },
+  { name: "Tharros Data Note", description: "Chart- or dataset-led analysis with concise interpretation and explicit source limits." },
+  { name: "Tharros Report", description: "Occasional long-form research on a major Canada–Europe subject." },
 ] as const;
 
 export type PublicationSource = {
@@ -26,6 +25,7 @@ export type Publication = {
   title: string;
   type: (typeof publicationTypes)[number]["name"];
   area: ResearchArea["slug"];
+  origin: "independent" | "commissioned";
   publishedAt: string;
   authors: string[];
   summary: string;
@@ -34,6 +34,7 @@ export type Publication = {
   methodology: string;
   limitations: string[];
   sources: PublicationSource[];
+  suggestedCitation: string;
   sections?: PublicationSection[];
   tags?: string[];
   pdfUrl?: string;
@@ -41,7 +42,7 @@ export type Publication = {
 };
 
 // Intentionally empty until verified Tharros Canada research is actually published.
-// Add complete real entries here. The archive and /research/[slug] article route update automatically.
+// Independent work must use origin: "independent". Use "commissioned" only for work actually commissioned by a client and permitted for publication.
 export const publications: Publication[] = [];
 
 export function publicationBySlug(slug: string) {

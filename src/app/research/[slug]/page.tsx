@@ -22,6 +22,13 @@ export async function generateMetadata({
     title: publication.title,
     description: publication.summary,
     alternates: { canonical: `/research/${publication.slug}` },
+    openGraph: {
+      type: "article",
+      title: publication.title,
+      description: publication.summary,
+      publishedTime: publication.publishedAt,
+      authors: publication.authors,
+    },
   };
 }
 
@@ -35,18 +42,27 @@ export default async function ResearchArticlePage({
   if (!publication) notFound();
 
   const area = researchAreas.find((item) => item.slug === publication.area);
+  const originLabel = publication.origin === "independent" ? "Independent research by Tharros Canada" : "Client-commissioned research";
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: publication.title,
+    description: publication.summary,
+    datePublished: publication.publishedAt,
+    author: publication.authors.map((name) => ({ "@type": "Person", name })),
+    publisher: { "@type": "Organization", name: "Tharros Canada", url: "https://tharros.ca" },
+    articleSection: area?.name ?? publication.area,
+    citation: publication.sources.map((source) => source.url),
+  };
 
   return (
     <>
-      <PageHero
-        variant="document"
-        title={publication.title}
-        description={publication.summary}
-      />
+      <PageHero variant="document" title={publication.title} description={publication.summary} />
       <article className="section research-article">
         <header className="research-article-meta">
           <dl>
             <div><dt>Format</dt><dd>{publication.type}</dd></div>
+            <div><dt>Origin</dt><dd>{originLabel}</dd></div>
             <div><dt>Expertise</dt><dd>{area?.name ?? publication.area}</dd></div>
             <div><dt>Published</dt><dd><time dateTime={publication.publishedAt}>{new Date(publication.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time></dd></div>
             <div><dt>Authors</dt><dd>{publication.authors.join(", ")}</dd></div>
@@ -61,9 +77,7 @@ export default async function ResearchArticlePage({
 
         <section>
           <h2>Key findings</h2>
-          <ol className="research-findings">
-            {publication.keyFindings.map((finding) => <li key={finding}>{finding}</li>)}
-          </ol>
+          <ol className="research-findings">{publication.keyFindings.map((finding) => <li key={finding}>{finding}</li>)}</ol>
         </section>
 
         {(publication.sections ?? []).map((section) => (
@@ -73,15 +87,8 @@ export default async function ResearchArticlePage({
           </section>
         ))}
 
-        <section>
-          <h2>Methodology</h2>
-          <p>{publication.methodology}</p>
-        </section>
-
-        <section>
-          <h2>Limitations</h2>
-          <ul className="research-limitations">{publication.limitations.map((item) => <li key={item}>{item}</li>)}</ul>
-        </section>
+        <section><h2>Methodology</h2><p>{publication.methodology}</p></section>
+        <section><h2>Limitations</h2><ul className="research-limitations">{publication.limitations.map((item) => <li key={item}>{item}</li>)}</ul></section>
 
         <section>
           <h2>Sources</h2>
@@ -95,11 +102,17 @@ export default async function ResearchArticlePage({
           </ol>
         </section>
 
+        <section className="research-citation">
+          <h2>Suggested citation</h2>
+          <p>{publication.suggestedCitation}</p>
+        </section>
+
         <footer className="research-article-footer">
           <Link href="/research">Back to research archive</Link>
           <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>
         </footer>
       </article>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>
   );
 }
