@@ -149,7 +149,9 @@ As real work is produced, evidence artifacts may be added to make areas visually
 
 ## Services
 
-The page is one editorial index, deliberately short. A light document header states that work is scoped and priced per case, then a ruled register lists the three services: name, the question it answers, and a request link. Custom & Partner Research leads as the flagship at a larger scale with the only primary button; the others use text links. No prices, tiers, output lists or exclusion disclosures: scope is set in the written proposal. Styles live in `src/app/research-services/services.css`.
+The page is one editorial index. A light document header states that work is scoped and priced per case, then a ruled register lists the three services: name, the question it answers, a request link, a short "You receive" list of deliverables and a **View sample** control. Custom & Partner Research leads as the flagship at a larger scale with the only primary button; the others use text links. A four-step process strip (shared with How it works via `commissionSteps`) follows the register. No prices or tiers: scope is set in the written proposal. Styles live in `src/app/research-services/services.css`.
+
+**Sample documents** (`src/components/sample-document.tsx`) open in a native modal `<dialog>` styled as a PDF reader: A4 pages in the house report style (red section numbers, ink rules, steel data marks), lorem text only, labelled "Sample · placeholder text" on every page, never downloadable. Replace them with real redacted samples once work exists.
 
 ## About
 

@@ -6,6 +6,11 @@ export const services = [
     flagship: true,
     question:
       "Research on a Canada–Europe question you define, or research capacity behind your own client work.",
+    deliverables: [
+      "A written report answering the agreed question",
+      "Executive summary and key findings",
+      "Source register with stated limitations",
+    ],
   },
   {
     slug: "market-assessment",
@@ -13,6 +18,11 @@ export const services = [
     flagship: false,
     question:
       "How a market is structured in Canada or Europe, who already competes in it and what deserves a closer look.",
+    deliverables: [
+      "Market structure and size from public data",
+      "Map of incumbents and competitors",
+      "Segments that merit a closer look",
+    ],
   },
   {
     slug: "buyer-partner-research",
@@ -20,7 +30,26 @@ export const services = [
     flagship: false,
     question:
       "Which organizations could realistically buy, distribute, integrate or partner on what you offer.",
+    deliverables: [
+      "Ranked list of candidate organizations",
+      "Fit rationale for each entry",
+      "A public source behind every entry",
+    ],
   },
+] as const;
+
+/** The commissioning sequence, shown on the services page and How it works. */
+export const commissionSteps = [
+  ["Describe the question", "The subject, what you need to know and the decision it supports."],
+  ["Agree the scope", "A written reply with deliverable, sources, exclusions, price and timing."],
+  [
+    "Research and verify",
+    "Public sources are collected with provenance; findings are checked by hand.",
+  ],
+  [
+    "Receive the findings",
+    "A concise output with linked sources, stated limitations and open questions.",
+  ],
 ] as const;
 
 export type Service = (typeof services)[number];
