@@ -25,14 +25,35 @@ const doc = (over: Partial<ArchiveDoc>): ArchiveDoc => ({
   file: null,
   bytes: null,
   specimen: false,
+  counted: false,
   authors: ["Tharros Canada"],
   ...over,
 });
 
 const docs = [
-  doc({ slug: "a", title: "Lorem ipsum dolor", text: "Body mentions Vestibulum id ligula porta.", publishedAt: "2026-09-01", year: "2026" }),
-  doc({ slug: "b", title: "Defence procurement", area: "defence-security", type: "Market Note", publishedAt: "2025-03-01", year: "2025" }),
-  doc({ slug: "c", title: "Critical minerals", area: "energy-resources-industry", tags: ["Tariff"], publishedAt: "2026-01-01", year: "2026" }),
+  doc({
+    slug: "a",
+    title: "Lorem ipsum dolor",
+    text: "Body mentions Vestibulum id ligula porta.",
+    publishedAt: "2026-09-01",
+    year: "2026",
+  }),
+  doc({
+    slug: "b",
+    title: "Defence procurement",
+    area: "defence-security",
+    type: "Market Note",
+    publishedAt: "2025-03-01",
+    year: "2025",
+  }),
+  doc({
+    slug: "c",
+    title: "Critical minerals",
+    area: "energy-resources-industry",
+    tags: ["Tariff"],
+    publishedAt: "2026-01-01",
+    year: "2026",
+  }),
 ];
 const allowed = {
   areas: ["trade-economic-integration", "defence-security", "energy-resources-industry"],
@@ -43,12 +64,22 @@ const defaults = { q: "", area: "all", type: "all", year: "all", sort: "newest" 
 
 describe("archive state", () => {
   it("falls back to defaults on unknown or garbage params", () => {
-    expect(parseArchiveState(new URLSearchParams("area=nope&year=abc&sort=x&type=zzz"), allowed)).toEqual(defaults);
+    expect(
+      parseArchiveState(new URLSearchParams("area=nope&year=abc&sort=x&type=zzz"), allowed),
+    ).toEqual(defaults);
   });
 
   it("round-trips through the URL and omits defaults", () => {
-    const state = { q: "tariff", area: "defence-security", type: "Market Note", year: "2025", sort: "relevance" as const };
-    expect(parseArchiveState(new URLSearchParams(serializeArchiveState(state)), allowed)).toEqual(state);
+    const state = {
+      q: "tariff",
+      area: "defence-security",
+      type: "Market Note",
+      year: "2025",
+      sort: "relevance" as const,
+    };
+    expect(parseArchiveState(new URLSearchParams(serializeArchiveState(state)), allowed)).toEqual(
+      state,
+    );
     expect(serializeArchiveState(defaults)).toBe("");
   });
 });
@@ -63,7 +94,9 @@ describe("archive search", () => {
   });
 
   it("tolerates typos", () => {
-    expect(runArchiveQuery(docs, index, { ...defaults, q: "lorme" }).results.map((r) => r.slug)).toContain("a");
+    expect(
+      runArchiveQuery(docs, index, { ...defaults, q: "lorme" }).results.map((r) => r.slug),
+    ).toContain("a");
   });
 
   it("never throws on punctuation or regex characters", () => {
@@ -71,15 +104,26 @@ describe("archive search", () => {
   });
 
   it("counts each facet against the other active filters", () => {
-    const { results, facets } = runArchiveQuery(docs, index, { ...defaults, area: "trade-economic-integration" });
+    const { results, facets } = runArchiveQuery(docs, index, {
+      ...defaults,
+      area: "trade-economic-integration",
+    });
     expect(results.map((r) => r.slug)).toEqual(["a"]);
     expect(facets.area["defence-security"]).toBe(1);
     expect(facets.year["2025"]).toBe(0);
   });
 
   it("sorts newest first by default, by relevance only when searching", () => {
-    expect(runArchiveQuery(docs, index, defaults).results.map((r) => r.slug)).toEqual(["a", "c", "b"]);
-    const relevance = runArchiveQuery(docs, index, { ...defaults, q: "critical minerals", sort: "relevance" });
+    expect(runArchiveQuery(docs, index, defaults).results.map((r) => r.slug)).toEqual([
+      "a",
+      "c",
+      "b",
+    ]);
+    const relevance = runArchiveQuery(docs, index, {
+      ...defaults,
+      q: "critical minerals",
+      sort: "relevance",
+    });
     expect(relevance.results[0].slug).toBe("c");
   });
 });

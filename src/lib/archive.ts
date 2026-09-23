@@ -19,6 +19,8 @@ export type ArchiveDoc = {
   file: string | null;
   bytes: number | null;
   specimen: boolean;
+  /** Real, published work whose reads and citations are counted. */
+  counted: boolean;
   authors: string[];
 };
 
@@ -175,6 +177,7 @@ export function buildArchiveDocs(
       file: a?.file ?? null,
       bytes: a?.bytes ?? null,
       specimen: Boolean(p.specimen),
+      counted: p.indexable && !p.specimen,
       authors: p.authors,
     };
   });

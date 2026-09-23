@@ -7,6 +7,7 @@ import { ResearchArchive, ResearchArchiveWithUrl } from "@/components/research-a
 import { allPublications, publicationTypes } from "@/data/publications";
 import { buildArchiveDocs } from "@/lib/archive";
 import { researchAreas } from "@/lib/research-areas";
+import { publicationCounts } from "@/lib/metrics";
 import { reportAsset, reportText } from "@/lib/reports";
 
 export const metadata: Metadata = pageMetadata({
@@ -16,10 +17,11 @@ export const metadata: Metadata = pageMetadata({
   path: "/research",
 });
 
-export default function ResearchPage() {
+export default async function ResearchPage() {
   // Built at build time: metadata plus each PDF's extracted text, so search reaches inside reports.
   const docs = buildArchiveDocs(allPublications, reportAsset, reportText);
-  const archive = { docs, areas: researchAreas, types: publicationTypes };
+  const counts = await publicationCounts();
+  const archive = { docs, areas: researchAreas, types: publicationTypes, counts };
 
   return (
     <>

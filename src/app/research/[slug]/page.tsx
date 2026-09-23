@@ -11,6 +11,9 @@ import { researchAreas } from "@/lib/research-areas";
 import { reportContents, reportLimitations, reportSources } from "@/lib/report-sections";
 import { reportAsset } from "@/lib/reports";
 import { researchLicence } from "@/lib/licence";
+import { isCountedSlug, publicationCounts } from "@/lib/metrics";
+import { formatCounts } from "@/lib/metrics-client";
+import { ReadTracker } from "@/components/read-tracker";
 import { formatLongDate, jsonLd, pageMetadata, siteUrl } from "@/lib/site";
 
 export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
@@ -53,6 +56,8 @@ export default async function ReportPage({ params }: Props) {
   const p = publicationBySlug((await params).slug);
   if (!p) notFound();
   const asset = reportAsset(p.slug);
+  const counted = isCountedSlug(p.slug);
+  const readership = counted ? formatCounts((await publicationCounts())?.[p.slug]) : null;
   const area = researchAreas.find((a) => a.slug === p.area);
   const stableUrl = `${siteUrl}/research/id/${p.reference}`;
   const citation: CitationInput = {
@@ -148,6 +153,12 @@ export default async function ReportPage({ params }: Props) {
                 <dd>{asset.pages} pages</dd>
               </div>
             )}
+            {readership && (
+              <div>
+                <dt>Readership</dt>
+                <dd>{readership}</dd>
+              </div>
+            )}
           </dl>
           {asset && (
             <ReportActions file={asset.file} bytes={asset.bytes} url={stableUrl} title={p.title} />
@@ -202,7 +213,7 @@ export default async function ReportPage({ params }: Props) {
           )}
           <div className="report-appendix-block" id="cite">
             <h2>Cite this report</h2>
-            <CitationPanel input={citation} />
+            <CitationPanel input={citation} slug={counted ? p.slug : undefined} />
             <p className="report-appendix-stable">
               Stable link: <a href={stableUrl}>{stableUrl.replace(/^https?:\/\//, "")}</a>
             </p>
@@ -237,6 +248,7 @@ export default async function ReportPage({ params }: Props) {
           Commission research <ArrowIcon />
         </Link>
       </section>
+      {counted && <ReadTracker slug={p.slug} />}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
