@@ -10,7 +10,6 @@ The site is deliberately small and evidence-led:
 
 - **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
-- **Live Monitor** — a Currents-powered discovery surface for recent Canada–Europe reporting across the four Tharros research areas. It streams behind the page shell, preserves direct publisher links and publication times, and never presents discovered headlines as Tharros findings.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.
 - Dedicated **About**, **Privacy**, **Accessibility**, and **How It Works** pages.
@@ -21,11 +20,11 @@ No public page fabricates publications, customers, client logos, testimonials, t
 
 Primary navigation is:
 
-**Services · Research · Live Monitor · About**
+**Services · Research · Methodology · About**
 
 with **Commission research** as the primary action.
 
-Commissioned work is the commercial core. Public research, monitoring and data interfaces exist to demonstrate methods, evidence quality and subject expertise—not to imply a think-tank or software business that does not exist.
+Commissioned work is the commercial core. Public research and methodology pages exist to demonstrate methods, evidence quality and subject expertise—not to imply a think-tank or software business that does not exist.
 
 ## Research archive
 
@@ -52,29 +51,6 @@ The example report (`TC-EX-000`) is a clearly labelled lorem-ipsum specimen. It 
 2. `npm run build && npm run report:pdf -- <slug>` prints `/research/<slug>/print` to `public/research/<reference>.pdf` and writes the cover, the extracted text (`src/data/report-text.json`) and `src/data/report-pdf.json`. Commit all of them; Vercel builds cannot run Chromium.
 3. Read the PDF before committing. `npm test` fails when the record or `src/components/report/report.css` changes without regenerating.
 4. Indexable reports get Highwire `citation_*` tags (Google Scholar), `Report` JSON-LD, sitemap entries for the page and PDF, and the stable URL.
-
-## Live Monitor
-
-The Live Monitor is a **Currents-only discovery surface**. It is not a publication feed and it has no synthetic or secondary-provider fallback. `src/lib/currents.ts` integrates the Currents V2 Search API and `src/lib/currents-data.ts` owns the server cache and user-safe error state.
-
-The production request contract is deliberately narrow:
-
-- one Boolean search connects Canada with Europe across trade/economy, defence/security, energy/industry and strategic technology;
-- the search window is exactly seven days, using second-precision RFC3339 timestamps;
-- the adapter requests one page of **20 results**, keeping the request within the documented free-tier result cap and bounding quota use;
-- the API key is sent only through the server-side `Authorization: Bearer` header;
-- successful snapshots are cached for 15 minutes;
-- one bounded retry is allowed for transient network/5xx failures, while 400, authentication and quota failures fail immediately;
-- malformed or oversized responses and records outside the requested seven-day window are rejected;
-- URL deduplication happens after time validation so an invalid/future copy cannot suppress a valid current article;
-- tracking parameters are removed and remaining query parameters are normalized on outgoing publisher URLs;
-- article title, description, language and provider responses are bounded before display;
-- article title, description and Currents categories are used only for local research-area classification;
-- valid provider-empty, visitor-filtered empty and provider-failure states remain distinct and recoverable.
-
-The route streams the panel through `<Suspense>`, so navigating to `/live-monitor` renders the Tharros shell immediately rather than waiting on Currents. Each result keeps its original publisher URL and publication time. Currents is visibly attributed, and discovered headlines/descriptions are never presented as Tharros verification, endorsement or analysis.
-
-Production deployments must provide `CURRENTS_API_KEY` as a server-only environment variable. Do not add article-body storage, persistent republishing, automated customer-facing summaries or a fallback news provider without separately reviewing source rights and updating the provenance policy in `docs/DATA_SOURCES.md`.
 
 ## Stack
 
@@ -116,8 +92,6 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 | `RESEARCH_INTAKE_WEBHOOK_URL`    | Required for live intake  | Server-only HTTPS endpoint receiving validated research requests.                                                                                                 |
 | `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake  | Shared secret used to HMAC-sign the exact webhook payload and timestamp.                                                                                          |
 | `NEXT_PUBLIC_RESEARCH_EMAIL`     | Optional                  | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
-| `CURRENTS_API_KEY`               | Required for Live Monitor | Server-only Currents API key used in the Bearer authorization header. Never expose through a `NEXT_PUBLIC_*` variable, URL parameter or source control.           |
-| `CURRENTS_API_BASE_URL`          | Tests only                | Points the Currents adapter at the Playwright mock (`e2e/mock-sources.mjs`). Never set in a deployment.                                                           |
 
 ## Architecture
 
@@ -125,10 +99,9 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 src/
   app/
     research/               research archive
-    live-monitor/           Currents-powered current-coverage monitor
-  components/              site UI, archive, intake and Live Monitor components
+  components/              site UI, archive, report viewer and intake components
   data/                    publications, verified source registry, organization (accountability) details
-  lib/                     services, research request, contact, analytics and Currents adapter
+  lib/                     services, research request, contact, citation, archive search and analytics
 docs/
   DATA_SOURCES.md          integration and provenance policy
   PRE_LAUNCH.md            remaining operational/legal launch work
@@ -143,7 +116,7 @@ Public-source names identify publishers only. They must never be used to imply e
 
 ## Browser quality checks
 
-`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app against `e2e/mock-sources.mjs`, which serves controlled Currents responses, so screenshots never depend on a live provider. Retrieval timestamps and the copyright year are masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
+`e2e/` holds functional, responsive, axe accessibility and visual-regression tests (desktop 1440 and Pixel 7). Playwright builds and starts the app from a production build. The copyright year is masked; animations are disabled. CI runs the whole suite on every pull request, and a visual difference fails the build.
 
 Baselines are Linux screenshots in `e2e/visual.spec.ts-snapshots/`. After an approved visual change, run the **Update visual baselines** workflow on the branch and review the committed images in the pull request. Local non-Linux snapshots are git-ignored and useful only for local comparison.
 

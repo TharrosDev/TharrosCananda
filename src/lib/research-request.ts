@@ -83,7 +83,7 @@ export function parseResearchRequest(input: unknown): ParseResult {
 }
 
 type SearchParams = Record<string,string|string[]|undefined>;
-const prefillLimits = { product:maxLengths.product, hsCode:maxLengths.hsCode, context:300 } as const;
+const prefillLimits = { product:maxLengths.product, hsCode:maxLengths.hsCode } as const;
 function cleanParam(value: string|string[]|undefined, max:number) {
   if (typeof value !== "string") return "";
   return value.replace(/[\u0000-\u001f\u007f]/g," ").replace(/\s+/g," ").trim().slice(0,max);
@@ -94,7 +94,6 @@ export function prefillFromSearchParams(params: SearchParams): Partial<ResearchR
   if (service) prefill.researchNeed = service.name;
   const product = cleanParam(params.product,prefillLimits.product); if (product) prefill.product = product;
   const hs = cleanParam(params.hs,prefillLimits.hsCode); if (hs && hsPattern.test(hs)) prefill.hsCode = hs;
-  const context = cleanParam(params.context,prefillLimits.context); if (context) prefill.context = context;
   return prefill;
 }
 export function requestAsEmailBody(values: ResearchRequestPayload) {
@@ -105,7 +104,7 @@ export function requestAsEmailBody(values: ResearchRequestPayload) {
     values.researchNeed && `Research format: ${values.researchNeed}`, values.context && `Context: ${values.context}`,
   ].filter(Boolean).join("\n");
 }
-export function requestResearchHref(prefill:{service?:string;product?:string;hs?:string;context?:string}) {
+export function requestResearchHref(prefill:{service?:string;product?:string;hs?:string}) {
   const params = new URLSearchParams();
   for (const [key,value] of Object.entries(prefill)) if (value) params.set(key,value);
   const query=params.toString(); return query ? `/request-research?${query}` : "/request-research";

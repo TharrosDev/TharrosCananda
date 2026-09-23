@@ -20,7 +20,7 @@ The homepage keeps the strongest dark hero. Task pages use compact dark heroes. 
 
 ## FORM
 
-Primary navigation is Services · Research · Live Monitor · About, with Commission research as the one filled action. Live Monitor uses attributed Currents coverage and fails closed when unavailable. Research archive controls appear automatically once real publications exist. Dense information remains flat rather than boxed into cards, but rules are reserved for meaningful boundaries and whitespace carries secondary grouping.
+Primary navigation is Services · Research · Methodology · About, with Commission research as the one filled action. Research archive controls appear automatically once real publications exist. Dense information remains flat rather than boxed into cards, but rules are reserved for meaningful boundaries and whitespace carries secondary grouping.
 
 ## COMMERCIAL MODEL
 

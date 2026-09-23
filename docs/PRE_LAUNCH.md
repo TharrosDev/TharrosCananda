@@ -41,13 +41,6 @@ After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tigh
 - [ ] Confirm engagement terms covering scope, payment, liability, confidentiality and advice boundaries.
 - [ ] Confirm the indicative prices in `src/lib/services.ts`.
 
-## Live Monitor
-
-- [ ] Configure the production `CURRENTS_API_KEY` and smoke-test `/live-monitor` from the deployed host.
-- [ ] Confirm the Currents account plan supports the deployed request volume and the public, customer-facing metadata/snippet display. Currents plan limits and content-use terms can change; review the current Search API, pricing and Terms before launch.
-- [ ] Keep the visible Currents attribution and original-publisher links intact. Do not add article-body storage, persistent archives, automated customer-facing summaries or redistribution without separately confirming the required rights.
-- [ ] Confirm a quota-exhausted or upstream-failure response shows the explicit unavailable state and never synthetic coverage.
-
 ## Platform
 
 - [ ] Confirm canonical `tharros.ca` / `www` redirect.

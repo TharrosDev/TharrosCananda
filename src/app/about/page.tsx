@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const contactEmail = researchEmail();
   const { lead, legal, profiles } = organization;
+  // Until accountability details are verified, contact sits with Independence rather than in a near-empty section of its own.
+  const hasAccountability = Boolean(lead || legal || profiles.length);
+  const contactLine = <p>Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>;
   const links = (items: { label: string; url: string }[]) => (
     <p className="about-links">{items.map((link, index) => <span key={link.url}>{index > 0 && " · "}<a href={link.url} target="_blank" rel="noreferrer">{link.label}<span className="sr-only"> (opens in a new tab)</span></a></span>)}</p>
   );
@@ -30,8 +33,8 @@ export default function AboutPage() {
           <li><span>04</span><h3>Stay relevant.</h3><p>Research is organized around the question, not the volume of material collected.</p></li>
         </ol>
       </section>
-      <section className="about-independence" id="independence"><div><p>Independence</p><h2>Independent from the sources it studies.</h2></div><div><p>Tharros Canada is not a government body or think tank. Source names do not imply endorsement or affiliation.</p><p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p></div></section>
-      <section className="about-independence about-accountability" id="contact">
+      <section className="about-independence" id="independence"><div><p>Independence</p><h2>Independent from the sources it studies.</h2></div><div><p>Tharros Canada is not a government body or think tank. Source names do not imply endorsement or affiliation.</p><p>Tharros does not provide legal, tax, regulatory, lobbying or investment advice.</p>{!hasAccountability && <div className="about-contact" id="contact">{contactLine}</div>}</div></section>
+      {hasAccountability && <section className="about-independence about-accountability" id="contact">
         <div><p>Accountability</p><h2>{lead ? "Who is accountable." : "Contact."}</h2></div>
         <div><div className="about-contact">
           {lead && (
@@ -42,7 +45,7 @@ export default function AboutPage() {
               {lead.links.length > 0 && links(lead.links)}
             </div>
           )}
-          <p>Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+          {contactLine}
           {legal && (
             <dl className="company-details">
               <div><dt>Legal name</dt><dd>{legal.legalName}</dd></div>
@@ -53,7 +56,7 @@ export default function AboutPage() {
           )}
           {profiles.length > 0 && links(profiles)}
         </div></div>
-      </section>
+      </section>}
       <section className="closing-cta">
         <h2>Have a question that needs research?</h2>
         <Link className="button-primary" href="/request-research">Commission research <ArrowIcon /></Link>

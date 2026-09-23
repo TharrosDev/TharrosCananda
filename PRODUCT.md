@@ -22,7 +22,6 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 
 - Services
 - Research archive
-- Live Monitor
 - About
 - Sources & Methodology
 - How It Works
@@ -33,7 +32,6 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 ## Evidence commitments
 
 - The Research archive is empty until actual Tharros publications exist.
-- Live Monitor uses Currents as the sole attributed discovery provider. It never substitutes synthetic headlines or silently falls back to another news source; surfaced publisher headlines are not Tharros verification, endorsement or analysis.
 - Publisher, source, publication/retrieval context, licence and limitations must remain visible.
 - If an official API fails or its schema changes, fail closed rather than inventing fallback values.
 - Public-institution names identify sources only and never imply endorsement.
@@ -52,8 +50,6 @@ Warm ivory, graphite/soft black, slate, muted Canadian red for action, steel for
 - Use research/data as the visual material.
 - Keep the four Canada–Europe research areas as a concise homepage overview and archive taxonomy rather than a standalone destination.
 - Prefer a narrow real capability over a broad simulated one.
-- Keep automated discovery separate from published Tharros research and interpretation.
-- Keep the Live Monitor request contract bounded: one seven-day Currents search, one page of 20 results per refresh, 15-minute successful-response caching, explicit provider failure and empty states, bounded provider payloads, and no hidden fallback provider.
 - Preserve provenance as part of the UI and data model.
 - Make public research easy to archive and navigate as the body of work grows.
 - Keep commissioned research usable without an account or mandatory call.

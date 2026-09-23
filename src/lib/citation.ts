@@ -18,9 +18,6 @@ export type CitationInput = {
   url: string;
   /** Report number, e.g. "TC-2026-001". */
   reference?: string;
-  /** "news": a third-party article (e.g. from the Live Monitor); `publisher` is the outlet, not Tharros. */
-  kind?: "report" | "news";
-  publisher?: string;
   accessedAt?: Date;
 };
 
@@ -64,31 +61,8 @@ const longDate = formatLongDate;
 const yearMonth = formatFullMonthYear;
 const year = (iso: string) => iso.slice(0, 4);
 
-const fullMonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const mlaMonths = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
-
-/** Citation of a third-party news article: the outlet is the publisher; Tharros appears nowhere. */
-function newsCitation(style: CitationStyle, input: CitationInput) {
-  const { title, url } = input;
-  const outlet = input.publisher ?? new URL(url).hostname;
-  // The Toronto calendar date, matching what the Live Monitor shows next to the story.
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Toronto", year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(input.publishedAt));
-  const [y, m, d] = (["year", "month", "day"] as const).map((type) => Number(parts.find((p) => p.type === type)?.value));
-  const accessed = formatLongDate((input.accessedAt ?? new Date()).toISOString());
-  switch (style) {
-    case "apa":
-      return `${outlet}. (${y}, ${fullMonthNames[m - 1]} ${d}). ${title}. ${url}`;
-    case "mla":
-      return `"${title}." ${outlet}, ${d} ${mlaMonths[m - 1]} ${y}, ${url}.`;
-    case "chicago":
-      return `${outlet}. "${title}." ${fullMonthNames[m - 1]} ${d}, ${y}. ${url}.`;
-    case "harvard":
-      return `${outlet} (${y}) ${title}. Available at: ${url} (Accessed: ${accessed}).`;
-  }
-}
 
 export function buildCitation(style: CitationStyle, input: CitationInput): string {
-  if (input.kind === "news") return newsCitation(style, input);
   const { title, authors, publishedAt, url, reference: ref } = input;
   const accessed = formatLongDate((input.accessedAt ?? new Date()).toISOString());
   const skipAuthor = authorsAreJustPublisher(authors);

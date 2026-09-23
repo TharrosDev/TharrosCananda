@@ -450,7 +450,7 @@
       "kind": "nav",
       "refersTo": "nav-action",
       "description": "76px ruled bar with commercial-first destinations, labelled mobile Menu control and one red Commission research action.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\">Services</a><a href=\"#\">Research</a><a href=\"#\">Live Monitor</a><a href=\"#\">About</a></div><a class=\"ds-nav-action\" href=\"#\">Commission research</a></nav>",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\">Services</a><a href=\"#\">Research</a><a href=\"#\">Methodology</a><a href=\"#\">About</a></div><a class=\"ds-nav-action\" href=\"#\">Commission research</a></nav>",
       "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:76px;border-bottom:1px solid var(--rule,rgba(28,29,31,.13));background:var(--ivory,#f4f1ea);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-wordmark{display:inline-flex;align-items:center;gap:12px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:23px;font-weight:500;letter-spacing:.16em;text-decoration:none;color:inherit}.ds-slash{width:1px;height:22px;background:var(--red,#9e3a35);transform:skewX(-18deg)}.ds-links{display:flex;gap:24px}.ds-links a{position:relative;padding:26px 0 25px;color:var(--ink-soft,#45484d);font-size:16px;font-weight:500;text-decoration:none}.ds-nav-action{min-height:44px;display:inline-flex;align-items:center;padding:0 18px;background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-size:16px;font-weight:600;text-decoration:none}"
     },
     {
@@ -477,14 +477,14 @@
   ],
   "narrative": {
     "northStar": "The Evidence Ledger",
-    "overview": "Tharros Canada is an evidence-led commercial research house. Warm ivory carries graphite ink, dark bands mark major commercial and task moments, and statement-scale editorial compositions give each major surface its own hierarchy. The visual material comes from real research artifacts, official-source data and the semantic evidence atlas rather than stock photography or generic dashboard cards.\\n\\nThe homepage follows the evidence route from Canada to Europe, starts from the client decision, summarizes the four research areas, then opens into services and the research archive. Public research remains visibly empty until verified work exists. The Live Monitor fails closed when Currents is unavailable.",
+    "overview": "Tharros Canada is an evidence-led commercial research house. Warm ivory carries graphite ink, dark bands mark major commercial and task moments, and statement-scale editorial compositions give each major surface its own hierarchy. The visual material comes from real research artifacts, official-source data and the semantic evidence atlas rather than stock photography or generic dashboard cards.\\n\\nThe homepage follows the evidence route from Canada to Europe, starts from the client decision, summarizes the four research areas, then opens into services and the research archive. Public research remains visibly empty until verified work exists.",
     "keyCharacteristics": [
       "Ivory ground, graphite ink, dark bands used selectively rather than on every route.",
-      "Services · Research · Live Monitor · About primary navigation.",
+      "Services · Research · Methodology · About primary navigation.",
       "Evidence-atlas homepage opening plus distinct statement, task and document compositions.",
       "Four research areas remain a homepage summary and archive taxonomy, not a standalone route.",
       "Research archive supports title, summary and tag search plus area, format and year filters while remaining honest when empty.",
-      "Attributed Currents coverage with visible provenance and limitations; no synthetic fallback.",
+      "Visible provenance and limitations on every source; no synthetic fallback.",
       "Ruled registers and 12-column layouts instead of cards.",
       "Red for action, steel for data, green for source state and confirmation.",
       "Source Serif 4 editorial voice and Schibsted Grotesk interface voice."
@@ -537,11 +537,11 @@
       "**Do** keep the research archive empty until verified work exists.",
       "**Do** use light document headers for editorial and policy pages.",
       "**Do** retain accessible table/text equivalents for charts.",
-      "**Do** fail closed when the discovery provider is unavailable."
+      "**Do** fail closed when a source is unavailable."
     ],
     "donts": [
       "**Don't** fabricate reports, clients, experts, partnerships, awards, images or findings.",
-      "**Don't** substitute synthetic or secondary-provider coverage when Currents fails.",
+      "**Don't** substitute synthetic data when a source fails.",
       "**Don't** use government logos or marks to imply affiliation.",
       "**Don't** add decorative dashboard cards, stock photography or ornamental charts.",
       "**Don't** use a large dark hero on every page.",

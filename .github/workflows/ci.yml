@@ -31,8 +31,7 @@ jobs:
 
   browser:
     # Functional, accessibility (axe) and visual regression tests against a production build.
-    # The Currents News API is replaced by controlled responses (e2e/mock-sources.mjs),
-    # so screenshots never depend on live data; retrieval times and the year are masked.
+    # The footer year is masked so screenshots stay stable.
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: verify

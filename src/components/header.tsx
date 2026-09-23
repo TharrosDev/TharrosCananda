@@ -8,7 +8,7 @@ import { MenuIcon } from "@/components/icons";
 const links: { href: string; label: string; prefetch?: boolean }[] = [
   { href: "/research-services", label: "Services" },
   { href: "/research", label: "Research" },
-  { href: "/live-monitor", label: "Live Monitor", prefetch: false },
+  { href: "/methodology", label: "Methodology" },
   { href: "/about", label: "About" },
 ];
 

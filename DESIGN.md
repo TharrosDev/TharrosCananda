@@ -87,7 +87,7 @@ For major commercial pages where a dark chapter opening is useful.
 
 ### Task
 
-Compact dark hero for a working interface such as Live Monitor or Commission Research. The task should begin quickly below it.
+Compact dark hero for a working interface such as Commission Research. The task should begin quickly below it.
 
 ### Document
 
@@ -97,7 +97,7 @@ Light ivory editorial header for Research Archive, Methodology, How It Works, Pr
 
 Desktop order:
 
-**Services · Research · Live Monitor · About**
+**Services · Research · Methodology · About**
 
 Primary action:
 
@@ -107,15 +107,15 @@ The navigation tightens before collapsing. Around 1020px it becomes a labelled *
 
 ## Homepage architecture
 
-1. Evidence-atlas first viewport, brand proposition and Commission Research
-2. Statement-scale, decision-oriented client questions
+1. Evidence-folio first viewport, brand proposition and Commission Research
+2. "Start with a question": the four home-featured services, each led by the question it answers
 3. Four-area Canada–Europe research summary
-4. Live Monitor proof
-5. Commissioned services
-6. Research archive / methodology links
-7. Final commission CTA
+4. Public research (selected releases, or one calm empty-state line plus the example report)
+5. Final commission CTA
 
-The homepage uses the evidence route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation with live source material and must not pretend unfinished research is already published.
+Section headings share one size (`--type-section`); no chapter out-shouts the next, and an empty state is never the loudest heading on the page.
+
+The homepage uses the evidence route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation through method and source registers and must not pretend unfinished research is already published.
 
 ## Research archive
 
@@ -135,25 +135,6 @@ When populated, it supports:
 The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The four research areas are archive taxonomy and a homepage summary, not a dedicated public route.
 
 A real report page should eventually include verified authorship, date, executive summary, key findings, charts/tables, methodology, sources, limitations, related research and a commission CTA.
-
-## Live Monitor
-
-Live Monitor is a working editorial discovery surface, not a dashboard and not a Tharros publication feed. It should visually belong to the same ruled evidence-led system as Research.
-
-Visual hierarchy:
-
-1. a dedicated Signal Desk hero connecting Canada and Europe through semantic route geometry;
-2. a concise provenance/interpretation boundary;
-3. source telemetry showing provider, checked time, window, source count and dispatch count;
-4. a fast command bar with search, explicit time-window controls and topic-count filters;
-5. the newest relevant article promoted as the lead dispatch;
-6. remaining publisher-linked coverage arranged as a responsive editorial wire;
-7. distinct empty, filtered-empty and unavailable states;
-8. explicit recovery actions for filter and provider failures.
-
-Currents attribution must remain visible and usable as a link. Original publisher links and publication times remain part of each record. The newest matching record may receive stronger editorial hierarchy, but that prominence means recency—not verification, importance, endorsement or a Tharros finding.
-
-The route draw and loading state may use restrained motion to communicate acquisition, but both must collapse under `prefers-reduced-motion`. Filter changes use one short feed transition rather than staggered item animation. Failure states must replace the live-results region rather than populate it with substitute headlines. Provider text and links must be bounded and able to wrap without causing overflow.
 
 ## Research areas
 
@@ -209,10 +190,6 @@ Primary actions are square muted-red fields with a trailing arrow. Secondary act
 
 The homepage atlas is a dark, ruled evidence plate connecting Canada and Europe through a single red route, steel verification node and four source classes. It is semantic SVG geometry with a text alternative, not a decorative map or an implied dataset. The route draw is disabled under reduced motion.
 
-### Live Monitor entry
-
-The Live Monitor is the Signal Desk: a bespoke dark route hero, source telemetry, a compact filter rail, one lead dispatch and a ruled editorial wire. It avoids dashboard cards while making the freshest matching coverage immediately legible. Empty results explain whether the provider returned no current coverage or the visitor's filters removed all results. The error state remains explicit and source-specific; never disguise provider failure with substitute content.
-
 ### Research archive
 
 The empty archive shows a truthful zero count and the five supported formats. Once publications exist, a square control row provides title/summary/tag search plus research-area, publication-type and year filters, followed by a newest-first result count and ruled publication entries.
@@ -226,14 +203,14 @@ The Commission Research form sits on one light editorial sheet with a small oper
 - Use real source metadata as visual content.
 - Preserve explicit source periods, retrieval context and limitations.
 - Keep the research archive honest when empty.
-- Keep Live Monitor states and controls understandable without relying on colour alone.
+- Keep interface states and controls understandable without relying on colour alone.
 - Keep Commission Research visible but not repeated excessively.
 - Maintain strong focus states and keyboard navigation.
 
 ## Do not
 
 - Add fabricated reports, clients, partners, awards, experts or testimonials.
-- Substitute synthetic coverage when Currents is unavailable.
+- Substitute synthetic data when a source is unavailable.
 - Add stock photography merely to make pages feel “full.”
 - Use government logos or visual marks in a way that suggests affiliation.
 - Create decorative dashboard cards.

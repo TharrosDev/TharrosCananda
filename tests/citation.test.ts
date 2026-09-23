@@ -58,38 +58,3 @@ describe("buildCitation", () => {
     expect(buildCitation("harvard", withRef)).toContain("Defence procurement pathways. Report TC-2026-001. Tharros Canada.");
   });
 });
-
-describe("news article citations", () => {
-  const news = {
-    kind: "news" as const,
-    publisher: "example-trade.eu",
-    title: "Canada and European firms deepen transatlantic trade links",
-    authors: [],
-    publishedAt: "2026-09-22T14:15:00Z",
-    url: "https://example-trade.eu/story-trade",
-    accessedAt: new Date("2026-09-23"),
-  };
-
-  it("cites the outlet, not Tharros, in every style", () => {
-    expect(buildCitation("apa", news)).toBe(
-      "example-trade.eu. (2026, September 22). Canada and European firms deepen transatlantic trade links. https://example-trade.eu/story-trade",
-    );
-    expect(buildCitation("mla", news)).toBe(
-      '"Canada and European firms deepen transatlantic trade links." example-trade.eu, 22 Sept. 2026, https://example-trade.eu/story-trade.',
-    );
-    expect(buildCitation("chicago", news)).toBe(
-      'example-trade.eu. "Canada and European firms deepen transatlantic trade links." September 22, 2026. https://example-trade.eu/story-trade.',
-    );
-    expect(buildCitation("harvard", news)).toBe(
-      "example-trade.eu (2026) Canada and European firms deepen transatlantic trade links. Available at: https://example-trade.eu/story-trade (Accessed: September 23, 2026).",
-    );
-    for (const style of ["apa", "mla", "chicago", "harvard"] as const) expect(buildCitation(style, news)).not.toContain("Tharros");
-  });
-});
-
-describe("news citation dates", () => {
-  it("uses the Toronto calendar date the Live Monitor shows", () => {
-    const late = { kind: "news" as const, publisher: "x.eu", title: "T", authors: [], publishedAt: "2026-09-23T01:30:00Z", url: "https://x.eu/a" };
-    expect(buildCitation("apa", late)).toContain("(2026, September 22)");
-  });
-});

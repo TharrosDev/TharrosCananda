@@ -3,7 +3,7 @@
 import { cloneElement, FormEvent, type ReactElement, useEffect, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { track } from "@/lib/analytics";
-import { readStorage, removeStorage, writeStorage } from "@/lib/monitor-view";
+import { readStorage, removeStorage, writeStorage } from "@/lib/storage";
 import { emptyRequest, honeypotField, maxLengths, objectives, type Objective, parseRequestDraft, researchNeeds, type ResearchRequestErrors, type ResearchRequestPayload, prefillFromSearchParams, requestAsEmailBody, validateResearchRequest } from "@/lib/research-request";
 import { needSummary } from "@/lib/services";
 
@@ -37,7 +37,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const touched=useRef(new Set<keyof ResearchRequestPayload>());
   const focusErrors=useRef(false);
 
-  // ?service=&product=&hs=&context= prefill and the saved draft are read after mount and only fill fields still
+  // ?service=&product=&hs= prefill and the saved draft are read after mount and only fill fields still
   // empty, so the page stays static and nothing a fast visitor already typed is ever replaced (no component swap
   // on hydration). URL prefill wins over the draft: the link that opened the form is the more recent intent.
   useEffect(()=>{

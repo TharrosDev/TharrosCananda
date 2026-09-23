@@ -7,29 +7,6 @@ import { services } from "@/lib/services";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const clientQuestions = [
-  {
-    title: "Assess a market",
-    copy: "Review market structure, trade, geography and routes to market.",
-    href: "/research-services#market-scan",
-  },
-  {
-    title: "Find buyers or partners",
-    copy: "Identify relevant buyers, importers, distributors and partners.",
-    href: "/research-services#buyer-distributor",
-  },
-  {
-    title: "Understand competitors",
-    copy: "Compare offers, positioning, geography and channels.",
-    href: "/research-services#competitor-intelligence",
-  },
-  {
-    title: "Research a specific question",
-    copy: "Scope a question across trade, defence, industry, energy or technology.",
-    href: "/research-services#commissioned-research",
-  },
-] as const;
-
 const folioSources = [
   "Official data",
   "Procurement",
@@ -114,36 +91,17 @@ export default function HomePage() {
         <div className="home-intro-foot">
           <p>Canada ↔ Europe</p>
           <Link href="#start">
-            Explore research areas <span aria-hidden="true">↓</span>
+            Start with a question <span aria-hidden="true">↓</span>
           </Link>
         </div>
       </section>
 
-      <section className="section home-decisions" id="start">
+      <section className="section home-services" id="start">
         <div className="home-section-lead">
           <h2>Start with a question.</h2>
-          <p>Research is scoped around the information you need.</p>
-        </div>
-        <ol className="decision-panels">
-          {clientQuestions.map((item, index) => (
-            <li key={item.title}>
-              <Link href={item.href}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{item.title}</h3>
-                <p>{item.copy}</p>
-                <ArrowIcon />
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="section home-services">
-        <div className="home-section-lead">
-          <h2>Commissioned research.</h2>
-          <p>Choose a defined service or request a custom scope.</p>
+          <p>Choose a defined service or request a custom scope. Scope, price and timing are agreed in writing first.</p>
           <Link className="text-link" href="/research-services">
-            Services and pricing <ArrowIcon />
+            All services and pricing <ArrowIcon />
           </Link>
         </div>
         <ul className="service-catalogue" aria-label="Research services">
@@ -184,29 +142,8 @@ export default function HomePage() {
 
       <section className="research-threshold">
         <div>
-          <p>Live Monitor</p>
-          <h2>Follow the relationship as it moves.</h2>
-        </div>
-        <div>
-          <p>
-            Track recent reporting across trade, defence, energy, industry and strategic technology,
-            discovered through Currents and linked back to original publishers.
-          </p>
-          <div className="threshold-links">
-            <Link className="text-link" href="/live-monitor">
-              Open Live Monitor <ArrowIcon />
-            </Link>
-            <Link className="text-link" href="/methodology">
-              Methodology <ArrowIcon />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="research-threshold">
-        <div>
-          <p>Public research</p>
-          <h2>{researchToShow.length ? "Selected releases." : "First publications in preparation."}</h2>
+          <p>Research archive</p>
+          <h2>{researchToShow.length ? "Selected releases." : "Public research."}</h2>
         </div>
         <div>
           {researchToShow.length ? (
@@ -224,7 +161,10 @@ export default function HomePage() {
               </Link>
             ))
           ) : (
-            <p>Publications will appear here as they are released.</p>
+            <p>
+              The first publications are in preparation. Each will carry named authorship, methodology,
+              sources and limitations.
+            </p>
           )}
           <div className="threshold-links">
             {!researchToShow.length && (

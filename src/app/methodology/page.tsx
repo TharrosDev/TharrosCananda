@@ -41,7 +41,6 @@ export default function MethodologyPage() {
           { label: "Source selection", href: "#source-selection" },
           { label: "Human verification", href: "#human-research" },
           { label: "Freshness", href: "#freshness" },
-          { label: "Live data", href: "#live-data" },
           { label: "Limitations", href: "#limitations" },
         ]}
         title="Sources and methodology."
@@ -68,15 +67,6 @@ export default function MethodologyPage() {
             <p>
               “Latest” means the most recent period available from the publisher. Relevant lags,
               revisions and classification changes are noted.
-            </p>
-          </article>
-          <article id="live-data">
-            <h2>Live discovery</h2>
-            <p>
-              The Live Monitor requests recent reporting from Currents and keeps the original
-              publisher, publication time and source link visible. If Currents is unavailable or
-              returns an invalid response, the monitor reports the failure and does not substitute
-              coverage.
             </p>
           </article>
           <article id="limitations">

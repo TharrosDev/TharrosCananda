@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const paths = ["/", "/research-services", "/request-research", "/live-monitor", "/research/example-report"];
+const paths = ["/", "/research-services", "/request-research", "/research/example-report"];
 const viewports = [
   { width: 1440, height: 900 },
   { width: 1024, height: 768 },
@@ -53,46 +53,14 @@ test("commissioning prefills from the link that opened it", async ({ page }) => 
   await expect(page.getByLabel("HS code")).toHaveValue("1702.20");
 });
 
-test("Live Monitor navigation opens the route", async ({ page, isMobile }) => {
-  await page.goto("/");
-  if (isMobile) await page.getByRole("button", { name: /menu/i }).click();
-  await page.getByRole("link", { name: "Live Monitor", exact: true }).first().click();
-  await expect(page).toHaveURL(/\/live-monitor$/);
-  await expect(page.getByRole("heading", { name: "Signals across the Atlantic." })).toBeVisible();
-});
-
-test("live monitor renders attributed Currents coverage and filters research areas", async ({
-  page,
-}) => {
-  await page.goto("/live-monitor");
-  await expect(page.getByRole("heading", { name: "Signals across the Atlantic." })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Currents News API/i })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Canada and European firms deepen transatlantic trade links/i }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: /^Defence\s+\d+$/ }).click();
-  await expect(
-    page.getByRole("link", { name: /Canadian and European defence suppliers expand cooperation/i }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Canada and European firms deepen transatlantic trade links/i }),
-  ).toHaveCount(0);
-  await page.getByLabel("Search coverage").fill("no-match-for-this-query");
-  await expect(
-    page.getByRole("heading", { name: "No developments match these filters." }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(
-    page.getByRole("link", { name: /Canada and European firms deepen transatlantic trade links/i }),
-  ).toBeVisible();
-});
-
-test("retired Market Data surface is absent from navigation and routing", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByRole("link", { name: "Market Data", exact: true })).toHaveCount(0);
-  const response = await page.goto("/market-explorer");
-  expect(response?.status()).toBe(404);
-});
+for (const [label, path] of [["Market Data", "/market-explorer"], ["Live Monitor", "/live-monitor"]]) {
+  test(`retired ${label} surface is absent from navigation and routing`, async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("link", { name: label, exact: true })).toHaveCount(0);
+    const response = await page.goto(path);
+    expect(response?.status()).toBe(404);
+  });
+}
 
 test("nested research route keeps Research navigation state", async ({ page, isMobile }) => {
   test.skip(isMobile, "Desktop navigation; mobile nav is behind the menu button");
@@ -104,7 +72,7 @@ test("nested research route keeps Research navigation state", async ({ page, isM
   );
 });
 
-for (const path of ["/", "/research-services", "/request-research", "/live-monitor"]) {
+for (const path of ["/", "/research-services", "/request-research"]) {
   test(`${path} has no serious or critical automated accessibility violations`, async ({
     page,
   }) => {
@@ -179,7 +147,7 @@ test.describe("mobile navigation", () => {
 
 test.describe("tap targets", () => {
   test.skip(({ isMobile }) => !isMobile, "Measured at a phone width");
-  for (const path of ["/", "/research", "/research-services", "/request-research", "/live-monitor", "/research/example-report", "/about", "/methodology", "/this-page-does-not-exist"]) {
+  for (const path of ["/", "/research", "/research-services", "/request-research", "/research/example-report", "/about", "/methodology", "/this-page-does-not-exist"]) {
     test(`${path} has 44px tap targets at 390px`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
@@ -224,30 +192,17 @@ test.describe("home flow", () => {
     const headings = await page.locator("main > section h2").allTextContents();
     const order = [
       "Start with a question.",
-      "Commissioned research.",
       "Four connected fields.",
-      "Follow the relationship as it moves.",
-      "First publications in preparation.",
+      "Public research.",
       "Have a research question?",
     ].map((heading) => headings.indexOf(heading));
     expect(order.every((position) => position >= 0), headings.join(" | ")).toBe(true);
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  test("the Live Monitor band copy is sentence case at 20px or larger", async ({ page }) => {
-    await page.goto("/");
-    const copy = page.getByText(/^Track recent reporting/);
-    const style = await copy.evaluate((el) => {
-      const computed = getComputedStyle(el);
-      return { transform: computed.textTransform, size: parseFloat(computed.fontSize) };
-    });
-    expect(style.transform).toBe("none");
-    expect(style.size).toBeGreaterThanOrEqual(20);
-  });
-
   test("the empty research block links to the example report", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "First publications in preparation." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Public research." })).toBeVisible();
     await expect(page.getByRole("link", { name: /See how a report is published/ })).toHaveAttribute(
       "href",
       "/research/example-report",
@@ -344,37 +299,14 @@ test.describe("request form", () => {
   });
 });
 
-test("the not-found page offers research, the Live Monitor and commissioning", async ({ page }) => {
+test("the not-found page offers research, services and commissioning", async ({ page }) => {
   const response = await page.goto("/this-page-does-not-exist");
   expect(response?.status()).toBe(404);
   const links = page.getByRole("navigation", { name: "Useful pages" }).getByRole("link");
-  await expect(links).toHaveText([/Research/, /Live Monitor/, /Commission research/]);
+  await expect(links).toHaveText([/Research/, /Services/, /Commission research/]);
   await expect(links.nth(0)).toHaveAttribute("href", "/research");
-  await expect(links.nth(1)).toHaveAttribute("href", "/live-monitor");
+  await expect(links.nth(1)).toHaveAttribute("href", "/research-services");
   await expect(links.nth(2)).toHaveAttribute("href", "/request-research");
-});
-
-test("the Live Monitor loading state reserves the screen the final layout fills", async ({ page }) => {
-  await page.goto("/live-monitor");
-  const workspace = page.locator(".monitor-workspace");
-  await expect(workspace).toBeVisible();
-  // Render the Suspense fallback markup in place to measure it against the loaded layout.
-  const heights = await page.evaluate(() => {
-    const host = document.querySelector(".monitor-page")!;
-    const skeleton = document.createElement("section");
-    skeleton.className = "monitor-loading";
-    skeleton.innerHTML = '<div class="monitor-loading-minimal"><div class="monitor-loading-status"><i></i>Opening</div><h2>Preparing current coverage.</h2><p>Copy</p></div>';
-    host.append(skeleton);
-    const result = {
-      skeleton: skeleton.getBoundingClientRect().height,
-      workspace: document.querySelector(".monitor-workspace")!.getBoundingClientRect().height,
-      screen: window.innerHeight - document.querySelector(".site-header")!.getBoundingClientRect().height,
-    };
-    skeleton.remove();
-    return result;
-  });
-  expect(heights.skeleton).toBeGreaterThanOrEqual(heights.screen - 1);
-  expect(heights.skeleton).toBeLessThanOrEqual(heights.workspace);
 });
 
 test.describe("every sitemap route", () => {
