@@ -18,12 +18,13 @@ const botPattern =
   /bot|crawl|spider|slurp|scrap|headless|lighthouse|pagespeed|preview|facebookexternalhit|embedly|python|curl|wget|httpclient|okhttp|axios|node-fetch|go-http|java\//i;
 export const isBot = (userAgent: string) => !userAgent || botPattern.test(userAgent);
 
-/** Pseudonymous reader key: never the IP itself, and different for every publication. */
-export function readerKey(secret: string, ip: string, userAgent: string, slug: string) {
-  return createHmac("sha256", secret)
-    .update(`${ip}|${userAgent}|${slug}`)
-    .digest("hex")
-    .slice(0, 32);
+/**
+ * Pseudonymous reader key: never the IP itself, and different for every publication. Keyed on the IP alone
+ * (not the user agent, which is free to forge), so inflating a count needs a new IP per read. People sharing
+ * one network count as one reader: deliberately conservative.
+ */
+export function readerKey(secret: string, ip: string, slug: string) {
+  return createHmac("sha256", secret).update(`${ip}|${slug}`).digest("hex").slice(0, 32);
 }
 
 function supabase() {

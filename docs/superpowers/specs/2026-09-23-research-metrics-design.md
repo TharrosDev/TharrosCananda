@@ -14,7 +14,7 @@ Show how often each real publication is read and cited, on archive cards and the
 
 ## Reader identity (no cookies)
 
-- Server key: `HMAC-SHA256(METRICS_SECRET, ip | user-agent | slug)`, truncated. Raw IPs are never stored; including the slug means keys cannot be linked across publications.
+- Server key: `HMAC-SHA256(METRICS_SECRET, ip | slug)`, truncated. Raw IPs are never stored; including the slug means keys cannot be linked across publications. The user agent is left out because it is free to forge; readers sharing one network count once (conservative).
 - The browser remembers its own counted events in localStorage, so repeat visits do not call the API.
 - Keys expire: reads after 30 days, citations after 12 months (purged on write).
 

@@ -6,16 +6,16 @@ const DAY = 86_400_000;
 
 describe("reader key", () => {
   it("is stable for one reader and publication, and never contains the IP", () => {
-    const key = readerKey("secret", "203.0.113.7", "Mozilla/5.0", "report-a");
-    expect(key).toBe(readerKey("secret", "203.0.113.7", "Mozilla/5.0", "report-a"));
+    const key = readerKey("secret", "203.0.113.7", "report-a");
+    expect(key).toBe(readerKey("secret", "203.0.113.7", "report-a"));
     expect(key).toMatch(/^[0-9a-f]{32}$/);
     expect(key).not.toContain("203");
   });
   it("differs per publication, reader and secret", () => {
-    const base = readerKey("secret", "203.0.113.7", "Mozilla/5.0", "report-a");
-    expect(readerKey("secret", "203.0.113.7", "Mozilla/5.0", "report-b")).not.toBe(base);
-    expect(readerKey("secret", "203.0.113.8", "Mozilla/5.0", "report-a")).not.toBe(base);
-    expect(readerKey("other", "203.0.113.7", "Mozilla/5.0", "report-a")).not.toBe(base);
+    const base = readerKey("secret", "203.0.113.7", "report-a");
+    expect(readerKey("secret", "203.0.113.7", "report-b")).not.toBe(base);
+    expect(readerKey("secret", "203.0.113.8", "report-a")).not.toBe(base);
+    expect(readerKey("other", "203.0.113.7", "report-a")).not.toBe(base);
   });
 });
 

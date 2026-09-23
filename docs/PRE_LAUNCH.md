@@ -8,7 +8,7 @@ Operational and legal items that remain outside the codebase.
 - [ ] On the receiver, verify `X-Tharros-Signature: sha256=<hex HMAC-SHA256 of "<X-Tharros-Timestamp>.<raw body>">` and reject stale timestamps (for example, older than 5 minutes). `X-Tharros-Request-Id` and the payload `reference` match the reference the visitor sees.
 - [ ] The receiver must return 2xx only once the request is stored. Any other status, a redirect or no answer within 8 s is shown to the visitor as not sent (502 / 504), with their answers kept.
 - [ ] After deploying, run `npm run smoke -- https://tharros.ca`, then submit one real request and confirm it arrives with its reference.
-- [ ] Add the Vercel Firewall rate limit below.
+- [x] Vercel Firewall rate limit live (2026-09-23): 10 requests per 10 minutes per IP, deny.
 - [ ] Define storage, access and retention for submitted requests, then set `intakeRetention` in `src/data/organization.ts` so `/privacy` states it.
 
 ### Rate limit (Vercel Firewall)
@@ -29,9 +29,9 @@ After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tigh
 
 ## Research readership
 
-- [ ] Create the Supabase project `tharros-canada` and apply `supabase/migrations/20260923000000_publication_metrics.sql`.
-- [ ] Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `METRICS_SECRET` in Vercel (Production). Without them nothing is counted and counts stay hidden.
-- [ ] Add a Vercel Firewall rate limit on `POST /api/research-event` (same shape as the intake rule, e.g. 60 requests per 10 minutes per IP).
+- [x] Create the Supabase project `tharros-canada` and apply `supabase/migrations/20260923000000_publication_metrics.sql`.
+- [x] Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `METRICS_SECRET` in Vercel (Production). Without them nothing is counted and counts stay hidden.
+- [x] No rate limit on `POST /api/research-event`: the Hobby plan allows one rate-limit rule, used for intake. Inflation is bounded by the IP-keyed reader dedupe. Add a rule (60 per 10 minutes per IP) if the plan is upgraded.
 
 ## Identity and contact
 

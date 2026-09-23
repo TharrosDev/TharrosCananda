@@ -66,11 +66,11 @@ export default function PrivacyPage() {
           <p>
             Published research shows how many people have read and cited it. A read is counted after
             about 20 seconds of reading or a PDF download; a citation when a citation is copied. To
-            count each reader only once, the server combines your IP address and browser type with a
-            secret and keeps only the resulting code, never the address. The code is different for
-            every publication and is deleted after 30 days for reads and 12 months for citations.
-            Your browser also remembers what it has counted, in local storage. Nothing is counted
-            when your browser sends a Global Privacy Control signal.
+            count each reader only once, the server combines your IP address with a secret and keeps
+            only the resulting code, never the address. The code is different for every publication
+            and is deleted after 30 days for reads and 12 months for citations. Your browser also
+            remembers what it has counted, in local storage. Nothing is counted when your browser
+            sends a Global Privacy Control signal.
           </p>
         </article>
         <article>
