@@ -4,7 +4,7 @@ import { honeypotField, maxBodyBytes, parseResearchRequest } from "@/lib/researc
 import { intakeSecretFromDatabase } from "@/lib/supabase";
 
 // ponytail: no in-process rate limiting; it gives false security on serverless.
-// The limit is a Vercel Firewall rule on POST /api/research-request (docs/PRE_LAUNCH.md).
+// The limit is a Vercel Firewall rule on POST /api/research-request (docs/OPERATIONS.md).
 
 const deliveryFailure = {
   message: "We couldn’t send your request right now. Your answers are still in the form.",
