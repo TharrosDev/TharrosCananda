@@ -16,6 +16,7 @@ import {
   serializeArchiveState,
   termPattern,
 } from "@/lib/archive";
+import { copyText } from "@/lib/clipboard";
 import { formatCounts, sendMetric } from "@/lib/metrics-client";
 import { formatMonthYear, siteUrl } from "@/lib/site";
 
@@ -269,12 +270,7 @@ function ArchiveCard({
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const stableUrl = `${siteUrl}/research/id/${doc.reference}`;
   async function copy() {
-    try {
-      await navigator.clipboard.writeText(stableUrl);
-      setCopied("done");
-    } catch {
-      setCopied("failed");
-    }
+    setCopied((await copyText(stableUrl)) ? "done" : "failed");
   }
   return (
     <li>
