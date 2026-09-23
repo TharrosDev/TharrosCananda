@@ -18,7 +18,7 @@ Tharros Canada is an independent commercial research and intelligence business f
 1. **Services** — what can be commissioned.
 2. **Expertise** — the four Canada–Europe subject areas.
 3. **Research** — archive of real Tharros publications as they are released.
-4. **Live Monitor** — current Canada–Europe reporting discovered through Currents and linked to original publishers.
+4. **Methodology** — source selection, verification, freshness and limitations.
 5. **About** — purpose, method, accountability and independence.
 6. **Commission research** — progressive intake workflow.
 
@@ -51,18 +51,6 @@ Archive capabilities:
 - optional tags/PDF metadata.
 
 The research article template requires actual authorship, date, origin (independent or genuinely commissioned), executive summary, key findings, methodology, sources, limitations and a suggested citation. No placeholder publication may be represented as completed research.
-
-## Live Monitor
-
-The Live Monitor is an automated discovery surface, not a Tharros publication stream. The page shell renders immediately and the Currents-backed panel streams behind `<Suspense>`, so upstream latency cannot make navigation appear broken.
-
-The monitor runs one rolling seven-day Currents V2 search for Canada–Europe reporting across the four Tharros research areas. The adapter sends second-precision RFC3339 timestamps and requests one page of 20 results per refresh. This keeps the integration inside the documented free-tier result cap while bounding request volume on higher plans.
-
-Results preserve direct publisher URLs, source domain, language and publication time. Tracking parameters are removed and query parameters are normalized before display. Title, description and Currents category metadata are bounded before being used for local research-area classification. Records outside the requested window are rejected, and duplicate URLs are removed only after time validation so an invalid copy cannot suppress a valid current item.
-
-Successful retrievals are cached for 15 minutes. The API key remains server-only and is sent through Bearer authentication. Missing configuration, rejected credentials, quota exhaustion, invalid requests, oversized or malformed responses and transient upstream failures have explicit failure states. Transient network/5xx failures receive one bounded retry; 400/auth/quota failures do not. A valid empty response is distinguished from a filtered-empty view and a provider failure. The monitor has no secondary provider and never inserts synthetic headlines.
-
-Currents attribution and original-publisher links remain visible. Article bodies are not copied, persistent republishing is not part of the product, and automated summaries are not presented as Tharros findings.
 
 ## Core funnel
 

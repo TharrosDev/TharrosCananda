@@ -1,24 +1,5 @@
 # Data source and provenance policy
 
-## Current public integration: Currents Live Monitor
-
-The `/live-monitor` page uses the Currents News API V2 Search endpoint as a current-news discovery layer. Currents is not treated as evidence that a surfaced claim is true; every result links to the original publisher URL returned by the API.
-
-Implementation is split between `src/lib/currents.ts` (query construction, authentication, transport, runtime validation and parsing) and `src/lib/currents-data.ts` (Next.js caching and user-safe failure states). The page streams the data region behind `<Suspense>` so upstream latency cannot block the route shell.
-
-The normal path issues one rolling seven-day Boolean search covering Canada, Europe and the monitor's trade, defence/security, energy/industry and strategic-technology terms. The request uses strict RFC3339 timestamps and `page_size=20`, which stays within the published free-tier result cap while remaining valid on higher plans. One page is fetched per cache refresh to keep quota use bounded. Results are then classified locally into the four Tharros research areas using bounded article title, description and Currents category metadata. Tracking parameters are removed and remaining query parameters are normalized before display.
-
-Authentication uses the server-only `CURRENTS_API_KEY` environment variable and the HTTP Authorization header. The key must never be embedded in a URL, exposed through a `NEXT_PUBLIC_*` variable or committed to the repository. Successful responses are cached for 15 minutes. The adapter distinguishes missing configuration, rejected credentials, quota exhaustion, invalid requests, transient upstream errors, oversized payloads and invalid response shapes. Transient network/5xx failures receive one bounded retry; authentication, quota and invalid-request failures do not.
-
-Currents `published` is displayed as publication time. Records outside the requested seven-day window are discarded from the current snapshot. A valid empty provider response, a visitor-filtered empty view and a provider failure have distinct UI states. Article bodies are not copied and discovered headlines/descriptions are never represented as Tharros analysis or verification. The public interface retains Currents attribution and original-publisher links.
-
-References:
-
-- https://currentsapi.services/en/docs/search
-- https://currentsapi.services/en/docs/authentication
-- https://currentsapi.services/en/product/price
-- https://currentsapi.services/terms
-
 ## Core research source register
 
 `src/data/sources.ts` maintains public starting points for human research. It currently includes Canadian and European sources such as Statistics Canada, ISED, CBSA, CanadaBuys, Government of Canada Open Data, Eurostat, TED and Access2Markets.
@@ -46,7 +27,7 @@ If values are transformed, document the transformation in code and tests.
 
 - Never replace unavailable official data with plausible demonstration values.
 - Never silently change a requested classification, topic or time window.
-- Return a clear unavailable/error state when a publisher or discovery provider cannot be reached. Live Monitor currently has no degraded or secondary-provider fallback; adding one requires an explicit provenance, rights and UI review.
+- Return a clear unavailable/error state when a publisher cannot be reached. Any fallback source requires an explicit provenance, rights and UI review.
 - Cache official responses only for a bounded period appropriate to the publisher's update frequency.
 - Treat schema changes as failures until inspected.
 - Do not call a value current/live unless the request path and retrieval time are observable.

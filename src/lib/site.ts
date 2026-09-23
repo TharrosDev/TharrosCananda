@@ -16,12 +16,9 @@ function dateParts(value: string, timeZone: string) {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hourCycle: "h23",
   }).formatToParts(date);
   const get = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((part) => part.type === type)?.value);
-  return { year: get("year"), month: months[get("month") - 1], day: get("day"), hour: get("hour"), minute: get("minute") };
+  return { year: get("year"), month: months[get("month") - 1], day: get("day") };
 }
 
 /** "Sep 2026" */
@@ -42,10 +39,3 @@ export function formatFullMonthYear(value: string) {
   return p ? `${fullMonths[months.indexOf(p.month)]} ${p.year}` : "Date unavailable";
 }
 
-/** "Sep 22, 4:15 p.m." in the given time zone */
-export function formatDateTime(value: string, timeZone: string) {
-  const p = dateParts(value, timeZone);
-  if (!p) return "time unavailable";
-  const hour12 = p.hour % 12 || 12;
-  return `${p.month} ${p.day}, ${hour12}:${String(p.minute).padStart(2, "0")} ${p.hour < 12 ? "a.m." : "p.m."}`;
-}

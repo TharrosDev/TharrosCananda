@@ -10,8 +10,8 @@ export default function NotFound() {
         <Link className="text-link" href="/research">
           Research <ArrowIcon />
         </Link>
-        <Link className="text-link" href="/live-monitor" prefetch={false}>
-          Live Monitor <ArrowIcon />
+        <Link className="text-link" href="/research-services">
+          Services <ArrowIcon />
         </Link>
         <Link className="button-primary" href="/request-research">
           Commission research <ArrowIcon />

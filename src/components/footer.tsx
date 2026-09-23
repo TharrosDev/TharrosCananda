@@ -29,7 +29,6 @@ export function Footer() {
           <div>
             <p className="footer-heading">Evidence</p>
             <Link href="/research">Research archive</Link>
-            <Link href="/live-monitor">Live Monitor</Link>
             <Link href="/methodology">Sources & methodology</Link>
           </div>
           <div>

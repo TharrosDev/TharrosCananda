@@ -40,7 +40,7 @@ export default function ResearchPage() {
         </div>
       </header>
       <section className="archive-principle">
-        <p>Search the full text of every report, or filter by area, format and year.</p>
+        <p>Every report records its sources, retrieval dates and limitations.</p>
         <Link href="/methodology">
           Methodology <ArrowIcon />
         </Link>

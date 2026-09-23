@@ -4,7 +4,6 @@ slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
 related_targets:
   [
-    "src/app/live-monitor/page.tsx",
     "src/app/research/page.tsx",
     "src/app/research-services/page.tsx",
     "src/app/request-research/page.tsx",
@@ -18,7 +17,7 @@ related_targets:
 
 ## Scope
 
-Whole public site. Persuade on home/services, inform on document/research pages, and operate inside Live Monitor and research intake.
+Whole public site. Persuade on home/services, inform on document/research pages, and operate inside research intake.
 
 Audience: businesses and organizations with Canada–Europe commercial questions. Primary action: commission scoped research. Proof: official data, transparent methods, clearly defined services, and verified research as it is published.
 
@@ -30,10 +29,10 @@ THESIS: Tharros is an evidence-led commercial research house. The interface uses
 
 OWN-WORLD: Warm ivory, graphite ink, dark chapter bands, muted action red, steel quantitative series, Source Serif 4 and Schibsted Grotesk. The visual material comes from data/research artifacts, not stock photos or generic dashboard cards.
 
-STORY: Read the Canada–Europe evidence route → start from a decision/service → inspect the four research areas and live evidence → review method/research archive → commission a scoped answer.
+STORY: Read the Canada–Europe evidence route → start from a decision/service → inspect the four research areas → review method/research archive → commission a scoped answer.
 
-FIRST VIEWPORT: Home opens with a dark, full-bleed evidence atlas beside the statement-scale proposition and commission action. Compact dark heroes introduce task pages; archive, methodology, process and policy routes use light editorial document headers. About and Commission Research use dedicated statement and scope-desk compositions. Homepage links directly into the Live Monitor as its current public evidence surface.
+FIRST VIEWPORT: Home opens with a dark, full-bleed evidence atlas beside the statement-scale proposition and commission action. Compact dark heroes introduce task pages; archive, methodology, process and policy routes use light editorial document headers. About and Commission Research use dedicated statement and scope-desk compositions.
 
-FORM: Primary navigation is Services · Research · Live Monitor · About. The four research areas remain a homepage summary and archive taxonomy rather than a standalone route. Canadian Buyer Intelligence is the flagship entry product; market, ecosystem, commissioned and white-label research remain visible. The archive stays empty until genuine publications exist and is prepared for area/type/date filtering plus title/summary/tag search across Intelligence Briefs, Research Reports, Market Notes, Data Notes and Sector Analyses. Live Monitor is a bespoke Signal Desk: semantic Canada–Europe route geometry, source telemetry, search/time/topic controls, one newest lead dispatch and a responsive ruled editorial wire. It uses one bounded Currents query, visible attribution and direct publisher links; provider-empty, filtered-empty and failure states remain distinct, and no substitute coverage is introduced.
+FORM: Primary navigation is Services · Research · Methodology · About. The four research areas remain a homepage summary and archive taxonomy rather than a standalone route. Canadian Buyer Intelligence is the flagship entry product; market, ecosystem, commissioned and white-label research remain visible. The archive stays empty until genuine publications exist and is prepared for area/type/date filtering plus title/summary/tag search across Intelligence Briefs, Research Reports, Market Notes, Data Notes and Sector Analyses.
 
 FINISH: unreviewed or undocumented work is unfinished. A production pass ends with lint, typecheck, tests and build passing and agent-facing documentation aligned to the shipped architecture.

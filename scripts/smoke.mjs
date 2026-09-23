@@ -13,7 +13,6 @@ for (const path of [
   "/",
   "/research",
   "/research-services",
-  "/live-monitor",
   "/how-it-works",
   "/methodology",
   "/about",
@@ -29,15 +28,6 @@ for (const path of [
 
 const legacy = await get(`${base}/ecommerce-readiness`, { redirect: "manual" });
 check(legacy.status === 308, `/ecommerce-readiness -> ${legacy.status} (expected 308)`);
-
-const monitor = await get(`${base}/live-monitor`).then((response) => response.text());
-const coverage = monitor.includes("Currents") && monitor.includes('class="monitor-lead"');
-const monitorFailedClosed = monitor.includes("Live coverage is temporarily unavailable");
-check(
-  coverage || monitorFailedClosed,
-  `/live-monitor shows ${coverage ? "attributed coverage" : monitorFailedClosed ? "the explicit unavailable state" : "neither coverage nor the unavailable state"}`,
-);
-if (monitorFailedClosed) console.log("     note: Currents was unavailable from this deployment");
 
 const intake = await get(`${base}/api/research-request`, {
   method: "POST",

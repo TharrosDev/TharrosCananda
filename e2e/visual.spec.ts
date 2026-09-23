@@ -1,9 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-// Key routes on desktop and mobile. Live coverage comes from a controlled provider response; retrieval times and the year are masked.
+// Key routes on desktop and mobile; the footer year is masked.
 const routes = [
   ["home", "/"],
-  ["live-monitor", "/live-monitor"],
   ["services", "/research-services"],
   ["request", "/request-research"],
   ["about", "/about"],
