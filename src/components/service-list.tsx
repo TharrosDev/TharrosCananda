@@ -37,7 +37,11 @@ export function ServiceList() {
                   )}
                   <dl className="service-spec">
                     <div><dt>Typical scope</dt><dd>{service.formSummary}</dd></div>
-                    <div><dt>Price</dt><dd>{service.priceLabel}</dd></div>
+                    <div>
+                      <dt>Price</dt>
+                      {/* One line per package; word joiners keep a price range from breaking at its dash. */}
+                      <dd>{service.priceLabel.split(" · ").map((part) => <span className="service-price" key={part}>{part.replace("–", "\u2060–\u2060")}</span>)}</dd>
+                    </div>
                     <div><dt>Not included</dt><dd>{service.excludes}</dd></div>
                   </dl>
                 </div>

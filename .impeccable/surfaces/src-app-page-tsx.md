@@ -29,7 +29,7 @@ THESIS: Tharros is an evidence-led commercial research house. The interface uses
 
 OWN-WORLD: Warm ivory, graphite ink, dark chapter bands, muted action red, steel quantitative series, Source Serif 4 and Schibsted Grotesk. The visual material comes from data/research artifacts, not stock photos or generic dashboard cards.
 
-STORY: Read the Canada–Europe evidence route → start from a decision/service → inspect the four research areas → review method/research archive → commission a scoped answer.
+STORY: Read the Canada–Europe Atlantic route → start from a decision/service → inspect the four research areas → review method/research archive → commission a scoped answer.
 
 FIRST VIEWPORT: Home opens with a dark, full-bleed evidence atlas beside the statement-scale proposition and commission action. Compact dark heroes introduce task pages; archive, methodology, process and policy routes use light editorial document headers. About and Commission Research use dedicated statement and scope-desk compositions.
 
