@@ -210,13 +210,17 @@ test.describe("home flow", () => {
   });
 });
 
-test("every service card has the same spec row", async ({ page }) => {
+test("services compare in one table, then share the same detail structure", async ({ page }) => {
   await page.goto("/research-services");
-  const cards = page.locator(".service-list article");
-  expect(await cards.count()).toBeGreaterThan(3);
-  for (const card of await cards.all()) {
-    await expect(card.locator("dt")).toHaveText(["Typical scope", "Price", "Not included"]);
-    await expect(card.getByText("You receive", { exact: true })).toBeVisible();
+  const rows = page.locator(".service-table tbody tr:not(.service-table-group)");
+  const entries = page.locator(".service-entry");
+  expect(await entries.count()).toBeGreaterThan(3);
+  await expect(rows).toHaveCount(await entries.count());
+  for (const entry of await entries.all()) {
+    await expect(entry.getByText("You receive", { exact: true })).toBeVisible();
+    await entry.getByText("Scope and exclusions").click();
+    await expect(entry.locator("dt")).toHaveText(["Typical scope", "Not included"]);
+    await expect(entry.getByRole("link", { name: /^Request/ })).toHaveAttribute("href", /\/request-research\?service=/);
   }
 });
 
