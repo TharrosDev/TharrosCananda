@@ -22,7 +22,7 @@ export default defineConfig({
     },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  // Production build with the intake webhook unset, so form submissions fall back to email.
+  // Production build with the intake webhook unset, so form submissions return 503 and the form offers a mailto link.
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
