@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { buildCitation, citationStyles, type CitationInput, type CitationStyle } from "@/lib/citation";
+import {
+  buildCitation,
+  citationStyles,
+  type CitationInput,
+  type CitationStyle,
+} from "@/lib/citation";
 import { researchLicence } from "@/lib/licence";
 
 export function CitationPanel({ input }: { input: CitationInput }) {
@@ -45,7 +50,8 @@ export function CitationPanel({ input }: { input: CitationInput }) {
         {copied ? "Copied" : "Copy citation"}
       </button>
       <p className="citation-licence">
-        Published under {researchLicence.short}: reuse and adapt with attribution. <Link href="/copyright">Licence terms</Link>
+        Published under {researchLicence.short}: reuse and adapt with attribution.{" "}
+        <Link href="/copyright">Licence terms</Link>
       </p>
       <span className="sr-only" role="status">
         {copied ? "Citation copied" : ""}

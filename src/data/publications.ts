@@ -68,14 +68,20 @@ const lorem = [
   "Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum, sed posuere consectetur est at lobortis.",
   "Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.",
 ];
-const placeholderSource = { publisher: "Publisher", title: "Dataset or document title", period: "Reference period", retrievedAt: "YYYY-MM-DD" };
+const placeholderSource = {
+  publisher: "Publisher",
+  title: "Dataset or document title",
+  period: "Reference period",
+  retrievedAt: "YYYY-MM-DD",
+};
 
 // A layout specimen, not a publication: placeholder text only, never indexable.
 export const researchSpecimenPublication: Publication = {
   slug: "example-report",
   reference: "TC-EX-000",
   title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  subtitle: "Sed posuere consectetur est at lobortis: vestibulum id ligula porta felis euismod semper.",
+  subtitle:
+    "Sed posuere consectetur est at lobortis: vestibulum id ligula porta felis euismod semper.",
   type: "Research Report",
   area: "trade-economic-integration",
   origin: "independent",
@@ -97,18 +103,36 @@ export const researchSpecimenPublication: Publication = {
         {
           kind: "findings",
           items: [
-            { lead: "Lorem ipsum dolor sit amet.", text: "Consectetur adipiscing elit, integer posuere erat a ante venenatis dapibus." },
-            { lead: "Maecenas faucibus mollis interdum.", text: "Nulla vitae elit libero, a pharetra augue donec ullamcorper." },
-            { lead: "Vestibulum id ligula porta.", text: "Felis euismod semper, cras mattis consectetur purus sit amet." },
+            {
+              lead: "Lorem ipsum dolor sit amet.",
+              text: "Consectetur adipiscing elit, integer posuere erat a ante venenatis dapibus.",
+            },
+            {
+              lead: "Maecenas faucibus mollis interdum.",
+              text: "Nulla vitae elit libero, a pharetra augue donec ullamcorper.",
+            },
+            {
+              lead: "Vestibulum id ligula porta.",
+              text: "Felis euismod semper, cras mattis consectetur purus sit amet.",
+            },
           ],
         },
       ],
-      right: [{ kind: "figure", caption: "Lorem ipsum dolor sit amet (illustrative placeholder, no data).", source: "Publisher, dataset, period." }],
+      right: [
+        {
+          kind: "figure",
+          caption: "Lorem ipsum dolor sit amet (illustrative placeholder, no data).",
+          source: "Publisher, dataset, period.",
+        },
+      ],
     },
     { kind: "heading", number: 1, text: "Lorem ipsum dolor sit amet" },
     { kind: "paragraph", text: lorem[1] },
     { kind: "paragraph", text: lorem[2] },
-    { kind: "callout", text: "Observation. Nullam quis risus eget urna mollis ornare vel eu leo, etiam porta sem malesuada magna." },
+    {
+      kind: "callout",
+      text: "Observation. Nullam quis risus eget urna mollis ornare vel eu leo, etiam porta sem malesuada magna.",
+    },
     { kind: "heading", number: 2, text: "Methodology" },
     { kind: "paragraph", text: lorem[2] },
     {

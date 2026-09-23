@@ -5,6 +5,7 @@ import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
+import { formatMonthYear } from "@/lib/site";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -45,7 +46,10 @@ export default function HomePage() {
       <section className="section home-services" id="start">
         <div className="home-section-lead">
           <h2>Start with a question.</h2>
-          <p>Choose a defined service or request a custom scope. Scope, price and timing are agreed in writing first.</p>
+          <p>
+            Choose a defined service or request a custom scope. Scope, price and timing are agreed
+            in writing first.
+          </p>
           <Link className="text-link" href="/research-services">
             All services and pricing <ArrowIcon />
           </Link>
@@ -97,19 +101,14 @@ export default function HomePage() {
               <Link key={publication.slug} href={`/research/${publication.slug}`}>
                 <strong>{publication.title}</strong>
                 <span>
-                  {publication.type} ·{" "}
-                  {new Date(publication.publishedAt).toLocaleDateString("en-CA", {
-                    year: "numeric",
-                    month: "short",
-                    timeZone: "UTC",
-                  })}
+                  {publication.type} · {formatMonthYear(publication.publishedAt)}
                 </span>
               </Link>
             ))
           ) : (
             <p>
-              The first publications are in preparation. Each will carry named authorship, methodology,
-              sources and limitations.
+              The first publications are in preparation. Each will carry named authorship,
+              methodology, sources and limitations.
             </p>
           )}
           <div className="threshold-links">

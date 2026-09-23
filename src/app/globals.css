@@ -144,6 +144,7 @@ p { text-wrap: pretty; }
 .hero-index li { padding: 12px 0; border-bottom: 1px solid var(--rule-dark); display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: baseline; }
 .hero-index-body { display: grid; gap: 2px; }
 .hero-index-body > a, .hero-index-body > span { color: var(--on-dark); font-family: var(--display); font-size: 20px; line-height: 1.25; text-decoration: none; }
+.hero-index-body > a { min-height: 24px; }
 .hero-index-body > a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
 .hero-index small { color: var(--on-dark-soft); font-size: 19px; line-height: 1.4; }
 
@@ -503,21 +504,6 @@ legend:focus:not(:focus-visible) { outline: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; }
 }
-
-/* Quiet reveals: content is visible by default; the scroll-driven fade runs only where supported and wanted. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes reveal { from { opacity: .001; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
-    main > section h2, .archive-list > li, .service-entry {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 40%;
-    }
-    /* A running animation makes a stacking context that would trap an open popover under later content. */
-    .archive-list > li:has([open]) { animation: none; }
-  }
-}
-
 
 /* Tap targets: every control is at least 44px tall on phones. */
 @media (max-width: 760px) {

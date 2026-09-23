@@ -5,12 +5,15 @@ import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 export const size = ogSize;
 export const contentType = ogContentType;
 export const dynamicParams = false;
-export const generateStaticParams = () => allPublications.map((publication) => ({ slug: publication.slug }));
+export const generateStaticParams = () =>
+  allPublications.map((publication) => ({ slug: publication.slug }));
 
 export default async function OpenGraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const publication = publicationBySlug(slug);
-  const area = publication ? researchAreas.find((item) => item.slug === publication.area) : undefined;
+  const area = publication
+    ? researchAreas.find((item) => item.slug === publication.area)
+    : undefined;
 
   return renderOgImage({
     tone: "light",
@@ -22,7 +25,11 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ slu
       {
         label: "Published",
         value: publication
-          ? new Date(publication.publishedAt).toLocaleDateString("en-CA", { year: "numeric", month: "short", timeZone: "UTC" })
+          ? new Date(publication.publishedAt).toLocaleDateString("en-CA", {
+              year: "numeric",
+              month: "short",
+              timeZone: "UTC",
+            })
           : "—",
       },
       ...(area ? [{ label: "Expertise", value: area.name }] : []),

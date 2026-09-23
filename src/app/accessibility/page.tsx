@@ -4,7 +4,8 @@ import { researchEmail } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Accessibility",
-  description: "Tharros Canada's accessibility approach and contact path for reporting accessibility problems.",
+  description:
+    "Tharros Canada's accessibility approach and contact path for reporting accessibility problems.",
   alternates: { canonical: "/accessibility" },
 };
 
@@ -25,15 +26,25 @@ export default function AccessibilityPage() {
         </article>
         <article>
           <h2>Current interface practices</h2>
-          <p>The site includes a skip link, visible keyboard focus, semantic form labels and errors, reduced-motion handling, minimum target sizing and sticky-header offsets for anchored content.</p>
+          <p>
+            The site includes a skip link, visible keyboard focus, semantic form labels and errors,
+            reduced-motion handling, minimum target sizing and sticky-header offsets for anchored
+            content.
+          </p>
         </article>
         <article>
           <h2>Data and document formats</h2>
-          <p>Research remains available in HTML when a downloadable report is provided. Any chart published in a report comes with a text or table equivalent.</p>
+          <p>
+            Research remains available in HTML when a downloadable report is provided. Any chart
+            published in a report comes with a text or table equivalent.
+          </p>
         </article>
         <article>
           <h2>Report a problem</h2>
-          <p>Send the page, device or assistive technology involved and a short description to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.</p>
+          <p>
+            Send the page, device or assistive technology involved and a short description to{" "}
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+          </p>
         </article>
       </section>
     </>

@@ -26,7 +26,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: p.title,
     description: p.summary,
     alternates: { canonical: `/research/${p.slug}` },
-    openGraph: { type: "article", title: p.title, description: p.summary, publishedTime: p.publishedAt, authors: p.authors },
+    openGraph: {
+      type: "article",
+      title: p.title,
+      description: p.summary,
+      publishedTime: p.publishedAt,
+      authors: p.authors,
+    },
   };
   if (!p.indexable) return { ...base, robots: { index: false, follow: false } };
   // Highwire Press tags: what Google Scholar reads to index a report and its PDF.
@@ -51,7 +57,13 @@ export default async function ReportPage({ params }: Props) {
   const asset = reportAsset(p.slug);
   const area = researchAreas.find((a) => a.slug === p.area);
   const stableUrl = `${siteUrl}/research/id/${p.reference}`;
-  const citation: CitationInput = { title: p.title, authors: p.authors, publishedAt: p.publishedAt, url: stableUrl, reference: p.reference };
+  const citation: CitationInput = {
+    title: p.title,
+    authors: p.authors,
+    publishedAt: p.publishedAt,
+    url: stableUrl,
+    reference: p.reference,
+  };
   const sources = reportSources(p);
   const limitations = reportLimitations(p);
   const structuredData = {
@@ -63,12 +75,23 @@ export default async function ReportPage({ params }: Props) {
     abstract: p.summary,
     datePublished: p.publishedAt,
     inLanguage: "en-CA",
-    author: p.authors.map((name) => ({ "@type": name === "Tharros Canada" ? "Organization" : "Person", name })),
+    author: p.authors.map((name) => ({
+      "@type": name === "Tharros Canada" ? "Organization" : "Person",
+      name,
+    })),
     publisher: { "@type": "Organization", name: "Tharros Canada", url: siteUrl },
     about: area?.name,
     url: `${siteUrl}/research/${p.slug}`,
     license: researchLicence.url,
-    ...(asset ? { encoding: { "@type": "MediaObject", contentUrl: `${siteUrl}${asset.file}`, encodingFormat: "application/pdf" } } : {}),
+    ...(asset
+      ? {
+          encoding: {
+            "@type": "MediaObject",
+            contentUrl: `${siteUrl}${asset.file}`,
+            encodingFormat: "application/pdf",
+          },
+        }
+      : {}),
     citation: p.sources.flatMap((s) => (s.url ? [s.url] : [])),
   };
 
@@ -79,8 +102,9 @@ export default async function ReportPage({ params }: Props) {
           <div>
             <strong>Example layout</strong>
             <p>
-              This shows how a Tharros research report is published. Every word is lorem ipsum placeholder text, and the figure
-              contains no data. It is not a publication and is kept out of search engines.
+              This shows how a Tharros research report is published. Every word is lorem ipsum
+              placeholder text, and the figure contains no data. It is not a publication and is kept
+              out of search engines.
             </p>
           </div>
           <Link className="text-link" href="/research">
@@ -91,7 +115,8 @@ export default async function ReportPage({ params }: Props) {
       <header className="report-header">
         <div className="report-header-main">
           <p className="report-header-kicker">
-            {p.type} · {area ? <Link href={`/research?area=${area.slug}`}>{area.name}</Link> : p.area}
+            {p.type} ·{" "}
+            {area ? <Link href={`/research?area=${area.slug}`}>{area.name}</Link> : p.area}
           </p>
           <h1>{p.title}</h1>
           {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
@@ -99,58 +124,113 @@ export default async function ReportPage({ params }: Props) {
         </div>
         <div className="report-header-side">
           <dl className="report-header-meta">
-            <div><dt>Reference</dt><dd>{p.reference}</dd></div>
-            <div><dt>Published</dt><dd><time dateTime={p.publishedAt}>{formatLongDate(p.publishedAt)}</time></dd></div>
-            <div><dt>{p.authors.length === 1 ? "Author" : "Authors"}</dt><dd>{p.authors.join(", ")}</dd></div>
-            <div><dt>Origin</dt><dd>{p.origin === "independent" ? "Independent research" : "Commissioned research"}</dd></div>
-            {asset && <div><dt>Length</dt><dd>{asset.pages} pages</dd></div>}
+            <div>
+              <dt>Reference</dt>
+              <dd>{p.reference}</dd>
+            </div>
+            <div>
+              <dt>Published</dt>
+              <dd>
+                <time dateTime={p.publishedAt}>{formatLongDate(p.publishedAt)}</time>
+              </dd>
+            </div>
+            <div>
+              <dt>{p.authors.length === 1 ? "Author" : "Authors"}</dt>
+              <dd>{p.authors.join(", ")}</dd>
+            </div>
+            <div>
+              <dt>Origin</dt>
+              <dd>
+                {p.origin === "independent" ? "Independent research" : "Commissioned research"}
+              </dd>
+            </div>
+            {asset && (
+              <div>
+                <dt>Length</dt>
+                <dd>{asset.pages} pages</dd>
+              </div>
+            )}
           </dl>
-          {asset && <ReportActions file={asset.file} bytes={asset.bytes} url={stableUrl} title={p.title} />}
+          {asset && (
+            <ReportActions file={asset.file} bytes={asset.bytes} url={stableUrl} title={p.title} />
+          )}
         </div>
       </header>
       {asset ? (
-        <ReportViewer file={asset.file} pages={asset.pages} title={p.title} contents={reportContents(p, asset.outline)} />
+        <ReportViewer
+          file={asset.file}
+          pages={asset.pages}
+          title={p.title}
+          contents={reportContents(p, asset.outline)}
+        />
       ) : (
         <p className="report-pending">The PDF for this report is being prepared.</p>
       )}
       <section className="report-appendix" aria-labelledby="report-appendix-label">
-        <h2 className="report-appendix-label" id="report-appendix-label">Sources and citation</h2>
+        <h2 className="report-appendix-label" id="report-appendix-label">
+          Sources and citation
+        </h2>
         <div className="report-appendix-body">
-        {sources.length > 0 && (
-          <div className="report-appendix-block" id="sources">
-            <h2>Sources</h2>
-            <ol className="report-appendix-sources">
-              {sources.map((s, i) => (
-                <li key={i}>
-                  {s.publisher}. {s.url ? <a href={s.url} rel="noreferrer">{s.title}</a> : <em>{s.title}</em>}.
-                  {s.period && ` ${s.period}.`}
-                  {s.retrievedAt && ` Retrieved ${s.retrievedAt}.`}
+          {sources.length > 0 && (
+            <div className="report-appendix-block" id="sources">
+              <h2>Sources</h2>
+              <ol className="report-appendix-sources">
+                {sources.map((s, i) => (
+                  <li key={i}>
+                    {s.publisher}.{" "}
+                    {s.url ? (
+                      <a href={s.url} rel="noreferrer">
+                        {s.title}
+                      </a>
+                    ) : (
+                      <em>{s.title}</em>
+                    )}
+                    .{s.period && ` ${s.period}.`}
+                    {s.retrievedAt && ` Retrieved ${s.retrievedAt}.`}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+          {limitations.length > 0 && (
+            <div className="report-appendix-block" id="limitations">
+              <h2>Limitations</h2>
+              <ul>
+                {limitations.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="report-appendix-block" id="cite">
+            <h2>Cite this report</h2>
+            <CitationPanel input={citation} />
+            <p className="report-appendix-stable">
+              Stable link: <a href={stableUrl}>{stableUrl.replace(/^https?:\/\//, "")}</a>
+            </p>
+          </div>
+          <div className="report-appendix-block report-appendix-more">
+            <h2>Continue</h2>
+            <ul>
+              {area && (
+                <li>
+                  <Link href={`/research?area=${area.slug}`}>
+                    More in {area.name} <ArrowIcon />
+                  </Link>
                 </li>
-              ))}
-            </ol>
+              )}
+              <li>
+                <Link href="/methodology">
+                  How Tharros selects and checks sources <ArrowIcon />
+                </Link>
+              </li>
+              <li>
+                <Link href="/research">
+                  Research archive <ArrowIcon />
+                </Link>
+              </li>
+            </ul>
           </div>
-        )}
-        {limitations.length > 0 && (
-          <div className="report-appendix-block" id="limitations">
-            <h2>Limitations</h2>
-            <ul>{limitations.map((line) => <li key={line}>{line}</li>)}</ul>
-          </div>
-        )}
-        <div className="report-appendix-block" id="cite">
-          <h2>Cite this report</h2>
-          <CitationPanel input={citation} />
-          <p className="report-appendix-stable">
-            Stable link: <a href={stableUrl}>{stableUrl.replace(/^https?:\/\//, "")}</a>
-          </p>
-        </div>
-        <div className="report-appendix-block report-appendix-more">
-          <h2>Continue</h2>
-          <ul>
-            {area && <li><Link href={`/research?area=${area.slug}`}>More in {area.name} <ArrowIcon /></Link></li>}
-            <li><Link href="/methodology">How Tharros selects and checks sources <ArrowIcon /></Link></li>
-            <li><Link href="/research">Research archive <ArrowIcon /></Link></li>
-          </ul>
-        </div>
         </div>
       </section>
       <section className="closing-cta">
@@ -159,7 +239,10 @@ export default async function ReportPage({ params }: Props) {
           Commission research <ArrowIcon />
         </Link>
       </section>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+      />
     </>
   );
 }

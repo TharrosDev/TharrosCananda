@@ -22,13 +22,32 @@ export type ArchiveDoc = {
   authors: string[];
 };
 
-export type ArchiveState = { q: string; area: string; type: string; year: string; sort: "newest" | "relevance" };
+export type ArchiveState = {
+  q: string;
+  area: string;
+  type: string;
+  year: string;
+  sort: "newest" | "relevance";
+};
 export type ArchiveResult = ArchiveDoc & { snippet: string | null; terms: string[] };
-type Facets = { area: Record<string, number>; type: Record<string, number>; year: Record<string, number> };
+type Facets = {
+  area: Record<string, number>;
+  type: Record<string, number>;
+  year: Record<string, number>;
+};
 
-export const defaultArchiveState: ArchiveState = { q: "", area: "all", type: "all", year: "all", sort: "newest" };
+export const defaultArchiveState: ArchiveState = {
+  q: "",
+  area: "all",
+  type: "all",
+  year: "all",
+  sort: "newest",
+};
 
-export function parseArchiveState(params: URLSearchParams, allowed: { areas: string[]; types: string[]; years: string[] }): ArchiveState {
+export function parseArchiveState(
+  params: URLSearchParams,
+  allowed: { areas: string[]; types: string[]; years: string[] },
+): ArchiveState {
   const pick = (key: string, values: string[]) => {
     const value = params.get(key);
     return value && values.includes(value) ? value : "all";
@@ -45,7 +64,8 @@ export function parseArchiveState(params: URLSearchParams, allowed: { areas: str
 export function serializeArchiveState(state: ArchiveState) {
   const params = new URLSearchParams();
   if (state.q.trim()) params.set("q", state.q.trim());
-  for (const key of ["area", "type", "year"] as const) if (state[key] !== "all") params.set(key, state[key]);
+  for (const key of ["area", "type", "year"] as const)
+    if (state[key] !== "all") params.set(key, state[key]);
   if (state.sort !== "newest") params.set("sort", state.sort);
   const query = params.toString();
   return query ? `?${query}` : "";
@@ -55,14 +75,24 @@ export function createArchiveIndex(docs: ArchiveDoc[]) {
   const index = new MiniSearch<ArchiveDoc>({
     idField: "slug",
     fields: ["title", "tags", "summary", "text", "reference"],
-    extractField: (doc, field) => (field === "tags" ? doc.tags.join(" ") : String(doc[field as keyof ArchiveDoc] ?? "")),
-    searchOptions: { boost: { title: 3, reference: 3, tags: 2, summary: 1.5 }, fuzzy: 0.3, prefix: true, combineWith: "AND" },
+    extractField: (doc, field) =>
+      field === "tags" ? doc.tags.join(" ") : String(doc[field as keyof ArchiveDoc] ?? ""),
+    searchOptions: {
+      boost: { title: 3, reference: 3, tags: 2, summary: 1.5 },
+      fuzzy: 0.3,
+      prefix: true,
+      combineWith: "AND",
+    },
   });
   index.addAll(docs);
   return index;
 }
 
-export function runArchiveQuery(docs: ArchiveDoc[], index: MiniSearch<ArchiveDoc>, state: ArchiveState): { results: ArchiveResult[]; facets: Facets } {
+export function runArchiveQuery(
+  docs: ArchiveDoc[],
+  index: MiniSearch<ArchiveDoc>,
+  state: ArchiveState,
+): { results: ArchiveResult[]; facets: Facets } {
   // A query with no searchable tokens (e.g. "(((") behaves like no query at all.
   const tokenize = MiniSearch.getDefault("tokenize") as (text: string) => string[];
   const query = tokenize(state.q).some(Boolean) ? state.q.trim() : "";
@@ -91,7 +121,7 @@ export function runArchiveQuery(docs: ArchiveDoc[], index: MiniSearch<ArchiveDoc
     })
     .sort((a, b) =>
       query && state.sort === "relevance"
-        ? (matched!.get(b.slug)!.score - matched!.get(a.slug)!.score)
+        ? matched!.get(b.slug)!.score - matched!.get(a.slug)!.score
         : b.publishedAt.localeCompare(a.publishedAt),
     );
 
