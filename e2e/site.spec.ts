@@ -177,7 +177,7 @@ test.describe("mobile navigation", () => {
 
 test.describe("tap targets", () => {
   test.skip(({ isMobile }) => !isMobile, "Measured at a phone width");
-  for (const path of ["/", "/research", "/research-services", "/request-research", "/live-monitor", "/research/example-report"]) {
+  for (const path of ["/", "/research", "/research-services", "/request-research", "/live-monitor", "/research/example-report", "/about", "/methodology", "/this-page-does-not-exist"]) {
     test(`${path} has 44px tap targets at 390px`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
@@ -318,8 +318,27 @@ test.describe("request form", () => {
     await page.getByLabel(/I consent/).check();
     await page.getByRole("button", { name: /submit research request/i }).click();
     await expect(page.getByRole("heading", { name: "Your research request has been received." })).toBeVisible();
+    expect(await page.evaluate(() => sessionStorage.getItem("tharros.request.draft"))).toBeNull();
     await page.reload();
+    // Prove the form hydrated and ran its restore before asserting nothing came back.
+    await page.getByLabel("Business email").fill("new@example.com");
+    await expect
+      .poll(() => page.evaluate(() => sessionStorage.getItem("tharros.request.draft") ?? ""))
+      .toContain("new@example.com");
     await expect(page.getByLabel("Organization")).toHaveValue("");
+    await expect(page.getByLabel("Country")).toHaveValue("");
+  });
+
+  test("reloading a prefilled link keeps the visitor's edits", async ({ page }) => {
+    await page.goto("/request-research?product=Alpha");
+    await fillOrganization(page);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Alpha");
+    await page.getByLabel("Subject, product or sector").fill("Beta");
+    await page.reload();
+    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Beta");
   });
 });
 
@@ -386,6 +405,8 @@ test.describe("every sitemap route", () => {
   test("has no serious or critical accessibility violations", async ({ page, request }, testInfo) => {
     test.skip(testInfo.project.name === "mobile", "Desktop sweep");
     test.setTimeout(180_000);
+    // Audit the settled page: a heading caught mid-reveal at the fold is a transient blend, not the design.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     for (const path of await sitemapPaths(request)) {
       await page.goto(path);
       await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });

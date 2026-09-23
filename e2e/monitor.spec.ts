@@ -46,8 +46,11 @@ test("commission research on a story prefills the request form", async ({ page }
   await page.goto("/live-monitor?view=compact&topics=technology-strategic");
   const row = workspace(page).locator(".monitor-row").first();
   await row.locator(".monitor-actions > summary").click();
-  await row.getByRole("link", { name: "Commission research on this" }).click();
-  await expect(page).toHaveURL(/\/request-research\?context=/);
+  const commission = row.getByRole("link", { name: "Commission research on this" });
+  await expect(commission).toHaveAttribute("href", /\/request-research\?context=/);
+  await commission.click();
+  // The form moves the prefill into its draft and drops it from the address, so a reload keeps edits.
+  await expect(page).toHaveURL(/\/request-research$/);
   await page.getByLabel("Organization").fill("Example GmbH");
   await page.getByLabel("Country").fill("Germany");
   await page.getByLabel("Business email").fill("research@example.com");

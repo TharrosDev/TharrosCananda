@@ -43,11 +43,13 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   useEffect(()=>{
     const prefill=prefillFromSearchParams(Object.fromEntries(new URLSearchParams(window.location.search)));
     const restore={...parseRequestDraft(readStorage(draftKey,"session")),...prefill};
-    restored.current=true;
-    if(!Object.keys(restore).length) return;
+    // Once applied, the prefill lives in the draft; dropping it from the URL means a reload keeps later edits.
+    if(Object.keys(prefill).length) window.history.replaceState(window.history.state,"",window.location.pathname+window.location.hash);
+    if(!Object.keys(restore).length){ restored.current=true; return; }
     const isEmpty=(value:unknown)=>Array.isArray(value)?value.length===0:!value;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time merge of URL prefill and draft after hydration
     setValues((current)=>{
+      // Saving starts only once the restored values are in state, so the stored draft is never blanked first.
+      restored.current=true;
       const next={...current};
       for(const [key,value] of Object.entries(restore) as [keyof ResearchRequestPayload,never][]) if(isEmpty(current[key])) next[key]=value;
       return next;
@@ -108,7 +110,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const mailto=`mailto:${contactEmail}?subject=${encodeURIComponent(`Research request: ${values.companyName}`)}&body=${encodeURIComponent(requestAsEmailBody(values))}`;
 
   return <form className="request-form" onSubmit={submit} noValidate ref={formRef}>
-    <ol className="form-stepper" aria-label="Request steps">{stepLabels.map((label,index)=><li key={label} aria-current={index===step?"step":undefined} className={index<step?"is-done":undefined}><span aria-hidden="true">{String(index+1).padStart(2,"0")}</span><span className="form-step-label">{label}</span></li>)}</ol>
+    <ol className="form-stepper" aria-label="Request steps">{stepLabels.map((label,index)=><li key={label} aria-current={index===step?"step":undefined} className={index<step?"is-done":undefined}><span aria-hidden="true">{String(index+1).padStart(2,"0")}</span><span className="form-step-label">{label}</span>{index<step&&<span className="sr-only">, completed</span>}</li>)}</ol>
     <div className="form-progress"><div role="progressbar" aria-label="Request progress" aria-valuemin={1} aria-valuemax={totalSteps} aria-valuenow={step+1} aria-valuetext={`Step ${step+1} of ${totalSteps}: ${stepLabels[step]}`}><span style={{transform:`scaleX(${(step+1)/totalSteps})`}} /></div></div>
     <div className="form-trap" aria-hidden="true"><label htmlFor="request-fax">Fax</label><input id="request-fax" name={honeypotField} tabIndex={-1} autoComplete="off" value={trap} onChange={(e)=>setTrap(e.target.value)} /></div>
 
