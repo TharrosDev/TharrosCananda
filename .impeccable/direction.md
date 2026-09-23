@@ -12,7 +12,7 @@ The visual world comes from research artifacts: customs tables, procurement regi
 
 ## STORY
 
-The visitor begins with the commercial decision, sees the four areas of expertise, inspects current attributed reporting and source methodology, then either reads verified Tharros research when it exists or commissions a focused answer. An empty research archive is honest infrastructure, stated once without defensive repetition.
+The visitor begins with the commercial decision, sees the four areas of expertise, inspects the source methodology, then either reads verified Tharros research when it exists or commissions a focused answer. An empty research archive is honest infrastructure, stated once without defensive repetition.
 
 ## FIRST VIEWPORT
 
@@ -24,4 +24,4 @@ Primary navigation is Services · Research · Methodology · About, with Commiss
 
 ## COMMERCIAL MODEL
 
-The public service model covers both directions of the Canada–Europe relationship. Canadian Buyer Intelligence is the flagship entry product. Partner/Ecosystem Research and White-label Research are first-class commercial capabilities, not hidden inside a generic custom bucket.
+The public service model covers both directions of the Canada–Europe relationship with three services (`src/lib/services.ts`): Custom & Partner Research is the flagship, alongside Market Assessment and Buyer & Partner Research. No published prices; every engagement is scoped per case.

@@ -35,7 +35,7 @@ spacing:
 
 The interface should feel like a rigorous commercial-research publication whose evidence can be inspected. Warm ivory carries graphite ink; dark chapter bands create hierarchy; muted Canadian red marks actions; steel carries quantitative series. The system should not look like a government portal, generic consultancy, startup dashboard or experimental portfolio.
 
-The visual material is **research itself**: source registers, live charts, archival metadata, tables, procurement/document references and report artifacts as real work is produced. Do not fill empty space with generic stock photography or decorative charts.
+The visual material is **research itself**: source registers, archival metadata, tables, procurement/document references and report artifacts as real work is produced. Do not fill empty space with generic stock photography or decorative charts.
 
 ## Core rules
 
@@ -188,7 +188,7 @@ Primary actions are square muted-red fields with a trailing arrow. Secondary act
 
 ### Atlantic map
 
-The homepage map (`src/components/atlantic-map.tsx`) is an orthographic line drawing of the North Atlantic: Natural Earth coastlines, a faint 10° graticule and the real great-circle route from Ottawa to Brussels in red, with endpoint coordinates and the route distance. Edges fade through a radial mask. Labels are HTML overlays so they keep true type sizes at every width. It is geography only, never an implied dataset. The paths were generated once and are static; the route draw is disabled under reduced motion.
+The homepage map (`src/components/atlantic-map.tsx`) is an orthographic line drawing of the North Atlantic: Natural Earth coastlines, a faint 10° graticule and the real great-circle route from Ottawa to Brussels in red, with endpoint coordinates and the route distance. Edges fade through a radial mask. Labels are HTML overlays so they keep true type sizes at every width. It is geography only, never an implied dataset. The coastline and graticule paths were generated once and are served as the cached static file `public/atlantic-map.svg`; the route stays inline so it can animate. The route draw is disabled under reduced motion.
 
 ### Research archive
 

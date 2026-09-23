@@ -2,7 +2,7 @@ import { createHmac } from "node:crypto";
 import { allPublications } from "@/data/publications";
 import { supabaseServer as supabase } from "@/lib/supabase";
 
-// Server-only: read and citation counts for published research (docs/superpowers/specs/2026-09-23-research-metrics-design.md).
+// Server-only: read and citation counts for published research (docs/OPERATIONS.md, Research readership).
 
 export type MetricKind = "read" | "cite";
 export type Counts = { reads: number; citations: number };
