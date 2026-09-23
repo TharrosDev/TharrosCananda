@@ -13,6 +13,9 @@ const routes = [
   ["not-found", "/this-page-does-not-exist"],
 ] as const;
 
+// Scroll-driven reveals depend on scroll position; baselines capture the settled, reduced-motion state.
+test.use({ reducedMotion: "reduce" });
+
 for (const [name, path] of routes) {
   test(`visual: ${name}`, async ({ page }) => {
     await page.goto(path);

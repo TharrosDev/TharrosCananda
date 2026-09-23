@@ -21,7 +21,8 @@ describe("motion safety", () => {
     let reveals = 0;
     for (const file of files) {
       const css = readFileSync(file, "utf8");
-      for (const match of css.matchAll(/animation-timeline:/g)) {
+      // The @supports condition itself is not a use.
+      for (const match of css.matchAll(/(?<!@supports \()animation-timeline:/g)) {
         reveals += 1;
         const before = css.slice(0, match.index);
         const supports = before.lastIndexOf("@supports (animation-timeline");

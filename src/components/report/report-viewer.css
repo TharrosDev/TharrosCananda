@@ -5,7 +5,7 @@
 .report-viewer-pages label { font-weight: 600; }
 .report-viewer-pages input { width: 3.2em; height: 40px; border: 1px solid var(--rule-strong); background: var(--ivory-light); color: var(--ink); text-align: center; font: inherit; font-variant-numeric: tabular-nums; }
 .report-viewer-pages span { color: var(--slate); }
-.report-viewer-zoom button { min-width: 44px; height: 40px; padding: 0 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+.report-viewer-zoom button { min-width: 44px; height: 40px; padding: 0 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
 .report-viewer-zoom button:hover, .report-viewer-zoom button[aria-pressed="true"] { background: var(--ink); color: var(--ivory-light); }
 .report-viewer-zoom output { min-width: 4.5ch; text-align: center; font-variant-numeric: tabular-nums; }
 .report-viewer-download { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }

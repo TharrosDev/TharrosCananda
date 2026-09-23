@@ -10,7 +10,7 @@
 .request-trust-links { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--rule); display: grid; justify-items: start; gap: 6px; }
 .form-progress { margin-bottom: 44px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; }
 .form-progress > div { height: 2px; background: var(--ivory-deep); }
-.form-progress > div span { display: block; height: 100%; background: var(--ink); transform-origin: left; transition: transform 400ms var(--ease-out); }
+.form-progress > div span { display: block; height: 100%; background: var(--ink); transform-origin: left; transition: transform var(--dur-2) var(--ease-out); }
 .form-progress p { margin: 0; color: var(--slate); font-size: 15px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .request-form fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .request-form legend { margin-bottom: 8px; font-family: var(--display); font-size: 38px; font-weight: 400; line-height: 1.1; }
@@ -19,14 +19,14 @@
 .form-field > label { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; font-size: 17px; font-weight: 600; }
 .form-field em { color: var(--red); font-size: 13.5px; font-style: normal; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .form-field small { color: var(--slate); font-size: 15px; font-weight: 400; }
-.form-field input, .form-field textarea { width: 100%; border: 1px solid var(--rule-strong); border-radius: 0; color: var(--ink); background: white; transition: border-color 160ms var(--ease-out); }
+.form-field input, .form-field textarea { width: 100%; border: 1px solid var(--rule-strong); border-radius: 0; color: var(--ink); background: white; transition: border-color var(--dur-1) var(--ease-out); }
 .form-field input { height: 52px; padding: 0 14px; }
 .form-field textarea { padding: 12px 14px; resize: vertical; }
 .form-field input:hover, .form-field textarea:hover { border-color: var(--ink-soft); }
 .form-field input:focus, .form-field textarea:focus { border-color: var(--focus); }
 .form-field [aria-invalid="true"] { border-color: var(--error); }
 .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--col-gap); border-top: 1px solid var(--rule); }
-.choice { position: relative; min-height: 60px; padding: 12px 4px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background 160ms var(--ease-out); }
+.choice { position: relative; min-height: 60px; padding: 12px 4px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 14px; cursor: pointer; transition: background var(--dur-1) var(--ease-out); }
 .choice:hover { background: var(--ivory); }
 .choice.is-selected { font-weight: 600; }
 .choice input { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
