@@ -16,20 +16,9 @@ export const metadata: Metadata = {
   },
   description:
     "Independent research on trade, defence, energy, industry and technology across Canada and Europe.",
-  openGraph: {
-    type: "website",
-    locale: "en_CA",
-    url: siteUrl,
-    siteName: "Tharros Canada",
-    title: "Independent Canada–Europe research.",
-    description:
-      "Research on trade, defence, energy, industry and technology across Canada and Europe.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tharros Canada",
-    description: "Independent Canada–Europe research.",
-  },
+  // Pages set their own Open Graph and Twitter fields through pageMetadata (src/lib/site.ts).
+  openGraph: { type: "website", locale: "en_CA", siteName: "Tharros Canada" },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
 
@@ -42,7 +31,21 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const email = researchEmail();
-  const structuredData = organizationJsonLd(organization, { url: siteUrl, email });
+  const { "@context": context, ...org } = organizationJsonLd(organization, { url: siteUrl, email });
+  const structuredData = {
+    "@context": context,
+    "@graph": [
+      org,
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "Tharros Canada",
+        inLanguage: "en-CA",
+        publisher: { "@id": org["@id"] },
+      },
+    ],
+  };
 
   return (
     <html

@@ -11,7 +11,7 @@ import { researchAreas } from "@/lib/research-areas";
 import { reportContents, reportLimitations, reportSources } from "@/lib/report-sections";
 import { reportAsset } from "@/lib/reports";
 import { researchLicence } from "@/lib/licence";
-import { formatLongDate, jsonLd, siteUrl } from "@/lib/site";
+import { formatLongDate, jsonLd, pageMetadata, siteUrl } from "@/lib/site";
 
 export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
 
@@ -22,17 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!p) return {};
   const asset = reportAsset(p.slug);
   // The OG image comes from ./opengraph-image.tsx (the file convention wins over metadata images).
-  const base: Metadata = {
+  const page = pageMetadata({
     title: p.title,
     description: p.summary,
-    alternates: { canonical: `/research/${p.slug}` },
-    openGraph: {
-      type: "article",
-      title: p.title,
-      description: p.summary,
-      publishedTime: p.publishedAt,
-      authors: p.authors,
-    },
+    path: `/research/${p.slug}`,
+    type: "article",
+  });
+  const base: Metadata = {
+    ...page,
+    openGraph: { ...page.openGraph, publishedTime: p.publishedAt, authors: p.authors },
   };
   if (!p.indexable) return { ...base, robots: { index: false, follow: false } };
   // Highwire Press tags: what Google Scholar reads to index a report and its PDF.
@@ -79,7 +77,7 @@ export default async function ReportPage({ params }: Props) {
       "@type": name === "Tharros Canada" ? "Organization" : "Person",
       name,
     })),
-    publisher: { "@type": "Organization", name: "Tharros Canada", url: siteUrl },
+    publisher: { "@id": `${siteUrl}/#organization` },
     about: area?.name,
     url: `${siteUrl}/research/${p.slug}`,
     license: researchLicence.url,

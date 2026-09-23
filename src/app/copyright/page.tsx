@@ -4,14 +4,14 @@ import { PageHero } from "@/components/page-hero";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 import { researchLicence } from "@/lib/licence";
-import { siteUrl } from "@/lib/site";
+import { siteUrl, pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Copyright & Licence",
   description:
     "Tharros Canada public research is licensed under Creative Commons Attribution 4.0 (CC BY 4.0). What you can reuse, how to credit it and what the licence does not cover.",
-  alternates: { canonical: "/copyright" },
-};
+  path: "/copyright",
+});
 
 export default function CopyrightPage() {
   const contactEmail = researchEmail();

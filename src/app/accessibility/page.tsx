@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/page-hero";
 import { researchEmail } from "@/lib/contact";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Accessibility",
   description:
-    "Tharros Canada's accessibility approach and contact path for reporting accessibility problems.",
-  alternates: { canonical: "/accessibility" },
-};
+    "Tharros Canada's accessibility target (WCAG 2.2 AA), current interface practices and how to report a problem.",
+  path: "/accessibility",
+});
 
 export default function AccessibilityPage() {
   const contactEmail = researchEmail();

@@ -29,7 +29,9 @@ export const organization: Organization = {
   intakeRetention: null,
 };
 
-/** schema.org Organization with only the fields that are actually set. */
+import { researchAreas } from "@/lib/research-areas";
+
+/** schema.org Organization with only the fields that are actually set. `@id` lets other nodes (WebSite, Service, Report) reference it. */
 export function organizationJsonLd(
   org: Organization,
   { url, email }: { url: string; email: string | null },
@@ -37,9 +39,12 @@ export function organizationJsonLd(
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${url}/#organization`,
     name: "Tharros Canada",
     url,
-    description: "Independent research organization focused on Canada–Europe relations.",
+    description: "Independent research firm for organizations working between Canada and Europe.",
+    areaServed: ["Canada", "European Union"],
+    knowsAbout: researchAreas.map((area) => area.name),
     ...(email ? { email } : {}),
     ...(org.legal ? { legalName: org.legal.legalName } : {}),
     ...(org.legal?.address ? { address: org.legal.address } : {}),

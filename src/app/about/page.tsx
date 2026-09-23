@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
-  description: "About Tharros Canada's independent research on Canada–Europe relations.",
-  alternates: { canonical: "/about" },
-};
+  description:
+    "Tharros Canada is an independent research firm studying the trade, policy, industry and organizations that connect Canada and Europe.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   const contactEmail = researchEmail();

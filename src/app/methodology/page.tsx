@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { publicSources } from "@/data/sources";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Sources & Methodology",
-  description: "How Tharros Canada selects, dates, attributes and interprets public sources.",
-  alternates: { canonical: "/methodology" },
-};
+  description:
+    "How Tharros Canada selects, dates, attributes and interprets public sources such as Statistics Canada, Eurostat, CanadaBuys and TED, and states limitations.",
+  path: "/methodology",
+});
 
 const evidenceClasses = [
   [

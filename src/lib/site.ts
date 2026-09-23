@@ -55,3 +55,30 @@ export function formatFullMonthYear(value: string) {
   const p = dateParts(value, "UTC");
   return p ? `${fullMonths[months.indexOf(p.month)]} ${p.year}` : "Date unavailable";
 }
+
+export const siteName = "Tharros Canada";
+
+/**
+ * Title, description, canonical, Open Graph and Twitter for one page. A page's openGraph object
+ * replaces the layout's wholesale, so every page must set its own title, description and url here;
+ * otherwise shared links would all preview as the homepage.
+ */
+export function pageMetadata({
+  title,
+  description,
+  path,
+  type = "website",
+}: {
+  title: string;
+  description: string;
+  path: string;
+  type?: "website" | "article";
+}) {
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: { type, locale: "en_CA", siteName, url: path, title, description },
+    twitter: { card: "summary_large_image" as const, title, description },
+  };
+}
