@@ -38,7 +38,7 @@ test("commissioning reaches a complete review without forcing a product classifi
   await page.getByRole("button", { name: /continue/i }).click();
   await expect(page.getByText("research@example.com")).toBeVisible();
   await expect(page.getByText("Industrial components")).toBeVisible();
-  await expect(page.getByText("Research format to be suggested by Tharros")).toBeVisible();
+  await expect(page.getByText("Service to be suggested by Tharros")).toBeVisible();
   await page.getByRole("button", { name: "Edit" }).first().click();
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
