@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { CitationPanel } from "@/components/citation-panel";
-import type { CitationInput } from "@/lib/citation";
 
-type Props = { file: string; bytes: number; citation: CitationInput; url: string; title: string };
+type Props = { file: string; bytes: number; url: string; title: string };
 
-export function ReportActions({ file, bytes, citation, url, title }: Props) {
+export function ReportActions({ file, bytes, url, title }: Props) {
   const [linkState, setLinkState] = useState<"idle" | "copied" | "manual">("idle");
 
   async function copyLink() {
@@ -37,12 +35,8 @@ export function ReportActions({ file, bytes, citation, url, title }: Props) {
       <a className="button-primary" href={file} download>
         Download PDF <small>{Math.round(bytes / 1024)} KB</small>
       </a>
-      <details className="cite-popover report-cite">
-        <summary>Cite</summary>
-        <div className="cite-popover-body">
-          <CitationPanel input={citation} />
-        </div>
-      </details>
+      {/* One citation panel on the page: the header action jumps to it. */}
+      <a className="report-action" href="#cite">Cite</a>
       <button type="button" className="report-action" onClick={copyLink}>
         {linkState === "copied" ? "Link copied" : "Copy link"}
       </button>

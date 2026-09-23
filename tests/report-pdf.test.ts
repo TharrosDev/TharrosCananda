@@ -29,7 +29,13 @@ describe.each(allPublications.map((p) => [p.slug, p] as const))("report %s", (sl
     const all = pages.join(" ").replace(/\s+/g, " ");
     expect(all).toContain(publication.reference);
     expect(all).toContain(publication.title);
-    expect(asset!.outline).toBe(true);
+    expect(asset!.outline.length).toBeGreaterThan(0);
+    for (const entry of asset!.outline) {
+      expect(entry.page).toBeGreaterThanOrEqual(1);
+      expect(entry.page).toBeLessThanOrEqual(asset!.pages);
+      expect(entry.top).toBeGreaterThanOrEqual(0);
+      expect(entry.top).toBeLessThanOrEqual(1);
+    }
   });
 });
 

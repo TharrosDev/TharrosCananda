@@ -44,7 +44,22 @@ async function extract(bytes) {
     const text = content.items.map((item) => ("str" in item ? item.str + (item.hasEOL ? "\n" : "") : "")).join("");
     pages.push(text.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").trim());
   }
-  const outline = ((await doc.getOutline()) ?? []).length > 0;
+  // The PDF's own bookmarks become the on-page contents: title, depth, page and how far down that page it starts.
+  const outline = [];
+  const walk = async (items, level) => {
+    for (const item of items ?? []) {
+      const dest = typeof item.dest === "string" ? await doc.getDestination(item.dest) : item.dest;
+      if (Array.isArray(dest) && dest[0]) {
+        const index = typeof dest[0] === "number" ? dest[0] : await doc.getPageIndex(dest[0]);
+        const height = (await doc.getPage(index + 1)).view[3];
+        // XYZ destinations carry the target's distance from the page bottom in PDF points.
+        const top = dest[1]?.name === "XYZ" && typeof dest[3] === "number" ? Math.min(1, Math.max(0, 1 - dest[3] / height)) : 0;
+        outline.push({ title: item.title.trim(), level, page: index + 1, top: Math.round(top * 1000) / 1000 });
+      }
+      await walk(item.items, level + 1);
+    }
+  };
+  await walk(await doc.getOutline(), 0);
   await doc.cleanup();
   return { pages, outline };
 }
@@ -100,7 +115,7 @@ try {
     const { pages, outline } = await extract(bytes);
     texts[slug] = pages;
     manifest[slug] = { file, cover, pages: pages.length, bytes: bytes.length, sha: meta.sha, outline };
-    console.log(`${slug}: ${pages.length} pages, ${bytes.length} bytes, outline ${outline}`);
+    console.log(`${slug}: ${pages.length} pages, ${bytes.length} bytes, ${outline.length} outline entries`);
   }
 
   await writeJson(manifestPath, manifest);

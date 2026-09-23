@@ -91,7 +91,7 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
             return (
               <button key={area.slug} type="button" aria-pressed={pressed} disabled={!pressed && count === 0}
                 aria-describedby={`area-scope-${area.slug}`} onClick={() => set({ area: pressed ? "all" : area.slug })}>
-                <span className="archive-area-name">{area.name} <em>({count})</em></span>
+                <span className="archive-area-name">{area.name} <em>{count}<span className="sr-only"> {count === 1 ? "publication" : "publications"}</span></em></span>
                 <span className="archive-area-scope" id={`area-scope-${area.slug}`}>{area.scope}</span>
               </button>
             );
@@ -137,7 +137,6 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
               </select>
             </label>
           )}
-          {!state.q.trim() && <span>Newest first</span>}
           {filtered && <button type="button" className="archive-clear" onClick={clearAll}>Clear all</button>}
         </span>
       </div>
@@ -150,7 +149,7 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
 
       {results.length ? (
         <ol className="archive-list">
-          {results.map((doc) => <ArchiveCard key={doc.slug} doc={doc} />)}
+          {results.map((doc) => <ArchiveCard key={doc.slug} doc={doc} areaName={areas.find((a) => a.slug === doc.area)?.name} />)}
         </ol>
       ) : (
         <div className="archive-no-results">
@@ -174,7 +173,7 @@ export function ResearchArchive({ docs, areas, types, state = defaultArchiveStat
   );
 }
 
-function ArchiveCard({ doc }: { doc: ArchiveDoc & { snippet: string | null; terms: string[] } }) {
+function ArchiveCard({ doc, areaName }: { doc: ArchiveDoc & { snippet: string | null; terms: string[] }; areaName?: string }) {
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const stableUrl = `${siteUrl}/research/id/${doc.reference}`;
   async function copy() {
@@ -197,6 +196,7 @@ function ArchiveCard({ doc }: { doc: ArchiveDoc & { snippet: string | null; term
           <p className="archive-card-meta">
             <span>{doc.reference}</span>
             <span>{doc.specimen ? `Example · ${doc.type}` : doc.type}</span>
+            {areaName && <span>{areaName}</span>}
             <time dateTime={doc.publishedAt}>{formatMonthYear(doc.publishedAt)}</time>
             {doc.pages && <span>{doc.pages} pages</span>}
             {doc.text && <span>{readingMinutes(doc.text)} min read</span>}

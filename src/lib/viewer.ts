@@ -15,3 +15,13 @@ export function nextZoom(current: number, delta: number) {
   if (delta < 0) return Math.max(Math.min(MIN_ZOOM, current * 0.8), target);
   return Math.min(MAX_ZOOM, target);
 }
+
+/**
+ * Case-insensitive pattern for find-in-report, or null for queries too short to be useful.
+ * Words may be joined by any whitespace or none, because pdf.js splits lines into separate spans.
+ */
+export function findPattern(query: string) {
+  const words = query.trim().split(/\s+/).filter(Boolean);
+  if (words.join("").length < 2) return null;
+  return new RegExp(words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s*"), "gi");
+}

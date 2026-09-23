@@ -1,19 +1,30 @@
 "use client";
 
-import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, type MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import { canvasRatio, nextZoom } from "@/lib/viewer";
+import type { ContentsEntry } from "@/lib/report-sections";
+import { canvasRatio, findPattern, nextZoom } from "@/lib/viewer";
 import "./report-viewer.css";
 
-type Props = { file: string; pages: number; title: string };
+type Props = { file: string; pages: number; title: string; contents?: ContentsEntry[] };
 
 // Letter at 96 dpi: the size the PDF was printed at, so sheets reserve the right space before rendering.
 const SHEET_WIDTH = 816;
 const SHEET_HEIGHT = 1056;
 const MAX_FIT_WIDTH = 900;
+const MAX_FIT_WIDTH_FULLSCREEN = 1240;
 
-export function ReportViewer({ file, pages, title }: Props) {
+type Fullscreen = false | "native" | "overlay";
+const NO_MATCHES: Range[] = [];
+// Custom Highlight API: paints find results over the transparent text layer without touching its DOM.
+type HighlightRegistry = { set: (name: string, value: unknown) => void; delete: (name: string) => void };
+const highlights = () =>
+  typeof CSS !== "undefined" && "highlights" in CSS && typeof Highlight !== "undefined" ? (CSS as unknown as { highlights: HighlightRegistry }).highlights : null;
+
+export function ReportViewer({ file, pages, title, contents = [] }: Props) {
   const rootRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const sheetsRef = useRef<HTMLDivElement>(null);
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null);
   const [zoom, setZoom] = useState<number | "fit">("fit");
@@ -23,20 +34,32 @@ export function ReportViewer({ file, pages, title }: Props) {
   const [renderedKey, setRenderedKey] = useState("");
   const [current, setCurrent] = useState(1);
   const [pageInput, setPageInput] = useState("1");
+  const [fullscreen, setFullscreen] = useState<Fullscreen>(false);
+  const [section, setSection] = useState(-1);
+  const [contentsOpen, setContentsOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [found, setMatches] = useState<Range[]>([]);
+  const [matchIndex, setMatchIndex] = useState(0);
+  const anchor = useRef<{ page: number; offset: number } | null>(null);
+  const holdAnchor = useRef(false);
 
-  // "Fit width" follows the available space, phones included.
+  // "Fit width" follows the space beside the contents, phones and full screen included.
   useEffect(() => {
-    const el = rootRef.current;
+    const el = mainRef.current;
     if (!el) return;
     const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  const fitScale = Math.min(width || SHEET_WIDTH, MAX_FIT_WIDTH) / SHEET_WIDTH;
+  const maxFit = fullscreen ? MAX_FIT_WIDTH_FULLSCREEN : MAX_FIT_WIDTH;
+  const fitScale = Math.min(width || SHEET_WIDTH, maxFit) / SHEET_WIDTH;
   // Rounded so sub-pixel resizes do not trigger a re-render.
   const scale = Math.round((zoom === "fit" ? fitScale : zoom) * 100) / 100;
-  const rendering = renderedKey !== `${file}@${scale}`;
+  const renderKey = `${file}@${scale}`;
+  const rendering = renderedKey !== renderKey;
+  // Matches only count while the text layers they point into are the current ones.
+  const matches = findPattern(query) && !rendering && !failed ? found : NO_MATCHES;
 
   // One document (and one pdf.js worker) per file, destroyed when the file changes or the viewer unmounts.
   useEffect(() => {
@@ -109,17 +132,63 @@ export function ReportViewer({ file, pages, title }: Props) {
     };
   }, [doc, file, scale, hasWidth]);
 
-  // The page counter follows the sheet in the middle of the viewport.
+  // Full screen scrolls the viewer itself; otherwise the page scrolls.
+  const scroller = useCallback(() => (fullscreen ? rootRef.current : null), [fullscreen]);
+  /**
+   * The reading line, measured where it will be after a scroll rather than where it is now: under the
+   * site header (or the full-screen edge), plus the toolbar when it is sticky. Before the toolbar sticks,
+   * its current position sits far down the page and would make every jump land short.
+   */
+  const readingLine = useCallback(() => {
+    const edge = fullscreen ? (rootRef.current?.getBoundingClientRect().top ?? 0) : (document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+    const toolbar = toolbarRef.current;
+    const sticky = toolbar && getComputedStyle(toolbar).position === "sticky" ? toolbar.offsetHeight : 0;
+    return Math.max(edge, 0) + sticky + 16;
+  }, [fullscreen]);
+  const scrollByY = useCallback(
+    (delta: number, smooth = true) => (scroller() ?? window).scrollBy({ top: delta, behavior: smooth ? "smooth" : "instant" }),
+    [scroller],
+  );
+
+  // Page counter and current section both follow the reading line as the report scrolls.
   useEffect(() => {
-    const sheets = sheetsRef.current?.querySelectorAll<HTMLElement>(".report-sheet");
-    if (!sheets?.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && setCurrent(Number((entry.target as HTMLElement).dataset.page))),
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    sheets.forEach((sheet) => observer.observe(sheet));
-    return () => observer.disconnect();
-  }, [pages, failed]);
+    if (failed) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const sheets = sheetsRef.current?.querySelectorAll<HTMLElement>(".report-sheet");
+      if (!sheets?.length) return;
+      const line = readingLine() + 40;
+      let page = 1;
+      sheets.forEach((sheet, i) => {
+        if (sheet.getBoundingClientRect().top <= line) page = i + 1;
+      });
+      setCurrent(page);
+      // Where the reader is, as page + fraction, so a zoom or full-screen change can put them back.
+      const rect = sheets[page - 1].getBoundingClientRect();
+      if (!holdAnchor.current) anchor.current = rect.top <= line ? { page, offset: Math.min(1, (line - rect.top) / rect.height) } : null;
+      const ys = contents.map((entry) => {
+        const box = sheets[entry.page - 1]?.getBoundingClientRect();
+        return box ? box.top + entry.top * box.height : Infinity;
+      });
+      let active = ys.findLastIndex((y) => y <= line);
+      // Sections that start side by side (two columns) share a line: mark the first of them.
+      while (active > 0 && Math.abs(ys[active - 1] - ys[active]) < 4) active -= 1;
+      setSection(active);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const target = scroller() ?? window;
+    target.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      target.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [contents, failed, readingLine, scroller, renderedKey]);
 
   const [shownPage, setShownPage] = useState(current);
   if (shownPage !== current) {
@@ -127,16 +196,149 @@ export function ReportViewer({ file, pages, title }: Props) {
     setPageInput(String(current));
   }
 
+  /** Scroll so a point `top` (0–1) of the way down page `page` sits on the reading line. */
+  const scrollToPoint = useCallback(
+    (page: number, top: number) => {
+      const sheet = sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${page}"]`);
+      if (!sheet) return;
+      const rect = sheet.getBoundingClientRect();
+      // A small lift so a heading lands with its first line clear of the toolbar.
+      scrollByY(rect.top + Math.max(0, top * rect.height - 12) - readingLine());
+    },
+    [readingLine, scrollByY],
+  );
+
   function goTo(n: number) {
     const target = Math.min(Math.max(1, n || 1), pages);
     setCurrent(target);
     setPageInput(String(target));
-    sheetsRef.current?.querySelector(`.report-sheet[data-page="${target}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToPoint(target, 0);
   }
   const zoomBy = (delta: number) => setZoom((z) => nextZoom(z === "fit" ? fitScale : z, delta));
 
+  function openSection(event: MouseEvent, entry: ContentsEntry) {
+    // Without a drawn viewer the link opens the PDF at that page instead.
+    if (failed || !sheetsRef.current) return;
+    event.preventDefault();
+    setContentsOpen(false);
+    scrollToPoint(entry.page, entry.top);
+    sheetsRef.current.focus({ preventScroll: true });
+  }
+
+  // ---------- Full screen ----------
+  useEffect(() => {
+    const sync = () => setFullscreen((state) => (document.fullscreenElement === rootRef.current ? "native" : state === "native" ? false : state));
+    document.addEventListener("fullscreenchange", sync);
+    return () => document.removeEventListener("fullscreenchange", sync);
+  }, []);
+  // The overlay fallback (iPhone has no element full screen) locks the page behind it and closes on Escape.
+  useEffect(() => {
+    if (fullscreen !== "overlay") return;
+    document.documentElement.setAttribute("data-viewer-overlay", "");
+    const onKey = (event: globalThis.KeyboardEvent) => event.key === "Escape" && setFullscreen(false);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.documentElement.removeAttribute("data-viewer-overlay");
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [fullscreen]);
+  // Zoom and full screen resize every sheet: put the reader back on the same point of the same page.
+  // Runs before paint, after the sheets have their new size; the anchor is frozen while full screen switches scrollers.
+  useLayoutEffect(() => {
+    const target = anchor.current;
+    const sheet = target && sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${target.page}"]`);
+    if (target && sheet) {
+      const rect = sheet.getBoundingClientRect();
+      scrollByY(rect.top + target.offset * rect.height - (readingLine() + 40), false);
+    }
+    const frame = requestAnimationFrame(() => (holdAnchor.current = false));
+    return () => cancelAnimationFrame(frame);
+  }, [scale, fullscreen, readingLine, scrollByY]);
+
+  async function toggleFullscreen() {
+    holdAnchor.current = true;
+    if (document.fullscreenElement) return void (await document.exitFullscreen().catch(() => {}));
+    if (fullscreen === "overlay") return setFullscreen(false);
+    const root = rootRef.current;
+    if (root?.requestFullscreen && document.fullscreenEnabled) {
+      try {
+        await root.requestFullscreen({ navigationUI: "hide" });
+        return;
+      } catch {
+        // Refused (iframe policy, user setting): fall through to the overlay.
+      }
+    }
+    setFullscreen("overlay");
+  }
+
+  // ---------- Find in report ----------
+  useEffect(() => {
+    const registry = highlights();
+    const pattern = findPattern(query);
+    if (!pattern || rendering || failed) {
+      registry?.delete("report-find");
+      registry?.delete("report-find-current");
+      return;
+    }
+    const timer = setTimeout(() => {
+      const ranges: Range[] = [];
+      sheetsRef.current?.querySelectorAll<HTMLElement>(".report-sheet .textLayer").forEach((layer) => {
+        // One string per page, with each text node's start offset, so a match can span pdf.js spans.
+        const nodes: { node: Text; start: number }[] = [];
+        let text = "";
+        const walker = document.createTreeWalker(layer, NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+          nodes.push({ node: node as Text, start: text.length });
+          text += node.textContent ?? "";
+        }
+        const locate = (offset: number) => {
+          let i = nodes.length - 1;
+          while (i > 0 && nodes[i].start > offset) i -= 1;
+          return { node: nodes[i].node, offset: offset - nodes[i].start };
+        };
+        for (const match of text.matchAll(pattern)) {
+          if (!match[0]) continue;
+          const start = locate(match.index);
+          const end = locate(match.index + match[0].length - 1);
+          const range = document.createRange();
+          range.setStart(start.node, start.offset);
+          range.setEnd(end.node, end.offset + 1);
+          ranges.push(range);
+        }
+      });
+      setMatches(ranges);
+      setMatchIndex(0);
+      registry?.set("report-find", new Highlight(...ranges));
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [query, rendering, failed, renderKey]);
+
+  const showMatch = useCallback(
+    (index: number) => {
+      const range = matches[index];
+      if (!range) return;
+      highlights()?.set("report-find-current", new Highlight(range));
+      const rect = range.getBoundingClientRect();
+      const view = scroller()?.getBoundingClientRect() ?? { top: 0, height: window.innerHeight };
+      // Bring the match to a third of the way down the visible reading area.
+      const line = readingLine();
+      const target = line + (view.top + view.height - line) / 3;
+      if (rect.top < line || rect.bottom > view.top + view.height) scrollByY(rect.top - target);
+    },
+    [matches, readingLine, scrollByY, scroller],
+  );
+  useEffect(() => {
+    if (matches.length) showMatch(matchIndex);
+    else highlights()?.delete("report-find-current");
+  }, [matches, matchIndex, showMatch]);
+  const stepMatch = (delta: number) => matches.length && setMatchIndex((i) => (i + delta + matches.length) % matches.length);
+  useEffect(() => () => {
+    highlights()?.delete("report-find");
+    highlights()?.delete("report-find-current");
+  }, []);
+
   function onKeyDown(event: KeyboardEvent) {
-    // Leave browser shortcuts (Ctrl/Cmd +, Alt combos) and typing in the page field alone.
+    // Leave browser shortcuts (Ctrl/Cmd +, Alt combos) and typing in fields alone.
     if (event.ctrlKey || event.metaKey || event.altKey || (event.target as HTMLElement).tagName === "INPUT") return;
     if (event.key === "PageDown" && current < pages) {
       event.preventDefault();
@@ -153,52 +355,100 @@ export function ReportViewer({ file, pages, title }: Props) {
       Download PDF
     </a>
   );
+  const findStatus = !findPattern(query) ? "" : matches.length ? `${matchIndex + 1} of ${matches.length}` : rendering ? "Searching…" : "No matches";
 
   return (
     <section
       ref={rootRef}
-      className="report-viewer"
+      className="report-reader"
       aria-label={`${title}: PDF`}
       data-report-viewer
+      data-fullscreen={fullscreen || undefined}
       data-loading={rendering && !failed ? "" : undefined}
       onKeyDown={onKeyDown}
     >
       {/* Without JavaScript there is nothing to draw: hide the empty sheets and inert controls. */}
       <noscript>
-        <style>{".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom{display:none!important}"}</style>
+        <style>{".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom,.report-viewer-find,.report-viewer-fullscreen,.report-contents-toggle{display:none!important}.report-contents-list{display:block!important}"}</style>
       </noscript>
-      <div className="report-viewer-toolbar" role="toolbar" aria-label="PDF controls">
-        <form className="report-viewer-pages" onSubmit={(event) => { event.preventDefault(); goTo(Number(pageInput)); }}>
-          <label htmlFor="report-page">Page</label>
-          <input
-            id="report-page"
-            inputMode="numeric"
-            value={pageInput}
-            onChange={(event) => setPageInput(event.target.value.replace(/\D/g, ""))}
-            aria-describedby="report-page-total"
-          />
-          <span id="report-page-total">of {pages}</span>
-        </form>
-        <div className="report-viewer-zoom">
-          <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">−</button>
-          <output aria-live="polite">{Math.round(scale * 100)}%</output>
-          <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">+</button>
-          <button type="button" onClick={() => setZoom("fit")} aria-pressed={zoom === "fit"}>Fit width</button>
-        </div>
-        {download}
-      </div>
-      {failed ? (
-        <div className="report-viewer-error" role="alert">
-          <p>The PDF could not be displayed.</p>
+      {contents.length > 0 && (
+        <nav className="report-contents" aria-labelledby="report-contents-heading" data-open={contentsOpen || undefined}>
+          <h2 id="report-contents-heading" className="report-contents-heading">Contents</h2>
+          <button type="button" className="report-contents-toggle" aria-expanded={contentsOpen} aria-controls="report-contents-list" onClick={() => setContentsOpen((open) => !open)}>
+            Contents <span aria-hidden="true">{contentsOpen ? "−" : "+"}</span>
+          </button>
+          <ol className="report-contents-list" id="report-contents-list">
+            {contents.map((entry, i) => (
+              <li key={`${entry.page}-${entry.top}-${entry.title}`}>
+                <a href={`${file}#page=${entry.page}`} aria-current={i === section ? "location" : undefined} onClick={(event) => openSection(event, entry)}>
+                  <span className="report-contents-number">{entry.number}</span>
+                  <span className="report-contents-title">{entry.title}</span>
+                  <span className="report-contents-page">p. {entry.page}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <div className="report-viewer" ref={mainRef}>
+        <div className="report-viewer-toolbar" role="toolbar" aria-label="PDF controls" ref={toolbarRef}>
+          <form className="report-viewer-pages" onSubmit={(event) => { event.preventDefault(); goTo(Number(pageInput)); }}>
+            <label htmlFor="report-page">Page</label>
+            <input
+              id="report-page"
+              inputMode="numeric"
+              value={pageInput}
+              onChange={(event) => setPageInput(event.target.value.replace(/\D/g, ""))}
+              aria-describedby="report-page-total"
+            />
+            <span id="report-page-total">of {pages}</span>
+          </form>
+          <form className="report-viewer-find" role="search" onSubmit={(event) => event.preventDefault()}>
+            <input
+              type="search"
+              aria-label="Find in report"
+              placeholder="Find in report"
+              value={query}
+              maxLength={80}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  stepMatch(event.shiftKey ? -1 : 1);
+                } else if (event.key === "Escape" && query) {
+                  event.stopPropagation();
+                  setQuery("");
+                }
+              }}
+            />
+            <span className="report-viewer-find-status" role="status">{findStatus}</span>
+            <button type="button" onClick={() => stepMatch(-1)} disabled={matches.length < 2} aria-label="Previous match">↑</button>
+            <button type="button" onClick={() => stepMatch(1)} disabled={matches.length < 2} aria-label="Next match">↓</button>
+          </form>
+          <div className="report-viewer-zoom">
+            <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">−</button>
+            <output aria-live="polite">{Math.round(scale * 100)}%</output>
+            <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">+</button>
+            <button type="button" onClick={() => setZoom("fit")} aria-pressed={zoom === "fit"} aria-label="Fit width">Fit<span className="report-viewer-fit-extra"> width</span></button>
+          </div>
+          <button type="button" className="report-viewer-fullscreen" onClick={toggleFullscreen} aria-pressed={Boolean(fullscreen)}>
+            {fullscreen ? "Exit full screen" : "Full screen"}
+          </button>
           {download}
         </div>
-      ) : (
-        <div className="report-viewer-sheets" ref={sheetsRef} tabIndex={0} role="region" aria-label="Report pages">
-          {Array.from({ length: pages }, (_, i) => (
-            <div key={i} className="report-sheet" data-page={i + 1} style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }} />
-          ))}
-        </div>
-      )}
+        {failed ? (
+          <div className="report-viewer-error" role="alert">
+            <p>The PDF could not be displayed.</p>
+            {download}
+          </div>
+        ) : (
+          <div className="report-viewer-sheets" ref={sheetsRef} tabIndex={0} role="region" aria-label="Report pages">
+            {Array.from({ length: pages }, (_, i) => (
+              <div key={i} className="report-sheet" data-page={i + 1} style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }} />
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 }
