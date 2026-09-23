@@ -49,6 +49,7 @@ function blocksAfter(blocks: ReportBlock[], pattern: RegExp): ReportBlock[] | nu
 
 /** Stated limitations, as plain lines, from the section headed "Limitations". */
 export function reportLimitations(publication: Publication): string[] {
+  if (publication.limitations) return publication.limitations;
   return (blocksAfter(publication.body, /^limitations?$/i) ?? []).flatMap((block) =>
     block.kind === "list" ? block.items : block.kind === "paragraph" ? [block.text] : [],
   );

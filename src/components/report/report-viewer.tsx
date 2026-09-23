@@ -14,11 +14,16 @@ import type { ContentsEntry } from "@/lib/report-sections";
 import { canvasRatio, findPattern, nextZoom } from "@/lib/viewer";
 import "./report-viewer.css";
 
-type Props = { file: string; pages: number; title: string; contents?: ContentsEntry[] };
+type Props = {
+  file: string;
+  pages: number;
+  title: string;
+  contents?: ContentsEntry[];
+  /** Page size in PDF points; defaults to Letter. Supplied PDFs may be A4. */
+  pageWidth?: number;
+  pageHeight?: number;
+};
 
-// Letter at 96 dpi: the size the PDF was printed at, so sheets reserve the right space before rendering.
-const SHEET_WIDTH = 816;
-const SHEET_HEIGHT = 1056;
 const MAX_FIT_WIDTH = 900;
 const MAX_FIT_WIDTH_FULLSCREEN = 1240;
 
@@ -34,7 +39,17 @@ const highlights = () =>
     ? (CSS as unknown as { highlights: HighlightRegistry }).highlights
     : null;
 
-export function ReportViewer({ file, pages, title, contents = [] }: Props) {
+export function ReportViewer({
+  file,
+  pages,
+  title,
+  contents = [],
+  pageWidth = 612,
+  pageHeight = 792,
+}: Props) {
+  // The PDF's page size at 96 dpi, so sheets reserve the right space before rendering.
+  const SHEET_WIDTH = (pageWidth * 96) / 72;
+  const SHEET_HEIGHT = (pageHeight * 96) / 72;
   const rootRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);

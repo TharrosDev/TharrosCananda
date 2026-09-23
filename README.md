@@ -59,6 +59,8 @@ docs/             OPERATIONS.md (infra and runbooks), DATA_SOURCES.md (evidence 
 
 ## Publishing a report
 
+Reports the owner supplies as finished PDFs follow `docs/REPORT_REQUIREMENTS.md` instead: the PDF is served unchanged and never edited.
+
 1. Add a record to `publications` in `src/data/publications.ts`:
    - reference `TC-<YEAR>-<NNN>`
    - typed `body` blocks

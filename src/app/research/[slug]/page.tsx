@@ -171,6 +171,8 @@ export default async function ReportPage({ params }: Props) {
           pages={asset.pages}
           title={p.title}
           contents={reportContents(p, asset.outline)}
+          pageWidth={asset.width}
+          pageHeight={asset.height}
         />
       ) : (
         <p className="report-pending">The PDF for this report is being prepared.</p>
