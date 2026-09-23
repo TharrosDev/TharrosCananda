@@ -25,9 +25,10 @@ function intakeWebhook() {
     return null;
   }
 }
+const envSecret = () => process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim();
 /** The env var wins; otherwise the secret shared with the Edge Function through Supabase. */
 async function intakeSecret() {
-  return process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim() || (await intakeSecretFromDatabase());
+  return envSecret() || (await intakeSecretFromDatabase());
 }
 
 export async function POST(request: Request) {
@@ -62,7 +63,8 @@ export async function POST(request: Request) {
     );
 
   const webhook = intakeWebhook();
-  const secret = await intakeSecret();
+  // A missing webhook short-circuits before any database read for the secret.
+  const secret = webhook && (await intakeSecret());
   if (!webhook || !secret) {
     console.error(
       "[research-request] Live intake requires a valid https RESEARCH_INTAKE_WEBHOOK_URL and RESEARCH_INTAKE_WEBHOOK_SECRET.",
@@ -79,22 +81,28 @@ export async function POST(request: Request) {
     submittedAt: new Date().toISOString(),
     source: "tharros.ca",
   });
-  const signature = createHmac("sha256", secret).update(`${timestamp}.${payload}`).digest("hex");
-  try {
-    const response = await fetch(webhook, {
+  const deliver = (key: string) =>
+    fetch(webhook, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "User-Agent": "TharrosCanada/1.0",
         "X-Tharros-Request-Id": reference,
         "X-Tharros-Timestamp": timestamp,
-        "X-Tharros-Signature": `sha256=${signature}`,
+        "X-Tharros-Signature": `sha256=${createHmac("sha256", key).update(`${timestamp}.${payload}`).digest("hex")}`,
       },
       body: payload,
       signal: AbortSignal.timeout(deliveryTimeoutMs),
       redirect: "error",
       cache: "no-store",
     });
+  try {
+    let response = await deliver(secret);
+    // A 401 against the cached database secret may mean it was rotated: re-read it and retry once.
+    if (response.status === 401 && !envSecret()) {
+      const fresh = await intakeSecretFromDatabase(true);
+      if (fresh && fresh !== secret) response = await deliver(fresh);
+    }
     // Only a 2xx from the receiver counts as accepted; anything else is reported to the visitor as not sent.
     if (!response.ok) {
       console.error(`[research-request] ${reference}: receiver returned ${response.status}`);

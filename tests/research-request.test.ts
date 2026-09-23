@@ -20,6 +20,7 @@ describe("parseResearchRequest (untrusted input)",()=>{
   it("enforces maximum lengths",()=>{expect(parseResearchRequest({...valid,context:"x".repeat(3001)}).ok).toBe(false);expect(parseResearchRequest({...valid,companyName:"x".repeat(161)}).ok).toBe(false);});
   it("validates optional website and HS code",()=>{expect(parseResearchRequest({...valid,website:"javascript:alert(1)"}).ok).toBe(false);expect(parseResearchRequest({...valid,website:"not a url"}).ok).toBe(false);const ok=parseResearchRequest({...valid,website:"example.de"});expect(ok.ok&&ok.value.website).toBe("https://example.de/");expect(parseResearchRequest({...valid,hsCode:"ab12"}).ok).toBe(false);});
   it("rejects malformed email",()=>{expect(parseResearchRequest({...valid,email:"market@example"}).ok).toBe(false);});
+  it("strips control characters, keeping line breaks only in multiline fields",()=>{const result=parseResearchRequest({...valid,companyName:"Example\r\nBcc: x@y.z\u0000",description:"Line one\nLine\u0007 two"});expect(result.ok).toBe(true);if(!result.ok)return;expect(result.value.companyName).toBe("Example  Bcc: x@y.z");expect(result.value.description).toBe("Line one\nLine two");});
 });
 describe("URL prefill",()=>{
   it("maps a service slug to its research need",()=>{expect(prefillFromSearchParams({service:"buyer-partner-research"}).researchNeed).toBe("Buyer & Partner Research");expect(prefillFromSearchParams({service:"nope"}).researchNeed).toBeUndefined();});
