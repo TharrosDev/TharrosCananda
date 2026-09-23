@@ -52,6 +52,13 @@ export default function ResearchServicesPage() {
           </Link>
         </nav>
       </section>
+      <section className="closing-cta">
+        <h2>Not sure which fits?</h2>
+        <p>Describe the decision. Tharros will suggest the smallest useful scope.</p>
+        <Link className="button-primary" href="/request-research">
+          Commission research <ArrowIcon />
+        </Link>
+      </section>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -75,13 +82,6 @@ export default function ResearchServicesPage() {
           }),
         }}
       />
-      <section className="closing-cta">
-        <h2>Not sure which fits?</h2>
-        <p>Describe the decision. Tharros will suggest the smallest useful scope.</p>
-        <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
-        </Link>
-      </section>
     </>
   );
 }
