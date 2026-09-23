@@ -346,8 +346,6 @@ legend:focus:not(:focus-visible) { outline: none; }
 .atlantic-map { grid-column: 7 / -1; min-width: 0; margin: 0; }
 .atlantic-map-plate { position: relative; }
 .atlantic-map svg { display: block; width: 100%; height: auto; -webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 52%, #000 58%, transparent 100%); mask-image: radial-gradient(ellipse 72% 70% at 50% 52%, #000 58%, transparent 100%); }
-.atlantic-map-graticule { fill: none; stroke: rgba(236,232,223,.08); stroke-width: 1; }
-.atlantic-map-coast { fill: none; stroke: rgba(236,232,223,.42); stroke-width: 1; stroke-linejoin: round; }
 .atlantic-map-route { fill: none; stroke: var(--red-on-dark); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1; animation: atlas-draw 1800ms var(--ease-out) 300ms both; }
 .atlantic-map-node { fill: var(--red-on-dark); stroke: var(--soft-black); stroke-width: 4; paint-order: stroke; }
 .atlantic-map-label, .atlantic-map-distance { position: absolute; margin: 0; white-space: nowrap; text-shadow: 0 0 4px var(--soft-black), 0 0 10px var(--soft-black); }
