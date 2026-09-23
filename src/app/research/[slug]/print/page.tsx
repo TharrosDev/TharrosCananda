@@ -12,7 +12,9 @@ import "@/components/report/report.css";
 
 // Print surface: the only source scripts/report-pdf.mjs prints to PDF. Not linked, not indexed.
 export const dynamicParams = false;
-export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
+export const generateStaticParams = () => allPublications
+  .filter((p) => !p.supplied)
+  .map((p) => ({ slug: p.slug }));
 
 type Props = { params: Promise<{ slug: string }> };
 

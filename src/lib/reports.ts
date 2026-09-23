@@ -11,6 +11,9 @@ export type ReportAsset = {
   bytes: number;
   sha: string;
   outline: OutlineEntry[];
+  /** Page 1 size in PDF points, for supplied PDFs; house reports are Letter (612 x 792). */
+  width?: number;
+  height?: number;
 };
 
 export function reportAsset(slug: string): ReportAsset | undefined {

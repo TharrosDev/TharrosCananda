@@ -53,6 +53,10 @@ export type Publication = {
   tags?: string[];
   sources: PublicationSource[];
   body: ReportBlock[];
+  /** Stated limitations quoted verbatim from a supplied PDF; house reports use a "Limitations" heading in `body`. */
+  limitations?: string[];
+  /** The author's own PDF at public/research/<reference>.pdf, served byte-for-byte (docs/REPORT_REQUIREMENTS.md). `body` stays empty. */
+  supplied?: true;
   /** Only true for verified, published work. Gates robots, citation_* meta, sitemap and the PDF's X-Robots-Tag. */
   indexable: boolean;
   featured?: boolean;
@@ -71,8 +75,10 @@ const lorem = [
 const placeholderSource = {
   publisher: "Publisher",
   title: "Dataset or document title",
+  // ponytail: reserved example domain and a fixed date so the specimen passes the same source checks as real work.
+  url: "https://example.org/",
   period: "Reference period",
-  retrievedAt: "YYYY-MM-DD",
+  retrievedAt: "2026-09-01",
 };
 
 // A layout specimen, not a publication: placeholder text only, never indexable.
@@ -90,7 +96,7 @@ export const researchSpecimenPublication: Publication = {
   summary:
     "A clearly labelled specimen showing how a published report appears and how its evidence, findings, methodology and sources are structured. Placeholder text only.",
   tags: ["Example layout", "Publication structure"],
-  sources: [],
+  sources: [placeholderSource],
   indexable: false,
   specimen: true,
   body: [
