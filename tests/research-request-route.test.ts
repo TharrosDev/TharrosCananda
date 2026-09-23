@@ -150,3 +150,20 @@ describe("POST /api/research-request", () => {
     expect((await post(valid)).headers.get("Cache-Control")).toBe("no-store");
   });
 });
+
+describe("POST /api/research-request without a secret env var", () => {
+  it("signs with the secret shared through Supabase", async () => {
+    vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_SECRET", "");
+    vi.stubEnv("SUPABASE_URL", "https://db.example.com");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-key");
+    fetchMock.mockImplementation(async (url: string) =>
+      String(url).includes("intake_config")
+        ? new Response(JSON.stringify([{ value: "db-secret" }]), { status: 200 })
+        : new Response("ok", { status: 200 }),
+    );
+    expect((await post(valid)).status).toBe(201);
+    const [, delivery] = fetchMock.mock.calls.find(([url]) => String(url).startsWith("https://intake.example.com")) as [string, RequestInit & { headers: Record<string, string>; body: string }];
+    const expected = createHmac("sha256", "db-secret").update(`${delivery.headers["X-Tharros-Timestamp"]}.${delivery.body}`).digest("hex");
+    expect(delivery.headers["X-Tharros-Signature"]).toBe(`sha256=${expected}`);
+  });
+});

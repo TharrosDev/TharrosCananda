@@ -1,6 +1,7 @@
 import { createHmac, randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { honeypotField, maxBodyBytes, parseResearchRequest } from "@/lib/research-request";
+import { intakeSecretFromDatabase } from "@/lib/supabase";
 
 // ponytail: no in-process rate limiting; it gives false security on serverless.
 // The limit is a Vercel Firewall rule on POST /api/research-request (docs/PRE_LAUNCH.md).
@@ -24,8 +25,9 @@ function intakeWebhook() {
     return null;
   }
 }
-function intakeSecret() {
-  return process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim() || null;
+/** The env var wins; otherwise the secret shared with the Edge Function through Supabase. */
+async function intakeSecret() {
+  return process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim() || (await intakeSecretFromDatabase());
 }
 
 export async function POST(request: Request) {
@@ -60,7 +62,7 @@ export async function POST(request: Request) {
     );
 
   const webhook = intakeWebhook();
-  const secret = intakeSecret();
+  const secret = await intakeSecret();
   if (!webhook || !secret) {
     console.error(
       "[research-request] Live intake requires a valid https RESEARCH_INTAKE_WEBHOOK_URL and RESEARCH_INTAKE_WEBHOOK_SECRET.",

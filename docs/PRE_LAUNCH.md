@@ -4,7 +4,7 @@ Operational and legal items that remain outside the codebase.
 
 ## Research intake
 
-- [ ] Configure `RESEARCH_INTAKE_WEBHOOK_URL` (https) and `RESEARCH_INTAKE_WEBHOOK_SECRET`. Without both, the API returns 503 and the form says the request was not sent.
+- [x] Receiver: Supabase Edge Function `research-intake` (project `tharros-canada`, source in `supabase/functions/research-intake`). It verifies the signature, stores the request in `research_requests` (purged after 24 months), then emails TharrosDev@gmail.com from `requests@tharros.ca` via Resend with Reply-To set to the requester. `RESEARCH_INTAKE_WEBHOOK_URL` is set in Vercel; the shared secret lives in the service-role-only `intake_config` table (an explicit `RESEARCH_INTAKE_WEBHOOK_SECRET` env var would override it).
 - [ ] On the receiver, verify `X-Tharros-Signature: sha256=<hex HMAC-SHA256 of "<X-Tharros-Timestamp>.<raw body>">` and reject stale timestamps (for example, older than 5 minutes). `X-Tharros-Request-Id` and the payload `reference` match the reference the visitor sees.
 - [ ] The receiver must return 2xx only once the request is stored. Any other status, a redirect or no answer within 8 s is shown to the visitor as not sent (502 / 504), with their answers kept.
 - [ ] After deploying, run `npm run smoke -- https://tharros.ca`, then submit one real request and confirm it arrives with its reference.
