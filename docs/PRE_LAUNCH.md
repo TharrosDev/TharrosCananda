@@ -27,6 +27,12 @@ vercel firewall publish --yes
 
 After a few days of dashboard review (`/firewall/traffic?filter=<ruleId>`), tighten to about 5 requests per 10 minutes and switch `--rate-limit-action` to `rate_limit` (HTTP 429). The form treats any non-201 response as not sent. Counters are per region.
 
+## Research readership
+
+- [ ] Create the Supabase project `tharros-canada` and apply `supabase/migrations/20260923000000_publication_metrics.sql`.
+- [ ] Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `METRICS_SECRET` in Vercel (Production). Without them nothing is counted and counts stay hidden.
+- [ ] Add a Vercel Firewall rate limit on `POST /api/research-event` (same shape as the intake rule, e.g. 60 requests per 10 minutes per IP).
+
 ## Identity and contact
 
 - [x] Public contact address: TharrosDev@gmail.com (default in `src/lib/contact.ts`; `NEXT_PUBLIC_RESEARCH_EMAIL` overrides it). Confirm the inbox is monitored.

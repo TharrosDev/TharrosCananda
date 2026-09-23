@@ -16,10 +16,19 @@ import {
   serializeArchiveState,
   termPattern,
 } from "@/lib/archive";
+import { formatCounts, sendMetric } from "@/lib/metrics-client";
 import { formatMonthYear, siteUrl } from "@/lib/site";
 
+type Counts = { reads: number; citations: number };
+
 type Area = { slug: string; name: string; scope: string };
-type Props = { docs: ArchiveDoc[]; areas: readonly Area[]; types: readonly { name: string }[] };
+type Props = {
+  docs: ArchiveDoc[];
+  areas: readonly Area[];
+  types: readonly { name: string }[];
+  /** Reads and citations by slug; null when unavailable, and then nothing is shown. */
+  counts?: Record<string, Counts> | null;
+};
 
 /** Reads and writes the archive state in the URL (?q=&area=&type=&year=&sort=) so every view can be shared. */
 export function ResearchArchiveWithUrl(props: Props) {
@@ -45,6 +54,7 @@ export function ResearchArchive({
   docs,
   areas,
   types,
+  counts,
   state = defaultArchiveState,
   onChange,
 }: Props & { state?: ArchiveState; onChange?: (next: ArchiveState) => void }) {
@@ -211,6 +221,7 @@ export function ResearchArchive({
           {results.map((doc) => (
             <ArchiveCard
               key={doc.slug}
+              counts={doc.counted ? formatCounts(counts?.[doc.slug]) : null}
               doc={doc}
               areaName={areas.find((a) => a.slug === doc.area)?.name}
             />
@@ -249,9 +260,11 @@ export function ResearchArchive({
 function ArchiveCard({
   doc,
   areaName,
+  counts,
 }: {
   doc: ArchiveDoc & { snippet: string | null; terms: string[] };
   areaName?: string;
+  counts?: string | null;
 }) {
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const stableUrl = `${siteUrl}/research/id/${doc.reference}`;
@@ -286,6 +299,7 @@ function ArchiveCard({
             <time dateTime={doc.publishedAt}>{formatMonthYear(doc.publishedAt)}</time>
             {doc.pages && <span>{doc.pages} pages</span>}
             {doc.text && <span>{readingMinutes(doc.text)} min read</span>}
+            {counts && <span>{counts}</span>}
           </p>
           <h2>
             <Link href={`/research/${doc.slug}`}>{doc.title}</Link>
@@ -309,9 +323,14 @@ function ArchiveCard({
                 url: stableUrl,
                 reference: doc.reference,
               }}
+              slug={doc.counted ? doc.slug : undefined}
             />
             {doc.file && (
-              <a href={doc.file} download>
+              <a
+                href={doc.file}
+                download
+                onClick={doc.counted ? () => sendMetric(doc.slug, "read") : undefined}
+              >
                 PDF{doc.bytes ? ` · ${Math.round(doc.bytes / 1024)} KB` : ""}
               </a>
             )}

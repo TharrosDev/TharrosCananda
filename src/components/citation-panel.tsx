@@ -9,8 +9,10 @@ import {
   type CitationStyle,
 } from "@/lib/citation";
 import { researchLicence } from "@/lib/licence";
+import { sendMetric } from "@/lib/metrics-client";
 
-export function CitationPanel({ input }: { input: CitationInput }) {
+/** `slug` is set only for counted publications: a successful copy then records one citation. */
+export function CitationPanel({ input, slug }: { input: CitationInput; slug?: string }) {
   const [style, setStyle] = useState<CitationStyle>("apa");
   const [copied, setCopied] = useState(false);
   const text = useMemo(() => buildCitation(style, input), [style, input]);
@@ -25,6 +27,7 @@ export function CitationPanel({ input }: { input: CitationInput }) {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      if (slug) sendMetric(slug, "cite");
     } catch {
       // Clipboard access can be denied by the browser; the citation text remains selectable.
     }
