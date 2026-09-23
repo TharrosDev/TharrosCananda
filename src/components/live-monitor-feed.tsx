@@ -78,7 +78,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
   // Browser-only details are read after mount so the server HTML and first client render match.
   const [lastVisit, setLastVisit] = useState<number | null>(null);
   const [now, setNow] = useState<number | null>(null);
-  const hasViewParam = params.has("view");
+  // Runs once: re-running on URL changes would overwrite lastVisit and erase the "New" tags.
   useEffect(() => {
     const stored = Number(readStorage(VISIT_KEY));
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from browser storage after hydration
@@ -86,11 +86,13 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
     writeStorage(VISIT_KEY, String(Date.now()));
     setNow(Date.now());
     const timer = setInterval(() => setNow(Date.now()), 60_000);
-    if (!hasViewParam && readStorage(VIEW_KEY) === "compact") {
-      window.history.replaceState(null, "", `${window.location.pathname}${serializeMonitorState({ ...parseMonitorState(new URLSearchParams(window.location.search), []), view: "compact" })}`);
+    const current = new URLSearchParams(window.location.search);
+    if (!current.has("view") && readStorage(VIEW_KEY) === "compact") {
+      current.set("view", "compact");
+      window.history.replaceState(null, "", `${window.location.pathname}?${current}`);
     }
     return () => clearInterval(timer);
-  }, [hasViewParam]);
+  }, []);
 
   // ponytail: plain recomputation per render; at most 20 stories per snapshot, so memoisation buys nothing.
   const inWindow = filterArticles(data.articles, { ...state, q: "", topics: [], sources: [] }, referenceTime);
@@ -269,7 +271,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
                     {group.items.map((article) => (
                       <li key={article.id}>
                         <article className="monitor-row">
-                          <time dateTime={article.publishedAt}>{displayDate(article.publishedAt).split(", ")[1]}</time>
+                          <time dateTime={article.publishedAt}>{displayDate(article.publishedAt).split(", ")[1] ?? "—"}</time>
                           <span className="monitor-row-topics">
                             {article.topics.map((t) => <i key={t} className={`topic-dot topic-dot--${t}`} aria-hidden="true" />)}
                             <span className="sr-only">{topicLine(article)}</span>
@@ -370,7 +372,7 @@ export function LiveMonitorFeed({ data }: { data: LiveMonitorSnapshot }) {
             </div>
           )}
         </div>
-        <MonitorContext articles={inWindow} referenceTime={referenceTime} />
+        <MonitorContext articles={filterArticles(data.articles, { ...state, q: "", topics: [], sources: [], window: "7d" }, referenceTime)} referenceTime={referenceTime} />
       </div>
     </section>
   );

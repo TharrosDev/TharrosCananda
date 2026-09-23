@@ -71,7 +71,9 @@ const mlaMonths = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug."
 function newsCitation(style: CitationStyle, input: CitationInput) {
   const { title, url } = input;
   const outlet = input.publisher ?? new URL(url).hostname;
-  const [y, m, d] = input.publishedAt.slice(0, 10).split("-").map(Number);
+  // The Toronto calendar date, matching what the Live Monitor shows next to the story.
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Toronto", year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(input.publishedAt));
+  const [y, m, d] = (["year", "month", "day"] as const).map((type) => Number(parts.find((p) => p.type === type)?.value));
   const accessed = formatLongDate((input.accessedAt ?? new Date()).toISOString());
   switch (style) {
     case "apa":

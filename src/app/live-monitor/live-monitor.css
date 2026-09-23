@@ -82,9 +82,9 @@
 .monitor-lead-story > p { max-width: 66ch; margin: 0; color: var(--on-dark-soft); font-size: 17px; line-height: 1.6; overflow-wrap: anywhere; }
 .monitor-story-foot { margin-top: auto; padding-top: 36px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; color: var(--on-dark-soft); font-size: 13px; }
 .monitor-story-foot strong { color: var(--on-dark); }
-.monitor-story-foot > a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; color: var(--on-dark); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--on-dark); }
+.monitor-story-foot .monitor-story-tools > a { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; color: var(--on-dark); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--on-dark); }
 .monitor-story-foot svg { width: 17px; transition: transform 220ms var(--ease-out); }
-.monitor-story-foot a:hover svg { transform: translateX(5px); }
+.monitor-story-foot .monitor-story-tools > a:hover svg { transform: translateX(5px); }
 .monitor-dispatch-grid { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); list-style: none; border-bottom: 1px solid var(--ink); }
 .monitor-dispatch-grid > li { grid-column: span 6; min-width: 0; border-bottom: 1px solid var(--rule); }
 .monitor-dispatch-grid > li:nth-child(odd) { border-right: 1px solid var(--rule); }
@@ -98,8 +98,8 @@
 .monitor-dispatch-grid h3 a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .12em; }
 .monitor-description { max-width: 64ch; margin: 16px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .monitor-dispatch-foot { margin-top: auto; padding-top: 28px; display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; color: var(--slate); font-size: 13px; overflow-wrap: anywhere; }
-.monitor-dispatch-foot a { width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; color: var(--ink); border: 1px solid var(--ink); transition: color 180ms var(--ease-out), background 180ms var(--ease-out); }
-.monitor-dispatch-foot a:hover { color: var(--on-dark); background: var(--ink); }
+.monitor-dispatch-foot .monitor-story-tools > a { width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; color: var(--ink); border: 1px solid var(--ink); transition: color 180ms var(--ease-out), background 180ms var(--ease-out); }
+.monitor-dispatch-foot .monitor-story-tools > a:hover { color: var(--on-dark); background: var(--ink); }
 .monitor-dispatch-foot svg { width: 17px; }
 .monitor-more { display: flex; justify-content: center; padding-top: 32px; }
 .monitor-empty, .monitor-error { padding: clamp(54px, 8vw, 110px) clamp(28px, 6vw, 86px); color: var(--on-dark); background: var(--graphite); }
@@ -271,5 +271,7 @@
   .monitor-row .monitor-actions { grid-column: 3; grid-row: 2; }
   .monitor-row .monitor-new { grid-column: 2; grid-row: 3; justify-self: start; margin: 0; }
   .monitor-view-toggle { width: 100%; }
+  /* Phones: the menu opens as a bottom sheet pinned inside the viewport instead of floating off-screen. */
+  .monitor-actions-menu { position: fixed; top: auto; bottom: 16px; left: 16px; right: 16px; width: auto; max-height: 70vh; overflow-y: auto; }
   .monitor-view-toggle button { flex: 1; }
 }

@@ -31,7 +31,14 @@ export function StoryActions({ article }: { article: MonitorArticle }) {
   }
 
   return (
-    <details className="monitor-actions">
+    <details
+      className="monitor-actions"
+      onKeyDown={(event) => {
+        if (event.key !== "Escape" || !event.currentTarget.open) return;
+        event.currentTarget.open = false;
+        event.currentTarget.querySelector("summary")?.focus();
+      }}
+    >
       <summary>
         <span aria-hidden="true">•••</span>
         <span className="sr-only">Actions for: {article.title}</span>

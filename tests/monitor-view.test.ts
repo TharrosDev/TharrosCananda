@@ -102,3 +102,10 @@ describe("highlighting and storage", () => {
     vi.stubGlobal("localStorage", original);
   });
 });
+
+describe("review fixes", () => {
+  it("returns empty volume instead of throwing on an invalid reference time", () => {
+    expect(() => topicVolume(articles, Number.NEGATIVE_INFINITY, 7)).not.toThrow();
+    expect(topicVolume(articles, Number.NEGATIVE_INFINITY, 7)["trade-economy"]).toEqual([0, 0, 0, 0, 0, 0, 0]);
+  });
+});

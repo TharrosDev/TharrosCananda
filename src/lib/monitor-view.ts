@@ -71,8 +71,9 @@ export function newSince(articles: MonitorArticle[], lastVisit: number | null) {
 }
 
 export function topicVolume(articles: MonitorArticle[], referenceTime: number, days = 7, timeZone = "America/Toronto") {
-  const today = day(referenceTime, timeZone).index;
   const volume = Object.fromEntries(topicIds.map((id) => [id, Array<number>(days).fill(0)])) as Record<MonitorTopicId, number[]>;
+  if (!Number.isFinite(referenceTime)) return volume;
+  const today = day(referenceTime, timeZone).index;
   for (const a of articles) {
     const offset = today - day(Date.parse(a.publishedAt), timeZone).index;
     if (offset < 0 || offset >= days) continue;

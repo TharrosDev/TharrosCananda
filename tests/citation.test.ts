@@ -86,3 +86,10 @@ describe("news article citations", () => {
     for (const style of ["apa", "mla", "chicago", "harvard"] as const) expect(buildCitation(style, news)).not.toContain("Tharros");
   });
 });
+
+describe("news citation dates", () => {
+  it("uses the Toronto calendar date the Live Monitor shows", () => {
+    const late = { kind: "news" as const, publisher: "x.eu", title: "T", authors: [], publishedAt: "2026-09-23T01:30:00Z", url: "https://x.eu/a" };
+    expect(buildCitation("apa", late)).toContain("(2026, September 22)");
+  });
+});

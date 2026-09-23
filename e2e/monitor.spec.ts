@@ -85,3 +85,41 @@ for (const view of ["editorial", "compact"]) {
     expect(results.violations.filter((v) => ["serious", "critical"].includes(v.impact ?? "")).map((v) => v.id)).toEqual([]);
   });
 }
+
+test("a returning compact reader keeps New tags and shared source filters", async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem("seeded")) {
+      localStorage.setItem("tharros.monitor.view", "compact");
+      localStorage.setItem("tharros.monitor.lastVisit", String(Date.now() - 150 * 60 * 1000));
+      sessionStorage.setItem("seeded", "1");
+    }
+  });
+  await page.goto("/live-monitor?sources=example-trade.eu");
+  await expect(page).toHaveURL(/view=compact/);
+  await expect(page).toHaveURL(/sources=example-trade\.eu/);
+  await expect(workspace(page).locator(".monitor-new")).toHaveCount(1);
+  await page.getByRole("group", { name: "View" }).getByRole("button", { name: "Editorial" }).click();
+  await expect(workspace(page).locator(".monitor-new")).toHaveCount(1);
+});
+
+test("action menus stay on screen, keep their links readable and close on Escape", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto("/live-monitor");
+  const lead = workspace(page).locator(".monitor-lead");
+  await lead.locator(".monitor-actions > summary").click();
+  const menu = lead.locator(".monitor-actions-menu");
+  const box = (await menu.boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(390);
+  const link = menu.getByRole("link", { name: "Commission research on this" });
+  expect((await link.boundingBox())!.width).toBeGreaterThan(150);
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(lead.locator(".monitor-actions > summary")).toBeFocused();
+});
+
+test("read at source keeps a full-size target", async ({ page }) => {
+  await page.goto("/live-monitor");
+  const read = workspace(page).locator(".monitor-lead").getByRole("link", { name: /Read at source/ });
+  expect((await read.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+});
