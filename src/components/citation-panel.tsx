@@ -8,6 +8,7 @@ import {
   type CitationInput,
   type CitationStyle,
 } from "@/lib/citation";
+import { copyText } from "@/lib/clipboard";
 import { researchLicence } from "@/lib/licence";
 import { sendMetric } from "@/lib/metrics-client";
 
@@ -24,13 +25,10 @@ export function CitationPanel({ input, slug }: { input: CitationInput; slug?: st
   }, [copied]);
 
   async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      if (slug) sendMetric(slug, "cite");
-    } catch {
-      // Clipboard access can be denied by the browser; the citation text remains selectable.
-    }
+    // Clipboard access can be denied by the browser; the citation text remains selectable.
+    if (!(await copyText(text))) return;
+    setCopied(true);
+    if (slug) sendMetric(slug, "cite");
   }
 
   return (
