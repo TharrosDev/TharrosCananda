@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { Suspense } from "react";
@@ -8,12 +9,12 @@ import { buildArchiveDocs } from "@/lib/archive";
 import { researchAreas } from "@/lib/research-areas";
 import { reportAsset, reportText } from "@/lib/reports";
 
-export const metadata: Metadata = {
-  title: "Research Archive",
+export const metadata: Metadata = pageMetadata({
+  title: "Canada–Europe Research Archive",
   description:
-    "Independent Tharros Canada research on Canada–Europe trade, defence, energy, industry and technology.",
-  alternates: { canonical: "/research" },
-};
+    "Independent Tharros Canada research on Canada–Europe trade, defence, energy, industry and technology, searchable in full text.",
+  path: "/research",
+});
 
 export default function ResearchPage() {
   // Built at build time: metadata plus each PDF's extracted text, so search reaches inside reports.

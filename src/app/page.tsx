@@ -5,9 +5,18 @@ import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
-import { formatMonthYear } from "@/lib/site";
+import { formatMonthYear, pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { alternates: { canonical: "/" } };
+const homeTitle = "Tharros Canada | Independent Canada–Europe research";
+export const metadata: Metadata = {
+  ...pageMetadata({
+    title: homeTitle,
+    description:
+      "Independent research firm for organizations working between Canada and Europe: custom research, market assessments and buyer and partner research on trade, defence, energy, industry and technology.",
+    path: "/",
+  }),
+  title: { absolute: homeTitle },
+};
 
 export default function HomePage() {
   const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);

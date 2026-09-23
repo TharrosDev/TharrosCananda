@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { jsonLd, pageMetadata, siteUrl } from "@/lib/site";
 import Link from "next/link";
 import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { ArrowIcon } from "@/components/icons";
@@ -7,12 +8,12 @@ import { requestResearchHref } from "@/lib/research-request";
 import { services } from "@/lib/services";
 import "./services.css";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMetadata({
+  title: "Canada–Europe Research Services",
   description:
-    "Custom and partner research, market assessments and buyer and partner research across Canada and Europe. Scoped and priced per case.",
-  alternates: { canonical: "/research-services" },
-};
+    "Custom and partner research, market assessments and buyer and partner research across Canada and Europe. Every engagement is scoped and priced per case.",
+  path: "/research-services",
+});
 
 export default function ResearchServicesPage() {
   return (
@@ -51,6 +52,29 @@ export default function ResearchServicesPage() {
           </Link>
         </nav>
       </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Tharros Canada research services",
+            itemListElement: services.map((service, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              item: {
+                "@type": "Service",
+                "@id": `${siteUrl}/research-services#${service.slug}`,
+                name: service.name,
+                description: service.question,
+                serviceType: "Commercial research",
+                areaServed: ["Canada", "European Union"],
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            })),
+          }),
+        }}
+      />
       <section className="closing-cta">
         <h2>Not sure which fits?</h2>
         <p>Describe the decision. Tharros will suggest the smallest useful scope.</p>

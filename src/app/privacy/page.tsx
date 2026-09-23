@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/page-hero";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy",
   description:
-    "How Tharros Canada handles information submitted through the research request form and optional site measurement.",
-  alternates: { canonical: "/privacy" },
-};
+    "How Tharros Canada handles information submitted through the research request form, and the cookie-free site measurement it uses.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   const contactEmail = researchEmail();

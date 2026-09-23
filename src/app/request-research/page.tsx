@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import "./request.css";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { ResearchRequestForm } from "@/components/research-request-form";
 import { researchEmail } from "@/lib/contact";
 
-export const metadata: Metadata = {
-  title: "Commission Research",
+export const metadata: Metadata = pageMetadata({
+  title: "Commission Canada–Europe Research",
   description:
-    "Commission focused Canada–Europe research in writing. Describe the question and decision; Tharros returns a proposed scope, price and timeline.",
-  alternates: { canonical: "/request-research" },
-};
+    "Describe your research question. Tharros Canada replies with a proposed scope, price and timeline in writing. No account or call required.",
+  path: "/request-research",
+});
 
 export default function RequestResearchPage() {
   const contactEmail = researchEmail();

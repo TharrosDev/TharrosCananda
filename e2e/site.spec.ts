@@ -398,3 +398,13 @@ test.describe("every sitemap route", () => {
     }
   });
 });
+
+test("each page previews as itself when shared", async ({ page }) => {
+  for (const path of ["/about", "/research-services", "/methodology"]) {
+    await page.goto(path);
+    const og = (property: string) =>
+      page.locator(`meta[property="${property}"]`).getAttribute("content");
+    expect(await og("og:url")).toMatch(new RegExp(`${path}$`));
+    expect(await og("og:title")).toBe((await page.title()).replace(/ \| Tharros Canada$/, ""));
+  }
+});
