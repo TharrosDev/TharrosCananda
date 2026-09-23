@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { buildCitation, citationStyles, type CitationInput, type CitationStyle } from "@/lib/citation";
+import { researchLicence } from "@/lib/licence";
 
 export function CitationPanel({ input }: { input: CitationInput }) {
   const [style, setStyle] = useState<CitationStyle>("apa");
@@ -42,6 +44,9 @@ export function CitationPanel({ input }: { input: CitationInput }) {
       <button type="button" className="citation-copy" onClick={handleCopy}>
         {copied ? "Copied" : "Copy citation"}
       </button>
+      <p className="citation-licence">
+        Published under {researchLicence.short}: reuse and adapt with attribution. <Link href="/copyright">Licence terms</Link>
+      </p>
       <span className="sr-only" role="status">
         {copied ? "Citation copied" : ""}
       </span>

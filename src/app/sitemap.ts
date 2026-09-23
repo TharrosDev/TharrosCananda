@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/methodology",
     "/privacy",
     "/accessibility",
+    "/copyright",
   ];
   const core = routes.map((route, index) => ({
     url: `${base}${route}`,
