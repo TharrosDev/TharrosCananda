@@ -108,6 +108,8 @@ for (const path of ["/", "/research-services", "/request-research", "/live-monit
   test(`${path} has no serious or critical automated accessibility violations`, async ({
     page,
   }) => {
+    // Audit the settled page, not a card caught mid-reveal at the fold.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(path);
     const results = await new AxeBuilder({ page }).analyze();
     const blocking = results.violations.filter((violation) =>
