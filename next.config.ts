@@ -13,7 +13,7 @@ const noindexFiles = allPublications
 const isProduction = process.env.NODE_ENV === "production";
 // ponytail: script-src keeps 'unsafe-inline' for Next's inline bootstrap scripts. A nonce would force every
 // page to render dynamically; React escapes all provider text and JSON-LD escapes "<" (src/lib/site.ts).
-const contentSecurityPolicy = [
+const cspDirectives = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
@@ -27,7 +27,26 @@ const contentSecurityPolicy = [
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   "upgrade-insecure-requests",
-].join("; ");
+];
+// Preview deployments only: sources the Vercel toolbar needs (vercel.com/docs/vercel-toolbar/managing-toolbar).
+const vercelToolbarSources: Record<string, string> = {
+  "img-src": "https://vercel.live https://vercel.com",
+  "font-src": "https://vercel.live https://assets.vercel.com",
+  "style-src": "https://vercel.live",
+  "script-src": "https://vercel.live",
+  "connect-src": "https://vercel.live wss://ws-us3.pusher.com",
+};
+const contentSecurityPolicy = (
+  process.env.VERCEL_ENV === "preview"
+    ? [
+        ...cspDirectives.map((d) => {
+          const extra = vercelToolbarSources[d.split(" ")[0]];
+          return extra ? `${d} ${extra}` : d;
+        }),
+        "frame-src 'self' https://vercel.live",
+      ]
+    : cspDirectives
+).join("; ");
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,

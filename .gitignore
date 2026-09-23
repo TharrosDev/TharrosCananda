@@ -19,3 +19,5 @@ e2e/**/*-darwin.png
 .vercel
 # Copied from pdfjs-dist on install (postinstall); version-locked to the dependency.
 public/pdf.worker.min.mjs
+# Supabase CLI local state (linked project, CLI version cache).
+supabase/.temp/

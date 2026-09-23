@@ -42,6 +42,7 @@ export const maxLengths: Record<TextField, number> = {
   context: 3000,
 };
 const textFields = Object.keys(maxLengths) as TextField[];
+const multilineFields = new Set<TextField>(["description", "context"]);
 export const honeypotField = "fax";
 // Field limits total ~6.1k chars; curly quotes and accents are up to 3 UTF-8 bytes each.
 export const maxBodyBytes = 32_000;
@@ -136,7 +137,13 @@ export function parseResearchRequest(input: unknown): ParseResult {
     const field = raw[key];
     if (field === undefined || field === null) continue;
     if (typeof field !== "string") typeErrors[key] = "Invalid value.";
-    else value[key] = field.trim();
+    // Control characters never belong in a field; only the multiline ones keep tabs and line breaks.
+    else
+      value[key] = (
+        multilineFields.has(key)
+          ? field.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+          : field.replace(/[\u0000-\u001f\u007f]/g, " ")
+      ).trim();
   }
   if (Array.isArray(raw.objectives) && raw.objectives.every((item) => typeof item === "string"))
     value.objectives = [...new Set(raw.objectives as Objective[])];

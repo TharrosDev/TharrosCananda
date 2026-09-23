@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { isBot, isCountedSlug, readerKey } from "../src/lib/metrics";
-import { alreadyCounted, formatCounts } from "../src/lib/metrics-client";
+import { alreadyCounted, formatCounts, sendMetric } from "../src/lib/metrics-client";
 
 const DAY = 86_400_000;
 
@@ -67,5 +67,26 @@ describe("count formatting", () => {
     expect(formatCounts({ reads: 0, citations: 1 })).toBe("1 citation");
     expect(formatCounts({ reads: 0, citations: 0 })).toBeNull();
     expect(formatCounts(undefined)).toBeNull();
+  });
+});
+
+describe("sendMetric", () => {
+  it("remembers an event only after the server accepted it", async () => {
+    const store = new Map<string, string>();
+    vi.stubGlobal("localStorage", {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => void store.set(k, v),
+    });
+    const fetchMock = vi.fn(async () => new Response(null, { status: 503 }));
+    vi.stubGlobal("fetch", fetchMock);
+    sendMetric("report-a", "read");
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(store.size).toBe(0);
+    fetchMock.mockResolvedValueOnce(new Response(null, { status: 204 }));
+    sendMetric("report-a", "read");
+    await vi.waitFor(() => expect(store.has("tharros.metric.read.report-a")).toBe(true));
+    sendMetric("report-a", "read");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    vi.unstubAllGlobals();
   });
 });

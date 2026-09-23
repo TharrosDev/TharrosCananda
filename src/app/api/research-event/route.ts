@@ -10,6 +10,8 @@ export async function POST(request: Request) {
   }
   if (request.headers.get("sec-fetch-site") === "cross-site")
     return new Response(null, { status: 403 });
+  if (Number(request.headers.get("content-length") ?? 0) > 512)
+    return new Response(null, { status: 413 });
   const text = await request.text();
   if (text.length > 512) return new Response(null, { status: 413 });
   let body: { slug?: unknown; kind?: unknown };

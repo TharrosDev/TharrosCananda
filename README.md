@@ -28,7 +28,7 @@ Commissioned work is the commercial core. Public research and methodology pages 
 
 ## Research archive
 
-`src/data/publications.ts` is the single publication registry. It is intentionally empty until the first verified paper or brief ships.
+`src/data/publications.ts` is the single publication registry. `publications` holds verified work only and stays empty until the first paper or brief ships; `allPublications` adds the lorem specimen described below.
 
 The archive UI in `src/components/research-archive.tsx` already supports:
 
@@ -49,7 +49,7 @@ The example report (`TC-EX-000`) is a clearly labelled lorem-ipsum specimen. It 
 
 1. Add a record to `publications` in `src/data/publications.ts`: `reference` `TC-<YEAR>-<NNN>`, typed `body` blocks, and `indexable: true` only for verified, published work.
 2. `npm run build && npm run report:pdf -- <slug>` prints `/research/<slug>/print` to `public/research/<reference>.pdf` and writes the cover, the extracted text (`src/data/report-text.json`) and `src/data/report-pdf.json`. Commit all of them; Vercel builds cannot run Chromium.
-3. Read the PDF before committing. `npm test` fails when the record or `src/components/report/report.css` changes without regenerating.
+3. Read the PDF before committing. `npm test` fails when the record or any file in `REPORT_SOURCE_PATHS` (`src/lib/report-source.ts`: `report.css`, `report-document.tsx`, the print page and `src/lib/citation.ts`) changes without regenerating.
 4. Indexable reports get Highwire `citation_*` tags (Google Scholar), `Report` JSON-LD, sitemap entries for the page and PDF, and the stable URL.
 
 ## Stack
@@ -86,12 +86,17 @@ npm run smoke -- https://tharros.ca   # deployment smoke test (read-only apart f
 
 ## Environment variables
 
-| Variable                         | Required                  | Purpose                                                                                                                                                           |
-| -------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`           | Recommended               | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`.                                                                                  |
-| `RESEARCH_INTAKE_WEBHOOK_URL`    | Required for live intake  | Server-only HTTPS endpoint receiving validated research requests.                                                                                                 |
-| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Required for live intake  | Shared secret used to HMAC-sign the exact webhook payload and timestamp.                                                                                          |
-| `NEXT_PUBLIC_RESEARCH_EMAIL`     | Optional                  | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
+| Variable                         | Required                               | Purpose                                                                                                                                                           |
+| -------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`           | Recommended                            | Canonical origin used by metadata and sitemap. Defaults to `https://tharros.ca`.                                                                                  |
+| `RESEARCH_INTAKE_WEBHOOK_URL`    | Required for live intake               | Server-only HTTPS endpoint receiving validated research requests. Without it (or a secret) the form returns 503 and offers to send the request by email.          |
+| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Optional                               | Shared secret used to HMAC-sign the exact webhook payload and timestamp. When empty, the server reads it from the Supabase `intake_config` table.                 |
+| `SUPABASE_URL`                   | Required for metrics and intake secret | URL of Supabase project `tharros-canada` (readership counts and the `intake_config` fallback).                                                                    |
+| `SUPABASE_SERVICE_ROLE_KEY`      | Required for metrics and intake secret | Server-only service-role key for the same project. Never reaches the browser.                                                                                     |
+| `METRICS_SECRET`                 | Required for metrics                   | Random secret that turns IP and browser into a per-publication reader code. Without it nothing is counted or shown.                                               |
+| `NEXT_PUBLIC_RESEARCH_EMAIL`     | Optional                               | Overrides the verified contact address (TharrosDev@gmail.com, set in `src/lib/contact.ts`) used in About, footer, privacy, JSON-LD and the intake email fallback. |
+
+The `research-intake` Edge Function (`supabase/functions/research-intake`) reads `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (set by Supabase), plus optional `INTAKE_NOTIFY_TO` (default TharrosDev@gmail.com) and `INTAKE_NOTIFY_FROM` (default `requests@tharros.ca`). The webhook secret and Resend key live in the service-role-only `intake_config` table (keys `webhook_secret`, `resend_api_key`); a `RESEARCH_INTAKE_WEBHOOK_SECRET` or `RESEND_API_KEY` function secret overrides the table.
 
 ## Architecture
 

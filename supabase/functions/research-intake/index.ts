@@ -1,6 +1,9 @@
 // Receives signed commission requests from tharros.ca, stores them, then emails a notification.
 // Contract (src/app/api/research-request/route.ts): X-Tharros-Signature = sha256=<hex HMAC of "<timestamp>.<body>">.
 // Returns 2xx only once the request is stored; the email is best effort and never fails a stored request.
+import { type IntakeRequest, oneLine, parseIntake } from "./payload.ts";
+
+declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -10,6 +13,9 @@ let resendKey = Deno.env.get("RESEND_API_KEY") ?? "";
 const notifyTo = Deno.env.get("INTAKE_NOTIFY_TO") ?? "TharrosDev@gmail.com";
 const notifyFrom = Deno.env.get("INTAKE_NOTIFY_FROM") ?? "Tharros requests <requests@tharros.ca>";
 const maxSkewMs = 5 * 60 * 1000;
+// The site caps its own body at 32000 bytes; the signed body adds reference, submittedAt and source.
+const maxBodyBytes = 34_000;
+const restTimeoutMs = 3000;
 
 const encoder = new TextEncoder();
 const hex = (bytes: ArrayBuffer) => [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -23,12 +29,7 @@ async function validSignature(timestamp: string, body: string, signature: string
   return diff === 0;
 }
 
-type Request_ = {
-  reference: string; submittedAt: string; companyName: string; country: string; website: string; email: string;
-  product: string; industry: string; description: string; hsCode: string; objectives: string[]; researchNeed: string; context: string;
-};
-
-function emailText(r: Request_) {
+function emailText(r: IntakeRequest) {
   return [
     `Reference: ${r.reference.slice(0, 8).toUpperCase()} (${r.reference})`,
     `Received: ${r.submittedAt}`,
@@ -49,7 +50,7 @@ function emailText(r: Request_) {
   ].filter((line) => line !== null).join("\n");
 }
 
-async function notify(r: Request_) {
+async function notify(r: IntakeRequest) {
   if (!resendKey) return false;
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -58,7 +59,7 @@ async function notify(r: Request_) {
       from: notifyFrom,
       to: [notifyTo],
       reply_to: r.email,
-      subject: `Research request: ${r.companyName} (${r.reference.slice(0, 8).toUpperCase()})`,
+      subject: `Research request: ${oneLine(r.companyName)} (${r.reference.slice(0, 8).toUpperCase()})`,
       text: emailText(r),
     }),
     signal: AbortSignal.timeout(4000),
@@ -71,19 +72,54 @@ const rest = (path: string, method: string, body: unknown, extra: Record<string,
   fetch(`${supabaseUrl}/rest/v1/${path}`, {
     method,
     headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json", ...extra },
-    body: JSON.stringify(body),
+    body: body === undefined ? undefined : JSON.stringify(body),
+    signal: AbortSignal.timeout(restTimeoutMs),
   });
 
 async function loadConfig() {
   if (secret && resendKey) return;
   const response = await fetch(`${supabaseUrl}/rest/v1/intake_config?select=key,value`, {
     headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
+    signal: AbortSignal.timeout(restTimeoutMs),
   });
   if (!response.ok) return;
   const rows = (await response.json()) as { key: string; value: string }[];
   const get = (key: string) => rows.find((row) => row.key === key)?.value ?? "";
   secret ||= get("webhook_secret");
   resendKey ||= get("resend_api_key");
+}
+
+async function markNotified(reference: string) {
+  await rest(`research_requests?reference=eq.${reference}`, "PATCH", { notified_at: new Date().toISOString() });
+}
+
+// ponytail: failed emails are only retried when a new request arrives (up to 5 oldest per request);
+// a scheduled job is the upgrade if requests are rare and an email must not wait for the next one.
+// Two concurrent requests can pick the same rows and send a duplicate email; acceptable at this volume.
+async function retryUnnotified(current: string) {
+  try {
+    const response = await rest(
+      `research_requests?notified_at=is.null&reference=neq.${current}&select=payload&order=received_at.asc&limit=5`,
+      "GET",
+      undefined,
+    );
+    if (!response.ok) return;
+    for (const { payload } of (await response.json()) as { payload: IntakeRequest }[]) {
+      if (await notify(payload)) await markNotified(payload.reference);
+    }
+  } catch {
+    console.error("[research-intake] retry of unsent emails failed");
+  }
+}
+
+async function notifyAndRetry(r: IntakeRequest) {
+  try {
+    if (!(await notify(r))) return;
+    await markNotified(r.reference);
+    await retryUnnotified(r.reference);
+  } catch {
+    console.error(`[research-intake] ${r.reference}: email unreachable`);
+  }
 }
 
 Deno.serve(async (request) => {
@@ -93,17 +129,14 @@ Deno.serve(async (request) => {
 
   const timestamp = request.headers.get("x-tharros-timestamp") ?? "";
   const signature = request.headers.get("x-tharros-signature") ?? "";
+  if (Number(request.headers.get("content-length") ?? 0) > maxBodyBytes) return new Response("too large", { status: 413 });
   const body = await request.text();
+  if (encoder.encode(body).length > maxBodyBytes) return new Response("too large", { status: 413 });
   if (!/^\d+$/.test(timestamp) || Math.abs(Date.now() - Number(timestamp)) > maxSkewMs) return new Response("stale", { status: 401 });
   if (!(await validSignature(timestamp, body, signature))) return new Response("bad signature", { status: 401 });
 
-  let r: Request_;
-  try {
-    r = JSON.parse(body);
-  } catch {
-    return new Response("bad body", { status: 400 });
-  }
-  if (!/^[0-9a-f-]{36}$/i.test(r.reference ?? "")) return new Response("bad reference", { status: 400 });
+  const r = parseIntake(body);
+  if (!r) return new Response("bad body", { status: 400 });
 
   // A retry of the same reference is accepted without a second row or a second email.
   const stored = await rest(
@@ -118,14 +151,7 @@ Deno.serve(async (request) => {
   }
   const inserted = ((await stored.json()) as unknown[]).length > 0;
 
-  if (inserted) {
-    try {
-      if (await notify(r)) {
-        await rest(`research_requests?reference=eq.${r.reference}`, "PATCH", { notified_at: new Date().toISOString() });
-      }
-    } catch {
-      console.error(`[research-intake] ${r.reference}: email unreachable`);
-    }
-  }
+  // Email runs after the response: the site's 8s delivery timeout only has to cover the store.
+  if (inserted) EdgeRuntime.waitUntil(notifyAndRetry(r));
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "Content-Type": "application/json" } });
 });

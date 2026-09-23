@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { copyText } from "@/lib/clipboard";
 
 type Props = { file: string; bytes: number; url: string; title: string };
 
@@ -8,13 +9,8 @@ export function ReportActions({ file, bytes, url, title }: Props) {
   const [linkState, setLinkState] = useState<"idle" | "copied" | "manual">("idle");
 
   async function copyLink() {
-    try {
-      await navigator.clipboard.writeText(url);
-      setLinkState("copied");
-    } catch {
-      // Clipboard unavailable or denied: show the link so it can be copied by hand.
-      setLinkState("manual");
-    }
+    // Clipboard unavailable or denied: show the link so it can be copied by hand.
+    setLinkState((await copyText(url)) ? "copied" : "manual");
   }
 
   async function share() {

@@ -166,4 +166,13 @@ describe("POST /api/research-request without a secret env var", () => {
     const expected = createHmac("sha256", "db-secret").update(`${delivery.headers["X-Tharros-Timestamp"]}.${delivery.body}`).digest("hex");
     expect(delivery.headers["X-Tharros-Signature"]).toBe(`sha256=${expected}`);
   });
+
+  it("skips the database read when the webhook URL is missing", async () => {
+    vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_URL", "");
+    vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_SECRET", "");
+    vi.stubEnv("SUPABASE_URL", "https://db.example.com");
+    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-key");
+    expect((await post(valid)).status).toBe(503);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
 });
