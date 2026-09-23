@@ -167,23 +167,6 @@ describe("POST /api/research-request without a secret env var", () => {
     expect(delivery.headers["X-Tharros-Signature"]).toBe(`sha256=${expected}`);
   });
 
-  it("re-reads a rotated secret once after a 401 and signs the retry with it", async () => {
-    vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_SECRET", "");
-    vi.stubEnv("SUPABASE_URL", "https://db.example.com");
-    vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "service-key");
-    let dbSecret = "old-secret";
-    fetchMock.mockImplementation(async (url: string, init: RequestInit & { headers: Record<string, string>; body: string }) => {
-      if (String(url).includes("intake_config")) return new Response(JSON.stringify([{ value: dbSecret }]), { status: 200 });
-      const expected = createHmac("sha256", "new-secret").update(`${init.headers["X-Tharros-Timestamp"]}.${init.body}`).digest("hex");
-      return new Response(null, { status: init.headers["X-Tharros-Signature"] === `sha256=${expected}` ? 200 : 401 });
-    });
-    await post(valid); // leaves the old secret cached
-    dbSecret = "new-secret";
-    fetchMock.mockClear();
-    expect((await post(valid)).status).toBe(201);
-    expect(fetchMock.mock.calls.filter(([url]) => String(url).startsWith("https://intake.example.com"))).toHaveLength(2);
-  });
-
   it("skips the database read when the webhook URL is missing", async () => {
     vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_URL", "");
     vi.stubEnv("RESEARCH_INTAKE_WEBHOOK_SECRET", "");

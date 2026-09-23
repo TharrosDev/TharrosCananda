@@ -12,10 +12,10 @@ let cachedIntakeSecret: string | null = null;
 /**
  * The intake webhook secret lives in the service-role-only `intake_config` table, shared with the
  * research-intake Edge Function, so it never has to be copied between systems. Null when unavailable.
- * Cached per instance; `fresh` re-reads it after the receiver rejects a signature (rotated secret).
+ * Cached per instance: rotating the secret needs a redeploy of both sides.
  */
-export async function intakeSecretFromDatabase(fresh = false) {
-  if (cachedIntakeSecret && !fresh) return cachedIntakeSecret;
+export async function intakeSecretFromDatabase() {
+  if (cachedIntakeSecret) return cachedIntakeSecret;
   const db = supabaseServer();
   if (!db) return null;
   try {

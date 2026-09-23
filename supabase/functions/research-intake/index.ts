@@ -95,6 +95,7 @@ async function markNotified(reference: string) {
 
 // ponytail: failed emails are only retried when a new request arrives (up to 5 oldest per request);
 // a scheduled job is the upgrade if requests are rare and an email must not wait for the next one.
+// Two concurrent requests can pick the same rows and send a duplicate email; acceptable at this volume.
 async function retryUnnotified(current: string) {
   try {
     const response = await rest(
@@ -108,6 +109,16 @@ async function retryUnnotified(current: string) {
     }
   } catch {
     console.error("[research-intake] retry of unsent emails failed");
+  }
+}
+
+async function notifyAndRetry(r: IntakeRequest) {
+  try {
+    if (!(await notify(r))) return;
+    await markNotified(r.reference);
+    await retryUnnotified(r.reference);
+  } catch {
+    console.error(`[research-intake] ${r.reference}: email unreachable`);
   }
 }
 
@@ -140,16 +151,7 @@ Deno.serve(async (request) => {
   }
   const inserted = ((await stored.json()) as unknown[]).length > 0;
 
-  if (inserted) {
-    try {
-      if (await notify(r)) {
-        await markNotified(r.reference);
-        // Runs after the response so older retries never delay the site's 8s delivery timeout.
-        EdgeRuntime.waitUntil(retryUnnotified(r.reference));
-      }
-    } catch {
-      console.error(`[research-intake] ${r.reference}: email unreachable`);
-    }
-  }
+  // Email runs after the response: the site's 8s delivery timeout only has to cover the store.
+  if (inserted) EdgeRuntime.waitUntil(notifyAndRetry(r));
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "Content-Type": "application/json" } });
 });

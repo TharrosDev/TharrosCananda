@@ -25,10 +25,9 @@ function intakeWebhook() {
     return null;
   }
 }
-const envSecret = () => process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim();
 /** The env var wins; otherwise the secret shared with the Edge Function through Supabase. */
 async function intakeSecret() {
-  return envSecret() || (await intakeSecretFromDatabase());
+  return process.env.RESEARCH_INTAKE_WEBHOOK_SECRET?.trim() || (await intakeSecretFromDatabase());
 }
 
 export async function POST(request: Request) {
@@ -97,12 +96,7 @@ export async function POST(request: Request) {
       cache: "no-store",
     });
   try {
-    let response = await deliver(secret);
-    // A 401 against the cached database secret may mean it was rotated: re-read it and retry once.
-    if (response.status === 401 && !envSecret()) {
-      const fresh = await intakeSecretFromDatabase(true);
-      if (fresh && fresh !== secret) response = await deliver(fresh);
-    }
+    const response = await deliver(secret);
     // Only a 2xx from the receiver counts as accepted; anything else is reported to the visitor as not sent.
     if (!response.ok) {
       console.error(`[research-request] ${reference}: receiver returned ${response.status}`);
