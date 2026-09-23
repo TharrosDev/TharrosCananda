@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { cloneElement, FormEvent, type ReactElement, useEffect, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { track } from "@/lib/analytics";
@@ -18,13 +17,6 @@ type Props={initial?:Partial<ResearchRequestPayload>;contactEmail:string};
 const fallbackMessage="We couldn’t send your request right now. Your answers are still in the form.";
 const knownField=(key:string)=>stepFields.some((fields)=>fields.includes(key as keyof ResearchRequestPayload));
 
-/** Reads ?service=&product=&hs=&context= on the client so the page itself can be static. */
-export function PrefilledResearchRequestForm({contactEmail}:{contactEmail:string}){
-  const params=useSearchParams();
-  const initial=prefillFromSearchParams(Object.fromEntries(params.entries()));
-  return <ResearchRequestForm key={params.toString()} initial={initial} contactEmail={contactEmail}/>;
-}
-
 export function ResearchRequestForm({initial={},contactEmail}:Props){
   const [step,setStep]=useState(0);
   const [values,setValues]=useState<ResearchRequestPayload>({...emptyRequest,...initial});
@@ -36,7 +28,21 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const formRef=useRef<HTMLFormElement>(null);
   const moved=useRef(false);
   const successRef=useRef<HTMLHeadingElement>(null);
-  const preselectedNeed=initial.researchNeed;
+  const [preselectedNeed,setPreselectedNeed]=useState(initial.researchNeed);
+
+  // ?service=&product=&hs=&context= prefill is read after mount and only fills fields still empty, so the page
+  // stays static and nothing a fast visitor already typed is ever replaced (no component swap on hydration).
+  useEffect(()=>{
+    const prefill=prefillFromSearchParams(Object.fromEntries(new URLSearchParams(window.location.search)));
+    if(!Object.keys(prefill).length) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time merge of URL prefill after hydration
+    setValues((current)=>{
+      const next={...current};
+      for(const [key,value] of Object.entries(prefill) as [keyof ResearchRequestPayload,never][]) if(!current[key]) next[key]=value;
+      return next;
+    });
+    if(prefill.researchNeed) setPreselectedNeed(prefill.researchNeed);
+  },[]);
 
   useEffect(()=>{ if(moved.current) formRef.current?.querySelector<HTMLElement>("legend")?.focus(); },[step]);
   useEffect(()=>{ if(status==="success") successRef.current?.focus(); },[status]);
