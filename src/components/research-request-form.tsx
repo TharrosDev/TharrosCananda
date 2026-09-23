@@ -3,10 +3,14 @@
 import { cloneElement, FormEvent, type ReactElement, useEffect, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { track } from "@/lib/analytics";
-import { emptyRequest, honeypotField, maxLengths, objectives, type Objective, researchNeeds, type ResearchRequestErrors, type ResearchRequestPayload, prefillFromSearchParams, requestAsEmailBody, validateResearchRequest } from "@/lib/research-request";
+import { readStorage, removeStorage, writeStorage } from "@/lib/monitor-view";
+import { emptyRequest, honeypotField, maxLengths, objectives, type Objective, parseRequestDraft, researchNeeds, type ResearchRequestErrors, type ResearchRequestPayload, prefillFromSearchParams, requestAsEmailBody, validateResearchRequest } from "@/lib/research-request";
 import { needSummary } from "@/lib/services";
 
 const totalSteps = 3;
+const stepLabels = ["Organization","Question","Review"] as const;
+// Per-tab draft so a refresh never loses answers; cleared once the request is accepted.
+const draftKey = "tharros.request.draft";
 const stepFields:(keyof ResearchRequestPayload)[][] = [
   ["companyName","country","website","email"],
   ["product","industry","description","hsCode","objectives","researchNeed"],
@@ -29,39 +33,55 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const moved=useRef(false);
   const successRef=useRef<HTMLHeadingElement>(null);
   const [preselectedNeed,setPreselectedNeed]=useState(initial.researchNeed);
+  const restored=useRef(false);
+  const touched=useRef(new Set<keyof ResearchRequestPayload>());
+  const focusErrors=useRef(false);
 
-  // ?service=&product=&hs=&context= prefill is read after mount and only fills fields still empty, so the page
-  // stays static and nothing a fast visitor already typed is ever replaced (no component swap on hydration).
+  // ?service=&product=&hs=&context= prefill and the saved draft are read after mount and only fill fields still
+  // empty, so the page stays static and nothing a fast visitor already typed is ever replaced (no component swap
+  // on hydration). URL prefill wins over the draft: the link that opened the form is the more recent intent.
   useEffect(()=>{
     const prefill=prefillFromSearchParams(Object.fromEntries(new URLSearchParams(window.location.search)));
-    if(!Object.keys(prefill).length) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time merge of URL prefill after hydration
+    const restore={...parseRequestDraft(readStorage(draftKey,"session")),...prefill};
+    // Once applied, the prefill lives in the draft; dropping it from the URL means a reload keeps later edits.
+    if(Object.keys(prefill).length) window.history.replaceState(window.history.state,"",window.location.pathname+window.location.hash);
+    if(!Object.keys(restore).length){ restored.current=true; return; }
+    const isEmpty=(value:unknown)=>Array.isArray(value)?value.length===0:!value;
     setValues((current)=>{
+      // Saving starts only once the restored values are in state, so the stored draft is never blanked first.
+      restored.current=true;
       const next={...current};
-      for(const [key,value] of Object.entries(prefill) as [keyof ResearchRequestPayload,never][]) if(!current[key]) next[key]=value;
+      for(const [key,value] of Object.entries(restore) as [keyof ResearchRequestPayload,never][]) if(isEmpty(current[key])) next[key]=value;
       return next;
     });
     if(prefill.researchNeed) setPreselectedNeed(prefill.researchNeed);
   },[]);
+  useEffect(()=>{
+    if(status==="success") removeStorage(draftKey,"session");
+    else if(restored.current) writeStorage(draftKey,JSON.stringify({...values,consent:false}),"session");
+  },[values,status]);
 
   useEffect(()=>{ if(moved.current) formRef.current?.querySelector<HTMLElement>("legend")?.focus(); },[step]);
   useEffect(()=>{ if(status==="success") successRef.current?.focus(); },[status]);
-  useEffect(()=>{ if(Object.values(errors).some(Boolean)) formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"], input[aria-describedby$="-error"]')?.focus(); },[errors]);
+  // Only Continue and Submit move focus to the first error; blur validation leaves focus where the visitor put it.
+  useEffect(()=>{ if(!focusErrors.current) return; focusErrors.current=false; if(Object.values(errors).some(Boolean)) formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"], input[aria-describedby$="-error"]')?.focus(); },[errors]);
 
   function goTo(next:number){ moved.current=true; setErrors({}); setStatus((s)=>s==="error"?"idle":s); setStep(next); }
-  function update<K extends keyof ResearchRequestPayload>(key:K,value:ResearchRequestPayload[K]){ setValues((current)=>({...current,[key]:value})); setStatus((s)=>s==="error"?"idle":s); setErrors((current)=>({...current,[key]:undefined})); }
+  function update<K extends keyof ResearchRequestPayload>(key:K,value:ResearchRequestPayload[K]){ touched.current.add(key); setValues((current)=>({...current,[key]:value})); setStatus((s)=>s==="error"?"idle":s); setErrors((current)=>({...current,[key]:undefined})); }
+  // A field is checked on blur once the visitor has changed it; untouched empty fields stay quiet until Continue.
+  function blur(key:keyof ResearchRequestPayload){ if(!touched.current.has(key)) return; const message=validateResearchRequest(values)[key]; setErrors((current)=>({...current,[key]:message})); }
   function toggleObjective(value:Objective){ update("objectives",values.objectives.includes(value)?values.objectives.filter((item)=>item!==value):[...values.objectives,value]); }
   function next(){
     const validation=validateResearchRequest(values);
     const currentErrors=Object.fromEntries(Object.entries(validation).filter(([key])=>stepFields[step].includes(key as keyof ResearchRequestPayload)));
-    if(Object.keys(currentErrors).length){ setErrors(currentErrors); return; }
+    if(Object.keys(currentErrors).length){ focusErrors.current=true; setErrors(currentErrors); return; }
     if(step===0) track("research_request_started");
     goTo(Math.min(step+1,totalSteps-1));
   }
   function showErrors(validation:ResearchRequestErrors){
     const first=Object.keys(validation)[0];
     if(first && stepOf(first)!==step){ moved.current=true; setStep(stepOf(first)); }
-    setErrors(validation);
+    focusErrors.current=true; setErrors(validation);
   }
   async function submit(event:FormEvent<HTMLFormElement>){
     event.preventDefault();
@@ -90,23 +110,24 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
   const mailto=`mailto:${contactEmail}?subject=${encodeURIComponent(`Research request: ${values.companyName}`)}&body=${encodeURIComponent(requestAsEmailBody(values))}`;
 
   return <form className="request-form" onSubmit={submit} noValidate ref={formRef}>
-    <div className="form-progress"><div role="progressbar" aria-label="Request progress" aria-valuemin={1} aria-valuemax={totalSteps} aria-valuenow={step+1} aria-valuetext={`Step ${step+1} of ${totalSteps}`}><span style={{transform:`scaleX(${(step+1)/totalSteps})`}} /></div><p aria-hidden="true">Step {step+1} of {totalSteps}</p></div>
+    <ol className="form-stepper" aria-label="Request steps">{stepLabels.map((label,index)=><li key={label} aria-current={index===step?"step":undefined} className={index<step?"is-done":undefined}><span aria-hidden="true">{String(index+1).padStart(2,"0")}</span><span className="form-step-label">{label}</span>{index<step&&<span className="sr-only">, completed</span>}</li>)}</ol>
+    <div className="form-progress"><div role="progressbar" aria-label="Request progress" aria-valuemin={1} aria-valuemax={totalSteps} aria-valuenow={step+1} aria-valuetext={`Step ${step+1} of ${totalSteps}: ${stepLabels[step]}`}><span style={{transform:`scaleX(${(step+1)/totalSteps})`}} /></div></div>
     <div className="form-trap" aria-hidden="true"><label htmlFor="request-fax">Fax</label><input id="request-fax" name={honeypotField} tabIndex={-1} autoComplete="off" value={trap} onChange={(e)=>setTrap(e.target.value)} /></div>
 
     {step===0&&<fieldset>
       <legend tabIndex={-1}>Who is the research for?</legend>
-      <FormField id="company-name" label="Organization" error={errors.companyName} required><input value={values.companyName} onChange={(e)=>update("companyName",e.target.value)} autoComplete="organization" maxLength={maxLengths.companyName}/></FormField>
-      <FormField id="company-country" label="Country" error={errors.country} required><input value={values.country} onChange={(e)=>update("country",e.target.value)} autoComplete="country-name" placeholder="e.g. Germany" maxLength={maxLengths.country}/></FormField>
-      <FormField id="company-website" label="Company website" hint="Optional" error={errors.website}><input type="url" value={values.website} onChange={(e)=>update("website",e.target.value)} autoComplete="url" placeholder="example.com" maxLength={maxLengths.website}/></FormField>
-      <FormField id="business-email" label="Business email" error={errors.email} required><input type="email" value={values.email} onChange={(e)=>update("email",e.target.value)} autoComplete="email" maxLength={maxLengths.email}/></FormField>
+      <FormField id="company-name" label="Organization" error={errors.companyName} required><input value={values.companyName} onChange={(e)=>update("companyName",e.target.value)} onBlur={()=>blur("companyName")} autoComplete="organization" maxLength={maxLengths.companyName}/></FormField>
+      <FormField id="company-country" label="Country" error={errors.country} required><input value={values.country} onChange={(e)=>update("country",e.target.value)} onBlur={()=>blur("country")} autoComplete="country-name" placeholder="e.g. Germany" maxLength={maxLengths.country}/></FormField>
+      <FormField id="company-website" label="Company website" hint="Optional" error={errors.website}><input type="url" value={values.website} onChange={(e)=>update("website",e.target.value)} onBlur={()=>blur("website")} autoComplete="url" placeholder="example.com" maxLength={maxLengths.website}/></FormField>
+      <FormField id="business-email" label="Business email" error={errors.email} required><input type="email" value={values.email} onChange={(e)=>update("email",e.target.value)} onBlur={()=>blur("email")} autoComplete="email" maxLength={maxLengths.email}/></FormField>
     </fieldset>}
 
     {step===1&&<fieldset aria-describedby={errors.objectives?"objectives-error":undefined}>
       <legend tabIndex={-1}>What should Tharros answer?</legend><p className="field-intro">Describe the subject and intended use.</p>
-      <FormField id="product-service" label="Subject, product or sector" error={errors.product} required><input value={values.product} onChange={(e)=>update("product",e.target.value)} placeholder="e.g. Critical-mineral offtake in Quebec" maxLength={maxLengths.product}/></FormField>
-      <FormField id="product-description" label="The question in a sentence or two" hint="Recommended" error={errors.description}><textarea rows={4} value={values.description} onChange={(e)=>update("description",e.target.value)} placeholder="What do you need to know, and what decision does it support?" maxLength={maxLengths.description}/></FormField>
-      <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}><input value={values.industry} onChange={(e)=>update("industry",e.target.value)} maxLength={maxLengths.industry}/></FormField>
-      <FormField id="hs-code" label="HS code" hint="Optional, for product research" error={errors.hsCode}><input value={values.hsCode} onChange={(e)=>update("hsCode",e.target.value)} inputMode="decimal" placeholder="e.g. 9405.11" maxLength={maxLengths.hsCode}/></FormField>
+      <FormField id="product-service" label="Subject, product or sector" error={errors.product} required><input value={values.product} onChange={(e)=>update("product",e.target.value)} onBlur={()=>blur("product")} placeholder="e.g. Critical-mineral offtake in Quebec" maxLength={maxLengths.product}/></FormField>
+      <FormField id="product-description" label="The question in a sentence or two" hint="Recommended" error={errors.description}><textarea rows={4} value={values.description} onChange={(e)=>update("description",e.target.value)} onBlur={()=>blur("description")} placeholder="What do you need to know, and what decision does it support?" maxLength={maxLengths.description}/></FormField>
+      <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}><input value={values.industry} onChange={(e)=>update("industry",e.target.value)} onBlur={()=>blur("industry")} maxLength={maxLengths.industry}/></FormField>
+      <FormField id="hs-code" label="HS code" hint="Optional, for product research" error={errors.hsCode}><input value={values.hsCode} onChange={(e)=>update("hsCode",e.target.value)} onBlur={()=>blur("hsCode")} inputMode="decimal" placeholder="e.g. 9405.11" maxLength={maxLengths.hsCode}/></FormField>
       <div className="form-field" role="group" aria-labelledby="objectives-label"><label id="objectives-label">What will the research support? <em>Required</em></label><div className="choice-grid">
         {objectives.map((objective)=><label key={objective} className={values.objectives.includes(objective)?"choice is-selected":"choice"}><input type="checkbox" checked={values.objectives.includes(objective)} onChange={()=>toggleObjective(objective)} aria-invalid={Boolean(errors.objectives)} aria-describedby={errors.objectives?"objectives-error":undefined}/><span className="choice-check"><CheckIcon/></span><span>{objective}</span></label>)}
       </div>{errors.objectives&&<p className="field-message is-error" id="objectives-error">{errors.objectives}</p>}</div>
@@ -121,7 +142,7 @@ export function ResearchRequestForm({initial={},contactEmail}:Props){
         <div className="request-review-block"><h3>Organization</h3><p><strong>{values.companyName}</strong> · {values.country}</p><p>{values.email}{values.website?` · ${values.website}`:""}</p><button className="request-review-edit" type="button" onClick={()=>goTo(0)}>Edit</button></div>
         <div className="request-review-block"><h3>Research question</h3><p><strong>{values.product}</strong>{values.industry?` · ${values.industry}`:""}</p>{values.description&&<p>{values.description}</p>}<p>{values.objectives.join(" · ")}</p><p>{values.researchNeed||"Research format to be suggested by Tharros"}{values.hsCode?` · HS ${values.hsCode}`:""}</p><button className="request-review-edit" type="button" onClick={()=>goTo(1)}>Edit</button></div>
       </div>
-      <FormField id="additional-context" label="Additional context" hint="Optional" error={errors.context}><textarea rows={5} value={values.context} onChange={(e)=>update("context",e.target.value)} placeholder="Timing, geography, constraints, or anything already known." maxLength={maxLengths.context}/></FormField>
+      <FormField id="additional-context" label="Additional context" hint="Optional" error={errors.context}><textarea rows={5} value={values.context} onChange={(e)=>update("context",e.target.value)} onBlur={()=>blur("context")} placeholder="Timing, geography, constraints, or anything already known." maxLength={maxLengths.context}/></FormField>
       <label className="consent-row"><input type="checkbox" aria-required="true" checked={values.consent} onChange={(e)=>update("consent",e.target.checked)} aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent?"consent-error":undefined}/><span>I consent to Tharros Canada reviewing this information to respond to my request. This is not consent to marketing.</span></label>
       {errors.consent&&<p className="field-message is-error" id="consent-error">{errors.consent}</p>}
     </fieldset>}

@@ -45,6 +45,19 @@ export function validateResearchRequest(payload: Partial<ResearchRequestPayload>
   return errors;
 }
 
+/** A saved form draft is untrusted: keep known, well-typed fields only, and never restore consent. */
+export function parseRequestDraft(raw: string | null): Partial<ResearchRequestPayload> {
+  let data: unknown;
+  try { data = JSON.parse(raw ?? ""); } catch { return {}; }
+  if (typeof data !== "object" || data === null || Array.isArray(data)) return {};
+  const input = data as Record<string, unknown>;
+  const draft: Partial<ResearchRequestPayload> = {};
+  for (const key of textFields) { const field = input[key]; if (typeof field === "string" && field) draft[key] = field.slice(0, maxLengths[key]); }
+  if (Array.isArray(input.objectives)) { const kept = input.objectives.filter((item): item is Objective => objectives.includes(item as Objective)); if (kept.length) draft.objectives = kept; }
+  if (researchNeeds.includes(input.researchNeed as ResearchNeed)) draft.researchNeed = input.researchNeed as ResearchNeed;
+  return draft;
+}
+
 export type ParseResult = { ok:true; value:ResearchRequestPayload } | { ok:false; errors:ResearchRequestErrors };
 export function parseResearchRequest(input: unknown): ParseResult {
   if (typeof input !== "object" || input === null || Array.isArray(input)) return { ok:false, errors:{ companyName:"The request could not be read." } };

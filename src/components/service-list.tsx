@@ -18,10 +18,10 @@ export function ServiceList() {
                 <div className="service-name">
                   {service.flagship && <span className="service-flag">Flagship product</span>}
                   <h3>{service.name}</h3>
-                  <p>{service.priceLabel}</p>
                 </div>
                 <div className="service-copy">
                   <p className="service-question">{service.question}</p>
+                  <p className="service-receive-label">You receive</p>
                   <ul>{service.outputs.map((item) => <li key={item}><CheckIcon />{item}</li>)}</ul>
                   {service.flagship && (
                     <div className="buyer-tiers" role="group" aria-label="Canadian Buyer Intelligence tiers">
@@ -35,7 +35,11 @@ export function ServiceList() {
                       <p>Package totals are maximums. Reports include only relevant, verified targets.</p>
                     </div>
                   )}
-                  <p className="service-excludes"><strong>Not included:</strong> {service.excludes}</p>
+                  <dl className="service-spec">
+                    <div><dt>Typical scope</dt><dd>{service.formSummary}</dd></div>
+                    <div><dt>Price</dt><dd>{service.priceLabel}</dd></div>
+                    <div><dt>Not included</dt><dd>{service.excludes}</dd></div>
+                  </dl>
                 </div>
                 <Link href={requestResearchHref({ service: service.slug })}>Request<span className="sr-only"> {service.name}</span> <ArrowIcon /></Link>
               </article>

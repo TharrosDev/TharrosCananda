@@ -26,6 +26,8 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    // Locks page scroll behind the mobile sheet (CSS: html[data-menu-open]).
+    document.documentElement.setAttribute("data-menu-open", "");
     function onPointerDown(event: PointerEvent) {
       if (!headerRef.current?.contains(event.target as Node)) setOpen(false);
     }
@@ -54,6 +56,7 @@ export function Header() {
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
     return () => {
+      document.documentElement.removeAttribute("data-menu-open");
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };

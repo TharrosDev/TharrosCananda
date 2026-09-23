@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseResearchRequest, prefillFromSearchParams, requestResearchHref, validateResearchRequest } from "../src/lib/research-request";
+import { parseRequestDraft, parseResearchRequest, prefillFromSearchParams, requestResearchHref, validateResearchRequest } from "../src/lib/research-request";
 
 const valid={companyName:"Example GmbH",country:"Germany",email:"market@example.com",product:"Industrial LED lighting",objectives:["Find a distributor or partner"],researchNeed:"Canada / Europe Market Scan",consent:true};
 
@@ -25,4 +25,17 @@ describe("URL prefill",()=>{
   it("maps a service slug to its research need",()=>{expect(prefillFromSearchParams({service:"buyer-distributor"}).researchNeed).toBe("Canadian Buyer Intelligence");expect(prefillFromSearchParams({service:"nope"}).researchNeed).toBeUndefined();});
   it("sanitizes and truncates free text, ignoring arrays",()=>{const prefill=prefillFromSearchParams({product:`  Solar\u0000 mounts ${"x".repeat(400)}`,context:["a","b"],hs:"<script>"});expect(prefill.product?.startsWith("Solar mounts")).toBe(true);expect(prefill.product!.length).toBeLessThanOrEqual(200);expect(prefill.context).toBeUndefined();expect(prefill.hsCode).toBeUndefined();});
   it("round-trips through requestResearchHref",()=>{const href=requestResearchHref({service:"market-scan",product:"Solar & wind mounts",hs:"7616.99"});const params=Object.fromEntries(new URL(href,"https://tharros.ca").searchParams);expect(prefillFromSearchParams(params)).toEqual({researchNeed:"Canada / Europe Market Scan",product:"Solar & wind mounts",hsCode:"7616.99"});expect(requestResearchHref({})).toBe("/request-research");});
+});
+
+describe("parseRequestDraft (sessionStorage, untrusted)",()=>{
+  it("returns nothing for missing, malformed or non-object drafts",()=>{for(const raw of[null,"","not json","[1]","42","null"])expect(parseRequestDraft(raw)).toEqual({});});
+  it("keeps known text fields, allowed objectives and research needs",()=>{
+    const draft=parseRequestDraft(JSON.stringify({companyName:"Example GmbH",email:"a@b.co",objectives:["Find buyers","Hack",3],researchNeed:"Competitor Intelligence",admin:true}));
+    expect(draft).toEqual({companyName:"Example GmbH",email:"a@b.co",objectives:["Find buyers"],researchNeed:"Competitor Intelligence"});
+  });
+  it("never restores consent, wrong types or unknown research needs, and caps lengths",()=>{
+    const draft=parseRequestDraft(JSON.stringify({consent:true,country:7,researchNeed:"Free consulting",companyName:"x".repeat(500)}));
+    expect(draft).not.toHaveProperty("consent");expect(draft).not.toHaveProperty("country");expect(draft).not.toHaveProperty("researchNeed");
+    expect(draft.companyName).toHaveLength(160);
+  });
 });
