@@ -34,7 +34,7 @@
 .choice-check svg { width: 14px; opacity: 0; }
 .choice.is-selected .choice-check { color: var(--ivory-light); background: var(--ink); border-color: var(--ink); }
 .choice.is-selected .choice-check svg { opacity: 1; }
-.choice:has(input:focus-visible), .consent-row:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.choice:has(input:focus-visible), .consent-row:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
 .consent-row { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; font-size: 17px; cursor: pointer; }
 .consent-row input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--ink); }
 .form-actions { margin-top: 40px; display: flex; justify-content: flex-end; gap: 12px; }
@@ -108,6 +108,9 @@
 .request-review-edit { position: absolute; top: 14px; right: 0; min-height: 36px; padding: 0; border: 0; border-bottom: 1px solid var(--ink); background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; }
 .form-field select { width: 100%; height: 52px; padding: 0 14px; border: 1px solid var(--rule-strong); border-radius: 0; background: white; }
 
+@media (max-width: 760px) {
+  .request-trust-links a, .request-review-edit { min-height: 44px; }
+}
 @media (max-width: 640px) {
   .form-actions { justify-content: stretch; }
   .request-review-block { padding-right: 72px; }

@@ -15,6 +15,10 @@
 .report-sheet canvas { display: block; width: 100% !important; height: 100% !important; }
 .report-viewer-error { padding: 56px 24px; border: 1px solid var(--rule-strong); background: var(--ivory-light); text-align: center; }
 .report-viewer-error p { margin: 0 0 12px; font-size: 19px; }
+@media (max-width: 760px) {
+  .report-viewer-pages input, .report-viewer-zoom button { height: 44px; }
+  .report-viewer-download { min-height: 44px; display: inline-flex; align-items: center; }
+}
 @media (max-width: 560px) {
   .report-viewer-toolbar { top: 0; position: static; }
   .report-viewer-sheets { gap: 18px; }

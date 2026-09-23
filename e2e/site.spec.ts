@@ -135,3 +135,82 @@ test.describe("reduced motion", () => {
     }
   });
 });
+
+test.describe("mobile navigation", () => {
+  test.skip(({ isMobile }) => !isMobile, "The menu sheet is the mobile navigation");
+
+  test("the menu opens as a full-height sheet and locks page scroll", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: /menu/i }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-menu-open", "");
+    const nav = page.getByRole("navigation", { name: "Primary" });
+    await expect(nav.getByRole("link")).toHaveCount(5);
+    for (const link of await nav.getByRole("link").all()) await expect(link).toBeVisible();
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe("hidden");
+    const box = await nav.boundingBox();
+    const height = page.viewportSize()!.height;
+    expect(Math.round(box!.y + box!.height)).toBeGreaterThanOrEqual(height - 1);
+  });
+
+  test("Escape closes the menu and returns focus to the toggle", async ({ page }) => {
+    await page.goto("/");
+    const toggle = page.getByRole("button", { name: /menu/i });
+    await toggle.click();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("html")).not.toHaveAttribute("data-menu-open");
+    await expect(page.getByRole("button", { name: /menu/i })).toBeFocused();
+    await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link").first()).toBeHidden();
+  });
+
+  test("the open menu has no serious or critical accessibility violations", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: /menu/i }).click();
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(
+      results.violations
+        .filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))
+        .map((violation) => violation.id),
+    ).toEqual([]);
+  });
+});
+
+test.describe("tap targets", () => {
+  test.skip(({ isMobile }) => !isMobile, "Measured at a phone width");
+  for (const path of ["/", "/research", "/research-services", "/request-research", "/live-monitor", "/research/example-report"]) {
+    test(`${path} has 44px tap targets at 390px`, async ({ page }) => {
+      await page.setViewportSize({ width: 390, height: 844 });
+      await page.goto(path);
+      await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
+      const small = await page.locator("main").evaluate((main) =>
+        [...main.querySelectorAll<HTMLElement>("a[href], button, summary, select, input:not([type=checkbox]):not([type=radio])")]
+          .filter((el) => {
+            const style = getComputedStyle(el);
+            if (style.visibility === "hidden" || el.closest("[aria-hidden='true'], .sr-only, .form-trap")) return false;
+            // Inline text links inside running copy are exempt (WCAG 2.5.8 inline exception).
+            if (style.display === "inline" && el.closest("p, li, dd")) return false;
+            const box = el.getBoundingClientRect();
+            return box.width > 0 && box.height > 0 && box.height < 43.5;
+          })
+          .map((el) => `${el.tagName.toLowerCase()} "${(el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 40)}" ${Math.round(el.getBoundingClientRect().height)}px`),
+      );
+      expect(small).toEqual([]);
+    });
+  }
+});
+
+test("focus rings are consistent across links, buttons, chips and inputs", async ({ page }) => {
+  await page.goto("/research");
+  const targets = [
+    page.getByLabel("Search the archive"),
+    page.locator(".archive-chips button:not(:disabled), .archive-areas button:not(:disabled)").first(),
+    page.locator("main a[href]").first(),
+  ];
+  for (const target of targets) {
+    await target.focus();
+    const ring = await target.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return `${el.tagName} ${style.outlineStyle} ${style.outlineWidth} ${style.outlineOffset}`;
+    });
+    expect(ring).toMatch(/ solid 2px 3px$/);
+  }
+});

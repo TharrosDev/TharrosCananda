@@ -31,7 +31,7 @@
 .monitor-disclaimer { width: var(--shell); margin: 0 auto; padding: 28px 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: center; border-bottom: 1px solid var(--rule); }
 .monitor-disclaimer > p { grid-column: 1 / span 7; max-width: 70ch; margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; }
 .monitor-disclaimer nav { grid-column: 9 / -1; display: flex; justify-content: flex-end; gap: 24px; }
-.monitor-disclaimer a { min-height: 42px; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; font-weight: 650; text-decoration: none; border-bottom: 1px solid var(--ink); }
+.monitor-disclaimer a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; font-weight: 650; text-decoration: none; border-bottom: 1px solid var(--ink); }
 .monitor-disclaimer a svg { width: 14px; }
 .monitor-page { scroll-margin-top: calc(var(--header-height) + 18px); }
 .monitor-workspace, .monitor-loading { min-width: 0; }
