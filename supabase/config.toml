@@ -1,0 +1,5 @@
+project_id = "kgiptvgefhnwxktzncui"
+
+# The site authenticates with an HMAC signature (X-Tharros-Signature), not a Supabase JWT.
+[functions.research-intake]
+verify_jwt = false
