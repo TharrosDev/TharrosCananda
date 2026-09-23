@@ -97,7 +97,8 @@ test("retired Market Data surface is absent from navigation and routing", async 
 test("nested research route keeps Research navigation state", async ({ page, isMobile }) => {
   test.skip(isMobile, "Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
-  await expect(page.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
+  const primary = page.getByRole("navigation", { name: "Primary" });
+  await expect(primary.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
     "aria-current",
     "page",
   );
@@ -319,5 +320,82 @@ test.describe("request form", () => {
     await expect(page.getByRole("heading", { name: "Your research request has been received." })).toBeVisible();
     await page.reload();
     await expect(page.getByLabel("Organization")).toHaveValue("");
+  });
+});
+
+test("the not-found page offers research, the Live Monitor and commissioning", async ({ page }) => {
+  const response = await page.goto("/this-page-does-not-exist");
+  expect(response?.status()).toBe(404);
+  const links = page.getByRole("navigation", { name: "Useful pages" }).getByRole("link");
+  await expect(links).toHaveText([/Research/, /Live Monitor/, /Commission research/]);
+  await expect(links.nth(0)).toHaveAttribute("href", "/research");
+  await expect(links.nth(1)).toHaveAttribute("href", "/live-monitor");
+  await expect(links.nth(2)).toHaveAttribute("href", "/request-research");
+});
+
+test("the Live Monitor loading state reserves the screen the final layout fills", async ({ page }) => {
+  await page.goto("/live-monitor");
+  const workspace = page.locator(".monitor-workspace");
+  await expect(workspace).toBeVisible();
+  // Render the Suspense fallback markup in place to measure it against the loaded layout.
+  const heights = await page.evaluate(() => {
+    const host = document.querySelector(".monitor-page")!;
+    const skeleton = document.createElement("section");
+    skeleton.className = "monitor-loading";
+    skeleton.innerHTML = '<div class="monitor-loading-minimal"><div class="monitor-loading-status"><i></i>Opening</div><h2>Preparing current coverage.</h2><p>Copy</p></div>';
+    host.append(skeleton);
+    const result = {
+      skeleton: skeleton.getBoundingClientRect().height,
+      workspace: document.querySelector(".monitor-workspace")!.getBoundingClientRect().height,
+      screen: window.innerHeight - document.querySelector(".site-header")!.getBoundingClientRect().height,
+    };
+    skeleton.remove();
+    return result;
+  });
+  expect(heights.skeleton).toBeGreaterThanOrEqual(heights.screen - 1);
+  expect(heights.skeleton).toBeLessThanOrEqual(heights.workspace);
+});
+
+test.describe("every sitemap route", () => {
+  const sitemapPaths = async (request: import("@playwright/test").APIRequestContext) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
+      .map((match) => new URL(match[1]).pathname)
+      .filter((path) => !path.endsWith(".pdf"));
+    return [...new Set([...paths, "/research/example-report"])];
+  };
+
+  test("has no horizontal overflow at 320px and 1024px", async ({ page, request }, testInfo) => {
+    test.skip(testInfo.project.name === "mobile", "The loop sets its own viewports");
+    test.setTimeout(120_000);
+    const paths = await sitemapPaths(request);
+    expect(paths.length).toBeGreaterThan(8);
+    for (const width of [320, 1024]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const path of paths) {
+        await page.goto(path);
+        const size = await page.evaluate(() => ({
+          scroll: document.documentElement.scrollWidth,
+          client: document.documentElement.clientWidth,
+        }));
+        expect(size.scroll, `${path} at ${width}px`).toBeLessThanOrEqual(size.client + 1);
+      }
+    }
+  });
+
+  test("has no serious or critical accessibility violations", async ({ page, request }, testInfo) => {
+    test.skip(testInfo.project.name === "mobile", "Desktop sweep");
+    test.setTimeout(180_000);
+    for (const path of await sitemapPaths(request)) {
+      await page.goto(path);
+      await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(
+        results.violations
+          .filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))
+          .map((violation) => `${violation.id} (${violation.nodes.length})`),
+        path,
+      ).toEqual([]);
+    }
   });
 });

@@ -34,3 +34,19 @@ describe("motion safety", () => {
     expect(reveals).toBeGreaterThan(0);
   });
 });
+
+describe("legibility", () => {
+  // report.css shapes the printed PDF (fixed page scale), so the screen minimum does not apply there.
+  const screenCss = cssFiles(join(process.cwd(), "src")).filter((file) => !file.endsWith("report.css"));
+
+  it("never sets screen type below the 11.5px label minimum", () => {
+    const small: string[] = [];
+    for (const file of screenCss) {
+      const css = readFileSync(file, "utf8");
+      for (const match of css.matchAll(/font(?:-size)?:[^;}]*?(\d+(?:\.\d+)?)px/g)) {
+        if (Number(match[1]) < 11.5) small.push(`${file}: ${match[0]}`);
+      }
+    }
+    expect(small).toEqual([]);
+  });
+});
