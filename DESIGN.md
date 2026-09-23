@@ -107,15 +107,15 @@ The navigation tightens before collapsing. Around 1020px it becomes a labelled *
 
 ## Homepage architecture
 
-1. Evidence-folio first viewport, brand proposition and Commission Research
+1. Atlantic map first viewport, brand proposition and Commission Research
 2. "Start with a question": the four home-featured services, each led by the question it answers
 3. Four-area Canada–Europe research summary
 4. Public research (selected releases, or one calm empty-state line plus the example report)
-5. Final commission CTA
+5. Ivory closing CTA (shared `.closing-cta`), so the footer is the only dark block at the foot of the page
 
 Section headings share one size (`--type-section`); no chapter out-shouts the next, and an empty state is never the loudest heading on the page.
 
-The homepage uses the evidence route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation through method and source registers and must not pretend unfinished research is already published.
+The homepage uses the Atlantic route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation through method and source registers and must not pretend unfinished research is already published.
 
 ## Research archive
 
@@ -186,9 +186,9 @@ The 76px ruled navigation uses the serif wordmark, four primary destinations and
 
 Primary actions are square muted-red fields with a trailing arrow. Secondary actions are square ink outlines that invert on hover. Editorial text links carry a single underline rule; arrows move on hover while the surrounding layout remains fixed. Every variant uses the shared visible focus ring.
 
-### Evidence atlas
+### Atlantic map
 
-The homepage atlas is a dark, ruled evidence plate connecting Canada and Europe through a single red route, steel verification node and four source classes. It is semantic SVG geometry with a text alternative, not a decorative map or an implied dataset. The route draw is disabled under reduced motion.
+The homepage map (`src/components/atlantic-map.tsx`) is an orthographic line drawing of the North Atlantic: Natural Earth coastlines, a faint 10° graticule and the real great-circle route from Ottawa to Brussels in red, with endpoint coordinates and the route distance. Edges fade through a radial mask. Labels are HTML overlays so they keep true type sizes at every width. It is geography only, never an implied dataset. The paths were generated once and are static; the route draw is disabled under reduced motion.
 
 ### Research archive
 

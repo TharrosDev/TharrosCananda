@@ -88,11 +88,11 @@
 .commission-sequence > div { min-height: 80px; padding: 0 24px; display: flex; align-items: center; gap: 14px; border-right: 1px solid var(--rule); }
 .commission-sequence > div:first-child { padding-left: 0; }
 .commission-sequence > div:last-child { border-right: 0; }
-.commission-sequence span { color: var(--red); font-size: 12px; font-weight: 700; }
-.commission-sequence strong { font-size: 15px; font-weight: 600; }
+.commission-sequence span { color: var(--red); font-size: 13px; font-weight: 700; }
+.commission-sequence strong { font-size: 17px; font-weight: 600; }
 .commission-desk { padding-top: var(--space-section) !important; }
 .commission-desk .request-form::before { content: "Research scope desk"; position: absolute; top: 0; right: 0; left: 0; height: 34px; padding: 0 18px; display: flex; align-items: center; color: var(--slate); background: var(--ivory-deep); font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
-.commission-desk .request-form { position: relative; border-top: 0; box-shadow: 0 20px 70px rgba(28,29,31,.08); padding-top: 68px; }
+.commission-desk .request-form { position: relative; border-top: 1px solid var(--ink); padding-top: 68px; }
 .request-sidebar-label { margin-bottom: 20px !important; padding-bottom: 12px; border-bottom: 1px solid var(--rule); color: var(--red) !important; font-size: 12px !important; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .commission-assurance { width: var(--shell); margin: 0 auto; padding: 26px 0 var(--space-section); display: flex; justify-content: space-between; gap: 32px; border-top: 1px solid var(--ink); color: var(--slate); font-size: 19px; }
 .commission-assurance p { margin: 0; }

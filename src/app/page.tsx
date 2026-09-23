@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AtlanticMap } from "@/components/atlantic-map";
 import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
-
-const folioSources = [
-  "Official data",
-  "Procurement",
-  "Company records",
-  "Policy documents",
-] as const;
 
 export default function HomePage() {
   const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
@@ -38,55 +32,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div
-            className="evidence-folio"
-            role="group"
-            aria-label="A specimen of the Tharros evidence review process"
-          >
-            <div className="folio-head">
-              <span>Evidence folio</span>
-              <span>Working specimen · not a finding</span>
-            </div>
-            <div className="folio-stage">
-              <article className="folio-sheet">
-                <div className="folio-reference">
-                  <span>TC / REVIEW NOTE</span>
-                  <span>Source-led analysis</span>
-                </div>
-                <h2>Evidence before conclusion.</h2>
-                <p>
-                  A research question is tested against attributed records before it becomes a
-                  written finding.
-                </p>
-                <div className="folio-extract" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <footer>
-                  <span>Scope</span>
-                  <strong>Canada–Europe</strong>
-                  <span>Status</span>
-                  <strong>Under review</strong>
-                </footer>
-              </article>
-              <aside className="folio-margin" aria-label="Review checks">
-                <span>01</span>
-                <p>Source named</p>
-                <span>02</span>
-                <p>Date checked</p>
-                <span>03</span>
-                <p>Limits recorded</p>
-              </aside>
-            </div>
-            <div className="folio-register">
-              {folioSources.map((source) => (
-                <span key={source}>{source}</span>
-              ))}
-            </div>
-          </div>
+          <AtlanticMap />
         </div>
         <div className="home-intro-foot">
           <p>Canada ↔ Europe</p>
@@ -179,7 +125,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="home-finale">
+      <section className="closing-cta">
         <h2>Have a research question?</h2>
         <Link className="button-primary" href="/request-research">
           Commission research <ArrowIcon />
