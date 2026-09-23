@@ -18,7 +18,6 @@ import {
   requestAsEmailBody,
   validateResearchRequest,
 } from "@/lib/research-request";
-import { needSummary } from "@/lib/services";
 
 const totalSteps = 3;
 const stepLabels = ["Organization", "Question", "Review"] as const;
@@ -416,7 +415,7 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
           </div>
           <FormField
             id="research-format"
-            label="Research format"
+            label="Service"
             hint={
               preselectedNeed
                 ? "Prefilled from the service you selected; change it if needed"
@@ -430,11 +429,10 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
                 update("researchNeed", e.target.value as ResearchRequestPayload["researchNeed"])
               }
             >
-              <option value="">Let Tharros suggest a format</option>
+              <option value="">Let Tharros suggest one</option>
               {researchNeeds.map((need) => (
                 <option key={need} value={need}>
                   {need}
-                  {need === "Not sure yet" ? "" : `: ${needSummary(need)}`}
                 </option>
               ))}
             </select>
@@ -469,7 +467,7 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
               {values.description && <p>{values.description}</p>}
               <p>{values.objectives.join(" · ")}</p>
               <p>
-                {values.researchNeed || "Research format to be suggested by Tharros"}
+                {values.researchNeed || "Service to be suggested by Tharros"}
                 {values.hsCode ? ` · HS ${values.hsCode}` : ""}
               </p>
               <button className="request-review-edit" type="button" onClick={() => goTo(1)}>

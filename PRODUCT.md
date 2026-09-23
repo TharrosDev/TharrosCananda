@@ -38,7 +38,7 @@ Not a government body, think tank, legal/regulatory adviser or generic consultan
 
 ## Commercial products
 
-Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research are defined once in `src/lib/services.ts`. Canadian Buyer Intelligence is the flagship entry product and retains explicit Core, Expanded and Comprehensive coverage tiers. Prices are confirmed with scope/timing in writing.
+Three services are defined once in `src/lib/services.ts`: Custom & Partner Research (the flagship: a client-defined Canada–Europe question, or research capacity behind a partner firm's client work), Market Assessment and Buyer & Partner Research. No prices are published; every engagement is scoped and priced per case, in writing, before work starts.
 
 ## Brand
 

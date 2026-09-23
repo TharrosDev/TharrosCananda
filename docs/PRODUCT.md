@@ -26,14 +26,11 @@ Tharros Canada is an independent commercial research and intelligence business f
 
 Defined only in `src/lib/services.ts`:
 
-- Canada / Europe Market Scan
-- Canadian Buyer Intelligence
-- Competitor Intelligence
-- Partner & Ecosystem Research
-- Commissioned Research
-- White-label Research
+- Custom & Partner Research (flagship)
+- Market Assessment
+- Buyer & Partner Research
 
-Indicative prices are visible in service detail, not used as the lead brand proposition. Canadian Buyer Intelligence is the flagship entry product with Core, Expanded and Comprehensive coverage tiers; higher tiers expand coverage rather than changing the research standard. Scope, price, exclusions and timing are confirmed in writing before work starts.
+No prices are published. Every engagement is scoped and priced per case, in writing, before work starts.
 
 ## Research archive
 

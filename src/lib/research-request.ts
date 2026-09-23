@@ -181,7 +181,7 @@ export function requestAsEmailBody(values: ResearchRequestPayload) {
     values.hsCode && `HS code: ${values.hsCode}`,
     values.description && `Question: ${values.description}`,
     `Objectives: ${values.objectives.join(", ")}`,
-    values.researchNeed && `Research format: ${values.researchNeed}`,
+    values.researchNeed && `Service: ${values.researchNeed}`,
     values.context && `Context: ${values.context}`,
   ]
     .filter(Boolean)

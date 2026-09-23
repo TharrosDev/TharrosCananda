@@ -53,7 +53,10 @@ test("commissioning prefills from the link that opened it", async ({ page }) => 
   await expect(page.getByLabel("HS code")).toHaveValue("1702.20");
 });
 
-for (const [label, path] of [["Market Data", "/market-explorer"], ["Live Monitor", "/live-monitor"]]) {
+for (const [label, path] of [
+  ["Market Data", "/market-explorer"],
+  ["Live Monitor", "/live-monitor"],
+]) {
   test(`retired ${label} surface is absent from navigation and routing`, async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("link", { name: label, exact: true })).toHaveCount(0);
@@ -117,7 +120,9 @@ test.describe("mobile navigation", () => {
     const nav = page.getByRole("navigation", { name: "Primary" });
     await expect(nav.getByRole("link")).toHaveCount(5);
     for (const link of await nav.getByRole("link").all()) await expect(link).toBeVisible();
-    expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe("hidden");
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe(
+      "hidden",
+    );
     const box = await nav.boundingBox();
     const height = page.viewportSize()!.height;
     expect(Math.round(box!.y + box!.height)).toBeGreaterThanOrEqual(height - 1);
@@ -130,7 +135,9 @@ test.describe("mobile navigation", () => {
     await page.keyboard.press("Escape");
     await expect(page.locator("html")).not.toHaveAttribute("data-menu-open");
     await expect(page.getByRole("button", { name: /menu/i })).toBeFocused();
-    await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link").first()).toBeHidden();
+    await expect(
+      page.getByRole("navigation", { name: "Primary" }).getByRole("link").first(),
+    ).toBeHidden();
   });
 
   test("the open menu has no serious or critical accessibility violations", async ({ page }) => {
@@ -147,22 +154,43 @@ test.describe("mobile navigation", () => {
 
 test.describe("tap targets", () => {
   test.skip(({ isMobile }) => !isMobile, "Measured at a phone width");
-  for (const path of ["/", "/research", "/research-services", "/request-research", "/research/example-report", "/about", "/methodology", "/copyright", "/this-page-does-not-exist"]) {
+  for (const path of [
+    "/",
+    "/research",
+    "/research-services",
+    "/request-research",
+    "/research/example-report",
+    "/about",
+    "/methodology",
+    "/copyright",
+    "/this-page-does-not-exist",
+  ]) {
     test(`${path} has 44px tap targets at 390px`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
       await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
       const small = await page.locator("main").evaluate((main) =>
-        [...main.querySelectorAll<HTMLElement>("a[href], button, summary, select, input:not([type=checkbox]):not([type=radio])")]
+        [
+          ...main.querySelectorAll<HTMLElement>(
+            "a[href], button, summary, select, input:not([type=checkbox]):not([type=radio])",
+          ),
+        ]
           .filter((el) => {
             const style = getComputedStyle(el);
-            if (style.visibility === "hidden" || el.closest("[aria-hidden='true'], .sr-only, .form-trap")) return false;
+            if (
+              style.visibility === "hidden" ||
+              el.closest("[aria-hidden='true'], .sr-only, .form-trap")
+            )
+              return false;
             // Inline text links inside running copy are exempt (WCAG 2.5.8 inline exception).
             if (style.display === "inline" && el.closest("p, li, dd")) return false;
             const box = el.getBoundingClientRect();
             return box.width > 0 && box.height > 0 && box.height < 43.5;
           })
-          .map((el) => `${el.tagName.toLowerCase()} "${(el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 40)}" ${Math.round(el.getBoundingClientRect().height)}px`),
+          .map(
+            (el) =>
+              `${el.tagName.toLowerCase()} "${(el.textContent || el.getAttribute("aria-label") || "").trim().slice(0, 40)}" ${Math.round(el.getBoundingClientRect().height)}px`,
+          ),
       );
       expect(small).toEqual([]);
     });
@@ -173,7 +201,9 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
   await page.goto("/research");
   const targets = [
     page.getByLabel("Search the archive"),
-    page.locator(".archive-chips button:not(:disabled), .archive-areas button:not(:disabled)").first(),
+    page
+      .locator(".archive-chips button:not(:disabled), .archive-areas button:not(:disabled)")
+      .first(),
     page.locator("main a[href]").first(),
   ];
   for (const target of targets) {
@@ -187,7 +217,9 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("reads what Tharros does, who it is for, proof, then how to commission", async ({ page }) => {
+  test("reads what Tharros does, who it is for, proof, then how to commission", async ({
+    page,
+  }) => {
     await page.goto("/");
     const headings = await page.locator("main > section h2").allTextContents();
     const order = [
@@ -196,7 +228,10 @@ test.describe("home flow", () => {
       "Public research.",
       "Have a research question?",
     ].map((heading) => headings.indexOf(heading));
-    expect(order.every((position) => position >= 0), headings.join(" | ")).toBe(true);
+    expect(
+      order.every((position) => position >= 0),
+      headings.join(" | "),
+    ).toBe(true);
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
@@ -210,17 +245,17 @@ test.describe("home flow", () => {
   });
 });
 
-test("services compare in one table, then share the same detail structure", async ({ page }) => {
+test("services list each offer once, led by the flagship, with no prices", async ({ page }) => {
   await page.goto("/research-services");
-  const rows = page.locator(".service-table tbody tr:not(.service-table-group)");
-  const entries = page.locator(".service-entry");
-  expect(await entries.count()).toBeGreaterThan(3);
-  await expect(rows).toHaveCount(await entries.count());
+  const entries = page.locator(".services-index li");
+  await expect(entries).toHaveCount(3);
+  await expect(entries.first()).toHaveClass(/is-flagship/);
+  await expect(page.locator("main")).not.toContainText("C$");
   for (const entry of await entries.all()) {
-    await expect(entry.getByText("You receive", { exact: true })).toBeVisible();
-    await entry.getByText("Scope and exclusions").click();
-    await expect(entry.locator("dt")).toHaveText(["Typical scope", "Not included"]);
-    await expect(entry.getByRole("link", { name: /^Request/ })).toHaveAttribute("href", /\/request-research\?service=/);
+    await expect(entry.getByRole("link", { name: /^Request/ })).toHaveAttribute(
+      "href",
+      /\/request-research\?service=/,
+    );
   }
 });
 
@@ -278,7 +313,9 @@ test.describe("request form", () => {
     await page.getByRole("button", { name: /continue/i }).click();
     await page.getByLabel(/I consent/).check();
     await page.getByRole("button", { name: /submit research request/i }).click();
-    await expect(page.getByRole("heading", { name: "Your research request has been received." })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Your research request has been received." }),
+    ).toBeVisible();
     expect(await page.evaluate(() => sessionStorage.getItem("tharros.request.draft"))).toBeNull();
     await page.reload();
     // Prove the form hydrated and ran its restore before asserting nothing came back.
@@ -340,7 +377,10 @@ test.describe("every sitemap route", () => {
     }
   });
 
-  test("has no serious or critical accessibility violations", async ({ page, request }, testInfo) => {
+  test("has no serious or critical accessibility violations", async ({
+    page,
+    request,
+  }, testInfo) => {
     test.skip(testInfo.project.name === "mobile", "Desktop sweep");
     test.setTimeout(180_000);
     // Audit the settled page, with the map's route already drawn.
