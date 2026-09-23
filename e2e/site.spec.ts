@@ -121,3 +121,17 @@ for (const path of ["/", "/research-services", "/request-research", "/live-monit
     ).toEqual([]);
   });
 }
+
+test.describe("reduced motion", () => {
+  test.use({ reducedMotion: "reduce" });
+  test("every section heading on the home page is fully visible", async ({ page }) => {
+    await page.goto("/");
+    const headings = page.locator("main section h2");
+    const count = await headings.count();
+    expect(count).toBeGreaterThan(2);
+    for (let i = 0; i < count; i += 1) {
+      await headings.nth(i).scrollIntoViewIfNeeded();
+      expect(await headings.nth(i).evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+    }
+  });
+});
