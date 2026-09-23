@@ -22,4 +22,10 @@ describe("POST /api/research-event", () => {
     expect((await post({ slug: "example-report", kind: "read" })).status).toBe(400);
     expect((await post({ slug: "example-report", kind: "like" })).status).toBe(400);
   });
+
+  it("rejects an oversized declared content-length before reading the body", async () => {
+    expect((await post({ slug: "x", kind: "read" }, { "content-length": "999999" })).status).toBe(
+      413,
+    );
+  });
 });

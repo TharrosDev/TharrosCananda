@@ -17,13 +17,17 @@ export function sendMetric(slug: string, kind: Kind) {
   if (privacySignal()) return;
   const key = `tharros.metric.${kind}.${slug}`;
   if (alreadyCounted(readStorage(key), kind)) return;
-  writeStorage(key, String(Date.now()));
+  // Remembered only once the server answered, so a failed send is retried next time.
   void fetch("/api/research-event", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ slug, kind }),
     keepalive: true,
-  }).catch(() => {});
+  })
+    .then((response) => {
+      if (response.ok) writeStorage(key, String(Date.now()));
+    })
+    .catch(() => {});
 }
 
 // Grouping by hand, not toLocaleString: identical on server and every browser (no hydration drift).
