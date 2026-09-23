@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canvasRatio, nextZoom } from "../src/lib/viewer";
+import { canvasRatio, findPattern, nextZoom } from "../src/lib/viewer";
 
 describe("report viewer helpers", () => {
   it("caps the canvas pixel ratio so a page stays under the iOS canvas limit", () => {
@@ -15,5 +15,19 @@ describe("report viewer helpers", () => {
     expect(nextZoom(1, -0.1)).toBe(0.9);
     expect(nextZoom(1.95, 0.1)).toBe(2);
     expect(nextZoom(0.2, -0.1)).toBeGreaterThan(0);
+  });
+});
+
+describe("find in report", () => {
+  it("ignores too-short queries and matches across missing or extra whitespace", () => {
+    expect(findPattern(" a ")).toBeNull();
+    const pattern = findPattern("lorem  ipsum")!;
+    expect("xLoremipsum".match(pattern)?.[0]).toBe("Loremipsum");
+    expect("LOREM\nIPSUM".match(pattern)?.[0]).toBe("LOREM\nIPSUM");
+  });
+
+  it("treats regex characters literally", () => {
+    expect("cost (C$) rose".match(findPattern("(C$)")!)?.[0]).toBe("(C$)");
+    expect("abc".match(findPattern(".*")!)).toBeNull();
   });
 });

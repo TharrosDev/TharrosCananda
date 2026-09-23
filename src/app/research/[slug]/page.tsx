@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CitationPanel } from "@/components/citation-panel";
 import { ArrowIcon } from "@/components/icons";
 import { ReportActions } from "@/components/report/report-actions";
 import { ReportViewer } from "@/components/report/report-viewer";
 import { allPublications, publicationBySlug } from "@/data/publications";
 import type { CitationInput } from "@/lib/citation";
 import { researchAreas } from "@/lib/research-areas";
+import { reportContents, reportLimitations, reportSources } from "@/lib/report-sections";
 import { reportAsset } from "@/lib/reports";
 import { formatLongDate, jsonLd, siteUrl } from "@/lib/site";
 
@@ -49,6 +51,8 @@ export default async function ReportPage({ params }: Props) {
   const area = researchAreas.find((a) => a.slug === p.area);
   const stableUrl = `${siteUrl}/research/id/${p.reference}`;
   const citation: CitationInput = { title: p.title, authors: p.authors, publishedAt: p.publishedAt, url: stableUrl, reference: p.reference };
+  const sources = reportSources(p);
+  const limitations = reportLimitations(p);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Report",
@@ -83,25 +87,70 @@ export default async function ReportPage({ params }: Props) {
         </div>
       )}
       <header className="report-header">
-        <p className="report-header-kicker">
-          {p.type} · {area?.name ?? p.area}
-        </p>
-        <h1>{p.title}</h1>
-        {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
-        <dl className="report-header-meta">
-          <div><dt>Reference</dt><dd>{p.reference}</dd></div>
-          <div><dt>Published</dt><dd><time dateTime={p.publishedAt}>{formatLongDate(p.publishedAt)}</time></dd></div>
-          <div><dt>Authors</dt><dd>{p.authors.join(", ")}</dd></div>
-          {asset && <div><dt>Length</dt><dd>{asset.pages} pages</dd></div>}
-        </dl>
-        <p className="report-header-abstract">{p.summary}</p>
-        {asset && <ReportActions file={asset.file} bytes={asset.bytes} citation={citation} url={stableUrl} title={p.title} />}
+        <div className="report-header-main">
+          <p className="report-header-kicker">
+            {p.type} · {area ? <Link href={`/research?area=${area.slug}`}>{area.name}</Link> : p.area}
+          </p>
+          <h1>{p.title}</h1>
+          {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
+          <p className="report-header-abstract">{p.summary}</p>
+        </div>
+        <div className="report-header-side">
+          <dl className="report-header-meta">
+            <div><dt>Reference</dt><dd>{p.reference}</dd></div>
+            <div><dt>Published</dt><dd><time dateTime={p.publishedAt}>{formatLongDate(p.publishedAt)}</time></dd></div>
+            <div><dt>{p.authors.length === 1 ? "Author" : "Authors"}</dt><dd>{p.authors.join(", ")}</dd></div>
+            <div><dt>Origin</dt><dd>{p.origin === "independent" ? "Independent research" : "Commissioned research"}</dd></div>
+            {asset && <div><dt>Length</dt><dd>{asset.pages} pages</dd></div>}
+          </dl>
+          {asset && <ReportActions file={asset.file} bytes={asset.bytes} url={stableUrl} title={p.title} />}
+        </div>
       </header>
       {asset ? (
-        <ReportViewer file={asset.file} pages={asset.pages} title={p.title} />
+        <ReportViewer file={asset.file} pages={asset.pages} title={p.title} contents={reportContents(p, asset.outline)} />
       ) : (
         <p className="report-pending">The PDF for this report is being prepared.</p>
       )}
+      <section className="report-appendix" aria-labelledby="report-appendix-label">
+        <h2 className="report-appendix-label" id="report-appendix-label">Sources and citation</h2>
+        <div className="report-appendix-body">
+        {sources.length > 0 && (
+          <div className="report-appendix-block" id="sources">
+            <h2>Sources</h2>
+            <ol className="report-appendix-sources">
+              {sources.map((s, i) => (
+                <li key={i}>
+                  {s.publisher}. {s.url ? <a href={s.url} rel="noreferrer">{s.title}</a> : <em>{s.title}</em>}.
+                  {s.period && ` ${s.period}.`}
+                  {s.retrievedAt && ` Retrieved ${s.retrievedAt}.`}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+        {limitations.length > 0 && (
+          <div className="report-appendix-block" id="limitations">
+            <h2>Limitations</h2>
+            <ul>{limitations.map((line) => <li key={line}>{line}</li>)}</ul>
+          </div>
+        )}
+        <div className="report-appendix-block" id="cite">
+          <h2>Cite this report</h2>
+          <CitationPanel input={citation} />
+          <p className="report-appendix-stable">
+            Stable link: <a href={stableUrl}>{stableUrl.replace(/^https?:\/\//, "")}</a>
+          </p>
+        </div>
+        <div className="report-appendix-block report-appendix-more">
+          <h2>Continue</h2>
+          <ul>
+            {area && <li><Link href={`/research?area=${area.slug}`}>More in {area.name} <ArrowIcon /></Link></li>}
+            <li><Link href="/methodology">How Tharros selects and checks sources <ArrowIcon /></Link></li>
+            <li><Link href="/research">Research archive <ArrowIcon /></Link></li>
+          </ul>
+        </div>
+        </div>
+      </section>
       <section className="closing-cta">
         <h2>Need research on a specific question?</h2>
         <Link className="button-primary" href="/request-research">

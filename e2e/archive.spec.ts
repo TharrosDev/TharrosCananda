@@ -7,7 +7,7 @@ test("full-text search finds words inside the PDF and highlights them", async ({
   await page.goto("/research");
   await search(page).fill("vestibulum");
   await expect(page).toHaveURL(/q=vestibulum/);
-  await expect(page.getByText("1 publication", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText("1 publication", { exact: true })).toBeVisible();
   await expect(page.locator("article mark").first()).toContainText(/vestibulum/i);
 });
 
@@ -28,14 +28,14 @@ test("area chips toggle a shareable filter", async ({ page }) => {
 
 test("garbage URL parameters fall back to the full archive", async ({ page }) => {
   await page.goto("/research?area=nope&year=abc&sort=x");
-  await expect(page.getByText("1 publication", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText("1 publication", { exact: true })).toBeVisible();
 });
 
 test("no matches offers a way back", async ({ page }) => {
   await page.goto("/research?q=zzzzqqq");
   await expect(page.getByText("No publications match.")).toBeVisible();
   await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(page.getByText("1 publication", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText("1 publication", { exact: true })).toBeVisible();
 });
 
 test("typing does not flood browser history", async ({ page }) => {

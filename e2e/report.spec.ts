@@ -53,8 +53,9 @@ test("download serves a real PDF", async ({ request }) => {
 test("cite popover copies an APA citation with the stable reference URL", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/research/example-report");
-  await page.getByText("Cite", { exact: true }).click();
-  await page.getByRole("button", { name: "Copy citation" }).click();
+  await page.getByRole("link", { name: "Cite", exact: true }).click();
+  await expect(page).toHaveURL(/#cite$/);
+  await page.locator("#cite").getByRole("button", { name: "Copy citation" }).click();
   const copied = await page.evaluate(() => navigator.clipboard.readText());
   expect(copied).toContain("(Report No. TC-EX-000)");
   expect(copied).toContain("/research/id/TC-EX-000");
@@ -72,9 +73,10 @@ test("share falls back to copy, and to a visible URL when copying is denied", as
 
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
-  test("header, abstract and download remain", async ({ page }) => {
+  test("header, abstract, download and contents remain", async ({ page }) => {
     await page.goto("/research/example-report");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Contents" }).getByRole("link", { name: /Methodology/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /Download PDF/ }).first()).toHaveAttribute("href", "/research/TC-EX-000.pdf");
   });
 });
@@ -141,4 +143,73 @@ test.describe("without JavaScript the viewer hides empty sheets and dead control
     await expect(page.locator(".report-viewer-sheets")).toBeHidden();
     await expect(page.getByRole("button", { name: "Zoom in" })).toBeHidden();
   });
+});
+
+test("the header reads wide and short on desktop", async ({ page, isMobile }) => {
+  test.skip(isMobile, "Desktop layout");
+  await page.goto("/research/example-report");
+  const box = (await page.locator(".report-header").boundingBox())!;
+  expect(box.width).toBeGreaterThan(box.height * 2);
+});
+
+test("contents jump to a section and mark it as current", async ({ page, isMobile }) => {
+  await page.goto("/research/example-report");
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const contents = page.getByRole("navigation", { name: "Contents" });
+  if (isMobile) await contents.getByRole("button", { name: /Contents/ }).click();
+  const link = contents.getByRole("link", { name: /Limitations/ });
+  await expect(link).toHaveAttribute("href", /TC-EX-000\.pdf#page=2$/);
+  await link.click();
+  await expect(page.locator('.report-sheet[data-page="2"]')).toBeInViewport();
+  if (!isMobile) await expect(link).toHaveAttribute("aria-current", "location");
+});
+
+test("find in report counts, steps through and clears matches", async ({ page }) => {
+  await page.goto("/research/example-report");
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const find = page.getByRole("searchbox", { name: "Find in report" });
+  await find.fill("lorem ipsum");
+  const status = viewer.locator(".report-viewer-find-status");
+  await expect(status).toHaveText(/^1 of \d+$/);
+  const total = Number((await status.innerText()).split(" of ")[1]);
+  expect(total).toBeGreaterThan(1);
+  await find.press("Enter");
+  await expect(status).toHaveText(`2 of ${total}`);
+  await find.press("Shift+Enter");
+  await find.press("Shift+Enter");
+  await expect(status).toHaveText(`${total} of ${total}`);
+  await find.fill("zzqqxx");
+  await expect(status).toHaveText("No matches");
+  await find.press("Escape");
+  await expect(find).toHaveValue("");
+});
+
+test("full screen fills the screen, navigates, and exits on the same page", async ({ page }) => {
+  await page.goto("/research/example-report");
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  await page.getByRole("button", { name: "Full screen" }).click();
+  await expect(viewer).toHaveAttribute("data-fullscreen", /native|overlay/);
+  const box = (await viewer.boundingBox())!;
+  expect(box.width).toBeGreaterThanOrEqual(page.viewportSize()!.width - 20);
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  await page.getByLabel("Page", { exact: true }).fill("2");
+  await page.getByLabel("Page", { exact: true }).press("Enter");
+  const second = viewer.locator('.report-sheet[data-page="2"]');
+  await expect(second).toBeInViewport({ ratio: 0.3 });
+  await page.waitForTimeout(800);
+  await page.getByRole("button", { name: "Exit full screen" }).click();
+  await expect(viewer).not.toHaveAttribute("data-fullscreen", /.*/);
+  await expect(second).toBeInViewport();
+  await expect(page.getByLabel("Page", { exact: true })).toHaveValue("2");
+});
+
+test("sources, limitations and citation are readable page text", async ({ page }) => {
+  await page.goto("/research/example-report");
+  await expect(page.getByRole("heading", { name: "Sources", exact: true, level: 2 })).toBeVisible();
+  await expect(page.locator("#limitations li")).toHaveCount(3);
+  await expect(page.locator("#cite .citation-text")).toContainText("TC-EX-000");
+  await expect(page.getByRole("link", { name: /More in Trade & Economic Integration/ })).toHaveAttribute("href", "/research?area=trade-economic-integration");
 });

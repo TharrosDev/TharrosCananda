@@ -5,6 +5,55 @@
     "pages": 3,
     "bytes": 189952,
     "sha": "fa4a4cc0fa1de293",
-    "outline": true
+    "outline": [
+      {
+        "title": "Lorem ipsum dolorsit amet, consecteturadipiscing elit.",
+        "level": 0,
+        "page": 1,
+        "top": 0.13
+      },
+      {
+        "title": "Executive summary",
+        "level": 1,
+        "page": 1,
+        "top": 0.452
+      },
+      {
+        "title": "Key findings",
+        "level": 1,
+        "page": 1,
+        "top": 0.62
+      },
+      {
+        "title": "1Lorem ipsum dolor sit amet",
+        "level": 1,
+        "page": 2,
+        "top": 0.215
+      },
+      {
+        "title": "2Methodology",
+        "level": 1,
+        "page": 2,
+        "top": 0.542
+      },
+      {
+        "title": "3Limitations",
+        "level": 1,
+        "page": 2,
+        "top": 0.667
+      },
+      {
+        "title": "4Sources",
+        "level": 1,
+        "page": 2,
+        "top": 0.668
+      },
+      {
+        "title": "Suggested citation",
+        "level": 1,
+        "page": 3,
+        "top": 0.1
+      }
+    ]
   }
 }
