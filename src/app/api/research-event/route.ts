@@ -1,6 +1,7 @@
 import { isBot, isCountedSlug, metricsSecret, readerKey, recordEvent } from "@/lib/metrics";
 
-// Always 204: the answer never reveals whether an event counted. Rate limit: Vercel Firewall (docs/PRE_LAUNCH.md).
+// Always 204: the answer never reveals whether an event counted. No firewall rate limit on the Hobby plan;
+// the IP-keyed dedupe in readerKey is what stops inflation.
 const done = () => new Response(null, { status: 204, headers: { "Cache-Control": "no-store" } });
 
 export async function POST(request: Request) {
@@ -27,6 +28,6 @@ export async function POST(request: Request) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     request.headers.get("x-real-ip") ||
     "unknown";
-  await recordEvent(body.slug, body.kind, readerKey(secret, ip, userAgent, body.slug));
+  await recordEvent(body.slug, body.kind, readerKey(secret, ip, body.slug));
   return done();
 }
