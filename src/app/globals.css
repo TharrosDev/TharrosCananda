@@ -278,7 +278,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 .policy-page li { padding: 10px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); }
 .policy-page li:last-child { border-bottom: 0; }
 .policy-page li strong { color: var(--ink); font-weight: 600; }
-.policy-example { padding: 16px 0 16px 20px; border-left: 1px solid var(--ink); color: var(--ink) !important; font-family: var(--display); font-size: 20px; line-height: 1.5; }
+.policy-example { padding: 16px 0 16px 20px; overflow-wrap: anywhere; border-left: 1px solid var(--ink); color: var(--ink) !important; font-family: var(--display); font-size: 20px; line-height: 1.5; }
 .policy-page h2 { margin-bottom: 12px; font-size: 30px; font-weight: 500; }
 .policy-page p { max-width: var(--measure-reading); margin: 0 0 12px; color: var(--ink-soft); }
 
