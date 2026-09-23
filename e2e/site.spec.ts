@@ -224,7 +224,7 @@ test.describe("home flow", () => {
     const headings = await page.locator("main > section h2").allTextContents();
     const order = [
       "Start with a question.",
-      "Four connected fields.",
+      "Five connected fields.",
       "Public research.",
       "Have a research question?",
     ].map((heading) => headings.indexOf(heading));

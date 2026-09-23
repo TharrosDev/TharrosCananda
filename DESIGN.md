@@ -132,13 +132,13 @@ When populated, it supports:
 - tags;
 - stable report/article links.
 
-The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The four research areas are archive taxonomy and a homepage summary, not a dedicated public route.
+The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The five research areas are archive taxonomy and a homepage summary, not a dedicated public route.
 
 A real report page should eventually include verified authorship, date, executive summary, key findings, charts/tables, methodology, sources, limitations, related research and a commission CTA.
 
 ## Research areas
 
-The four research areas remain a durable classification system for the homepage and Research archive. They do not require a standalone page. Their public expression is limited to:
+The five research areas remain a durable classification system for the homepage and Research archive. They do not require a standalone page. Their public expression is limited to:
 
 - a concise scope in the homepage ledger;
 - area metadata on real publications;

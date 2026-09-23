@@ -34,7 +34,7 @@ Take each value **verbatim** from the PDF. Sections are often named differently,
 | `limitations` | Limitations panel | Limitations, Caveats, Constraints, Scope and limitations, "What this report does not cover" |
 | `sources` (each with `url` and `retrievedAt`) | Sources panel, JSON-LD `citation` | Sources, References, Bibliography, Works cited, Endnotes, footnotes, source lines under charts and tables |
 | `tags` | Search, PDF keywords | Keywords line, otherwise the main subjects |
-| `area` | Archive facet, OG image, "More in" link | One of the four `researchAreas` slugs. Judge from the content |
+| `area` | Archive facet, OG image, "More in" link | One of the `researchAreas` slugs (`src/lib/research-areas.ts`). Judge from the content |
 | `type` | Archive facet, page header | One of `publicationTypes`. Judge from length and form |
 | `reference` | Stable URL `/research/id/<reference>` | Assigned by the site: `TC-<YEAR>-<NNN>`, next free number |
 | `slug` | URL | Assigned by the site: short, lowercase and hyphenated, based on the title |
