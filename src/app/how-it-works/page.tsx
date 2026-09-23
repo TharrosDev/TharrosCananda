@@ -3,6 +3,7 @@ import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
+import { commissionSteps as steps } from "@/lib/services";
 
 export const metadata: Metadata = pageMetadata({
   title: "How Commissioned Research Works",
@@ -10,19 +11,6 @@ export const metadata: Metadata = pageMetadata({
     "How Tharros Canada scopes, prices, sources, verifies and delivers commissioned Canada–Europe research: written scope first, work only after approval.",
   path: "/how-it-works",
 });
-
-const steps = [
-  ["Describe the question", "The subject, what you need to know and the decision it supports."],
-  ["Agree the scope", "A written reply with deliverable, sources, exclusions, price and timing."],
-  [
-    "Research and verify",
-    "Public sources are collected with provenance; findings are checked by hand.",
-  ],
-  [
-    "Receive the findings",
-    "A concise output with linked sources, stated limitations and open questions.",
-  ],
-] as const;
 
 export default function HowItWorksPage() {
   return (

@@ -5,7 +5,8 @@ import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { requestResearchHref } from "@/lib/research-request";
-import { services } from "@/lib/services";
+import { SampleDocument } from "@/components/sample-document";
+import { commissionSteps, services } from "@/lib/services";
 import "./services.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -40,6 +41,15 @@ export default function ResearchServicesPage() {
               >
                 Request<span className="sr-only"> {service.name}</span> <ArrowIcon />
               </Link>
+              <div className="service-output">
+                <h3>You receive</h3>
+                <ul>
+                  {service.deliverables.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <SampleDocument service={service.slug} name={service.name} />
+              </div>
             </li>
           ))}
         </ol>
@@ -51,6 +61,18 @@ export default function ResearchServicesPage() {
             Sources & methodology <ArrowIcon />
           </Link>
         </nav>
+      </section>
+      <section className="section process-strip" aria-labelledby="process-title">
+        <h2 id="process-title">How a commission runs</h2>
+        <ol>
+          {commissionSteps.map(([title, copy], index) => (
+            <li key={title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </li>
+          ))}
+        </ol>
       </section>
       <section className="closing-cta">
         <h2>Not sure which fits?</h2>

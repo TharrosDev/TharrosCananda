@@ -247,7 +247,7 @@ test.describe("home flow", () => {
 
 test("services list each offer once, led by the flagship, with no prices", async ({ page }) => {
   await page.goto("/research-services");
-  const entries = page.locator(".services-index li");
+  const entries = page.locator(".services-index > ol > li");
   await expect(entries).toHaveCount(3);
   await expect(entries.first()).toHaveClass(/is-flagship/);
   await expect(page.locator("main")).not.toContainText("C$");
@@ -257,6 +257,19 @@ test("services list each offer once, led by the flagship, with no prices", async
       /\/request-research\?service=/,
     );
   }
+});
+
+test("each service opens a labelled lorem sample in a dialog", async ({ page }) => {
+  await page.goto("/research-services");
+  const open = page.getByRole("button", { name: /^View sample/ });
+  await expect(open).toHaveCount(3);
+  await open.first().click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText("placeholder text");
+  await expect(dialog.locator("a[download], a[href$='.pdf']")).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
 });
 
 test.describe("request form", () => {
