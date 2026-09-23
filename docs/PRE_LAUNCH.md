@@ -9,7 +9,7 @@ Operational and legal items that remain outside the codebase.
 - [ ] The receiver must return 2xx only once the request is stored. Any other status, a redirect or no answer within 8 s is shown to the visitor as not sent (502 / 504), with their answers kept.
 - [ ] After deploying, run `npm run smoke -- https://tharros.ca`, then submit one real request and confirm it arrives with its reference.
 - [x] Vercel Firewall rate limit live (2026-09-23): 10 requests per 10 minutes per IP, deny.
-- [ ] Define storage, access and retention for submitted requests, then set `intakeRetention` in `src/data/organization.ts` so `/privacy` states it.
+- [ ] Define storage and access for submitted requests. Retention is set: `intakeRetention` in `src/data/organization.ts` so `/privacy` states it.
 
 ### Rate limit (Vercel Firewall)
 
