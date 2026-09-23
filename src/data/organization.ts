@@ -26,7 +26,7 @@ export const organization: Organization = {
   lead: null,
   legal: null,
   profiles: [],
-  intakeRetention: null,
+  intakeRetention: "24 months after the last contact",
 };
 
 import { researchAreas } from "@/lib/research-areas";
