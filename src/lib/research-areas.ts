@@ -1,4 +1,4 @@
-/** The four expertise areas that organize commissioned work and future Tharros-produced research. */
+/** The expertise areas that organize commissioned work and future Tharros-produced research. */
 export const researchAreas = [
   {
     slug: "trade-economic-integration",
@@ -59,6 +59,22 @@ export const researchAreas = [
       "Public company and funding records",
       "Research and programme documentation",
       "Policy, procurement and ecosystem data",
+    ],
+  },
+  {
+    slug: "data-quality-validity",
+    name: "Data Quality & Validity",
+    scope:
+      "Public and open datasets: provenance, coverage, gaps, licensing and whether they are fit for a given use.",
+    questions: [
+      "Can a public dataset support the analysis it is being used for?",
+      "Where are the gaps, breaks and definitional changes in a series?",
+      "What do the licence and collection method allow and rule out?",
+    ],
+    evidence: [
+      "Dataset metadata and data dictionaries",
+      "Collection and methodology documentation",
+      "Open-data licences and publisher notes",
     ],
   },
 ] as const;

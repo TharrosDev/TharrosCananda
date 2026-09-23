@@ -61,7 +61,7 @@ Warm ivory, graphite and soft black, slate, a muted Canadian red for actions, st
 
 - Start with the client's decision, then the subject area.
 - Use research and data as the visual material.
-- The four research areas are a homepage summary and archive taxonomy, not destinations:
+- The five research areas are a homepage summary and archive taxonomy, not destinations:
   - Trade & Economic Integration
   - Defence & Security
   - Energy, Resources & Industry

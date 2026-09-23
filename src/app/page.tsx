@@ -76,7 +76,7 @@ export default function HomePage() {
         <div className="expertise-spread-inner">
           <div className="expertise-statement">
             <p>Research areas</p>
-            <h2>Four connected fields.</h2>
+            <h2>Five connected fields.</h2>
             <p>Work may span more than one area.</p>
           </div>
           <div className="expertise-ledger">

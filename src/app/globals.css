@@ -603,7 +603,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 /* ---------- Research archive tool ---------- */
 .archive-tool { display: grid; gap: 28px; }
-.archive-areas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.archive-areas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 .archive-areas button { min-height: 44px; padding: 18px 18px 20px; display: grid; align-content: start; gap: 8px; border: 0; border-right: 1px solid var(--rule); background: transparent; color: var(--ink); text-align: left; font: inherit; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
 .archive-areas button:last-child { border-right: 0; }
 .archive-areas button:hover:not(:disabled) { background: var(--ivory-deep); }
@@ -657,8 +657,9 @@ legend:focus:not(:focus-visible) { outline: none; }
 .archive-no-results p { color: var(--ink-soft); font-size: 17px; }
 @media (max-width: 1024px) {
   .archive-areas { grid-template-columns: 1fr 1fr; }
-  .archive-areas button:nth-child(2) { border-right: 0; }
-  .archive-areas button:nth-child(-n + 2) { border-bottom: 1px solid var(--rule); }
+  .archive-areas button:nth-child(2n) { border-right: 0; }
+  .archive-areas button:not(:last-child) { border-bottom: 1px solid var(--rule); }
+  .archive-areas button:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: 0; }
 }
 @media (max-width: 640px) {
   .archive-areas { grid-template-columns: 1fr; }
