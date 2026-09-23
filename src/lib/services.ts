@@ -7,39 +7,39 @@ export const buyerIntelligenceTiers = [
 
 export const services = [
   {
-    slug: "market-scan", name: "Canada / Europe Market Scan", priceLabel: "Indicative C$250–400",
+    slug: "market-scan", name: "Canada / Europe Market Scan", priceLabel: "Indicative C$250–400", priceFrom: "From C$250",
     group: "Defined research", homeFeatured: true, flagship: false,
-    question: "How is the target market structured in Canada or Europe, and what deserves deeper investigation?",
+    question: "How is your target market structured in Canada or Europe, and what deserves a closer look?",
     outputs: ["Market structure and official demand or trade signals where available", "Customer groups, geographic concentration and routes to market", "Competitors, relevant organizations and open questions requiring verification"],
     excludes: "Legal or tariff rulings, regulatory-compliance determinations, and demand forecasts presented as fact.",
     formSummary: "Market structure, signals, geography and channels in Canada or Europe.",
   },
   {
-    slug: "buyer-distributor", name: "Canadian Buyer Intelligence", priceLabel: "Core C$295 · Expanded C$495 · Comprehensive C$695",
+    slug: "buyer-distributor", name: "Canadian Buyer Intelligence", priceLabel: "Core C$295 · Expanded C$495 · Comprehensive C$695", priceFrom: "From C$295",
     group: "Defined research", homeFeatured: true, flagship: true,
-    question: "Which Canadian organizations could realistically buy, import, distribute or integrate this product?",
+    question: "Which Canadian organizations could realistically buy, import, distribute or integrate your product?",
     outputs: ["Manually qualified organizations with location, website and business type", "A fit rationale and public evidence for each target", "Decision-maker or contact research where publicly available"],
     excludes: "Introductions, outreach on your behalf, guaranteed interest or padded lead lists.",
     formSummary: "A manually verified set of relevant Canadian buyers, distributors, retailers, integrators or partners.",
   },
   {
-    slug: "competitor-intelligence", name: "Competitor Intelligence", priceLabel: "Indicative C$300–600",
+    slug: "competitor-intelligence", name: "Competitor Intelligence", priceLabel: "Indicative C$300–600", priceFrom: "From C$300",
     group: "Defined research", homeFeatured: true, flagship: false,
-    question: "Who already offers a comparable product in the relevant Canadian or European market, and how are they positioned?",
+    question: "Who already sells a comparable product in your Canadian or European market, and how are they positioned?",
     outputs: ["Competitor and offer landscape", "Positioning, geography, channels and visible pricing signals", "Supporting sources, with observations and analyst inferences separated"],
     excludes: "Non-public information, market-share estimates presented as fact, and legal assessments.",
     formSummary: "Offerings, positioning, geography, channels, visible pricing and recent activity.",
   },
   {
-    slug: "partner-ecosystem", name: "Partner & Ecosystem Research", priceLabel: "Quoted by scope",
+    slug: "partner-ecosystem", name: "Partner & Ecosystem Research", priceLabel: "Quoted by scope", priceFrom: "Quoted",
     group: "Custom & partner research", homeFeatured: false, flagship: false,
-    question: "Which distributors, suppliers, institutions, primes, associations or other ecosystem actors matter to this Canada–Europe question?",
+    question: "Which distributors, suppliers, institutions, primes or associations matter to your Canada–Europe question?",
     outputs: ["Relevant organizations and actors on either side of the Atlantic", "Role, relevance and relationship mapping", "Sources and stated confidence or uncertainty where evidence is incomplete"],
     excludes: "Introductions, endorsement claims, non-public relationship data or guaranteed partnership outcomes.",
     formSummary: "Relevant organizations and ecosystem actors with sourced fit rationale.",
   },
   {
-    slug: "commissioned-research", name: "Commissioned Research", priceLabel: "Quoted per scope",
+    slug: "commissioned-research", name: "Commissioned Research", priceLabel: "Quoted per scope", priceFrom: "Quoted",
     group: "Custom & partner research", homeFeatured: true, flagship: false,
     question: "What does the available evidence say about a specific Canada–Europe question?",
     outputs: ["A written scope agreed before work starts", "Sourced findings with fact, interpretation and uncertainty kept distinct", "Stated limitations and the questions that remain open"],
@@ -47,9 +47,9 @@ export const services = [
     formSummary: "A custom Canada–Europe question across the four research pillars.",
   },
   {
-    slug: "white-label-research", name: "White-label Research", priceLabel: "Project or recurring arrangement",
+    slug: "white-label-research", name: "White-label Research", priceLabel: "Project or recurring arrangement", priceFrom: "Arranged",
     group: "Custom & partner research", homeFeatured: false, flagship: false,
-    question: "Does your firm need external research capacity behind a client engagement without building an internal analyst function?",
+    question: "Does your firm need research capacity behind a client engagement, without hiring in-house analysts?",
     outputs: ["Research adapted to the partner firm's agreed scope and deliverable format", "Company mapping, background research, data notes or recurring research updates", "Source records, limitations and hand-off material suitable for partner workflows"],
     excludes: "Claims of partnership, client ownership or endorsement beyond the actual engagement.",
     formSummary: "External research capacity for consultancies, export advisers and professional firms.",
@@ -66,7 +66,7 @@ export type ServiceSlug = Service["slug"];
 export const notSureNeed = "Not sure yet" as const;
 export const researchNeeds = [...services.map((service) => service.name), notSureNeed] as const;
 export type ResearchNeed = Service["name"] | typeof notSureNeed;
-export const pricingTerms = "Prices shown for standardized products are indicative or founding prices. Scope, price and timeline are confirmed in writing before work starts.";
+export const pricingTerms = "Defined services show indicative or founding prices. Scope, price and timing are confirmed in writing before work starts.";
 
 export function serviceBySlug(slug: unknown): Service | undefined {
   return typeof slug === "string" ? services.find((service) => service.slug === slug) : undefined;

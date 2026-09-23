@@ -151,6 +151,8 @@ As real work is produced, evidence artifacts may be added to make areas visually
 
 Pricing is secondary product information, not hero-level positioning. Lead with the decision/question the work answers and explain the outputs and exclusions. Canadian Buyer Intelligence is the flagship entry product; higher tiers increase coverage, not research quality.
 
+The page compares first, then details. A ruled comparison table (service, the question it answers, a "from" price, request link) sits directly under the hero and becomes a stacked register below 760px. Detail entries follow per group: name and price, what you receive, and scope and exclusions in a disclosure. Only the flagship repeats its question and carries the three coverage tiers, on the page's one lifted ivory-light surface. Styles live in `src/app/research-services/services.css`.
+
 ## About
 
 About uses a spacious Canada–Europe relationship statement, an operating-principles ledger and a clear independence boundary to explain focus, method and research accountability. It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
