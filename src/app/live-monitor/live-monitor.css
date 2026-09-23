@@ -247,17 +247,17 @@
 .monitor-context { position: sticky; top: calc(var(--header-height) + 20px); display: grid; gap: 26px; padding-top: 20px; border-top: 2px solid var(--ink); }
 .monitor-context h3 { margin: 0 0 12px; font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--slate); }
 .monitor-volume, .monitor-top-sources { margin: 0; padding: 0; list-style: none; }
-.monitor-volume li { display: grid; grid-template-columns: 78px minmax(0, 1fr) 24px; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
+.monitor-volume li { display: grid; grid-template-columns: 112px minmax(0, 1fr) 28px; align-items: center; gap: 10px; padding: 6px 0; font-size: 19px; }
 .monitor-volume svg { width: 100%; height: 24px; }
 .monitor-volume rect { fill: var(--ink); }
 .monitor-volume rect.is-empty { fill: var(--rule-strong); }
 .monitor-lead .monitor-actions > summary { color: var(--on-dark-soft); }
 .monitor-lead .monitor-actions > summary:hover, .monitor-lead .monitor-actions[open] > summary { border-color: var(--rule-dark); color: var(--on-dark); }
 .monitor-volume strong, .monitor-top-sources strong { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
-.monitor-top-sources li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+.monitor-top-sources li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 19px; }
 .monitor-top-sources span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.monitor-context p { margin: 0 0 10px; color: var(--ink-soft); font-size: 17px; line-height: 1.55; }
-.monitor-context .monitor-caveat { padding: 10px 12px; border-left: 2px solid var(--red); background: var(--ivory-light); color: var(--ink); font-size: 14px; }
+.monitor-context p { margin: 0 0 10px; color: var(--ink-soft); font-size: 19px; line-height: 1.55; }
+.monitor-context .monitor-caveat { padding: 10px 12px; border-left: 2px solid var(--red); background: var(--ivory-light); color: var(--ink); font-size: 19px; }
 @media (max-width: 1024px) {
   .monitor-body { grid-template-columns: 1fr; }
   .monitor-context { position: static; }
