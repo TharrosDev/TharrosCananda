@@ -22,7 +22,8 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Tharros Canada",
     title: "Independent Canada–Europe research.",
-    description: "Research on trade, defence, energy, industry and technology across Canada and Europe.",
+    description:
+      "Research on trade, defence, energy, industry and technology across Canada and Europe.",
   },
   twitter: {
     card: "summary_large_image",
@@ -44,14 +45,23 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const structuredData = organizationJsonLd(organization, { url: siteUrl, email });
 
   return (
-    <html lang="en-CA" data-scroll-behavior="smooth" className={`${sans.variable} ${display.variable}`}>
+    <html
+      lang="en-CA"
+      data-scroll-behavior="smooth"
+      className={`${sans.variable} ${display.variable}`}
+    >
       <body>
-        <a className="skip-link" href="#main-content">Skip to main content</a>
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
         <SiteAnalytics />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(structuredData) }}
+        />
       </body>
     </html>
   );

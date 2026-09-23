@@ -1,6 +1,14 @@
 "use client";
 
-import { type KeyboardEvent, type MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type { ContentsEntry } from "@/lib/report-sections";
 import { canvasRatio, findPattern, nextZoom } from "@/lib/viewer";
@@ -17,9 +25,14 @@ const MAX_FIT_WIDTH_FULLSCREEN = 1240;
 type Fullscreen = false | "native" | "overlay";
 const NO_MATCHES: Range[] = [];
 // Custom Highlight API: paints find results over the transparent text layer without touching its DOM.
-type HighlightRegistry = { set: (name: string, value: unknown) => void; delete: (name: string) => void };
+type HighlightRegistry = {
+  set: (name: string, value: unknown) => void;
+  delete: (name: string) => void;
+};
 const highlights = () =>
-  typeof CSS !== "undefined" && "highlights" in CSS && typeof Highlight !== "undefined" ? (CSS as unknown as { highlights: HighlightRegistry }).highlights : null;
+  typeof CSS !== "undefined" && "highlights" in CSS && typeof Highlight !== "undefined"
+    ? (CSS as unknown as { highlights: HighlightRegistry }).highlights
+    : null;
 
 export function ReportViewer({ file, pages, title, contents = [] }: Props) {
   const rootRef = useRef<HTMLElement>(null);
@@ -63,7 +76,8 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
 
   // One document (and one pdf.js worker) per file, destroyed when the file changes or the viewer unmounts.
   useEffect(() => {
-    let loadingTask: { promise: Promise<PDFDocumentProxy>; destroy: () => Promise<void> } | null = null;
+    let loadingTask: { promise: Promise<PDFDocumentProxy>; destroy: () => Promise<void> } | null =
+      null;
     let cancelled = false;
     (async () => {
       try {
@@ -98,7 +112,9 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
         for (let n = 1; n <= doc.numPages; n += 1) {
           const page = await doc.getPage(n);
           if (cancelled) return;
-          const sheet = sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${n}"]`);
+          const sheet = sheetsRef.current?.querySelector<HTMLElement>(
+            `.report-sheet[data-page="${n}"]`,
+          );
           if (!sheet) continue;
           const viewport = page.getViewport({ scale: scale * (96 / 72) });
           const ratio = canvasRatio(viewport.width, viewport.height, window.devicePixelRatio);
@@ -108,14 +124,22 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
           canvas.height = Math.floor(viewport.height * ratio);
           canvas.style.width = `${viewport.width}px`;
           canvas.style.height = `${viewport.height}px`;
-          const task = page.render({ canvas, viewport, transform: ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0] });
+          const task = page.render({
+            canvas,
+            viewport,
+            transform: ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0],
+          });
           tasks.push(task);
           await task.promise;
           if (cancelled) return;
           const layer = document.createElement("div");
           layer.className = "textLayer";
           layer.style.setProperty("--total-scale-factor", String(viewport.scale));
-          const textLayer = new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: layer, viewport });
+          const textLayer = new pdfjs.TextLayer({
+            textContentSource: page.streamTextContent(),
+            container: layer,
+            viewport,
+          });
           tasks.push(textLayer);
           await textLayer.render();
           if (cancelled) return;
@@ -140,13 +164,17 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
    * its current position sits far down the page and would make every jump land short.
    */
   const readingLine = useCallback(() => {
-    const edge = fullscreen ? (rootRef.current?.getBoundingClientRect().top ?? 0) : (document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
+    const edge = fullscreen
+      ? (rootRef.current?.getBoundingClientRect().top ?? 0)
+      : (document.querySelector(".site-header")?.getBoundingClientRect().bottom ?? 0);
     const toolbar = toolbarRef.current;
-    const sticky = toolbar && getComputedStyle(toolbar).position === "sticky" ? toolbar.offsetHeight : 0;
+    const sticky =
+      toolbar && getComputedStyle(toolbar).position === "sticky" ? toolbar.offsetHeight : 0;
     return Math.max(edge, 0) + sticky + 16;
   }, [fullscreen]);
   const scrollByY = useCallback(
-    (delta: number, smooth = true) => (scroller() ?? window).scrollBy({ top: delta, behavior: smooth ? "smooth" : "instant" }),
+    (delta: number, smooth = true) =>
+      (scroller() ?? window).scrollBy({ top: delta, behavior: smooth ? "smooth" : "instant" }),
     [scroller],
   );
 
@@ -166,7 +194,9 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
       setCurrent(page);
       // Where the reader is, as page + fraction, so a zoom or full-screen change can put them back.
       const rect = sheets[page - 1].getBoundingClientRect();
-      if (!holdAnchor.current) anchor.current = rect.top <= line ? { page, offset: Math.min(1, (line - rect.top) / rect.height) } : null;
+      if (!holdAnchor.current)
+        anchor.current =
+          rect.top <= line ? { page, offset: Math.min(1, (line - rect.top) / rect.height) } : null;
       const ys = contents.map((entry) => {
         const box = sheets[entry.page - 1]?.getBoundingClientRect();
         return box ? box.top + entry.top * box.height : Infinity;
@@ -199,7 +229,9 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
   /** Scroll so a point `top` (0–1) of the way down page `page` sits on the reading line. */
   const scrollToPoint = useCallback(
     (page: number, top: number) => {
-      const sheet = sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${page}"]`);
+      const sheet = sheetsRef.current?.querySelector<HTMLElement>(
+        `.report-sheet[data-page="${page}"]`,
+      );
       if (!sheet) return;
       const rect = sheet.getBoundingClientRect();
       // A small lift so a heading lands with its first line clear of the toolbar.
@@ -227,7 +259,14 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
 
   // ---------- Full screen ----------
   useEffect(() => {
-    const sync = () => setFullscreen((state) => (document.fullscreenElement === rootRef.current ? "native" : state === "native" ? false : state));
+    const sync = () =>
+      setFullscreen((state) =>
+        document.fullscreenElement === rootRef.current
+          ? "native"
+          : state === "native"
+            ? false
+            : state,
+      );
     document.addEventListener("fullscreenchange", sync);
     return () => document.removeEventListener("fullscreenchange", sync);
   }, []);
@@ -235,7 +274,8 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
   useEffect(() => {
     if (fullscreen !== "overlay") return;
     document.documentElement.setAttribute("data-viewer-overlay", "");
-    const onKey = (event: globalThis.KeyboardEvent) => event.key === "Escape" && setFullscreen(false);
+    const onKey = (event: globalThis.KeyboardEvent) =>
+      event.key === "Escape" && setFullscreen(false);
     document.addEventListener("keydown", onKey);
     return () => {
       document.documentElement.removeAttribute("data-viewer-overlay");
@@ -246,7 +286,9 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
   // Runs before paint, after the sheets have their new size; the anchor is frozen while full screen switches scrollers.
   useLayoutEffect(() => {
     const target = anchor.current;
-    const sheet = target && sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${target.page}"]`);
+    const sheet =
+      target &&
+      sheetsRef.current?.querySelector<HTMLElement>(`.report-sheet[data-page="${target.page}"]`);
     if (target && sheet) {
       const rect = sheet.getBoundingClientRect();
       scrollByY(rect.top + target.offset * rect.height - (readingLine() + 40), false);
@@ -282,30 +324,32 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
     }
     const timer = setTimeout(() => {
       const ranges: Range[] = [];
-      sheetsRef.current?.querySelectorAll<HTMLElement>(".report-sheet .textLayer").forEach((layer) => {
-        // One string per page, with each text node's start offset, so a match can span pdf.js spans.
-        const nodes: { node: Text; start: number }[] = [];
-        let text = "";
-        const walker = document.createTreeWalker(layer, NodeFilter.SHOW_TEXT);
-        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-          nodes.push({ node: node as Text, start: text.length });
-          text += node.textContent ?? "";
-        }
-        const locate = (offset: number) => {
-          let i = nodes.length - 1;
-          while (i > 0 && nodes[i].start > offset) i -= 1;
-          return { node: nodes[i].node, offset: offset - nodes[i].start };
-        };
-        for (const match of text.matchAll(pattern)) {
-          if (!match[0]) continue;
-          const start = locate(match.index);
-          const end = locate(match.index + match[0].length - 1);
-          const range = document.createRange();
-          range.setStart(start.node, start.offset);
-          range.setEnd(end.node, end.offset + 1);
-          ranges.push(range);
-        }
-      });
+      sheetsRef.current
+        ?.querySelectorAll<HTMLElement>(".report-sheet .textLayer")
+        .forEach((layer) => {
+          // One string per page, with each text node's start offset, so a match can span pdf.js spans.
+          const nodes: { node: Text; start: number }[] = [];
+          let text = "";
+          const walker = document.createTreeWalker(layer, NodeFilter.SHOW_TEXT);
+          for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+            nodes.push({ node: node as Text, start: text.length });
+            text += node.textContent ?? "";
+          }
+          const locate = (offset: number) => {
+            let i = nodes.length - 1;
+            while (i > 0 && nodes[i].start > offset) i -= 1;
+            return { node: nodes[i].node, offset: offset - nodes[i].start };
+          };
+          for (const match of text.matchAll(pattern)) {
+            if (!match[0]) continue;
+            const start = locate(match.index);
+            const end = locate(match.index + match[0].length - 1);
+            const range = document.createRange();
+            range.setStart(start.node, start.offset);
+            range.setEnd(end.node, end.offset + 1);
+            ranges.push(range);
+          }
+        });
       setMatches(ranges);
       setMatchIndex(0);
       registry?.set("report-find", new Highlight(...ranges));
@@ -331,15 +375,25 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
     if (matches.length) showMatch(matchIndex);
     else highlights()?.delete("report-find-current");
   }, [matches, matchIndex, showMatch]);
-  const stepMatch = (delta: number) => matches.length && setMatchIndex((i) => (i + delta + matches.length) % matches.length);
-  useEffect(() => () => {
-    highlights()?.delete("report-find");
-    highlights()?.delete("report-find-current");
-  }, []);
+  const stepMatch = (delta: number) =>
+    matches.length && setMatchIndex((i) => (i + delta + matches.length) % matches.length);
+  useEffect(
+    () => () => {
+      highlights()?.delete("report-find");
+      highlights()?.delete("report-find-current");
+    },
+    [],
+  );
 
   function onKeyDown(event: KeyboardEvent) {
     // Leave browser shortcuts (Ctrl/Cmd +, Alt combos) and typing in fields alone.
-    if (event.ctrlKey || event.metaKey || event.altKey || (event.target as HTMLElement).tagName === "INPUT") return;
+    if (
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey ||
+      (event.target as HTMLElement).tagName === "INPUT"
+    )
+      return;
     if (event.key === "PageDown" && current < pages) {
       event.preventDefault();
       goTo(current + 1);
@@ -355,7 +409,13 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
       Download PDF
     </a>
   );
-  const findStatus = !findPattern(query) ? "" : matches.length ? `${matchIndex + 1} of ${matches.length}` : rendering ? "Searching…" : "No matches";
+  const findStatus = !findPattern(query)
+    ? ""
+    : matches.length
+      ? `${matchIndex + 1} of ${matches.length}`
+      : rendering
+        ? "Searching…"
+        : "No matches";
 
   return (
     <section
@@ -369,18 +429,38 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
     >
       {/* Without JavaScript there is nothing to draw: hide the empty sheets and inert controls. */}
       <noscript>
-        <style>{".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom,.report-viewer-find,.report-viewer-fullscreen,.report-contents-toggle{display:none!important}.report-contents-list{display:block!important}"}</style>
+        <style>
+          {
+            ".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom,.report-viewer-find,.report-viewer-fullscreen,.report-contents-toggle{display:none!important}.report-contents-list{display:block!important}"
+          }
+        </style>
       </noscript>
       {contents.length > 0 && (
-        <nav className="report-contents" aria-labelledby="report-contents-heading" data-open={contentsOpen || undefined}>
-          <h2 id="report-contents-heading" className="report-contents-heading">Contents</h2>
-          <button type="button" className="report-contents-toggle" aria-expanded={contentsOpen} aria-controls="report-contents-list" onClick={() => setContentsOpen((open) => !open)}>
+        <nav
+          className="report-contents"
+          aria-labelledby="report-contents-heading"
+          data-open={contentsOpen || undefined}
+        >
+          <h2 id="report-contents-heading" className="report-contents-heading">
+            Contents
+          </h2>
+          <button
+            type="button"
+            className="report-contents-toggle"
+            aria-expanded={contentsOpen}
+            aria-controls="report-contents-list"
+            onClick={() => setContentsOpen((open) => !open)}
+          >
             Contents <span aria-hidden="true">{contentsOpen ? "−" : "+"}</span>
           </button>
           <ol className="report-contents-list" id="report-contents-list">
             {contents.map((entry, i) => (
               <li key={`${entry.page}-${entry.top}-${entry.title}`}>
-                <a href={`${file}#page=${entry.page}`} aria-current={i === section ? "location" : undefined} onClick={(event) => openSection(event, entry)}>
+                <a
+                  href={`${file}#page=${entry.page}`}
+                  aria-current={i === section ? "location" : undefined}
+                  onClick={(event) => openSection(event, entry)}
+                >
                   <span className="report-contents-number">{entry.number}</span>
                   <span className="report-contents-title">{entry.title}</span>
                   <span className="report-contents-page">p. {entry.page}</span>
@@ -391,8 +471,19 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
         </nav>
       )}
       <div className="report-viewer" ref={mainRef}>
-        <div className="report-viewer-toolbar" role="toolbar" aria-label="PDF controls" ref={toolbarRef}>
-          <form className="report-viewer-pages" onSubmit={(event) => { event.preventDefault(); goTo(Number(pageInput)); }}>
+        <div
+          className="report-viewer-toolbar"
+          role="toolbar"
+          aria-label="PDF controls"
+          ref={toolbarRef}
+        >
+          <form
+            className="report-viewer-pages"
+            onSubmit={(event) => {
+              event.preventDefault();
+              goTo(Number(pageInput));
+            }}
+          >
             <label htmlFor="report-page">Page</label>
             <input
               id="report-page"
@@ -403,7 +494,11 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
             />
             <span id="report-page-total">of {pages}</span>
           </form>
-          <form className="report-viewer-find" role="search" onSubmit={(event) => event.preventDefault()}>
+          <form
+            className="report-viewer-find"
+            role="search"
+            onSubmit={(event) => event.preventDefault()}
+          >
             <input
               type="search"
               aria-label="Find in report"
@@ -421,17 +516,49 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
                 }
               }}
             />
-            <span className="report-viewer-find-status" role="status">{findStatus}</span>
-            <button type="button" onClick={() => stepMatch(-1)} disabled={matches.length < 2} aria-label="Previous match">↑</button>
-            <button type="button" onClick={() => stepMatch(1)} disabled={matches.length < 2} aria-label="Next match">↓</button>
+            <span className="report-viewer-find-status" role="status">
+              {findStatus}
+            </span>
+            <button
+              type="button"
+              onClick={() => stepMatch(-1)}
+              disabled={matches.length < 2}
+              aria-label="Previous match"
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              onClick={() => stepMatch(1)}
+              disabled={matches.length < 2}
+              aria-label="Next match"
+            >
+              ↓
+            </button>
           </form>
           <div className="report-viewer-zoom">
-            <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">−</button>
+            <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">
+              −
+            </button>
             <output aria-live="polite">{Math.round(scale * 100)}%</output>
-            <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">+</button>
-            <button type="button" onClick={() => setZoom("fit")} aria-pressed={zoom === "fit"} aria-label="Fit width">Fit<span className="report-viewer-fit-extra"> width</span></button>
+            <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">
+              +
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoom("fit")}
+              aria-pressed={zoom === "fit"}
+              aria-label="Fit width"
+            >
+              Fit<span className="report-viewer-fit-extra"> width</span>
+            </button>
           </div>
-          <button type="button" className="report-viewer-fullscreen" onClick={toggleFullscreen} aria-pressed={Boolean(fullscreen)}>
+          <button
+            type="button"
+            className="report-viewer-fullscreen"
+            onClick={toggleFullscreen}
+            aria-pressed={Boolean(fullscreen)}
+          >
             {fullscreen ? "Exit full screen" : "Full screen"}
           </button>
           {download}
@@ -442,9 +569,20 @@ export function ReportViewer({ file, pages, title, contents = [] }: Props) {
             {download}
           </div>
         ) : (
-          <div className="report-viewer-sheets" ref={sheetsRef} tabIndex={0} role="region" aria-label="Report pages">
+          <div
+            className="report-viewer-sheets"
+            ref={sheetsRef}
+            tabIndex={0}
+            role="region"
+            aria-label="Report pages"
+          >
             {Array.from({ length: pages }, (_, i) => (
-              <div key={i} className="report-sheet" data-page={i + 1} style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }} />
+              <div
+                key={i}
+                className="report-sheet"
+                data-page={i + 1}
+                style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }}
+              />
             ))}
           </div>
         )}

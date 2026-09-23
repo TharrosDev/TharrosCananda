@@ -10,7 +10,12 @@ export type Organization = {
   /** The person accountable for the research. */
   lead: { name: string; role: string; bio: string; links: ProfileLink[] } | null;
   /** Legal entity details, exactly as registered. */
-  legal: { legalName: string; jurisdiction?: string; registration?: string; address?: string } | null;
+  legal: {
+    legalName: string;
+    jurisdiction?: string;
+    registration?: string;
+    address?: string;
+  } | null;
   /** Company profiles (e.g. LinkedIn company page), only once they exist. */
   profiles: ProfileLink[];
   /** How long the intake receiver keeps submitted requests, e.g. "24 months after the last contact". */
@@ -25,7 +30,10 @@ export const organization: Organization = {
 };
 
 /** schema.org Organization with only the fields that are actually set. */
-export function organizationJsonLd(org: Organization, { url, email }: { url: string; email: string | null }) {
+export function organizationJsonLd(
+  org: Organization,
+  { url, email }: { url: string; email: string | null },
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -35,7 +43,16 @@ export function organizationJsonLd(org: Organization, { url, email }: { url: str
     ...(email ? { email } : {}),
     ...(org.legal ? { legalName: org.legal.legalName } : {}),
     ...(org.legal?.address ? { address: org.legal.address } : {}),
-    ...(org.lead ? { founder: { "@type": "Person", name: org.lead.name, jobTitle: org.lead.role, ...(org.lead.links.length ? { sameAs: org.lead.links.map((link) => link.url) } : {}) } } : {}),
+    ...(org.lead
+      ? {
+          founder: {
+            "@type": "Person",
+            name: org.lead.name,
+            jobTitle: org.lead.role,
+            ...(org.lead.links.length ? { sameAs: org.lead.links.map((link) => link.url) } : {}),
+          },
+        }
+      : {}),
     ...(org.profiles.length ? { sameAs: org.profiles.map((link) => link.url) } : {}),
   };
 }

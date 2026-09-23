@@ -22,19 +22,20 @@ export function PageHero({
 }) {
   const hasLinkedItems = index?.some((item) => Boolean(item.href)) ?? false;
 
-  const indexContents = index && index.length > 0 ? (
-    <ol>
-      {index.map((item, position) => (
-        <li key={item.label}>
-          <span className="index-number">{String(position + 1).padStart(2, "0")}</span>
-          <span className="hero-index-body">
-            {item.href ? <Link href={item.href}>{item.label}</Link> : <span>{item.label}</span>}
-            {item.note && <small>{item.note}</small>}
-          </span>
-        </li>
-      ))}
-    </ol>
-  ) : null;
+  const indexContents =
+    index && index.length > 0 ? (
+      <ol>
+        {index.map((item, position) => (
+          <li key={item.label}>
+            <span className="index-number">{String(position + 1).padStart(2, "0")}</span>
+            <span className="hero-index-body">
+              {item.href ? <Link href={item.href}>{item.label}</Link> : <span>{item.label}</span>}
+              {item.note && <small>{item.note}</small>}
+            </span>
+          </li>
+        ))}
+      </ol>
+    ) : null;
 
   const surfaceClass = variant === "document" ? "" : "band band-dark";
 
@@ -46,13 +47,16 @@ export function PageHero({
           <p>{description}</p>
           {children}
         </div>
-        {indexContents && (
-          hasLinkedItems ? (
-            <nav className="hero-index" aria-label={indexLabel}>{indexContents}</nav>
+        {indexContents &&
+          (hasLinkedItems ? (
+            <nav className="hero-index" aria-label={indexLabel}>
+              {indexContents}
+            </nav>
           ) : (
-            <div className="hero-index" role="group" aria-label={indexLabel}>{indexContents}</div>
-          )
-        )}
+            <div className="hero-index" role="group" aria-label={indexLabel}>
+              {indexContents}
+            </div>
+          ))}
       </div>
     </section>
   );

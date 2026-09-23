@@ -76,7 +76,7 @@ for (const path of ["/", "/research-services", "/request-research", "/copyright"
   test(`${path} has no serious or critical automated accessibility violations`, async ({
     page,
   }) => {
-    // Audit the settled page, not a card caught mid-reveal at the fold.
+    // Audit the settled page, with the map's route already drawn.
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(path);
     const results = await new AxeBuilder({ page }).analyze();
@@ -343,7 +343,7 @@ test.describe("every sitemap route", () => {
   test("has no serious or critical accessibility violations", async ({ page, request }, testInfo) => {
     test.skip(testInfo.project.name === "mobile", "Desktop sweep");
     test.setTimeout(180_000);
-    // Audit the settled page: a heading caught mid-reveal at the fold is a transient blend, not the design.
+    // Audit the settled page, with the map's route already drawn.
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const path of await sitemapPaths(request)) {
       await page.goto(path);

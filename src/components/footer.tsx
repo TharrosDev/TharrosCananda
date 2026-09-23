@@ -17,8 +17,8 @@ export function Footer() {
           </Link>
           <p>Independent Canada–Europe research.</p>
           <a className="footer-contact" href={`mailto:${contactEmail}`}>
-              {contactEmail}
-            </a>
+            {contactEmail}
+          </a>
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>

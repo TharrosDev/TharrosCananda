@@ -9,7 +9,8 @@ export default function OpenGraphImage() {
     tone: "light",
     eyebrow: "Accessibility",
     title: "Accessibility.",
-    description: "How the site supports keyboard navigation, assistive technology and reduced motion.",
+    description:
+      "How the site supports keyboard navigation, assistive technology and reduced motion.",
     meta: [
       { label: "Target", value: "WCAG 2.2 AA" },
       { label: "Status", value: "Policy" },

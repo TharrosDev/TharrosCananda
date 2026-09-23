@@ -36,7 +36,9 @@ export function ReportActions({ file, bytes, url, title }: Props) {
         Download PDF <small>{Math.round(bytes / 1024)} KB</small>
       </a>
       {/* One citation panel on the page: the header action jumps to it. */}
-      <a className="report-action" href="#cite">Cite</a>
+      <a className="report-action" href="#cite">
+        Cite
+      </a>
       <button type="button" className="report-action" onClick={copyLink}>
         {linkState === "copied" ? "Link copied" : "Copy link"}
       </button>

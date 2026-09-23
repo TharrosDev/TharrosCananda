@@ -9,18 +9,27 @@ export const researchAreas = [
       "How does CETA treatment affect a specific route to market?",
       "Which supply chains link Canadian and European producers?",
     ],
-    evidence: ["Official trade tables and classifications", "Tariff and market-access documentation", "Company and supply-chain evidence"],
+    evidence: [
+      "Official trade tables and classifications",
+      "Tariff and market-access documentation",
+      "Company and supply-chain evidence",
+    ],
   },
   {
     slug: "defence-security",
     name: "Defence & Security",
-    scope: "Defence procurement, defence industry, SAFE, NATO/EU connections and strategic cooperation.",
+    scope:
+      "Defence procurement, defence industry, SAFE, NATO/EU connections and strategic cooperation.",
     questions: [
       "Which Canadian suppliers are positioned for European defence programmes?",
       "How are procurement frameworks on both sides evolving?",
       "Where do defence-industrial partnerships already exist?",
     ],
-    evidence: ["Procurement and award notices", "Programme and budget documentation", "Company and industrial-base records"],
+    evidence: [
+      "Procurement and award notices",
+      "Programme and budget documentation",
+      "Company and industrial-base records",
+    ],
   },
   {
     slug: "energy-resources-industry",
@@ -31,7 +40,11 @@ export const researchAreas = [
       "How do industrial policies on each side shape investment decisions?",
       "Who are the active buyers, processors and offtakers in a segment?",
     ],
-    evidence: ["Project and production data", "Industrial-policy and infrastructure records", "Corporate filings and company announcements"],
+    evidence: [
+      "Project and production data",
+      "Industrial-policy and infrastructure records",
+      "Corporate filings and company announcements",
+    ],
   },
   {
     slug: "technology-strategic-industries",
@@ -42,7 +55,11 @@ export const researchAreas = [
       "How do AI and digital policy differ in ways that affect market entry?",
       "Where is research cooperation producing practical applications?",
     ],
-    evidence: ["Public company and funding records", "Research and programme documentation", "Policy, procurement and ecosystem data"],
+    evidence: [
+      "Public company and funding records",
+      "Research and programme documentation",
+      "Policy, procurement and ecosystem data",
+    ],
   },
 ] as const;
 

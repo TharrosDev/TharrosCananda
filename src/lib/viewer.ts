@@ -23,5 +23,8 @@ export function nextZoom(current: number, delta: number) {
 export function findPattern(query: string) {
   const words = query.trim().split(/\s+/).filter(Boolean);
   if (words.join("").length < 2) return null;
-  return new RegExp(words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s*"), "gi");
+  return new RegExp(
+    words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s*"),
+    "gi",
+  );
 }

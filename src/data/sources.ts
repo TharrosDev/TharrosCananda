@@ -2,7 +2,8 @@ export const publicSources = [
   {
     region: "Canada",
     publisher: "Statistics Canada",
-    purpose: "Aggregate trade, industry, economic and demographic data; WDS provides machine-readable series and metadata.",
+    purpose:
+      "Aggregate trade, industry, economic and demographic data; WDS provides machine-readable series and metadata.",
     url: "https://www.statcan.gc.ca/en/developers/wds",
     access: "API",
   },
@@ -23,7 +24,8 @@ export const publicSources = [
   {
     region: "Canada",
     publisher: "Government of Canada Open Data",
-    purpose: "Federal dataset discovery and machine-readable metadata across departments and agencies.",
+    purpose:
+      "Federal dataset discovery and machine-readable metadata across departments and agencies.",
     url: "https://open.canada.ca/en/access-our-application-programming-interface-api",
     access: "CKAN API",
   },
@@ -37,7 +39,8 @@ export const publicSources = [
   {
     region: "Europe",
     publisher: "Eurostat",
-    purpose: "EU statistical data, including international trade, industry, economy and demographic indicators.",
+    purpose:
+      "EU statistical data, including international trade, industry, economy and demographic indicators.",
     url: "https://ec.europa.eu/eurostat/web/user-guides/data-browser/api-data-access",
     access: "REST / SDMX API",
   },
@@ -51,7 +54,8 @@ export const publicSources = [
   {
     region: "Europe",
     publisher: "European Commission Access2Markets",
-    purpose: "Tariffs, rules of origin, procedures and market-access information for goods, services and procurement.",
+    purpose:
+      "Tariffs, rules of origin, procedures and market-access information for goods, services and procurement.",
     url: "https://trade.ec.europa.eu/access-to-markets/en/my-trade-assistant",
     access: "Public database",
   },

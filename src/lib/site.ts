@@ -1,4 +1,7 @@
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca").replace(/\/+$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca").replace(
+  /\/+$/,
+  "",
+);
 
 /** JSON for a <script type="application/ld+json">; escapes "<" so data can never close the tag. */
 export const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\u003c");
@@ -6,7 +9,20 @@ export const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\u0
 // Locale-free date text: built from numeric parts only, so server and every browser render the same
 // string (en-CA month names differ between ICU versions, e.g. "Sep" vs "Sept.", and break hydration).
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const fullMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const fullMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 function dateParts(value: string, timeZone: string) {
   const date = new Date(value);
@@ -17,7 +33,8 @@ function dateParts(value: string, timeZone: string) {
     month: "numeric",
     day: "numeric",
   }).formatToParts(date);
-  const get = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((part) => part.type === type)?.value);
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    Number(parts.find((part) => part.type === type)?.value);
   return { year: get("year"), month: months[get("month") - 1], day: get("day") };
 }
 
@@ -38,4 +55,3 @@ export function formatFullMonthYear(value: string) {
   const p = dateParts(value, "UTC");
   return p ? `${fullMonths[months.indexOf(p.month)]} ${p.year}` : "Date unavailable";
 }
-

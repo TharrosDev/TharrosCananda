@@ -7,8 +7,10 @@ type Heading = { text: string; number?: number };
 
 function headings(blocks: ReportBlock[]): Heading[] {
   return blocks.flatMap((block) =>
-    block.kind === "heading" ? [{ text: block.text, number: block.number }]
-      : block.kind === "columns" ? [...headings(block.left), ...headings(block.right)]
+    block.kind === "heading"
+      ? [{ text: block.text, number: block.number }]
+      : block.kind === "columns"
+        ? [...headings(block.left), ...headings(block.right)]
         : [],
   );
 }
@@ -25,7 +27,9 @@ export function reportContents(publication: Publication, outline: OutlineEntry[]
     .filter((entry) => squash(entry.title) !== title)
     .map((entry) => {
       const match = known.find((h) => squash(`${h.number ?? ""}${h.text}`) === squash(entry.title));
-      return match ? { title: match.text, number: match.number, page: entry.page, top: entry.top } : { title: entry.title, page: entry.page, top: entry.top };
+      return match
+        ? { title: match.text, number: match.number, page: entry.page, top: entry.top }
+        : { title: entry.title, page: entry.page, top: entry.top };
     });
 }
 
@@ -52,7 +56,11 @@ export function reportLimitations(publication: Publication): string[] {
 
 function sourceBlocks(blocks: ReportBlock[]): PublicationSource[] {
   return blocks.flatMap((block) =>
-    block.kind === "sources" ? block.items : block.kind === "columns" ? [...sourceBlocks(block.left), ...sourceBlocks(block.right)] : [],
+    block.kind === "sources"
+      ? block.items
+      : block.kind === "columns"
+        ? [...sourceBlocks(block.left), ...sourceBlocks(block.right)]
+        : [],
   );
 }
 
@@ -60,7 +68,13 @@ function sourceBlocks(blocks: ReportBlock[]): PublicationSource[] {
 export function reportSources(publication: Publication): PublicationSource[] {
   const seen = new Set<string>();
   return [...publication.sources, ...sourceBlocks(publication.body)].filter((source) => {
-    const key = JSON.stringify([source.publisher, source.title, source.url, source.period, source.retrievedAt]);
+    const key = JSON.stringify([
+      source.publisher,
+      source.title,
+      source.url,
+      source.period,
+      source.retrievedAt,
+    ]);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
