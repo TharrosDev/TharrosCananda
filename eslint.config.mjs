@@ -15,5 +15,7 @@ export default defineConfig([
     "playwright-report/**",
     "test-results/**",
     "public/pdf.worker.min.mjs",
+    // Deno Edge Functions, deployed to Supabase; not part of the Next build.
+    "supabase/functions/**",
   ]),
 ]);

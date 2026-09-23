@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import { allPublications } from "@/data/publications";
+import { supabaseServer as supabase } from "@/lib/supabase";
 
 // Server-only: read and citation counts for published research (docs/superpowers/specs/2026-09-23-research-metrics-design.md).
 
@@ -25,12 +26,6 @@ export const isBot = (userAgent: string) => !userAgent || botPattern.test(userAg
  */
 export function readerKey(secret: string, ip: string, slug: string) {
   return createHmac("sha256", secret).update(`${ip}|${slug}`).digest("hex").slice(0, 32);
-}
-
-function supabase() {
-  const url = process.env.SUPABASE_URL?.replace(/\/+$/, "");
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-  return url && key ? { url, headers: { apikey: key, Authorization: `Bearer ${key}` } } : null;
 }
 
 export const metricsSecret = () => process.env.METRICS_SECRET?.trim() || null;
