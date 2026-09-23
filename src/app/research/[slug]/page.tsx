@@ -10,6 +10,7 @@ import type { CitationInput } from "@/lib/citation";
 import { researchAreas } from "@/lib/research-areas";
 import { reportContents, reportLimitations, reportSources } from "@/lib/report-sections";
 import { reportAsset } from "@/lib/reports";
+import { researchLicence } from "@/lib/licence";
 import { formatLongDate, jsonLd, siteUrl } from "@/lib/site";
 
 export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
@@ -66,6 +67,7 @@ export default async function ReportPage({ params }: Props) {
     publisher: { "@type": "Organization", name: "Tharros Canada", url: siteUrl },
     about: area?.name,
     url: `${siteUrl}/research/${p.slug}`,
+    license: researchLicence.url,
     ...(asset ? { encoding: { "@type": "MediaObject", contentUrl: `${siteUrl}${asset.file}`, encodingFormat: "application/pdf" } } : {}),
     citation: p.sources.flatMap((s) => (s.url ? [s.url] : [])),
   };

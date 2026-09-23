@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
+import { researchLicence } from "@/lib/licence";
 
 export function Footer() {
   const contactEmail = researchEmail();
@@ -37,13 +38,15 @@ export function Footer() {
             <Link href="/about#contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/accessibility">Accessibility</Link>
+            <Link href="/copyright">Copyright & licence</Link>
           </div>
         </nav>
       </div>
       <div className="footer-legal">
         <p>
           <span data-volatile>© {new Date().getFullYear()}</span>{" "}
-          {organization.legal?.legalName ?? "Tharros Canada"}.
+          {organization.legal?.legalName ?? "Tharros Canada"}. Research licensed{" "}
+          <Link href="/copyright">{researchLicence.short}</Link>.
         </p>
         <p>Not legal, tax, regulatory, lobbying or investment advice.</p>
       </div>

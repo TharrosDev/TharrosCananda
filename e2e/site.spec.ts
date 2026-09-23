@@ -72,7 +72,7 @@ test("nested research route keeps Research navigation state", async ({ page, isM
   );
 });
 
-for (const path of ["/", "/research-services", "/request-research"]) {
+for (const path of ["/", "/research-services", "/request-research", "/copyright"]) {
   test(`${path} has no serious or critical automated accessibility violations`, async ({
     page,
   }) => {
@@ -147,7 +147,7 @@ test.describe("mobile navigation", () => {
 
 test.describe("tap targets", () => {
   test.skip(({ isMobile }) => !isMobile, "Measured at a phone width");
-  for (const path of ["/", "/research", "/research-services", "/request-research", "/research/example-report", "/about", "/methodology", "/this-page-does-not-exist"]) {
+  for (const path of ["/", "/research", "/research-services", "/request-research", "/research/example-report", "/about", "/methodology", "/copyright", "/this-page-does-not-exist"]) {
     test(`${path} has 44px tap targets at 390px`, async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
