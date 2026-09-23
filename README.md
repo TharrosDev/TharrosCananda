@@ -8,7 +8,7 @@ The production domain is intended to be [tharros.ca](https://tharros.ca).
 
 The site is deliberately small and evidence-led:
 
-- **Services** — Canada / Europe Market Scan, Canadian Buyer Intelligence, Competitor Intelligence, Partner & Ecosystem Research, Commissioned Research and White-label Research. Product definitions and prices live in `src/lib/services.ts`.
+- **Services** — Custom & Partner Research (flagship), Market Assessment and Buyer & Partner Research, priced per case. Definitions live in `src/lib/services.ts`.
 - **Research archive** — a search/filter-ready archive that stays honest and empty until real Tharros work is published. Its taxonomy preserves the four research areas: Trade & Economic Integration; Defence & Security; Energy, Resources & Industry; and Technology & Strategic Industries. Add verified entries to `src/data/publications.ts`.
 - **Sources & Methodology** — the provenance standard and core Canada/Europe public-source register.
 - **Commission research** — a progressive asynchronous research-intake workflow with strict server validation and an optional monitored-email fallback.

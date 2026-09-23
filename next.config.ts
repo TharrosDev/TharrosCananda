@@ -33,12 +33,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   turbopack: { root: process.cwd() },
-  // Retired route: the cross-border checklist folded into the Canada Market Scan. 308 keeps old links and search results working.
+  // Retired route: the cross-border checklist folded into Market Assessment. 308 keeps old links and search results working.
   async redirects() {
     return [
       {
         source: "/ecommerce-readiness",
-        destination: "/research-services#market-scan",
+        destination: "/research-services#market-assessment",
         permanent: true,
       },
     ];

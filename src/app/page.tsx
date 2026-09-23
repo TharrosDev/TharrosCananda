@@ -12,7 +12,6 @@ export const metadata: Metadata = { alternates: { canonical: "/" } };
 export default function HomePage() {
   const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
   const researchToShow = featuredResearch.length ? featuredResearch : publications.slice(0, 3);
-  const homeServices = services.filter((service) => service.homeFeatured);
 
   return (
     <>
@@ -21,8 +20,8 @@ export default function HomePage() {
           <div className="home-intro-copy">
             <h1>Independent Canada–Europe research.</h1>
             <p className="home-intro-deck">
-              Market assessments, buyer and competitor research, and commissioned studies on trade,
-              defence, energy, industry and technology between Canada and Europe.
+              Custom research, market assessments and buyer and partner research on trade, defence,
+              energy, industry and technology between Canada and Europe.
             </p>
             <div className="hero-actions">
               <Link className="button-primary" href="/request-research">
@@ -46,22 +45,15 @@ export default function HomePage() {
       <section className="section home-services" id="start">
         <div className="home-section-lead">
           <h2>Start with a question.</h2>
-          <p>
-            Choose a defined service or request a custom scope. Scope, price and timing are agreed
-            in writing first.
-          </p>
+          <p>Every engagement is scoped and priced per case, in writing, before work begins.</p>
           <Link className="text-link" href="/research-services">
-            All services and pricing <ArrowIcon />
+            All services <ArrowIcon />
           </Link>
         </div>
         <ul className="service-catalogue" aria-label="Research services">
-          {homeServices.map((service, index) => (
+          {services.map((service) => (
             <li key={service.slug}>
               <Link href={`/research-services#${service.slug}`}>
-                <span>
-                  {String(index + 1).padStart(2, "0")}
-                  {service.flagship ? " · Flagship" : ""}
-                </span>
                 <h3>{service.name}</h3>
                 <p>{service.question}</p>
                 <ArrowIcon />

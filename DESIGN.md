@@ -108,7 +108,7 @@ The navigation tightens before collapsing. Around 1020px it becomes a labelled *
 ## Homepage architecture
 
 1. Atlantic map first viewport, brand proposition and Commission Research
-2. "Start with a question": the four home-featured services, each led by the question it answers
+2. "Start with a question": the three services as a ruled list, each led by the question it answers
 3. Four-area Canada–Europe research summary
 4. Public research (selected releases, or one calm empty-state line plus the example report)
 5. Ivory closing CTA (shared `.closing-cta`), so the footer is the only dark block at the foot of the page
@@ -149,9 +149,7 @@ As real work is produced, evidence artifacts may be added to make areas visually
 
 ## Services
 
-Pricing is secondary product information, not hero-level positioning. Lead with the decision/question the work answers and explain the outputs and exclusions. Canadian Buyer Intelligence is the flagship entry product; higher tiers increase coverage, not research quality.
-
-The page compares first, then details. A ruled comparison table (service, the question it answers, a "from" price, request link) sits directly under the hero and becomes a stacked register below 760px. Detail entries follow per group: name and price, what you receive, and scope and exclusions in a disclosure. Only the flagship repeats its question and carries the three coverage tiers, on the page's one lifted ivory-light surface. Styles live in `src/app/research-services/services.css`.
+The page is one editorial index, deliberately short. A light document header states that work is scoped and priced per case, then a ruled register lists the three services: name, the question it answers, and a request link. Custom & Partner Research leads as the flagship at a larger scale with the only primary button; the others use text links. No prices, tiers, output lists or exclusion disclosures: scope is set in the written proposal. Styles live in `src/app/research-services/services.css`.
 
 ## About
 
@@ -217,7 +215,7 @@ The Commission Research form sits on one light editorial sheet with a small oper
 - Use government logos or visual marks in a way that suggests affiliation.
 - Create decorative dashboard cards.
 - Use large dark heroes on every page.
-- Let pricing dominate the first impression of the business.
+- Publish prices; engagements are priced per case in writing.
 
 ## Density and rules
 
