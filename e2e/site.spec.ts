@@ -214,3 +214,110 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
     expect(ring).toMatch(/ solid 2px 3px$/);
   }
 });
+
+test.describe("home flow", () => {
+  test("reads what Tharros does, who it is for, proof, then how to commission", async ({ page }) => {
+    await page.goto("/");
+    const headings = await page.locator("main > section h2").allTextContents();
+    const order = [
+      "Start with a question.",
+      "Commissioned research.",
+      "Four connected fields.",
+      "Follow the relationship as it moves.",
+      "First publications in preparation.",
+      "Have a research question?",
+    ].map((heading) => headings.indexOf(heading));
+    expect(order.every((position) => position >= 0), headings.join(" | ")).toBe(true);
+    expect(order).toEqual([...order].sort((a, b) => a - b));
+  });
+
+  test("the Live Monitor band copy is sentence case at 20px or larger", async ({ page }) => {
+    await page.goto("/");
+    const copy = page.getByText(/^Track recent reporting/);
+    const style = await copy.evaluate((el) => {
+      const computed = getComputedStyle(el);
+      return { transform: computed.textTransform, size: parseFloat(computed.fontSize) };
+    });
+    expect(style.transform).toBe("none");
+    expect(style.size).toBeGreaterThanOrEqual(20);
+  });
+
+  test("the empty research block links to the example report", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "First publications in preparation." })).toBeVisible();
+    await expect(page.getByRole("link", { name: /See how a report is published/ })).toHaveAttribute(
+      "href",
+      "/research/example-report",
+    );
+  });
+});
+
+test("every service card has the same spec row", async ({ page }) => {
+  await page.goto("/research-services");
+  const cards = page.locator(".service-list article");
+  expect(await cards.count()).toBeGreaterThan(3);
+  for (const card of await cards.all()) {
+    await expect(card.locator("dt")).toHaveText(["Typical scope", "Price", "Not included"]);
+    await expect(card.getByText("You receive", { exact: true })).toBeVisible();
+  }
+});
+
+test.describe("request form", () => {
+  const fillOrganization = async (page: import("@playwright/test").Page) => {
+    await page.getByLabel("Organization").fill("Example GmbH");
+    await page.getByLabel("Country").fill("Germany");
+    await page.getByLabel("Business email").fill("research@example.com");
+  };
+
+  test("validates a touched field on blur without pulling focus back", async ({ page }) => {
+    await page.goto("/request-research");
+    const email = page.getByLabel("Business email");
+    await email.fill("x");
+    await email.press("Tab");
+    await expect(page.getByText("Enter a valid business email address.")).toBeVisible();
+    await expect(email).toHaveAttribute("aria-invalid", "true");
+    await expect(email).not.toBeFocused();
+    await expect(page.getByLabel("Organization")).toHaveAttribute("aria-invalid", "false");
+  });
+
+  test("the stepper labels three steps and marks the current one", async ({ page }) => {
+    await page.goto("/request-research");
+    const steps = page.getByRole("list", { name: "Request steps" }).getByRole("listitem");
+    await expect(steps).toHaveText([/Organization/, /Question/, /Review/]);
+    await expect(page.locator('[aria-current="step"]')).toHaveText(/Organization/);
+    await fillOrganization(page);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page.locator('[aria-current="step"]')).toHaveText(/Question/);
+  });
+
+  test("a draft survives a reload, and URL prefill still wins", async ({ page }) => {
+    await page.goto("/request-research");
+    await fillOrganization(page);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await page.getByLabel("Subject, product or sector").fill("Draft subject");
+    await page.reload();
+    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
+    await expect(page.getByLabel("Business email")).toHaveValue("research@example.com");
+    await page.goto("/request-research?product=Maple%20syrup");
+    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Maple syrup");
+  });
+
+  test("a submitted request is not restored after a reload", async ({ page }) => {
+    await page.route("**/api/research-request", (route) =>
+      route.fulfill({ status: 201, json: { ok: true, reference: "abcdef1234567890" } }),
+    );
+    await page.goto("/request-research");
+    await fillOrganization(page);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await page.getByLabel("Subject, product or sector").fill("Industrial components");
+    await page.getByLabel("Enter the Canadian market").check();
+    await page.getByRole("button", { name: /continue/i }).click();
+    await page.getByLabel(/I consent/).check();
+    await page.getByRole("button", { name: /submit research request/i }).click();
+    await expect(page.getByRole("heading", { name: "Your research request has been received." })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel("Organization")).toHaveValue("");
+  });
+});

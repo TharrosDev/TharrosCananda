@@ -138,6 +138,31 @@ export default function HomePage() {
         </ol>
       </section>
 
+      <section className="section home-services">
+        <div className="home-section-lead">
+          <h2>Commissioned research.</h2>
+          <p>Choose a defined service or request a custom scope.</p>
+          <Link className="text-link" href="/research-services">
+            Services and pricing <ArrowIcon />
+          </Link>
+        </div>
+        <ul className="service-catalogue" aria-label="Research services">
+          {homeServices.map((service, index) => (
+            <li key={service.slug}>
+              <Link href={`/research-services#${service.slug}`}>
+                <span>
+                  {String(index + 1).padStart(2, "0")}
+                  {service.flagship ? " · Flagship" : ""}
+                </span>
+                <h3>{service.name}</h3>
+                <p>{service.question}</p>
+                <ArrowIcon />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="expertise-spread">
         <div className="expertise-spread-inner">
           <div className="expertise-statement">
@@ -178,35 +203,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section home-services">
-        <div className="home-section-lead">
-          <h2>Commissioned research.</h2>
-          <p>Choose a defined service or request a custom scope.</p>
-          <Link className="text-link" href="/research-services">
-            Services and pricing <ArrowIcon />
-          </Link>
-        </div>
-        <ul className="service-catalogue" aria-label="Research services">
-          {homeServices.map((service, index) => (
-            <li key={service.slug}>
-              <Link href={`/research-services#${service.slug}`}>
-                <span>
-                  {String(index + 1).padStart(2, "0")}
-                  {service.flagship ? " · Flagship" : ""}
-                </span>
-                <h3>{service.name}</h3>
-                <p>{service.question}</p>
-                <ArrowIcon />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className="research-threshold">
         <div>
           <p>Public research</p>
-          <h2>{researchToShow.length ? "Selected releases." : "No publications yet."}</h2>
+          <h2>{researchToShow.length ? "Selected releases." : "First publications in preparation."}</h2>
         </div>
         <div>
           {researchToShow.length ? (
@@ -227,11 +227,13 @@ export default function HomePage() {
             <p>Publications will appear here as they are released.</p>
           )}
           <div className="threshold-links">
+            {!researchToShow.length && (
+              <Link className="text-link" href="/research/example-report">
+                See how a report is published <ArrowIcon />
+              </Link>
+            )}
             <Link className="text-link" href="/research">
               Research archive <ArrowIcon />
-            </Link>
-            <Link className="text-link" href="/methodology">
-              Methodology <ArrowIcon />
             </Link>
           </div>
         </div>
