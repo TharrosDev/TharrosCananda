@@ -157,7 +157,7 @@ p { text-wrap: pretty; }
 .hero-index-body { display: grid; gap: 2px; }
 .hero-index-body > a, .hero-index-body > span { color: var(--on-dark); font-family: var(--display); font-size: 20px; line-height: 1.25; text-decoration: none; }
 .hero-index-body > a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
-.hero-index small { color: var(--on-dark-soft); font-size: 14px; line-height: 1.4; }
+.hero-index small { color: var(--on-dark-soft); font-size: 19px; line-height: 1.4; }
 
 /* ---------- Services page ---------- */
 .service-context { margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
@@ -226,7 +226,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 .footer-links a { min-height: 32px; display: flex; align-items: center; color: var(--on-dark); font-size: 17px; text-decoration: none; }
 .footer-links a:hover { text-decoration: underline; }
 .footer-legal { width: var(--shell); margin: 0 auto; padding: 22px 0 32px; border-top: 1px solid var(--rule-dark); display: flex; justify-content: space-between; gap: 24px; }
-.footer-legal p { margin: 0; color: var(--on-dark-soft); font-size: 16px; }
+.footer-legal p { margin: 0; color: var(--on-dark-soft); font-size: 19px; }
 
 
 /* ---------- Editorial document hero ---------- */
