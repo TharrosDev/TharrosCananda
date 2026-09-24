@@ -34,12 +34,10 @@ export function sendMetric(slug: string, kind: Kind) {
 const group = (n: number) => String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 const plural = (n: number, one: string, many: string) => `${group(n)} ${n === 1 ? one : many}`;
 
-/** "1,240 reads · 38 citations"; zero parts are left out, and null means show nothing. */
+/** "1,240 views · 38 citations", zeros included; null (counts unavailable) means show nothing. */
 export function formatCounts(counts: { reads: number; citations: number } | undefined) {
   if (!counts) return null;
-  const parts = [
-    counts.reads > 0 && plural(counts.reads, "read", "reads"),
-    counts.citations > 0 && plural(counts.citations, "citation", "citations"),
-  ].filter(Boolean);
-  return parts.length ? parts.join(" · ") : null;
+  return `${plural(counts.reads, "view", "views")} · ${plural(counts.citations, "citation", "citations")}`;
 }
+
+export const NO_COUNTS = { reads: 0, citations: 0 };

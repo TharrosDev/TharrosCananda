@@ -12,7 +12,6 @@ import { reportContents, reportLimitations, reportSources } from "@/lib/report-s
 import { reportAsset } from "@/lib/reports";
 import { researchLicence } from "@/lib/licence";
 import { isCountedSlug, publicationCounts } from "@/lib/metrics";
-import { formatCounts } from "@/lib/metrics-client";
 import { ReadTracker } from "@/components/read-tracker";
 import { formatLongDate, jsonLd, pageMetadata, siteUrl } from "@/lib/site";
 
@@ -57,7 +56,9 @@ export default async function ReportPage({ params }: Props) {
   if (!p) notFound();
   const asset = reportAsset(p.slug);
   const counted = isCountedSlug(p.slug);
-  const readership = counted ? formatCounts((await publicationCounts())?.[p.slug]) : null;
+  // Real reports always show their counts, zeros included; hidden only when the database is unreachable.
+  const allCounts = counted ? await publicationCounts() : null;
+  const readership = allCounts ? (allCounts[p.slug] ?? { reads: 0, citations: 0 }) : null;
   const area = researchAreas.find((a) => a.slug === p.area);
   const stableUrl = `${siteUrl}/research/id/${p.reference}`;
   const citation: CitationInput = {
@@ -154,10 +155,16 @@ export default async function ReportPage({ params }: Props) {
               </div>
             )}
             {readership && (
-              <div>
-                <dt>Readership</dt>
-                <dd>{readership}</dd>
-              </div>
+              <>
+                <div>
+                  <dt>Views</dt>
+                  <dd>{readership.reads.toLocaleString("en-CA")}</dd>
+                </div>
+                <div>
+                  <dt>Times cited</dt>
+                  <dd>{readership.citations.toLocaleString("en-CA")}</dd>
+                </div>
+              </>
             )}
           </dl>
           {asset && (
