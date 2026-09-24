@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { AtlanticMap } from "@/components/atlantic-map";
 import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
+import { reportAsset } from "@/lib/reports";
 import { researchAreas } from "@/lib/research-areas";
 import { services } from "@/lib/services";
 import { formatMonthYear, pageMetadata } from "@/lib/site";
@@ -19,8 +21,15 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const featuredResearch = publications.filter((publication) => publication.featured).slice(0, 3);
-  const researchToShow = featuredResearch.length ? featuredResearch : publications.slice(0, 3);
+  // Newest first; a `featured` report leads regardless of date.
+  const researchToShow = [...publications]
+    .sort(
+      (a, b) =>
+        Number(!!b.featured) - Number(!!a.featured) || b.publishedAt.localeCompare(a.publishedAt),
+    )
+    .slice(0, 3);
+  const [lead, ...earlier] = researchToShow;
+  const leadCover = lead && reportAsset(lead.slug)?.cover;
 
   return (
     <>
@@ -93,35 +102,65 @@ export default function HomePage() {
 
       <section className="research-threshold">
         <div>
-          <p>Research archive</p>
-          <h2>{researchToShow.length ? "Selected releases." : "Public research."}</h2>
+          <p>Recent Publications</p>
+          <h2>{lead ? "Recent Releases." : "Public research."}</h2>
         </div>
         <div>
-          {researchToShow.length ? (
-            researchToShow.map((publication) => (
-              <Link key={publication.slug} href={`/research/${publication.slug}`}>
-                <strong>{publication.title}</strong>
-                <span>
-                  {publication.type} · {formatMonthYear(publication.publishedAt)}
-                </span>
-              </Link>
-            ))
+          {lead ? (
+            <>
+              <article className="release-lead">
+                {leadCover && (
+                  <Link
+                    href={`/research/${lead.slug}`}
+                    className="release-cover"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    <Image src={leadCover} alt="" width={160} height={207} />
+                  </Link>
+                )}
+                <div>
+                  <p className="release-meta">
+                    {lead.type} ·{" "}
+                    <time dateTime={lead.publishedAt}>{formatMonthYear(lead.publishedAt)}</time>
+                  </p>
+                  <h3>
+                    <Link href={`/research/${lead.slug}`}>{lead.title}</Link>
+                  </h3>
+                  <p className="release-summary">{lead.summary}</p>
+                  <Link className="text-link" href={`/research/${lead.slug}`}>
+                    Read the report <ArrowIcon />
+                  </Link>
+                </div>
+              </article>
+              {earlier.length > 0 && (
+                <ul className="release-earlier">
+                  {earlier.map((publication) => (
+                    <li key={publication.slug}>
+                      <Link href={`/research/${publication.slug}`}>
+                        <strong>{publication.title}</strong>
+                        <span>
+                          {publication.type} · {formatMonthYear(publication.publishedAt)}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           ) : (
-            <p>
-              The first publications are in preparation. Each will carry named authorship,
-              methodology, sources and limitations.
-            </p>
+            <>
+              <p>
+                The first publications are in preparation. Each will carry named authorship,
+                methodology, sources and limitations.
+              </p>
+              <div className="threshold-links">
+                <Link className="text-link" href="/research/example-report">
+                  See how a report is published <ArrowIcon />
+                </Link>
+              </div>
+            </>
           )}
-          <div className="threshold-links">
-            {!researchToShow.length && (
-              <Link className="text-link" href="/research/example-report">
-                See how a report is published <ArrowIcon />
-              </Link>
-            )}
-            <Link className="text-link" href="/research">
-              Research archive <ArrowIcon />
-            </Link>
-          </div>
         </div>
       </section>
 

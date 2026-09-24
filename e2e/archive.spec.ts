@@ -101,3 +101,16 @@ test("the specimen cover thumbnail is not indexable", async ({ page, request }) 
   const response = await request.get(src!);
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
 });
+
+test("compact rows hide the summary, tags and actions, and the choice survives a reload", async ({ page }) => {
+  await page.goto("/research");
+  const card = specimenCard(page);
+  await expect(card.locator(".archive-summary")).toBeVisible();
+  await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Compact" }).click();
+  for (const part of [".archive-summary", ".archive-tags", ".archive-card-actions"]) await expect(card.locator(part)).toBeHidden();
+  await expect(card.getByRole("link", { name: /Lorem ipsum dolor sit amet/ })).toBeVisible();
+  await page.reload();
+  await expect(specimenCard(page).locator(".archive-summary")).toBeHidden();
+  await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Expanded" }).click();
+  await expect(specimenCard(page).locator(".archive-summary")).toBeVisible();
+});

@@ -7,7 +7,7 @@ import { publicSources } from "@/data/sources";
 export const metadata: Metadata = pageMetadata({
   title: "Sources & Methodology",
   description:
-    "How Tharros Canada selects, dates, attributes and interprets public sources such as Statistics Canada, Eurostat, CanadaBuys and TED, and states limitations.",
+    "How Tharros Canada selects, dates, attributes and interprets public sources such as Statistics Canada, Eurostat, CanadaBuys, TED and municipal open data, judges whether a dataset is fit for use, and states limitations.",
   path: "/methodology",
 });
 
@@ -32,7 +32,13 @@ const evidenceClasses = [
     "Research and ecosystem evidence",
     "Public funding, research programmes, institutional records and related source material.",
   ],
+  [
+    "Open and administrative datasets",
+    "Municipal, provincial and federal open-data portals, with their metadata, licences and collection notes.",
+  ],
 ] as const;
+
+const regions = ["Canada", "Provincial & municipal", "Europe"] as const;
 
 export default function MethodologyPage() {
   return (
@@ -43,12 +49,13 @@ export default function MethodologyPage() {
           { label: "Source selection", href: "#source-selection" },
           { label: "Human verification", href: "#human-research" },
           { label: "Freshness", href: "#freshness" },
+          { label: "Fitness for use", href: "#fitness" },
           { label: "Limitations", href: "#limitations" },
         ]}
         title="Sources and methodology."
         description="Sources are recorded with their period, retrieval date, interpretation and limitations."
       />
-      <section className="section methodology-grid">
+      <section className="section">
         <div className="methodology-main">
           <article id="source-selection">
             <h2>Source selection</h2>
@@ -71,6 +78,14 @@ export default function MethodologyPage() {
               revisions and classification changes are noted.
             </p>
           </article>
+          <article id="fitness">
+            <h2>Fitness for use</h2>
+            <p>
+              Dataset assessments check coverage and gaps, how the data was collected, its
+              definitions and documentation, how often it is updated and what its licence allows.
+              Each one states what the data can support and what it cannot.
+            </p>
+          </article>
           <article id="limitations">
             <h2>Limitations</h2>
             <p>
@@ -81,9 +96,11 @@ export default function MethodologyPage() {
             </p>
           </article>
         </div>
-        <aside className="source-register">
-          <h2>Core public sources</h2>
-          {["Canada", "Europe"].map((region) => (
+      </section>
+      <section className="section source-register" aria-labelledby="source-register-heading">
+        <h2 id="source-register-heading">Core public sources.</h2>
+        <div className="source-register-regions">
+          {regions.map((region) => (
             <div className="source-region" key={region}>
               <h3>{region}</h3>
               {publicSources
@@ -100,8 +117,8 @@ export default function MethodologyPage() {
                 ))}
             </div>
           ))}
-          <p>Listed sources do not imply endorsement or partnership.</p>
-        </aside>
+        </div>
+        <p>Listed sources do not imply endorsement or partnership.</p>
       </section>
       <section className="section evidence-classes">
         <div>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { CiteButton } from "@/components/cite-button";
 import {
   type ArchiveDoc,
@@ -17,8 +17,25 @@ import {
   termPattern,
 } from "@/lib/archive";
 import { copyText } from "@/lib/clipboard";
-import { formatCounts, sendMetric } from "@/lib/metrics-client";
+import { formatCounts, NO_COUNTS, sendMetric } from "@/lib/metrics-client";
 import { formatMonthYear, siteUrl } from "@/lib/site";
+import { readStorage, writeStorage } from "@/lib/storage";
+
+// Compact rows hide the summary, tags and actions: a per-browser preference. Kept in memory too, so the
+// toggle still works when storage is blocked; the server render is always expanded.
+const COMPACT_KEY = "tharros.archive.compact";
+let compactChoice: boolean | null = null;
+const densityListeners = new Set<() => void>();
+const subscribeDensity = (listener: () => void) => {
+  densityListeners.add(listener);
+  return () => densityListeners.delete(listener);
+};
+const readCompact = () => compactChoice ?? readStorage(COMPACT_KEY) === "1";
+function setDensity(compact: boolean) {
+  compactChoice = compact;
+  writeStorage(COMPACT_KEY, compact ? "1" : "0");
+  densityListeners.forEach((listener) => listener());
+}
 
 type Counts = { reads: number; citations: number };
 
@@ -65,6 +82,8 @@ export function ResearchArchive({
     [docs, index, state],
   );
   const set = (patch: Partial<ArchiveState>) => onChange?.({ ...state, ...patch });
+
+  const compact = useSyncExternalStore(subscribeDensity, readCompact, () => false);
 
   // The field is local so typing stays instant; the URL follows after a short pause. The field only
   // resyncs from the URL when the change came from elsewhere (back/forward, a chip, a suggestion),
@@ -202,6 +221,14 @@ export function ResearchArchive({
               </select>
             </label>
           )}
+          <span className="archive-density" role="group" aria-label="List density">
+            <button type="button" aria-pressed={!compact} onClick={() => setDensity(false)}>
+              Expanded
+            </button>
+            <button type="button" aria-pressed={compact} onClick={() => setDensity(true)}>
+              Compact
+            </button>
+          </span>
           {filtered && (
             <button type="button" className="archive-clear" onClick={clearAll}>
               Clear all
@@ -218,11 +245,11 @@ export function ResearchArchive({
       )}
 
       {results.length ? (
-        <ol className="archive-list">
+        <ol className={compact ? "archive-list is-compact" : "archive-list"}>
           {results.map((doc) => (
             <ArchiveCard
               key={doc.slug}
-              counts={doc.counted ? formatCounts(counts?.[doc.slug]) : null}
+              counts={doc.counted && counts ? formatCounts(counts[doc.slug] ?? NO_COUNTS) : null}
               doc={doc}
               areaName={areas.find((a) => a.slug === doc.area)?.name}
             />

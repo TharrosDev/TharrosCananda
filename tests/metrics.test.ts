@@ -62,10 +62,10 @@ describe("browser dedupe window", () => {
 
 describe("count formatting", () => {
   it("groups thousands, pluralises and leaves out zero parts", () => {
-    expect(formatCounts({ reads: 1240, citations: 38 })).toBe("1,240 reads · 38 citations");
-    expect(formatCounts({ reads: 1, citations: 0 })).toBe("1 read");
-    expect(formatCounts({ reads: 0, citations: 1 })).toBe("1 citation");
-    expect(formatCounts({ reads: 0, citations: 0 })).toBeNull();
+    expect(formatCounts({ reads: 1240, citations: 38 })).toBe("1,240 views · 38 citations");
+    expect(formatCounts({ reads: 1, citations: 0 })).toBe("1 view · 0 citations");
+    expect(formatCounts({ reads: 0, citations: 1 })).toBe("0 views · 1 citation");
+    expect(formatCounts({ reads: 0, citations: 0 })).toBe("0 views · 0 citations");
     expect(formatCounts(undefined)).toBeNull();
   });
 });

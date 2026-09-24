@@ -37,6 +37,21 @@ export const publicSources = [
     access: "Open data",
   },
   {
+    region: "Provincial & municipal",
+    publisher: "Ontario Data Catalogue",
+    purpose: "Provincial datasets and metadata from Ontario ministries and agencies.",
+    url: "https://data.ontario.ca/",
+    access: "CKAN API",
+  },
+  {
+    region: "Provincial & municipal",
+    publisher: "City of Ottawa Open Data",
+    purpose:
+      "Municipal datasets, including traffic collisions, as ArcGIS feature layers and CSV, GeoJSON or KML downloads.",
+    url: "https://open.ottawa.ca/",
+    access: "Open data portal",
+  },
+  {
     region: "Europe",
     publisher: "Eurostat",
     purpose:

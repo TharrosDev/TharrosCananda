@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { publications } from "../src/data/publications";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
-const researchHeading = publications.length ? "Selected releases." : "Public research.";
+const researchHeading = publications.length ? "Recent Releases." : "Public research.";
 
 const paths = ["/", "/research-services", "/request-research", "/research/example-report"];
 const viewports = [
