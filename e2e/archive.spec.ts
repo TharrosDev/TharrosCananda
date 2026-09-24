@@ -1,5 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { allPublications } from "../src/data/publications";
+
+// Derived from the records so adding a report never needs a test edit. The specimen is the stable fixture.
+const everything = `${allPublications.length} ${allPublications.length === 1 ? "publication" : "publications"}`;
+const specimenCard = (page: import("@playwright/test").Page) =>
+  page.locator("article", { hasText: /Lorem ipsum dolor sit amet/ });
 
 const search = (page: import("@playwright/test").Page) => page.getByRole("searchbox", { name: "Search the archive" });
 
@@ -28,14 +34,14 @@ test("area chips toggle a shareable filter", async ({ page }) => {
 
 test("garbage URL parameters fall back to the full archive", async ({ page }) => {
   await page.goto("/research?area=nope&year=abc&sort=x");
-  await expect(page.locator(".archive-result-count").getByText("1 publication", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText(everything, { exact: true })).toBeVisible();
 });
 
 test("no matches offers a way back", async ({ page }) => {
   await page.goto("/research?q=zzzzqqq");
   await expect(page.getByText("No publications match.")).toBeVisible();
   await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(page.locator(".archive-result-count").getByText("1 publication", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText(everything, { exact: true })).toBeVisible();
 });
 
 test("typing does not flood browser history", async ({ page }) => {
@@ -50,8 +56,8 @@ test("typing does not flood browser history", async ({ page }) => {
 test("result actions cite with the stable reference", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/research");
-  await page.locator("article").first().getByText("Cite", { exact: true }).click();
-  await page.getByRole("button", { name: "Copy citation" }).click();
+  await specimenCard(page).getByText("Cite", { exact: true }).click();
+  await specimenCard(page).getByRole("button", { name: "Copy citation" }).click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain("TC-EX-000");
 });
 
@@ -82,15 +88,16 @@ test("pausing mid-phrase keeps the space and every keystroke", async ({ page }) 
 test("the cite popover stays on screen on phones", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/research");
-  await page.locator("article").first().getByText("Cite", { exact: true }).click();
-  const box = (await page.locator(".archive-card .cite-popover-body").boundingBox())!;
+  const card = page.locator("article").first();
+  await card.getByText("Cite", { exact: true }).click();
+  const box = (await card.locator(".cite-popover-body").boundingBox())!;
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(360);
 });
 
 test("the specimen cover thumbnail is not indexable", async ({ page, request }) => {
   await page.goto("/research");
-  const src = await page.locator(".archive-cover img").first().getAttribute("src");
+  const src = await specimenCard(page).locator(".archive-cover img").getAttribute("src");
   const response = await request.get(src!);
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
 });

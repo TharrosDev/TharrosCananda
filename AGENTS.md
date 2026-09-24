@@ -53,7 +53,7 @@ Product intent: `PRODUCT.md`. Visual system: `DESIGN.md`. Infrastructure and run
 
 ## Content truth
 
-The business is pre-incorporation, with no published research yet. Never invent publications, clients, people, prices, testimonials or data. `organization.ts` fields stay empty until the owner supplies verified values, and the UI hides empty fields. The example report `TC-EX-000` is a labelled lorem specimen and must stay `indexable: false`.
+The business is pre-incorporation. The first real report, `TC-2026-001`, was published 2026-09-16. Never invent publications, clients, people, prices, testimonials or data. `organization.ts` fields stay empty until the owner supplies verified values, and the UI hides empty fields. The example report `TC-EX-000` is a labelled lorem specimen and must stay `indexable: false`.
 
 **Rule #1 for supplied reports: never edit the owner's PDF**, not even its metadata or bookmarks. Anything missing goes in the record, and drafted values are flagged in the PR. See `docs/REPORT_REQUIREMENTS.md`.
 

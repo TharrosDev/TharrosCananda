@@ -63,9 +63,58 @@ export type Publication = {
   specimen?: boolean;
 };
 
-// Intentionally empty until verified Tharros Canada research is actually published.
+// Verified Tharros Canada research only (docs/REPORT_REQUIREMENTS.md).
 // Independent work must use origin: "independent". Use "commissioned" only for work actually commissioned by a client and permitted for publication.
-export const publications: Publication[] = [];
+export const publications: Publication[] = [
+  {
+    slug: "ottawa-traffic-collisions-2017-2024",
+    reference: "TC-2026-001",
+    title: "Analytical Report: Traffic Collisions by Location 2017-2024 (excluding 2023)",
+    type: "Data Note",
+    area: "data-quality-validity",
+    origin: "independent",
+    publishedAt: "2026-09-16",
+    authors: ["Magnus Abdelnour"],
+    // Verbatim from the PDF's "Fit for Use Assessment".
+    summary:
+      "This dataset is fit to be used for needs pertaining to geographic distribution, characteristics, and trends in reported traffic collisions in the City of Ottawa. While the dataset is well suited for identifying broader collision trends across Ottawa, the absence of 2023 limits its reliability for continuous analysis and weakens any findings and conclusions that depend on complete 2017 to 2024 comparisons.",
+    tags: ["Ottawa", "Traffic collisions", "Open data", "Fitness for use"],
+    // Verbatim from "Quality & Limitations" and "Technical Contents".
+    limitations: [
+      "However, the complete absence of 2023 creates a significant gap and limits the dataset’s usefulness for continuous 2017 to 2024 trend analysis.",
+      "However, I found no separate data dictionary or methodological guide.",
+    ],
+    sources: [
+      {
+        publisher: "City of Ottawa (Open Ottawa)",
+        title: "Traffic Collisions by Location 2017–2024 (excluding 2023)",
+        url: "https://open.ottawa.ca/datasets/ottawa::traffic-collisions-by-location-2017-2024-excluding-2023/explore?location=45.280000%2C-75.747200%2C1&showTable=true",
+        retrievedAt: "2026-09-13",
+      },
+      {
+        publisher: "City of Ottawa (Open Ottawa)",
+        title: "Traffic Collisions by Location 2017–2024 (excluding 2023): About",
+        url: "https://open.ottawa.ca/datasets/ottawa::traffic-collisions-by-location-2017-2024-excluding-2023/about",
+        retrievedAt: "2026-09-13",
+      },
+      {
+        publisher: "City of Ottawa (ArcGIS)",
+        title: "Traffic Collisions by Location 2017–2024 (excluding 2023): ISO-19139 Metadata",
+        url: "https://www.arcgis.com/sharing/rest/content/items/710b179eba564aa58fbb3f34d5d599d9/info/metadata/metadata.xml?format=default&output=html",
+        retrievedAt: "2026-09-13",
+      },
+      {
+        publisher: "City of Ottawa",
+        title: "Open Data Licence Version 2.0",
+        url: "https://ottawa.ca/en/city-hall/open-transparent-and-accountable-government/open-data/open-data-licence-version-20",
+        retrievedAt: "2026-09-13",
+      },
+    ],
+    body: [],
+    indexable: true,
+    supplied: true,
+  },
+];
 
 const lorem = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum, nulla vitae elit libero, a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla.",

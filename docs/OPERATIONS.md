@@ -76,6 +76,6 @@ vercel firewall publish --yes
 - [ ] Fill `src/data/organization.ts` with verified details (research lead, legal entity, profiles) once the business is registered.
 - [ ] Review `/privacy` against the actual intake storage and retention, covering Canadian and relevant European obligations.
 - [ ] Confirm engagement terms: scope, payment, liability, confidentiality and advice boundaries.
-- [ ] The first real report sets `indexable: true`. `TC-EX-000` stays `indexable: false`.
+- [x] The first real report sets `indexable: true` (`TC-2026-001`, 2026-09-16). `TC-EX-000` stays `indexable: false`.
 - [ ] Run Lighthouse / Core Web Vitals and manual keyboard, screen-reader and reflow checks on production.
 - [ ] Optional: HSTS `preload` plus hstspreload.org submission, and a mailbox or forwarding for `tharros.ca` so DMARC reports can be collected.

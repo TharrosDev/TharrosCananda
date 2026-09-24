@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { publications } from "../src/data/publications";
+
+// The homepage research block depends on whether real work is published; derived so new reports need no edit.
+const researchHeading = publications.length ? "Selected releases." : "Public research.";
 
 const paths = ["/", "/research-services", "/request-research", "/research/example-report"];
 const viewports = [
@@ -225,7 +229,7 @@ test.describe("home flow", () => {
     const order = [
       "Start with a question.",
       "Five connected fields.",
-      "Public research.",
+      researchHeading,
       "Have a research question?",
     ].map((heading) => headings.indexOf(heading));
     expect(
@@ -235,13 +239,17 @@ test.describe("home flow", () => {
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  test("the empty research block links to the example report", async ({ page }) => {
+  test("the research block lists published work, never the specimen", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Public research." })).toBeVisible();
-    await expect(page.getByRole("link", { name: /See how a report is published/ })).toHaveAttribute(
-      "href",
-      "/research/example-report",
-    );
+    const block = page.locator(".research-threshold");
+    await expect(block.getByRole("heading", { name: researchHeading })).toBeVisible();
+    const slugs = publications.map((p) => `/research/${p.slug}`);
+    for (const link of await block.locator('a[href^="/research/"]').all()) {
+      const href = await link.getAttribute("href");
+      if (publications.length) expect(slugs).toContain(href);
+      else expect(href).toBe("/research/example-report");
+    }
+    await expect(block.getByRole("link", { name: /Lorem ipsum/ })).toHaveCount(0);
   });
 });
 

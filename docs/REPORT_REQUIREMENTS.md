@@ -61,6 +61,8 @@ Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 
 ## Hard checks (CI)
 
+The tests read their expectations from `src/data/publications.ts`. Adding a report needs no test edits and no new visual baselines: the visual snapshots hide the homepage research list and the archive year chips, and they filter the archive to the specimen.
+
 These run for every report, including the specimen `TC-EX-000`.
 
 - `tests/publications.test.ts`:
