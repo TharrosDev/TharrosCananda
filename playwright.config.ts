@@ -6,6 +6,8 @@ export default defineConfig({
   testDir: "e2e",
   timeout: 30_000,
   fullyParallel: true,
+  // CI runners have 4 cores; Playwright's default would use only half of them.
+  workers: process.env.CI ? 4 : undefined,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",

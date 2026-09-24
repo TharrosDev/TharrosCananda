@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { publications } from "../src/data/publications";
+import { coreRoutes } from "../src/lib/site";
+import { allPublications, publications } from "../src/data/publications";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
 const researchHeading = publications.length ? "Recent Releases." : "Public research.";
@@ -374,23 +375,32 @@ test("the not-found page leads with research, then commissioning", async ({ page
   await expect(links.nth(2)).toHaveAttribute("href", "/research-services");
 });
 
+// One test per sitemap route (from the same sources as the sitemap, at collection) so the sweep spreads across
+// workers instead of running page by page in one long test. The live sitemap.xml is checked against it.
+const sitemapRoutes = [
+  ...coreRoutes.map((route) => route || "/"),
+  ...allPublications.filter((p) => p.indexable || p.specimen).map((p) => `/research/${p.slug}`),
+];
+
 test.describe("every sitemap route", () => {
-  const sitemapPaths = async (request: import("@playwright/test").APIRequestContext) => {
+  test.skip(({ isMobile }) => isMobile, "Desktop sweep; the loop sets its own widths");
+
+  test("the served sitemap lists the same routes", async ({ request }) => {
     const xml = await (await request.get("/sitemap.xml")).text();
-    const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
+    const served = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
       .map((match) => new URL(match[1]).pathname)
       .filter((path) => !path.endsWith(".pdf"));
-    return [...new Set([...paths, "/research/example-report"])];
-  };
+    expect(served.length).toBeGreaterThan(8);
+    // The specimen is swept but never listed in the sitemap.
+    expect(new Set(served)).toEqual(
+      new Set(sitemapRoutes.filter((path) => path !== "/research/example-report")),
+    );
+  });
 
-  test("has no horizontal overflow at 320px and 1024px", async ({ page, request }, testInfo) => {
-    test.skip(testInfo.project.name === "mobile", "The loop sets its own viewports");
-    test.setTimeout(120_000);
-    const paths = await sitemapPaths(request);
-    expect(paths.length).toBeGreaterThan(8);
-    for (const width of [320, 1024]) {
-      await page.setViewportSize({ width, height: 800 });
-      for (const path of paths) {
+  for (const path of sitemapRoutes) {
+    test(`${path} has no overflow and no serious accessibility violations`, async ({ page }) => {
+      for (const width of [320, 1024]) {
+        await page.setViewportSize({ width, height: 800 });
         await page.goto(path);
         const size = await page.evaluate(() => ({
           scroll: document.documentElement.scrollWidth,
@@ -398,18 +408,9 @@ test.describe("every sitemap route", () => {
         }));
         expect(size.scroll, `${path} at ${width}px`).toBeLessThanOrEqual(size.client + 1);
       }
-    }
-  });
-
-  test("has no serious or critical accessibility violations", async ({
-    page,
-    request,
-  }, testInfo) => {
-    test.skip(testInfo.project.name === "mobile", "Desktop sweep");
-    test.setTimeout(180_000);
-    // Audit the settled page, with the map's route already drawn.
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    for (const path of await sitemapPaths(request)) {
+      // Audit the settled page at desktop width, with the map's route already drawn.
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(path);
       await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
       const results = await new AxeBuilder({ page }).analyze();
@@ -417,10 +418,9 @@ test.describe("every sitemap route", () => {
         results.violations
           .filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))
           .map((violation) => `${violation.id} (${violation.nodes.length})`),
-        path,
       ).toEqual([]);
-    }
-  });
+    });
+  }
 });
 
 test("each page previews as itself when shared", async ({ page }) => {

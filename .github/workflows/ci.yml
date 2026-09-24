@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Dispatched by the baselines workflow: its bot commit cannot trigger CI by itself.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -38,7 +40,7 @@ jobs:
     # The footer year is masked so screenshots stay stable.
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: verify
+    # Runs alongside verify, not after it: the two share nothing and branch protection needs both.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -46,7 +48,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      # Next's build cache makes the production build Playwright starts much faster on repeat runs.
+      - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+      # Headless shell only: the browser the tests actually run, without the full Chromium download.
+      - run: npx playwright install --with-deps --only-shell chromium
       - run: npx playwright test
       - if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

@@ -270,6 +270,8 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 /* ---------- Policy pages ---------- */
 .policy-page { max-width: min(960px, var(--shell)); }
+.policy-updated { margin: 0 0 20px; color: var(--slate); font-size: 16px; }
+.policy-page article { scroll-margin-top: var(--anchor-offset); }
 .policy-page article { padding: 28px 0; border-top: 1px solid var(--rule); }
 .policy-page article:first-child { border-top-color: var(--ink); }
 .policy-page ul { max-width: var(--measure-reading); margin: 0; padding: 0; list-style: none; }
