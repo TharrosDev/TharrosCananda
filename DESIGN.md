@@ -1,6 +1,6 @@
 ---
 name: Tharros Canada
-description: Canada–Europe commercial intelligence presented as an evidence ledger.
+description: Independent research across Canada and Europe, presented as an evidence ledger.
 colors:
   ivory: "#f4f1ea"
   ivory-deep: "#ebe6db"

@@ -11,6 +11,7 @@ describe("organizationJsonLd", () => {
       "areaServed",
       "description",
       "knowsAbout",
+      "logo",
       "name",
       "url",
     ]);

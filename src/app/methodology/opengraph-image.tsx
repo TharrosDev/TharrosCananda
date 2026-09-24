@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
     description:
       "Sources are recorded with their period, retrieval date, interpretation and limitations.",
     meta: [
-      { label: "Scope", value: "Canada–Europe" },
+      { label: "Scope", value: "Canada & Europe" },
       { label: "Status", value: "Methodology" },
     ],
   });

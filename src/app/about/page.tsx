@@ -8,7 +8,7 @@ import { researchEmail } from "@/lib/contact";
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Tharros Canada is an independent research firm studying the trade, policy, industry and organizations that connect Canada and Europe.",
+    "Tharros Canada is an independent research firm studying the trade, policy, industry and organizations that connect Canada and Europe, and the public data behind them.",
   path: "/about",
 });
 
@@ -43,7 +43,7 @@ export default function AboutPage() {
         <h1>Independent research focused on Canada and Europe.</h1>
         <div>
           <p>
-            Tharros studies the trade, policy, industry and organizations connecting both markets.
+            Tharros studies the trade, policy, industry and organizations connecting both markets, and tests the public data behind them.
           </p>
           <Link href="#principles">
             Research principles <span aria-hidden="true">↓</span>

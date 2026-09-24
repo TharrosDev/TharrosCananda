@@ -11,11 +11,11 @@ import { jsonLd, siteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Tharros Canada | Independent Canada–Europe research",
+    default: "Tharros Canada | Independent research across Canada and Europe",
     template: "%s | Tharros Canada",
   },
   description:
-    "Independent research on trade, defence, energy, industry and technology across Canada and Europe.",
+    "Independent research on trade, defence, energy, industry, technology and public data across Canada and Europe.",
   // Pages set their own Open Graph and Twitter fields through pageMetadata (src/lib/site.ts).
   openGraph: { type: "website", locale: "en_CA", siteName: "Tharros Canada" },
   twitter: { card: "summary_large_image" },

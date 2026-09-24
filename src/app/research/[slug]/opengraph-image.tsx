@@ -30,7 +30,7 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ slu
               month: "short",
               timeZone: "UTC",
             })
-          : "—",
+          : "Undated",
       },
       ...(area ? [{ label: "Expertise", value: area.name }] : []),
     ],
