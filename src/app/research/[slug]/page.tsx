@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CitationPanel } from "@/components/citation-panel";
@@ -182,7 +183,8 @@ export default async function ReportPage({ params }: Props) {
           pages={asset.pages}
           title={p.title}
           contents={reportContents(p, asset.outline)}
-          cover={asset.cover}
+          // ponytail: one optimized URL, not an image-set: covers are 816px, the sheet's width, and never upscale.
+          cover={getImageProps({ src: asset.cover, alt: "", width: 816, height: 1056 }).props.src}
           slug={p.slug}
           pageWidth={asset.width}
           pageHeight={asset.height}
