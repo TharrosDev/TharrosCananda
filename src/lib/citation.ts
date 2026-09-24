@@ -43,8 +43,11 @@ function joinApa(authors: string[]) {
 }
 
 function joinNatural(authors: string[], invertFirst: boolean) {
-  if (authors.length >= 3) return `${invertFirst ? invert(authors[0], "full") : authors[0]}, et al.`;
-  const formatted = authors.map((name, index) => (index === 0 && invertFirst ? invert(name, "full") : name));
+  if (authors.length >= 3)
+    return `${invertFirst ? invert(authors[0], "full") : authors[0]}, et al.`;
+  const formatted = authors.map((name, index) =>
+    index === 0 && invertFirst ? invert(name, "full") : name,
+  );
   return formatted.join(", and ");
 }
 
@@ -61,10 +64,13 @@ const longDate = formatLongDate;
 const yearMonth = formatFullMonthYear;
 const year = (iso: string) => iso.slice(0, 4);
 
-
 export function buildCitation(style: CitationStyle, input: CitationInput): string {
   const { title, authors, publishedAt, url, reference: ref } = input;
-  const accessed = formatLongDate((input.accessedAt ?? new Date()).toISOString());
+  // The reader's own calendar day: toISOString() would give the UTC day, "tomorrow" on a Canadian evening.
+  const at = input.accessedAt ?? new Date();
+  const accessed = formatLongDate(
+    `${at.getFullYear()}-${String(at.getMonth() + 1).padStart(2, "0")}-${String(at.getDate()).padStart(2, "0")}`,
+  );
   const skipAuthor = authorsAreJustPublisher(authors);
 
   switch (style) {

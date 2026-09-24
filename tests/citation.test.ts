@@ -6,7 +6,7 @@ const orgReport = {
   authors: ["Tharros Canada"],
   publishedAt: "2026-03-15",
   url: "https://tharros.ca/research/trade-corridors-2026",
-  accessedAt: new Date("2026-09-22"),
+  accessedAt: new Date(2026, 8, 22),
 };
 
 const namedReport = {
@@ -14,7 +14,7 @@ const namedReport = {
   authors: ["Jane Smith", "Alex Chen"],
   publishedAt: "2026-06-01",
   url: "https://tharros.ca/research/defence-procurement",
-  accessedAt: new Date("2026-09-22"),
+  accessedAt: new Date(2026, 8, 22),
 };
 
 describe("buildCitation", () => {
@@ -22,7 +22,9 @@ describe("buildCitation", () => {
     expect(buildCitation("apa", orgReport)).toBe(
       "(March 2026). Canada–Europe trade corridors: a 2026 review. https://tharros.ca/research/trade-corridors-2026",
     );
-    expect(buildCitation("mla", orgReport)).toContain('"Canada–Europe trade corridors: a 2026 review." Tharros Canada,');
+    expect(buildCitation("mla", orgReport)).toContain(
+      '"Canada–Europe trade corridors: a 2026 review." Tharros Canada,',
+    );
     expect(buildCitation("harvard", orgReport)).toContain("Tharros Canada (2026)");
   });
 
@@ -37,6 +39,10 @@ describe("buildCitation", () => {
 
   it("includes an access date in Harvard citations", () => {
     expect(buildCitation("harvard", namedReport)).toContain("Accessed: September 22, 2026");
+  });
+  it("dates access by the reader's calendar day, not the UTC day", () => {
+    const lateEvening = { ...namedReport, accessedAt: new Date(2026, 8, 22, 23, 30) };
+    expect(buildCitation("harvard", lateEvening)).toContain("Accessed: September 22, 2026");
   });
   it("keeps full first names for MLA and Chicago, initials only for APA", () => {
     expect(buildCitation("mla", namedReport)).toBe(
@@ -53,8 +59,14 @@ describe("buildCitation", () => {
     expect(buildCitation("apa", withRef)).toBe(
       "Smith, J. & Chen, A. (June 2026). Defence procurement pathways (Report No. TC-2026-001). Tharros Canada. https://tharros.ca/research/defence-procurement",
     );
-    expect(buildCitation("mla", withRef)).toContain('"Defence procurement pathways." Tharros Canada Report TC-2026-001, Tharros Canada,');
-    expect(buildCitation("chicago", withRef)).toContain('"Defence procurement pathways." Report TC-2026-001. Tharros Canada.');
-    expect(buildCitation("harvard", withRef)).toContain("Defence procurement pathways. Report TC-2026-001. Tharros Canada.");
+    expect(buildCitation("mla", withRef)).toContain(
+      '"Defence procurement pathways." Tharros Canada Report TC-2026-001, Tharros Canada,',
+    );
+    expect(buildCitation("chicago", withRef)).toContain(
+      '"Defence procurement pathways." Report TC-2026-001. Tharros Canada.',
+    );
+    expect(buildCitation("harvard", withRef)).toContain(
+      "Defence procurement pathways. Report TC-2026-001. Tharros Canada.",
+    );
   });
 });
