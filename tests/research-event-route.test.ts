@@ -19,6 +19,7 @@ describe("POST /api/research-event", () => {
       (await post({ slug: "x", kind: "read" }, { "sec-fetch-site": "cross-site" })).status,
     ).toBe(403);
     expect((await post("{")).status).toBe(400);
+    expect((await post("null")).status).toBe(400);
     expect((await post({ slug: "example-report", kind: "read" })).status).toBe(400);
     expect((await post({ slug: "example-report", kind: "like" })).status).toBe(400);
   });

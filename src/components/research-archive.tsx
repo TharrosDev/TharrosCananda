@@ -133,6 +133,8 @@ export function ResearchArchive({
   const clearAll = () => {
     setDraft("");
     onChange?.(defaultArchiveState);
+    // The button that was used disappears with the filters; keep keyboard focus on the page's tool.
+    searchRef.current?.focus();
   };
 
   const years = Object.keys(facets.year).sort().reverse();
@@ -366,7 +368,10 @@ export function ResearchArchive({
                     <button
                       type="button"
                       className="archive-suggestion"
-                      onClick={() => set({ q: s, sort: "relevance" })}
+                      onClick={() => {
+                        set({ q: s, sort: "relevance" });
+                        searchRef.current?.focus();
+                      }}
                     >
                       {s}
                     </button>
@@ -492,6 +497,13 @@ function ArchiveCard({
                 onFocus={(e) => e.currentTarget.select()}
               />
             )}
+            <span className="sr-only" role="status">
+              {copied === "done"
+                ? "Link copied"
+                : copied === "failed"
+                  ? "Copy failed; the link is shown to copy by hand"
+                  : ""}
+            </span>
           </div>
           {/* Where there is no room for the record pane, the record opens under its entry. */}
           <details className="archive-record-inline">

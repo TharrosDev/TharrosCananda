@@ -353,7 +353,6 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 
 /* ---------- Refinements shared across pages ---------- */
-.section.section--compact { padding-top: var(--space-section); padding-bottom: var(--space-section); }
 
 /* The ledger is ruled as you read: a structural rule that is always drawn, and on supporting browsers draws itself
    in as it enters view. Transform only, so nothing it touches is ever hidden (tests/css-guard.test.ts). */
@@ -414,7 +413,7 @@ legend:focus:not(:focus-visible) { outline: none; }
 
 /* Sources, limitations and citation as page text, aligned with the viewer column. */
 .report-appendix { width: var(--shell); margin: 0 auto; padding: 0 0 var(--space-section); display: grid; grid-template-columns: minmax(200px, 250px) minmax(0, 1fr); column-gap: clamp(24px, 3vw, 48px); }
-.report-appendix-label { margin: 0; padding-top: 16px; border-top: 2px solid var(--ink); font-family: var(--sans); color: var(--slate); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.report-appendix-label { margin: 0; padding-top: 16px; border-top: 2px solid var(--ink); font-family: var(--sans); color: var(--slate); font-size: 13px; font-weight: 700; line-height: 1.15; letter-spacing: .08em; text-transform: uppercase; }
 .report-appendix-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px var(--col-gap); align-content: start; }
 .report-appendix-block { min-width: 0; padding-top: 14px; border-top: 2px solid var(--ink); }
 .report-appendix-block h2 { margin: 0 0 14px; font-size: 26px; font-weight: 500; }

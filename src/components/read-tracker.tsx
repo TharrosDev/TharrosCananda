@@ -13,6 +13,8 @@ export function ReadTracker({ slug }: { slug: string }) {
   useEffect(() => {
     const viewer = document.querySelector("[data-report-viewer]");
     let onScreen = false;
+    // Tracked like onScreen: the tick on becoming visible must not credit the hidden gap before it.
+    let visible = document.visibilityState === "visible";
     let visibleMs = 0;
     let last = performance.now();
     let sent = false;
@@ -23,7 +25,7 @@ export function ReadTracker({ slug }: { slug: string }) {
     };
     const tick = () => {
       const now = performance.now();
-      if (onScreen && document.visibilityState === "visible") visibleMs += now - last;
+      if (onScreen && visible) visibleMs += now - last;
       last = now;
       if (visibleMs >= ENGAGED_MS) send();
     };
@@ -36,7 +38,10 @@ export function ReadTracker({ slug }: { slug: string }) {
     );
     if (viewer) observer.observe(viewer);
     const timer = window.setInterval(tick, 1000);
-    const onVisibility = () => tick();
+    const onVisibility = () => {
+      tick();
+      visible = document.visibilityState === "visible";
+    };
     const onClick = (event: MouseEvent) => {
       if ((event.target as Element | null)?.closest?.("a[download]")) send();
     };

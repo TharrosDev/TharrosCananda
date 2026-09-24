@@ -61,7 +61,6 @@
 .form-error p { margin: 6px 0 0; font-size: 17px; }
 .form-error a { font-weight: 600; }
 .form-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-legend:focus:not(:focus-visible) { outline: none; }
 
 /* ---------- Success ---------- */
 .form-success { padding: 8px 0 0; }

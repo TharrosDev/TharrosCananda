@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   } catch {
     return new Response(null, { status: 400 });
   }
-  if ((body.kind !== "read" && body.kind !== "cite") || !isCountedSlug(body.slug))
+  if ((body?.kind !== "read" && body?.kind !== "cite") || !isCountedSlug(body.slug))
     return new Response(null, { status: 400 });
 
   const userAgent = request.headers.get("user-agent") ?? "";

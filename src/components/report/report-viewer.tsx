@@ -114,10 +114,12 @@ export function ReportViewer({
         setDoc(loaded);
         const params = new URLSearchParams(window.location.hash.slice(1));
         const page = Number(params.get("page")) || 0;
-        const search = (params.get("search") ?? "").slice(0, 80);
-        if (page || findPattern(search)) {
+        const raw = (params.get("search") ?? "").slice(0, 80);
+        // A term too short to find is dropped, so the link still lands on its page.
+        const search = findPattern(raw) ? raw : "";
+        if (page || search) {
           jumpTo.current = { page: Math.min(Math.max(1, page || 1), pages), search };
-          if (findPattern(search)) setQuery(search);
+          if (search) setQuery(search);
         }
       } catch {
         if (!cancelled) setFailed(true);
@@ -206,7 +208,14 @@ export function ReportViewer({
   }, [fullscreen]);
   const scrollByY = useCallback(
     (delta: number, smooth = true) =>
-      (scroller() ?? window).scrollBy({ top: delta, behavior: smooth ? "smooth" : "instant" }),
+      (scroller() ?? window).scrollBy({
+        top: delta,
+        // CSS scroll-behavior does not override an explicit JS behavior, so honour reduced motion here.
+        behavior:
+          smooth && !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "smooth"
+            : "instant",
+      }),
     [scroller],
   );
 

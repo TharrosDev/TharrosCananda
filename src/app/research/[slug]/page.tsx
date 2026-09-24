@@ -191,9 +191,9 @@ export default async function ReportPage({ params }: Props) {
         <p className="report-pending">The PDF for this report is being prepared.</p>
       )}
       <section className="report-appendix" aria-labelledby="report-appendix-label">
-        <h2 className="report-appendix-label" id="report-appendix-label">
+        <p className="report-appendix-label" id="report-appendix-label">
           Sources and citation
-        </h2>
+        </p>
         <div className="report-appendix-body">
           {sources.length > 0 && (
             <div className="report-appendix-block" id="sources">
