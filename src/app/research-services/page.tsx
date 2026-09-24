@@ -6,50 +6,51 @@ import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
 import { requestResearchHref } from "@/lib/research-request";
 import { SampleDocument } from "@/components/sample-document";
-import { commissionSteps, services } from "@/lib/services";
+import { commissionPrivacy, commissionSteps, services } from "@/lib/services";
 import "./services.css";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Canada–Europe Research Services",
+  title: "Commission Research",
   description:
-    "Custom and partner research, market assessments and buyer and partner research across Canada and Europe. Every engagement is scoped and priced per case.",
+    "Commission independent research from Tharros Canada on a question you set, answered with the same sources and method as its published work. Commissioned work stays private unless the client asks to publish it.",
   path: "/research-services",
 });
 
-export default function ResearchServicesPage() {
+export default function CommissionResearchPage() {
   return (
     <>
       <AnalyticsBeacon event="research_service_viewed" />
       <PageHero
         variant="document"
-        title="Research, scoped to your question."
-        description="Every engagement is scoped and priced per case, in writing, before work begins."
+        title="Commission research."
+        description="Tharros publishes its own research first. Commissions fund that work: you set the question, and it is answered with the same sources and method."
       />
-      <section className="section services-index" aria-label="Services">
+      <section className="section commission-privacy" aria-labelledby="privacy-title">
+        <h2 id="privacy-title">Private by default.</h2>
+        <div>
+          <p>{commissionPrivacy}</p>
+          <p>The public archive holds Tharros&rsquo;s own research only.</p>
+        </div>
+      </section>
+      <section className="section services-index" aria-labelledby="options-title">
+        <h2 id="options-title">What can be commissioned.</h2>
         <ol>
           {services.map((service) => (
-            <li
-              key={service.slug}
-              id={service.slug}
-              className={service.flagship ? "is-flagship" : undefined}
-            >
-              <h2>{service.name}</h2>
+            <li key={service.slug} id={service.slug}>
+              <h3>{service.name}</h3>
               <p>{service.question}</p>
-              <Link
-                className={service.flagship ? "button-primary" : "text-link"}
-                href={requestResearchHref({ service: service.slug })}
-              >
+              <Link className="text-link" href={requestResearchHref({ service: service.slug })}>
                 Request<span className="sr-only"> {service.name}</span> <ArrowIcon />
               </Link>
-              <div className="service-output">
-                <h3>You receive</h3>
+              <details className="service-output">
+                <summary>What you receive</summary>
                 <ul>
                   {service.deliverables.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
                 <SampleDocument service={service.slug} name={service.name} />
-              </div>
+              </details>
             </li>
           ))}
         </ol>
@@ -75,10 +76,10 @@ export default function ResearchServicesPage() {
         </ol>
       </section>
       <section className="closing-cta">
-        <h2>Not sure which fits?</h2>
-        <p>Describe the decision. Tharros will suggest the smallest useful scope.</p>
+        <h2>Have a question?</h2>
+        <p>Describe the decision it supports. Tharros will reply with a written scope.</p>
         <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
+          Start a request <ArrowIcon />
         </Link>
       </section>
       <script
@@ -87,7 +88,7 @@ export default function ResearchServicesPage() {
           __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "ItemList",
-            name: "Tharros Canada research services",
+            name: "Research that can be commissioned from Tharros Canada",
             itemListElement: services.map((service, index) => ({
               "@type": "ListItem",
               position: index + 1,
@@ -96,7 +97,7 @@ export default function ResearchServicesPage() {
                 "@id": `${siteUrl}/research-services#${service.slug}`,
                 name: service.name,
                 description: service.question,
-                serviceType: "Commercial research",
+                serviceType: "Commissioned research",
                 areaServed: ["Canada", "European Union"],
                 provider: { "@id": `${siteUrl}/#organization` },
               },

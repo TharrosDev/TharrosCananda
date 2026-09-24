@@ -22,15 +22,14 @@ export function Footer() {
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>
-            <p className="footer-heading">Work</p>
-            <Link href="/research-services">Services</Link>
-            <Link href="/request-research">Commission research</Link>
-            <Link href="/how-it-works">How it works</Link>
-          </div>
-          <div>
-            <p className="footer-heading">Evidence</p>
+            <p className="footer-heading">Research</p>
             <Link href="/research">Research archive</Link>
             <Link href="/methodology">Sources & methodology</Link>
+          </div>
+          <div>
+            <p className="footer-heading">Commission</p>
+            <Link href="/research-services">Commission research</Link>
+            <Link href="/how-it-works">How it works</Link>
           </div>
           <div>
             <p className="footer-heading">Company</p>

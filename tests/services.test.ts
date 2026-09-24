@@ -10,11 +10,8 @@ describe("service definitions", () => {
     expect(researchNeeds.at(-1)).toBe("Not sure yet");
     expect(researchNeeds).toHaveLength(services.length + 1);
   });
-  it("leads with Custom & Partner Research as the single flagship, and lists no prices", () => {
-    expect(services.filter((service) => service.flagship).map((service) => service.slug)).toEqual([
-      "custom-research",
-    ]);
-    expect(services[0].flagship).toBe(true);
+  it("leads with Custom & Partner Research and lists no prices", () => {
+    expect(services[0].slug).toBe("custom-research");
     expect(JSON.stringify(services)).not.toMatch(/C\$|\bprice/i);
   });
   it("ignores unknown or non-string slugs", () => {

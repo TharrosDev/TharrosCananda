@@ -1,40 +1,44 @@
-/* Services: one ruled index. Name, the question it answers, a request link. The flagship leads at a larger scale. */
+/* Commission page: a privacy statement, then one quiet ruled list of what can be commissioned. */
 
-/* The index opens with its own ink rule; the header needs no second one above it. */
-.page-hero-document:has(+ .services-index) { border-bottom: 0; }
-.page-hero + .services-index { padding-top: 0; }
+.page-hero-document:has(+ .commission-privacy) { border-bottom: 0; }
+.page-hero + .commission-privacy { padding-top: 0; }
+.commission-privacy { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 16px; padding-top: 28px; border-top: 2px solid var(--ink); }
+.commission-privacy h2 { grid-column: 1 / span 5; margin: 0; font-size: clamp(30px, 2.8vw, 40px); }
+.commission-privacy > div { grid-column: 6 / -1; }
+.commission-privacy p { max-width: 44ch; margin: 0; font-family: var(--display); font-size: clamp(21px, 1.7vw, 25px); line-height: 1.4; }
+.commission-privacy p + p { margin-top: 14px; color: var(--ink-soft); font-family: var(--sans); font-size: 19px; }
+
+.services-index > h2 { margin: 0 0 24px; font-size: clamp(28px, 2.4vw, 36px); }
 .services-index > ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
-.services-index > ol > li { padding: clamp(28px, 3vw, 44px) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 16px; align-items: baseline; border-bottom: 1px solid var(--rule-strong); scroll-margin-top: var(--anchor-offset); }
-.services-index h2 { grid-column: 1 / span 5; margin: 0; font-size: clamp(28px, 2.4vw, 36px); font-weight: 400; letter-spacing: -.015em; line-height: 1.1; text-wrap: balance; }
+.services-index > ol > li { padding: 26px 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 12px; align-items: baseline; border-bottom: 1px solid var(--rule-strong); scroll-margin-top: var(--anchor-offset); }
+.services-index h3 { grid-column: 1 / span 5; margin: 0; font-size: clamp(24px, 2vw, 28px); font-weight: 400; line-height: 1.15; }
 .services-index > ol > li > p { grid-column: 6 / span 5; max-width: 44ch; margin: 0; color: var(--ink-soft); font-size: 19px; line-height: 1.5; }
 .services-index > ol > li > a { grid-column: 11 / -1; justify-self: end; }
-.services-index > ol > li > a svg { width: 18px; height: 18px; transition: transform var(--dur-2) var(--ease-out); }
-.services-index > ol > li > a:hover svg { transform: translateX(4px); }
-
-.services-index > ol > li.is-flagship { padding: clamp(40px, 4.4vw, 64px) 0; align-items: end; }
-.services-index > ol > li.is-flagship h2 { font-size: clamp(40px, 4.2vw, 60px); letter-spacing: -.025em; line-height: 1; }
-.services-index > ol > li.is-flagship > p { color: var(--ink); font-family: var(--display); font-size: clamp(21px, 1.6vw, 24px); line-height: 1.4; }
 
 .services-more { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 28px; }
 .services-more a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--ink); font-size: 17px; font-weight: 600; text-decoration: none; }
 .services-more svg { width: 16px; height: 16px; flex: 0 0 16px; }
 
 @media (max-width: 980px) {
-  .services-index h2 { grid-column: 1 / -1; }
+  .commission-privacy h2, .commission-privacy > div, .services-index h3 { grid-column: 1 / -1; }
   .services-index > ol > li > p { grid-column: 1 / span 9; }
   .services-index > ol > li > a { grid-column: 10 / -1; }
 }
 
 @media (max-width: 640px) {
-  .services-index > ol > li, .services-index > ol > li.is-flagship { align-items: start; }
+  .services-index > ol > li { align-items: start; }
   .services-index > ol > li > p { grid-column: 1 / -1; font-size: 18px; }
   .services-index > ol > li > a { grid-column: 1 / -1; justify-self: start; }
 }
 
-/* What each service delivers, with a faux-PDF sample. */
+/* What each option delivers, collapsed, with a faux-PDF sample. */
 .service-output { grid-column: 6 / span 5; }
-.service-output > h3 { margin: 8px 0 10px; color: var(--slate); font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-.service-output > ul { margin: 0 0 18px; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.service-output > summary { min-height: 44px; display: inline-flex; align-items: center; gap: 10px; color: var(--slate); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; list-style: none; }
+.service-output > summary::-webkit-details-marker { display: none; }
+.service-output > summary::after { content: "+"; font-size: 18px; font-weight: 400; letter-spacing: 0; }
+.service-output[open] > summary::after { content: "\2212"; }
+.service-output > summary:hover { color: var(--ink); }
+.service-output > ul { margin: 6px 0 18px; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
 .service-output > ul > li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 18px; line-height: 1.4; }
 .sample-open { min-height: 44px; padding: 0; border: 0; border-bottom: 1px solid var(--ink); background: none; font-size: 17px; font-weight: 600; cursor: pointer; }
 .sample-open:hover { color: var(--red); border-color: var(--red); }

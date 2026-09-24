@@ -1,9 +1,8 @@
-/** Single source of truth for services, the services page, the home index and research-request prefill. */
+/** What can be commissioned: the commission page, the home index and research-request prefill read this. */
 export const services = [
   {
     slug: "custom-research",
     name: "Custom & Partner Research",
-    flagship: true,
     question:
       "Research on a Canada–Europe question you define, or research capacity behind your own client work.",
     deliverables: [
@@ -15,7 +14,6 @@ export const services = [
   {
     slug: "market-assessment",
     name: "Market Assessment",
-    flagship: false,
     question:
       "How a market is structured in Canada or Europe, who already competes in it and what deserves a closer look.",
     deliverables: [
@@ -27,7 +25,6 @@ export const services = [
   {
     slug: "buyer-partner-research",
     name: "Buyer & Partner Research",
-    flagship: false,
     question:
       "Which organizations could realistically buy, distribute, integrate or partner on what you offer.",
     deliverables: [
@@ -37,6 +34,10 @@ export const services = [
     ],
   },
 ] as const;
+
+/** Shown wherever commissioning is offered: commissioned work belongs to the client, so the public archive does not reflect it. */
+export const commissionPrivacy =
+  "Commissioned work stays private to the client who commissioned it and is published only if that client asks.";
 
 /** The commissioning sequence, shown on the services page and How it works. */
 export const commissionSteps = [

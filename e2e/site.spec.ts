@@ -122,7 +122,7 @@ test.describe("mobile navigation", () => {
     await page.getByRole("button", { name: /menu/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-menu-open", "");
     const nav = page.getByRole("navigation", { name: "Primary" });
-    await expect(nav.getByRole("link")).toHaveCount(5);
+    await expect(nav.getByRole("link")).toHaveCount(4);
     for (const link of await nav.getByRole("link").all()) await expect(link).toBeVisible();
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe(
       "hidden",
@@ -221,17 +221,12 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("reads what Tharros does, who it is for, proof, then how to commission", async ({
-    page,
-  }) => {
+  test("reads research first: areas, then releases, then commissioning", async ({ page }) => {
     await page.goto("/");
     const headings = await page.locator("main > section h2").allTextContents();
-    const order = [
-      "Start with a question.",
-      "Five connected fields.",
-      researchHeading,
-      "Have a research question?",
-    ].map((heading) => headings.indexOf(heading));
+    const order = ["Five connected fields.", researchHeading, "Commissioned research."].map(
+      (heading) => headings.indexOf(heading),
+    );
     expect(
       order.every((position) => position >= 0),
       headings.join(" | "),
@@ -253,11 +248,16 @@ test.describe("home flow", () => {
   });
 });
 
-test("services list each offer once, led by the flagship, with no prices", async ({ page }) => {
+test("the commission page states privacy and lists each option once, with no prices", async ({
+  page,
+}) => {
   await page.goto("/research-services");
+  await expect(page.getByRole("heading", { name: "Private by default." })).toBeVisible();
+  await expect(page.locator(".commission-privacy")).toContainText(
+    "published only if that client asks",
+  );
   const entries = page.locator(".services-index > ol > li");
   await expect(entries).toHaveCount(3);
-  await expect(entries.first()).toHaveClass(/is-flagship/);
   await expect(page.locator("main")).not.toContainText("C$");
   for (const entry of await entries.all()) {
     await expect(entry.getByRole("link", { name: /^Request/ })).toHaveAttribute(
@@ -269,6 +269,9 @@ test("services list each offer once, led by the flagship, with no prices", async
 
 test("each service opens a labelled lorem sample in a dialog", async ({ page }) => {
   await page.goto("/research-services");
+  // Samples sit inside the collapsed "What you receive" panels.
+  for (const summary of await page.locator(".service-output > summary").all())
+    await summary.click();
   const open = page.getByRole("button", { name: /^View sample/ });
   await expect(open).toHaveCount(3);
   await open.first().click();
@@ -361,14 +364,14 @@ test.describe("request form", () => {
   });
 });
 
-test("the not-found page offers research, services and commissioning", async ({ page }) => {
+test("the not-found page leads with research, then commissioning", async ({ page }) => {
   const response = await page.goto("/this-page-does-not-exist");
   expect(response?.status()).toBe(404);
   const links = page.getByRole("navigation", { name: "Useful pages" }).getByRole("link");
-  await expect(links).toHaveText([/Research/, /Services/, /Commission research/]);
+  await expect(links).toHaveText([/Research archive/, /Methodology/, /Commission research/]);
   await expect(links.nth(0)).toHaveAttribute("href", "/research");
-  await expect(links.nth(1)).toHaveAttribute("href", "/research-services");
-  await expect(links.nth(2)).toHaveAttribute("href", "/request-research");
+  await expect(links.nth(1)).toHaveAttribute("href", "/methodology");
+  await expect(links.nth(2)).toHaveAttribute("href", "/research-services");
 });
 
 test.describe("every sitemap route", () => {
