@@ -484,6 +484,12 @@ export function ReportViewer({
           }
         </style>
       </noscript>
+      {/* Find-in-report colours. Turbopack's CSS parser rejects ::highlight() and warns on every build, so they live here. */}
+      <style>
+        {
+          "::highlight(report-find){background-color:rgba(158,58,53,.22)}::highlight(report-find-current){background-color:rgba(47,111,174,.45)}"
+        }
+      </style>
       {contents.length > 0 && (
         <nav
           className="report-contents"
