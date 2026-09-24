@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { AtlanticMap } from "@/components/atlantic-map";
 import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
+import { publicationCounts } from "@/lib/metrics";
 import { reportAsset } from "@/lib/reports";
 import { researchAreas } from "@/lib/research-areas";
 import { commissionPrivacy, services } from "@/lib/services";
 import { formatLongDate, formatMonthYear, pageMetadata } from "@/lib/site";
+import "./home.css";
 
 const homeTitle = "Tharros Canada | Independent research across Canada and Europe";
 export const metadata: Metadata = {
@@ -20,7 +23,10 @@ export const metadata: Metadata = {
   title: { absolute: homeTitle },
 };
 
-export default function HomePage() {
+// Non-breaking hyphens keep year ranges like 2017-2024 on one line.
+const keepRanges = (title: string) => title.replace(/(\d)-(\d)/g, "$1‑$2");
+
+export default async function HomePage() {
   // Newest first; a `featured` report leads regardless of date.
   const researchToShow = [...publications]
     .sort(
@@ -31,14 +37,17 @@ export default function HomePage() {
   const [lead, ...earlier] = researchToShow;
   const leadAsset = lead && reportAsset(lead.slug);
   const leadArea = lead && researchAreas.find((area) => area.slug === lead.area)?.name;
+  const counts = lead ? await publicationCounts() : null;
+  const leadCounts = lead && counts ? (counts[lead.slug] ?? { reads: 0, citations: 0 }) : null;
+  const perArea = (slug: string) => publications.filter((p) => p.area === slug).length;
 
   return (
     <>
-      <section className="home-intro">
-        <div className="home-intro-grid">
-          <div className="home-intro-copy">
-            <h1>Independent research across Canada and Europe.</h1>
-            <p className="home-intro-deck">
+      <section className="home-front" aria-labelledby="home-title">
+        <div className="home-front-grid">
+          <div className="home-front-copy">
+            <h1 id="home-title">Independent research across Canada and Europe.</h1>
+            <p className="home-front-deck">
               Published research on trade, defence, energy, industry and technology, and notes on
               whether the public data behind it holds up. Questions can also be commissioned.
             </p>
@@ -51,76 +60,50 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <AtlanticMap />
-        </div>
-        <div className="home-intro-foot">
-          <p>Canada ↔ Europe</p>
-          <Link href="#areas">
-            Research areas <span aria-hidden="true">↓</span>
-          </Link>
-        </div>
-      </section>
 
-      <section className="expertise-spread" id="areas">
-        <div className="expertise-spread-inner">
-          <div className="expertise-statement">
-            <p>Research areas</p>
-            <h2>Five connected fields.</h2>
-            <p>Work may span more than one area.</p>
-          </div>
-          <div className="expertise-ledger">
-            {researchAreas.map((area, index) => (
-              <div key={area.slug}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{area.name}</h3>
-                <p>{area.scope}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="research-threshold" aria-labelledby="releases-heading">
-        <div className="releases-head">
-          <p>Recent Publications</p>
-          <h2 id="releases-heading">{lead ? "Recent Releases." : "Public research."}</h2>
-        </div>
-        {lead ? (
-          <>
-            <article className="release-lead">
-              {leadAsset && (
-                <Link
-                  href={`/research/${lead.slug}`}
-                  className="release-cover"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                >
-                  <Image
-                    src={leadAsset.cover}
-                    alt=""
-                    width={816}
-                    height={1056}
-                    sizes="(max-width: 700px) 60vw, 34vw"
-                  />
-                </Link>
+          <div className="home-release" aria-labelledby="release-heading">
+            <div className="home-release-bar">
+              <h2 id="release-heading">{lead ? "Latest release" : "Public research."}</h2>
+              {lead && (
+                <span>
+                  {lead.reference} · {lead.type}
+                </span>
               )}
-              <div className="release-body">
-                <p className="release-kind">
-                  {lead.type}
-                  {leadArea && <> · {leadArea}</>}
-                </p>
-                <h3>
-                  <Link href={`/research/${lead.slug}`}>
-                    {/* Non-breaking hyphens keep year ranges like 2017-2024 on one line. */}
-                    {lead.title.replace(/(\d)-(\d)/g, "$1‑$2")}
-                  </Link>
-                </h3>
-                <p className="release-summary">{lead.summary}</p>
-                <dl className="release-ledger">
-                  <div>
-                    <dt>Reference</dt>
-                    <dd>{lead.reference}</dd>
-                  </div>
+            </div>
+            {lead ? (
+              <article className="home-release-sheet">
+                {leadAsset && (
+                  <ViewTransition name={`cover-${lead.slug}`} share="cover">
+                    <Link
+                      href={`/research/${lead.slug}`}
+                      className="home-release-cover"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
+                      <Image
+                        src={leadAsset.cover}
+                        alt=""
+                        width={816}
+                        height={1056}
+                        sizes="(max-width: 700px) 40vw, 220px"
+                        priority
+                      />
+                    </Link>
+                  </ViewTransition>
+                )}
+                <div className="home-release-body">
+                  <h3>
+                    <Link href={`/research/${lead.slug}`}>{keepRanges(lead.title)}</Link>
+                  </h3>
+                  <p className="home-release-summary">{lead.summary}</p>
+                </div>
+                <dl className="home-release-ledger">
+                  {leadArea && (
+                    <div>
+                      <dt>Area</dt>
+                      <dd>{leadArea}</dd>
+                    </div>
+                  )}
                   <div>
                     <dt>Published</dt>
                     <dd>
@@ -137,8 +120,19 @@ export default function HomePage() {
                       <dd>{leadAsset.pages} pages</dd>
                     </div>
                   )}
+                  {leadCounts && (
+                    <div>
+                      <dt>Readership</dt>
+                      <dd data-volatile>
+                        {leadCounts.reads.toLocaleString("en-CA")}{" "}
+                        {leadCounts.reads === 1 ? "view" : "views"} ·{" "}
+                        {leadCounts.citations.toLocaleString("en-CA")}{" "}
+                        {leadCounts.citations === 1 ? "citation" : "citations"}
+                      </dd>
+                    </div>
+                  )}
                 </dl>
-                <div className="release-actions">
+                <div className="home-release-actions">
                   <Link className="button-secondary" href={`/research/${lead.slug}`}>
                     Read the report <ArrowIcon />
                   </Link>
@@ -148,15 +142,25 @@ export default function HomePage() {
                     </a>
                   )}
                 </div>
+              </article>
+            ) : (
+              <div className="home-release-empty">
+                <p>
+                  The first publications are in preparation. Each will carry named authorship,
+                  methodology, sources and limitations.
+                </p>
+                <Link className="text-link" href="/research/example-report">
+                  See how a report is published <ArrowIcon />
+                </Link>
               </div>
-            </article>
+            )}
             {earlier.length > 0 && (
-              <ol className="release-earlier" aria-label="Earlier releases">
+              <ol className="home-release-earlier" aria-label="Earlier releases">
                 {earlier.map((publication) => (
                   <li key={publication.slug}>
                     <Link href={`/research/${publication.slug}`}>
-                      <span className="release-earlier-ref">{publication.reference}</span>
-                      <strong>{publication.title}</strong>
+                      <span>{publication.reference}</span>
+                      <strong>{keepRanges(publication.title)}</strong>
                       <span>
                         {publication.type} · {formatMonthYear(publication.publishedAt)}
                       </span>
@@ -165,23 +169,49 @@ export default function HomePage() {
                 ))}
               </ol>
             )}
-          </>
-        ) : (
-          <div className="releases-empty">
-            <p>
-              The first publications are in preparation. Each will carry named authorship,
-              methodology, sources and limitations.
-            </p>
-            <Link className="text-link" href="/research/example-report">
-              See how a report is published <ArrowIcon />
-            </Link>
           </div>
-        )}
+        </div>
       </section>
 
-      <section className="section home-services" id="commission">
-        <div className="home-section-lead">
-          <h2>Commissioned research.</h2>
+      <section className="home-field" id="areas" aria-labelledby="areas-heading">
+        <div className="home-field-grid">
+          <div className="home-field-map">
+            <h2 id="areas-heading">Five connected fields.</h2>
+            <p>Work may span more than one area.</p>
+            <AtlanticMap />
+          </div>
+          <ul className="home-field-areas">
+            {researchAreas.map((area) => {
+              const count = perArea(area.slug);
+              return (
+                <li key={area.slug}>
+                  <h3>
+                    {count > 0 ? (
+                      <Link href={`/research?area=${area.slug}`}>{area.name}</Link>
+                    ) : (
+                      area.name
+                    )}
+                  </h3>
+                  <p>{area.scope}</p>
+                  {count > 0 && (
+                    <span className="home-field-count">
+                      {count} {count === 1 ? "publication" : "publications"}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section
+        className="section home-commission"
+        id="commission"
+        aria-labelledby="commission-heading"
+      >
+        <div className="home-commission-head">
+          <h2 id="commission-heading">Commissioned research.</h2>
           <p>
             Set a question and Tharros answers it with the same sources and method. Every commission
             is scoped and priced in writing before work begins.
@@ -191,7 +221,7 @@ export default function HomePage() {
             Commission research <ArrowIcon />
           </Link>
         </div>
-        <ul className="service-catalogue" aria-label="What can be commissioned">
+        <ul className="home-commission-list" aria-label="What can be commissioned">
           {services.map((service) => (
             <li key={service.slug}>
               <Link href={`/research-services#${service.slug}`}>

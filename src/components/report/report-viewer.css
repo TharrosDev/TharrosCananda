@@ -32,7 +32,7 @@
 .report-viewer-download { margin-left: auto; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .report-viewer-sheets { display: grid; justify-items: center; gap: 32px; overflow-x: auto; padding: 4px 0 12px; }
 .report-viewer-sheets:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
-.report-sheet { position: relative; flex: none; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong), 0 24px 60px -30px rgba(22, 23, 25, .35); }
+.report-sheet { position: relative; flex: none; background: var(--ivory-light) center / 100% 100% no-repeat; box-shadow: 0 1px 0 var(--rule-strong), 0 24px 60px -30px rgba(22, 23, 25, .35); }
 .report-sheet canvas { display: block; width: 100% !important; height: 100% !important; }
 .report-viewer-error { padding: 56px 24px; border: 1px solid var(--rule-strong); background: var(--ivory-light); text-align: center; }
 .report-viewer-error p { margin: 0 0 12px; font-size: 19px; }

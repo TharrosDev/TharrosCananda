@@ -4,9 +4,25 @@ import { coreRoutes } from "../src/lib/site";
 import { allPublications, publications } from "../src/data/publications";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
-const researchHeading = publications.length ? "Recent Releases." : "Public research.";
+const researchHeading = publications.length ? "Latest release" : "Public research.";
 
-const paths = ["/", "/research-services", "/request-research", "/research/example-report"];
+const paths = [
+  "/",
+  "/research",
+  "/research-services",
+  "/request-research",
+  "/research/example-report",
+  "/this-page-does-not-exist",
+];
+
+/** Narrow screens fold the archive filters behind a "Filters" disclosure; wide screens always show them.
+ *  Opened from the keyboard, so focus moved afterwards still shows its ring. */
+async function openFilters(page: import("@playwright/test").Page) {
+  const summary = page.locator(".archive-filters > summary");
+  if (!(await summary.isVisible())) return;
+  await summary.focus();
+  await page.keyboard.press("Enter");
+}
 const viewports = [
   { width: 1440, height: 900 },
   { width: 1024, height: 768 },
@@ -206,6 +222,7 @@ test.describe("tap targets", () => {
 
 test("focus rings are consistent across links, buttons, chips and inputs", async ({ page }) => {
   await page.goto("/research");
+  await openFilters(page);
   const targets = [
     page.getByLabel("Search the archive"),
     page
@@ -224,10 +241,12 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("reads research first: areas, then releases, then commissioning", async ({ page }) => {
+  test("reads research first: the latest release, then areas, then commissioning", async ({
+    page,
+  }) => {
     await page.goto("/");
     const headings = await page.locator("main > section h2").allTextContents();
-    const order = ["Five connected fields.", researchHeading, "Commissioned research."].map(
+    const order = [researchHeading, "Five connected fields.", "Commissioned research."].map(
       (heading) => headings.indexOf(heading),
     );
     expect(
@@ -239,7 +258,7 @@ test.describe("home flow", () => {
 
   test("the research block lists published work, never the specimen", async ({ page }) => {
     await page.goto("/");
-    const block = page.locator(".research-threshold");
+    const block = page.locator(".home-release");
     await expect(block.getByRole("heading", { name: researchHeading })).toBeVisible();
     const slugs = publications.map((p) => `/research/${p.slug}`);
     for (const link of await block.locator('a[href^="/research/"]:not([download])').all()) {

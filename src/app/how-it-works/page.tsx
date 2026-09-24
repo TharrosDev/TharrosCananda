@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
+import { MethodRail } from "@/components/method-rail";
 import { PageHero } from "@/components/page-hero";
 import {
   commissionPrivacy,
@@ -24,39 +25,46 @@ export default function HowItWorksPage() {
         variant="document"
         title="How commissioned research works."
         description={`Scope, price and timing are agreed in writing before work begins. ${commissionPrivacy}`}
-        index={steps.map(([title], position) => ({ label: title, href: `#step-${position + 1}` }))}
+        record={[
+          { label: "Account", value: "Not required" },
+          { label: "Price", value: "Set per case, in writing" },
+          { label: "Work starts", value: "After you approve the scope" },
+        ]}
       />
-      <section className="section process-page">
-        <ol className="process-list">
+      <div className="document-body">
+        <MethodRail
+          items={[
+            ...steps.map(([title], position) => ({ id: `step-${position + 1}`, label: title })),
+            { id: "provides", label: "Tharros provides" },
+            { id: "does-not-provide", label: "Tharros does not provide" },
+          ]}
+          label="Sections"
+        />
+        <div className="document-sheet">
           {steps.map(([title, copy], index) => (
-            <li key={title} id={`step-${index + 1}`}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <h2>{title}</h2>
-                <p>{copy}</p>
-              </div>
-            </li>
+            <article key={title} id={`step-${index + 1}`}>
+              <h2>{title}</h2>
+              <p>{copy}</p>
+            </article>
           ))}
-        </ol>
-      </section>
-      <section className="section boundary-grid" id="boundaries">
-        <div>
-          <h2>Tharros provides</h2>
-          <ul>
-            {provides.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <article id="provides">
+            <h2>Tharros provides</h2>
+            <ul className="is-grid">
+              {provides.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+          <article id="does-not-provide">
+            <h2>Tharros does not provide</h2>
+            <ul className="is-grid">
+              {doesNotProvide.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
         </div>
-        <div>
-          <h2>Tharros does not provide</h2>
-          <ul>
-            {doesNotProvide.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      </div>
       <section className="closing-cta">
         <h2>Start with the question.</h2>
         <Link className="button-primary" href="/request-research">

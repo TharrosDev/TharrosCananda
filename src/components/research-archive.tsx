@@ -3,13 +3,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Fragment, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import {
+  Fragment,
+  type KeyboardEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  ViewTransition,
+} from "react";
 import { CiteButton } from "@/components/cite-button";
 import {
   type ArchiveDoc,
   type ArchiveState,
   createArchiveIndex,
+  type ArchiveResult,
   defaultArchiveState,
+  pageHits,
   parseArchiveState,
   readingMinutes,
   runArchiveQuery,
@@ -18,7 +29,7 @@ import {
 } from "@/lib/archive";
 import { copyText } from "@/lib/clipboard";
 import { formatCounts, NO_COUNTS, sendMetric } from "@/lib/metrics-client";
-import { formatMonthYear, siteUrl } from "@/lib/site";
+import { formatLongDate, formatMonthYear, siteUrl } from "@/lib/site";
 import { readStorage, writeStorage } from "@/lib/storage";
 
 // Compact rows hide the summary, tags and actions: a per-browser preference. Kept in memory too, so the
@@ -115,8 +126,8 @@ export function ResearchArchive({
 
   const years = Object.keys(facets.year).sort().reverse();
   const onlySpecimens = docs.length > 0 && docs.every((d) => d.specimen);
-  const filtered =
-    state.q.trim() !== "" || state.area !== "all" || state.type !== "all" || state.year !== "all";
+  const activeFilters = [state.area, state.type, state.year].filter((v) => v !== "all").length;
+  const filtered = state.q.trim() !== "" || activeFilters > 0;
   const suggestions =
     !results.length && state.q.trim()
       ? index
@@ -126,160 +137,234 @@ export function ResearchArchive({
           .slice(0, 3)
       : [];
 
+  // The record pane follows the result the visitor last clicked or focused; the first result otherwise.
+  const [picked, setPicked] = useState<string | null>(null);
+  const selected = results.find((doc) => doc.slug === picked) ?? results[0];
+  const areaName = (slug: string) => areas.find((a) => a.slug === slug)?.name;
+  const countsFor = (doc: ArchiveDoc) =>
+    doc.counted && counts ? formatCounts(counts[doc.slug] ?? NO_COUNTS) : null;
+
+  // "/" jumps to the search field from anywhere on the page, unless the visitor is already typing.
+  const searchRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      const target = event.target as HTMLElement;
+      if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+      if (target.closest("input, textarea, select, [contenteditable]")) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Up and down step between result titles (which also moves the record); Enter opens one.
+  const onListKey = (event: KeyboardEvent<HTMLOListElement>) => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    const titles = [
+      ...event.currentTarget.querySelectorAll<HTMLAnchorElement>(".archive-card h2 a"),
+    ];
+    const at = titles.indexOf(event.target as HTMLAnchorElement);
+    const next = at === -1 ? null : titles[at + (event.key === "ArrowDown" ? 1 : -1)];
+    if (!next) return;
+    event.preventDefault();
+    next.focus();
+  };
+
   return (
     <div className="archive-tool">
       <form className="archive-controls" role="search" onSubmit={(event) => event.preventDefault()}>
         <label className="archive-search">
           <span>Search the archive</span>
           <input
+            ref={searchRef}
             type="search"
             value={draft}
             maxLength={120}
             onChange={(event) => setDraft(event.target.value)}
             placeholder="Title, subject, reference or any word in a report"
           />
+          <kbd className="archive-search-key" aria-hidden="true">
+            /
+          </kbd>
         </label>
-        <div className="archive-areas" role="group" aria-label="Research area">
-          {areas.map((area) => {
-            const pressed = state.area === area.slug;
-            const count = facets.area[area.slug] ?? 0;
-            return (
-              <button
-                key={area.slug}
-                type="button"
-                aria-pressed={pressed}
-                disabled={!pressed && count === 0}
-                aria-describedby={`area-scope-${area.slug}`}
-                onClick={() => set({ area: pressed ? "all" : area.slug })}
-              >
-                <span className="archive-area-name">
-                  {area.name}{" "}
-                  <em>
-                    {count}
-                    <span className="sr-only"> {count === 1 ? "publication" : "publications"}</span>
-                  </em>
-                </span>
-                <span className="archive-area-scope" id={`area-scope-${area.slug}`}>
-                  {area.scope}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="archive-facets">
-          <div className="archive-chips" role="group" aria-label="Format">
-            {types.map((type) => {
-              const pressed = state.type === type.name;
-              const count = facets.type[type.name] ?? 0;
+        {/* Always open on wide screens (CSS); a disclosure on narrow ones, so results come first. */}
+        <details className="archive-filters">
+          <summary>
+            Filters
+            {activeFilters > 0 && <em> · {activeFilters} active</em>}
+          </summary>
+          <span className="archive-group-label" aria-hidden="true">
+            Research area
+          </span>
+          <div className="archive-areas" role="group" aria-label="Research area">
+            {areas.map((area) => {
+              const pressed = state.area === area.slug;
+              const count = facets.area[area.slug] ?? 0;
               return (
                 <button
-                  key={type.name}
+                  key={area.slug}
                   type="button"
                   aria-pressed={pressed}
                   disabled={!pressed && count === 0}
-                  onClick={() => set({ type: pressed ? "all" : type.name })}
+                  aria-describedby={`area-scope-${area.slug}`}
+                  onClick={() => set({ area: pressed ? "all" : area.slug })}
                 >
-                  {type.name} ({count})
+                  <span className="archive-area-name">
+                    {area.name}{" "}
+                    <em>
+                      {count}
+                      <span className="sr-only">
+                        {" "}
+                        {count === 1 ? "publication" : "publications"}
+                      </span>
+                    </em>
+                  </span>
+                  <span className="archive-area-scope" id={`area-scope-${area.slug}`}>
+                    {area.scope}
+                  </span>
                 </button>
               );
             })}
           </div>
-          <div className="archive-chips" role="group" aria-label="Year">
-            {years.map((year) => {
-              const pressed = state.year === year;
-              return (
-                <button
-                  key={year}
-                  type="button"
-                  aria-pressed={pressed}
-                  disabled={!pressed && facets.year[year] === 0}
-                  onClick={() => set({ year: pressed ? "all" : year })}
-                >
-                  {year} ({facets.year[year]})
-                </button>
-              );
-            })}
+          <div className="archive-facets">
+            <span className="archive-group-label" aria-hidden="true">
+              Format
+            </span>
+            <div className="archive-chips" role="group" aria-label="Format">
+              {types.map((type) => {
+                const pressed = state.type === type.name;
+                const count = facets.type[type.name] ?? 0;
+                return (
+                  <button
+                    key={type.name}
+                    type="button"
+                    aria-pressed={pressed}
+                    disabled={!pressed && count === 0}
+                    onClick={() => set({ type: pressed ? "all" : type.name })}
+                  >
+                    {type.name} ({count})
+                  </button>
+                );
+              })}
+            </div>
+            <span className="archive-group-label" aria-hidden="true">
+              Year
+            </span>
+            <div className="archive-chips" role="group" aria-label="Year">
+              {years.map((year) => {
+                const pressed = state.year === year;
+                return (
+                  <button
+                    key={year}
+                    type="button"
+                    aria-pressed={pressed}
+                    disabled={!pressed && facets.year[year] === 0}
+                    onClick={() => set({ year: pressed ? "all" : year })}
+                  >
+                    {year} ({facets.year[year]})
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </details>
       </form>
 
-      <div className="archive-result-count">
-        <span aria-live="polite">
-          {results.length} {results.length === 1 ? "publication" : "publications"}
-        </span>
-        <span className="archive-result-tools">
-          {state.q.trim() && (
-            <label>
-              <span>Sort</span>
-              <select
-                value={state.sort}
-                onChange={(event) => set({ sort: event.target.value as ArchiveState["sort"] })}
-              >
-                <option value="relevance">Most relevant</option>
-                <option value="newest">Newest first</option>
-              </select>
-            </label>
-          )}
-          <span className="archive-density" role="group" aria-label="List density">
-            <button type="button" aria-pressed={!compact} onClick={() => setDensity(false)}>
-              Expanded
-            </button>
-            <button type="button" aria-pressed={compact} onClick={() => setDensity(true)}>
-              Compact
-            </button>
+      <div className="archive-results">
+        <div className="archive-result-count">
+          <span aria-live="polite">
+            {results.length} {results.length === 1 ? "publication" : "publications"}
           </span>
-          {filtered && (
-            <button type="button" className="archive-clear" onClick={clearAll}>
-              Clear all
+          <span className="archive-result-tools">
+            {state.q.trim() && (
+              <label>
+                <span>Sort</span>
+                <select
+                  value={state.sort}
+                  onChange={(event) => set({ sort: event.target.value as ArchiveState["sort"] })}
+                >
+                  <option value="relevance">Most relevant</option>
+                  <option value="newest">Newest first</option>
+                </select>
+              </label>
+            )}
+            <span className="archive-density" role="group" aria-label="List density">
+              <button type="button" aria-pressed={!compact} onClick={() => setDensity(false)}>
+                Expanded
+              </button>
+              <button type="button" aria-pressed={compact} onClick={() => setDensity(true)}>
+                Compact
+              </button>
+            </span>
+            {filtered && (
+              <button type="button" className="archive-clear" onClick={clearAll}>
+                Clear all
+              </button>
+            )}
+          </span>
+        </div>
+
+        {onlySpecimens && (
+          <p className="archive-specimen-note">
+            The first Tharros publications are in preparation. The example below shows how each
+            report is published.
+          </p>
+        )}
+
+        {results.length ? (
+          <ol
+            className={compact ? "archive-list is-compact" : "archive-list"}
+            onKeyDown={onListKey}
+          >
+            {results.map((doc) => (
+              <ArchiveCard
+                key={doc.slug}
+                counts={countsFor(doc)}
+                doc={doc}
+                areaName={areaName(doc.area)}
+                selected={doc.slug === selected?.slug}
+                onSelect={() => setPicked(doc.slug)}
+              />
+            ))}
+          </ol>
+        ) : (
+          <div className="archive-no-results">
+            <h2>No publications match.</h2>
+            {suggestions.length > 0 && (
+              <p>
+                Did you mean{" "}
+                {suggestions.map((s, i) => (
+                  <Fragment key={s}>
+                    {i > 0 && ", "}
+                    <button
+                      type="button"
+                      className="archive-suggestion"
+                      onClick={() => set({ q: s, sort: "relevance" })}
+                    >
+                      {s}
+                    </button>
+                  </Fragment>
+                ))}
+                ?
+              </p>
+            )}
+            <button type="button" className="button-secondary" onClick={clearAll}>
+              Clear all filters
             </button>
-          )}
-        </span>
+          </div>
+        )}
       </div>
 
-      {onlySpecimens && (
-        <p className="archive-specimen-note">
-          The first Tharros publications are in preparation. The example below shows how each report
-          is published.
-        </p>
-      )}
-
-      {results.length ? (
-        <ol className={compact ? "archive-list is-compact" : "archive-list"}>
-          {results.map((doc) => (
-            <ArchiveCard
-              key={doc.slug}
-              counts={doc.counted && counts ? formatCounts(counts[doc.slug] ?? NO_COUNTS) : null}
-              doc={doc}
-              areaName={areas.find((a) => a.slug === doc.area)?.name}
-            />
-          ))}
-        </ol>
-      ) : (
-        <div className="archive-no-results">
-          <h2>No publications match.</h2>
-          {suggestions.length > 0 && (
-            <p>
-              Did you mean{" "}
-              {suggestions.map((s, i) => (
-                <Fragment key={s}>
-                  {i > 0 && ", "}
-                  <button
-                    type="button"
-                    className="archive-suggestion"
-                    onClick={() => set({ q: s, sort: "relevance" })}
-                  >
-                    {s}
-                  </button>
-                </Fragment>
-              ))}
-              ?
-            </p>
-          )}
-          <button type="button" className="button-secondary" onClick={clearAll}>
-            Clear all filters
-          </button>
-        </div>
+      {selected && (
+        <aside className="archive-record-pane" aria-label="Selected publication">
+          <ArchiveRecord
+            doc={selected}
+            areaName={areaName(selected.area)}
+            counts={countsFor(selected)}
+            showAbstract={compact || Boolean(selected.snippet)}
+          />
+        </aside>
       )}
     </div>
   );
@@ -289,10 +374,14 @@ function ArchiveCard({
   doc,
   areaName,
   counts,
+  selected,
+  onSelect,
 }: {
-  doc: ArchiveDoc & { snippet: string | null; terms: string[] };
+  doc: ArchiveResult;
   areaName?: string;
   counts?: string | null;
+  selected: boolean;
+  onSelect: () => void;
 }) {
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const stableUrl = `${siteUrl}/research/id/${doc.reference}`;
@@ -301,16 +390,24 @@ function ArchiveCard({
   }
   return (
     <li>
-      <article className="archive-card">
+      <article
+        className="archive-card"
+        data-selected={selected || undefined}
+        onClick={onSelect}
+        onFocus={onSelect}
+      >
         {doc.cover ? (
-          <Link
-            href={`/research/${doc.slug}`}
-            className="archive-cover"
-            tabIndex={-1}
-            aria-hidden="true"
-          >
-            <Image src={doc.cover} alt="" width={120} height={155} />
-          </Link>
+          // Shares its name with the report's first page, so opening the report morphs the cover into it.
+          <ViewTransition name={`cover-${doc.slug}`} share="cover">
+            <Link
+              href={`/research/${doc.slug}`}
+              className="archive-cover"
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              <Image src={doc.cover} alt="" width={120} height={155} />
+            </Link>
+          </ViewTransition>
         ) : (
           <span className="archive-cover" aria-hidden="true" />
         )}
@@ -370,9 +467,153 @@ function ArchiveCard({
               />
             )}
           </div>
+          {/* Where there is no room for the record pane, the record opens under its entry. */}
+          <details className="archive-record-inline">
+            <summary>Record</summary>
+            <ArchiveRecord doc={doc} areaName={areaName} counts={counts} inline />
+          </details>
         </div>
       </article>
     </li>
+  );
+}
+
+/** A publication's record: its ledger, where the search matched inside the PDF (or its contents), sources and limitations. */
+function ArchiveRecord({
+  doc,
+  areaName,
+  counts,
+  inline = false,
+  showAbstract = false,
+}: {
+  doc: ArchiveResult;
+  areaName?: string;
+  counts?: string | null;
+  inline?: boolean;
+  /** The abstract, when the entry beside the record is not already showing it (compact rows, or a search snippet). */
+  showAbstract?: boolean;
+}) {
+  const href = `/research/${doc.slug}`;
+  const hits = pageHits(doc, doc.terms, 4, 60);
+  return (
+    <div className="archive-record">
+      {!inline && (
+        <>
+          <h2 className="archive-record-title">
+            <Link href={href}>{doc.title}</Link>
+          </h2>
+          <div className="archive-record-actions">
+            <Link className="button-primary" href={href}>
+              Read the report
+            </Link>
+            {doc.file && (
+              <a
+                className="text-link"
+                href={doc.file}
+                download
+                onClick={doc.counted ? () => sendMetric(doc.slug, "read") : undefined}
+              >
+                PDF{doc.bytes ? ` · ${Math.round(doc.bytes / 1024)} KB` : ""}
+              </a>
+            )}
+          </div>
+        </>
+      )}
+      <dl className="archive-record-ledger">
+        <div>
+          <dt>Reference</dt>
+          <dd>{doc.reference}</dd>
+        </div>
+        <div>
+          <dt>Published</dt>
+          <dd>
+            <time dateTime={doc.publishedAt}>{formatLongDate(doc.publishedAt)}</time>
+          </dd>
+        </div>
+        <div>
+          <dt>{doc.authors.length === 1 ? "Author" : "Authors"}</dt>
+          <dd>{doc.authors.join(", ")}</dd>
+        </div>
+        {areaName && (
+          <div>
+            <dt>Area</dt>
+            <dd>{areaName}</dd>
+          </div>
+        )}
+        {counts && (
+          <div>
+            <dt>Readership</dt>
+            <dd>{counts}</dd>
+          </div>
+        )}
+      </dl>
+      {showAbstract && <p className="archive-record-abstract">{doc.summary}</p>}
+      {hits.length > 0 ? (
+        <section className="archive-record-block">
+          <h3>Matches in this report</h3>
+          <ol className="archive-record-pages">
+            {hits.map((hit) => (
+              <li key={hit.page}>
+                <a href={`${href}#page=${hit.page}&search=${encodeURIComponent(hit.term)}`}>
+                  <span>p. {hit.page}</span>
+                  <span>
+                    <Highlighted text={hit.snippet} terms={doc.terms} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : (
+        doc.contents.length > 0 && (
+          <section className="archive-record-block">
+            <h3>In this report</h3>
+            <ol className="archive-record-pages">
+              {doc.contents.map((entry) => (
+                <li key={`${entry.page}-${entry.top}-${entry.title}`}>
+                  <a href={`${href}#page=${entry.page}`}>
+                    <span>p. {entry.page}</span>
+                    <span>{entry.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      )}
+      {doc.sources.length > 0 && (
+        <section className="archive-record-block">
+          <h3>Sources</h3>
+          <ul className="archive-record-sources">
+            {doc.sources.map((source, i) => (
+              <li key={i}>
+                <strong>{source.publisher}</strong>{" "}
+                {source.url ? (
+                  <a href={source.url} rel="noreferrer">
+                    {source.title}
+                  </a>
+                ) : (
+                  <em>{source.title}</em>
+                )}
+                {source.retrievedAt && (
+                  <small>Retrieved {formatLongDate(source.retrievedAt)}</small>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {doc.limitations.length > 0 && (
+        <section className="archive-record-block">
+          <h3>Limitations</h3>
+          <ul className="archive-record-limits">
+            {doc.limitations.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
   );
 }
 

@@ -1,5 +1,11 @@
 import MiniSearch from "minisearch";
-import type { Publication } from "@/data/publications";
+import type { Publication, PublicationSource } from "@/data/publications";
+import {
+  type ContentsEntry,
+  reportContents,
+  reportLimitations,
+  reportSources,
+} from "@/lib/report-sections";
 import type { ReportAsset } from "@/lib/reports";
 
 /** One archive entry: publication metadata plus its PDF's extracted text, so search reaches inside reports. */
@@ -14,6 +20,8 @@ export type ArchiveDoc = {
   year: string;
   publishedAt: string;
   text: string;
+  /** Where each PDF page starts in `text`, so a match can name its page. */
+  pageStarts: number[];
   pages: number | null;
   cover: string | null;
   file: string | null;
@@ -22,6 +30,10 @@ export type ArchiveDoc = {
   /** Real, published work whose reads and citations are counted. */
   counted: boolean;
   authors: string[];
+  /** The record pane: the PDF's contents with page numbers, its sources and its stated limitations. */
+  contents: ContentsEntry[];
+  sources: PublicationSource[];
+  limitations: string[];
 };
 
 export type ArchiveState = {
@@ -142,10 +154,32 @@ export function snippet(text: string, terms: string[], radius = 80): string | nu
   const found = termPattern(terms)?.exec(text);
   if (!found) return null;
   const at = found.index;
-  const start = Math.max(0, lower.lastIndexOf(" ", Math.max(0, at - radius)) + 1);
+  // Start at the match's own line when it is close: PDF running heads and labels sit on lines of their own.
+  const start = Math.max(
+    0,
+    lower.lastIndexOf(" ", Math.max(0, at - radius)) + 1,
+    lower.lastIndexOf("\n", at) + 1,
+  );
   const endSpace = lower.indexOf(" ", Math.min(text.length, at + radius));
   const end = endSpace === -1 ? text.length : endSpace;
   return `${start > 0 ? "…" : ""}${text.slice(start, end).replace(/\s+/g, " ").trim()}${end < text.length ? "…" : ""}`;
+}
+
+/** The first match on each page, up to `max` pages: page number, the word that matched and a snippet. */
+export function pageHits(
+  doc: Pick<ArchiveDoc, "text" | "pageStarts">,
+  terms: string[],
+  max = 4,
+  radius = 80,
+) {
+  const hits: { page: number; term: string; snippet: string }[] = [];
+  for (let i = 0; i < doc.pageStarts.length && hits.length < max; i += 1) {
+    const text = doc.text.slice(doc.pageStarts[i], doc.pageStarts[i + 1]);
+    const term = termPattern(terms)?.exec(text)?.[0];
+    const found = term && snippet(text, terms, radius);
+    if (found) hits.push({ page: i + 1, term, snippet: found });
+  }
+  return hits;
 }
 
 export function readingMinutes(text: string) {
@@ -161,6 +195,13 @@ export function buildArchiveDocs(
 ): ArchiveDoc[] {
   return publications.map((p) => {
     const a = asset(p.slug);
+    const pageText = text(p.slug);
+    let at = 0;
+    const pageStarts = pageText.map((page) => {
+      const start = at;
+      at += page.length + 1;
+      return start;
+    });
     return {
       slug: p.slug,
       reference: p.reference,
@@ -171,7 +212,8 @@ export function buildArchiveDocs(
       area: p.area,
       year: p.publishedAt.slice(0, 4),
       publishedAt: p.publishedAt,
-      text: text(p.slug).join("\n"),
+      text: pageText.join("\n"),
+      pageStarts,
       pages: a?.pages ?? null,
       cover: a?.cover ?? null,
       file: a?.file ?? null,
@@ -179,6 +221,9 @@ export function buildArchiveDocs(
       specimen: Boolean(p.specimen),
       counted: p.indexable && !p.specimen,
       authors: p.authors,
+      contents: a ? reportContents(p, a.outline) : [],
+      sources: reportSources(p),
+      limitations: reportLimitations(p),
     };
   });
 }

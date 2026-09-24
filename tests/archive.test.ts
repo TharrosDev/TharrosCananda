@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   type ArchiveDoc,
   createArchiveIndex,
+  pageHits,
   parseArchiveState,
   readingMinutes,
   runArchiveQuery,
@@ -20,6 +21,7 @@ const doc = (over: Partial<ArchiveDoc>): ArchiveDoc => ({
   year: "2026",
   publishedAt: "2026-09-01",
   text: "",
+  pageStarts: [0],
   pages: 3,
   cover: null,
   file: null,
@@ -27,6 +29,9 @@ const doc = (over: Partial<ArchiveDoc>): ArchiveDoc => ({
   specimen: false,
   counted: false,
   authors: ["Tharros Canada"],
+  contents: [],
+  sources: [],
+  limitations: [],
   ...over,
 });
 
@@ -135,6 +140,15 @@ describe("helpers", () => {
     expect(s).toContain("Vestibulum");
     expect(s.startsWith("…")).toBe(true);
     expect(snippet("nothing here", ["zzz"])).toBeNull();
+  });
+
+  it("names the page of each match, first match per page", () => {
+    const pages = ["Cover page.", "Nothing to see.", "Vestibulum here, vestibulum again."];
+    const doc = { text: pages.join("\n"), pageStarts: [0, 12, 28] };
+    expect(pageHits(doc, ["vestibulum"])).toEqual([
+      { page: 3, term: "Vestibulum", snippet: "Vestibulum here, vestibulum again." },
+    ]);
+    expect(pageHits(doc, ["zzz"])).toEqual([]);
   });
 
   it("estimates at least one minute of reading", () => {

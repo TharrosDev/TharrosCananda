@@ -8,6 +8,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  ViewTransition,
 } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type { ContentsEntry } from "@/lib/report-sections";
@@ -19,6 +20,9 @@ type Props = {
   pages: number;
   title: string;
   contents?: ContentsEntry[];
+  /** The page-1 image: shown while pdf.js draws, and the target the archive and home covers morph into. */
+  cover?: string;
+  slug?: string;
   /** Page size in PDF points; defaults to Letter. Supplied PDFs may be A4. */
   pageWidth?: number;
   pageHeight?: number;
@@ -44,6 +48,8 @@ export function ReportViewer({
   pages,
   title,
   contents = [],
+  cover,
+  slug,
   pageWidth = 612,
   pageHeight = 792,
 }: Props) {
@@ -69,6 +75,9 @@ export function ReportViewer({
   const [found, setMatches] = useState<Range[]>([]);
   const [matchIndex, setMatchIndex] = useState(0);
   const anchor = useRef<{ page: number; offset: number } | null>(null);
+  // A link from an archive match opens the report at its page with the word already found:
+  // #page=2&search=term, the same fragment a browser's own PDF viewer understands.
+  const jumpTo = useRef<{ page: number; search: string } | null>(null);
   const holdAnchor = useRef(false);
 
   // "Fit width" follows the space beside the contents, phones and full screen included.
@@ -101,7 +110,15 @@ export function ReportViewer({
         pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
         loadingTask = pdfjs.getDocument({ url: file });
         const loaded = await loadingTask.promise;
-        if (!cancelled) setDoc(loaded);
+        if (cancelled) return;
+        setDoc(loaded);
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        const page = Number(params.get("page")) || 0;
+        const search = (params.get("search") ?? "").slice(0, 80);
+        if (page || findPattern(search)) {
+          jumpTo.current = { page: Math.min(Math.max(1, page || 1), pages), search };
+          if (findPattern(search)) setQuery(search);
+        }
       } catch {
         if (!cancelled) setFailed(true);
       }
@@ -111,7 +128,7 @@ export function ReportViewer({
       setDoc(null);
       void loadingTask?.destroy();
     };
-  }, [file]);
+  }, [file, pages]);
 
   // Draw each page into a fresh off-screen canvas and text layer, then swap them in, so an
   // interrupted render never blanks a sheet or shares a canvas with the next render.
@@ -255,6 +272,14 @@ export function ReportViewer({
     [readingLine, scrollByY],
   );
 
+  // A page-only link jumps once the pages are drawn; a search link waits for its matches (below).
+  useEffect(() => {
+    const target = jumpTo.current;
+    if (!target || target.search || rendering || failed) return;
+    jumpTo.current = null;
+    scrollToPoint(target.page, 0);
+  }, [rendering, failed, scrollToPoint]);
+
   function goTo(n: number) {
     const target = Math.min(Math.max(1, n || 1), pages);
     setCurrent(target);
@@ -365,12 +390,21 @@ export function ReportViewer({
             ranges.push(range);
           }
         });
+      // Opened from an archive match: start on the first match on that page.
+      const target = jumpTo.current;
+      jumpTo.current = null;
+      const onPage = target
+        ? ranges.findIndex((range) =>
+            range.startContainer.parentElement?.closest(`[data-page="${target.page}"]`),
+          )
+        : 0;
+      if (target && onPage === -1) scrollToPoint(target.page, 0);
       setMatches(ranges);
-      setMatchIndex(0);
+      setMatchIndex(Math.max(0, onPage));
       registry?.set("report-find", new Highlight(...ranges));
     }, 150);
     return () => clearTimeout(timer);
-  }, [query, rendering, failed, renderKey]);
+  }, [query, rendering, failed, renderKey, scrollToPoint]);
 
   const showMatch = useCallback(
     (index: number) => {
@@ -591,14 +625,28 @@ export function ReportViewer({
             role="region"
             aria-label="Report pages"
           >
-            {Array.from({ length: pages }, (_, i) => (
-              <div
-                key={i}
-                className="report-sheet"
-                data-page={i + 1}
-                style={{ width: SHEET_WIDTH * scale, height: SHEET_HEIGHT * scale }}
-              />
-            ))}
+            {Array.from({ length: pages }, (_, i) => {
+              const sheet = (
+                <div
+                  key={i}
+                  className="report-sheet"
+                  data-page={i + 1}
+                  style={{
+                    width: SHEET_WIDTH * scale,
+                    height: SHEET_HEIGHT * scale,
+                    // pdf.js draws over it; until then page 1 is its own cover image.
+                    backgroundImage: i === 0 && cover ? `url(${cover})` : undefined,
+                  }}
+                />
+              );
+              return i === 0 && slug ? (
+                <ViewTransition key={i} name={`cover-${slug}`} share="cover">
+                  {sheet}
+                </ViewTransition>
+              ) : (
+                sheet
+              );
+            })}
           </div>
         )}
       </div>
