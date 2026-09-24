@@ -13,6 +13,9 @@ const openFilters = async (page: import("@playwright/test").Page) => {
   const summary = page.locator(".archive-filters > summary");
   if (await summary.isVisible()) await summary.click();
 };
+/** Rows start compact; Expanded shows each entry's summary, tags, actions and inline record. */
+const expand = (page: import("@playwright/test").Page) =>
+  page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Expanded" }).click();
 
 test("full-text search finds words inside the PDF and highlights them", async ({ page }) => {
   await page.goto("/research");
@@ -62,6 +65,7 @@ test("typing does not flood browser history", async ({ page }) => {
 test("result actions cite with the stable reference", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/research");
+  await expand(page);
   await specimenCard(page).getByText("Cite", { exact: true }).click();
   await specimenCard(page).getByRole("button", { name: "Copy citation" }).click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain("TC-EX-000");
@@ -94,6 +98,7 @@ test("pausing mid-phrase keeps the space and every keystroke", async ({ page }) 
 test("the cite popover stays on screen on phones", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/research");
+  await expand(page);
   const card = page.locator("article").first();
   await card.getByText("Cite", { exact: true }).click();
   const box = (await card.locator(".cite-popover-body").boundingBox())!;
@@ -108,17 +113,17 @@ test("the specimen cover thumbnail is not indexable", async ({ page, request }) 
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
 });
 
-test("compact rows hide the summary, tags and actions, and the choice survives a reload", async ({ page }) => {
+test("rows start compact, Expanded shows the summary, tags and actions, and the choice survives a reload", async ({ page }) => {
   await page.goto("/research");
   const card = specimenCard(page);
-  await expect(card.locator(".archive-summary")).toBeVisible();
-  await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Compact" }).click();
   for (const part of [".archive-summary", ".archive-tags", ".archive-card-actions"]) await expect(card.locator(part)).toBeHidden();
   await expect(card.getByRole("link", { name: /Lorem ipsum dolor sit amet/ })).toBeVisible();
+  await expand(page);
+  for (const part of [".archive-summary", ".archive-tags", ".archive-card-actions"]) await expect(card.locator(part)).toBeVisible();
   await page.reload();
-  await expect(specimenCard(page).locator(".archive-summary")).toBeHidden();
-  await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Expanded" }).click();
   await expect(specimenCard(page).locator(".archive-summary")).toBeVisible();
+  await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Compact" }).click();
+  await expect(specimenCard(page).locator(".archive-summary")).toBeHidden();
 });
 
 test("the record pane follows the selected result and links matches to their page", async ({ page, isMobile }) => {
@@ -147,6 +152,7 @@ test("phones fold the filters, and the record opens under its entry", async ({ p
   await expect(areas).toBeHidden();
   await openFilters(page);
   await expect(areas).toBeVisible();
+  await expand(page);
   const card = specimenCard(page);
   await card.getByText("Record", { exact: true }).click();
   await expect(card.getByRole("link", { name: /p\. 1/ }).first()).toHaveAttribute("href", /#page=1$/);

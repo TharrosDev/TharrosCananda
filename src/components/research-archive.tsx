@@ -32,8 +32,9 @@ import { formatCounts, NO_COUNTS, sendMetric } from "@/lib/metrics-client";
 import { formatLongDate, formatMonthYear, siteUrl } from "@/lib/site";
 import { readStorage, writeStorage } from "@/lib/storage";
 
-// Compact rows hide the summary, tags and actions: a per-browser preference. Kept in memory too, so the
-// toggle still works when storage is blocked; the server render is always expanded.
+// Compact rows hide the summary, tags and actions. Compact is the default; Expanded is a per-browser
+// preference ("0"). Kept in memory too, so the toggle still works when storage is blocked; the server
+// render is always compact.
 const COMPACT_KEY = "tharros.archive.compact";
 let compactChoice: boolean | null = null;
 const densityListeners = new Set<() => void>();
@@ -41,7 +42,7 @@ const subscribeDensity = (listener: () => void) => {
   densityListeners.add(listener);
   return () => densityListeners.delete(listener);
 };
-const readCompact = () => compactChoice ?? readStorage(COMPACT_KEY) === "1";
+const readCompact = () => compactChoice ?? readStorage(COMPACT_KEY) !== "0";
 function setDensity(compact: boolean) {
   compactChoice = compact;
   writeStorage(COMPACT_KEY, compact ? "1" : "0");
@@ -94,7 +95,7 @@ export function ResearchArchive({
   );
   const set = (patch: Partial<ArchiveState>) => onChange?.({ ...state, ...patch });
 
-  const compact = useSyncExternalStore(subscribeDensity, readCompact, () => false);
+  const compact = useSyncExternalStore(subscribeDensity, readCompact, () => true);
 
   // The field is local so typing stays instant; the URL follows after a short pause. The field only
   // resyncs from the URL when the change came from elsewhere (back/forward, a chip, a suggestion),

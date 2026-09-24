@@ -143,7 +143,7 @@ When populated, it is a **reading room** (`src/components/research-archive.tsx`,
   - Format and Year chips.
   - Every facet counts against the query and the other filters, and disables at zero.
 - **Results** (cols 4–8):
-  - The aria-live count, sort (relevance while searching), Expanded/Compact density (remembered per browser) and Clear all.
+  - The aria-live count, sort (relevance while searching), Expanded/Compact density (Compact by default, the choice remembered per browser) and Clear all.
   - Ruled entries, each with its cover, metadata, a highlighted snippet or the summary, and tags.
   - Actions on each entry: Cite, PDF (counted as a read) and Copy link (with a visible fallback field).
   - The selected entry lifts onto an ivory-light sheet, and ↑/↓ step between titles.
