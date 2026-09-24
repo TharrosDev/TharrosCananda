@@ -60,38 +60,38 @@
     "file": "/research/TC-2026-001.pdf",
     "cover": "/research/TC-2026-001-cover.jpg",
     "pages": 3,
-    "bytes": 314584,
-    "sha": "1d2fc2e6067f14b2",
+    "bytes": 305686,
+    "sha": "efb5742e380ce816",
     "outline": [
       {
         "title": "Overview",
         "level": 0,
         "page": 1,
-        "top": 0.231
+        "top": 0.256
       },
       {
         "title": "Technical Contents",
         "level": 0,
         "page": 1,
-        "top": 0.439
+        "top": 0.487
       },
       {
         "title": "Quality & Limitations",
         "level": 0,
         "page": 2,
-        "top": 0.129
+        "top": 0.177
       },
       {
         "title": "Fit for Use Assessment",
         "level": 0,
         "page": 2,
-        "top": 0.298
+        "top": 0.389
       },
       {
         "title": "Bibliography",
         "level": 0,
         "page": 3,
-        "top": 0.076
+        "top": 0.082
       }
     ],
     "width": 612,
