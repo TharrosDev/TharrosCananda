@@ -28,8 +28,7 @@ function traceOf(publication: Publication | undefined) {
   const about = sources.find((source) => /: about$/i.test(source.title));
   const meta = sources.find((source) => /metadata/i.test(source.title));
   const licence = sources.find((source) => /licence/i.test(source.title));
-  if (!dataset?.retrievedAt || !licence) return null;
-  const retrieved = formatLongDate(dataset.retrievedAt);
+  if (!dataset || !licence) return null;
   const record: TraceRecordRow[] = [
     {
       field: "publisher",
@@ -56,12 +55,6 @@ function traceOf(publication: Publication | undefined) {
       value: "2017–2024, excluding 2023",
     },
     {
-      field: "retrieved",
-      label: "Retrieved",
-      definition: "When it was accessed",
-      value: retrieved,
-    },
-    {
       field: "licence",
       label: "Licence",
       definition: "The conditions for use",
@@ -76,7 +69,7 @@ function traceOf(publication: Publication | undefined) {
       items: limitations,
     },
   ];
-  return { publication, retrieved, record };
+  return { publication, record };
 }
 
 const trace = traceOf(example);
@@ -101,7 +94,7 @@ const clauses = [
     label: "Freshness and versioning",
     rule: "“Latest” means the most recent period the publisher has released.",
     detail: "Relevant lags, revisions and classification changes are noted.",
-    note: `Retrieved ${trace?.retrieved ?? ""}. The publisher’s release leaves out 2023.`,
+    note: "The publisher’s release leaves out 2023.",
   },
   {
     id: "fitness",

@@ -29,7 +29,7 @@ export default async function ResearchPage() {
       <header className="research-banner">
         <h1>Published Research</h1>
         <p>
-          Every report records its sources, retrieval dates and limitations.{" "}
+          Every report records its sources and limitations.{" "}
           <Link href="/methodology">
             Methodology <ArrowIcon />
           </Link>

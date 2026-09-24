@@ -214,14 +214,6 @@ export default async function ReportPage({ params }: Props) {
                       )}
                       {s.period && <small>{s.period}</small>}
                     </span>
-                    <span>
-                      {s.retrievedAt && (
-                        <>
-                          Retrieved{" "}
-                          <time dateTime={s.retrievedAt}>{formatLongDate(s.retrievedAt)}</time>
-                        </>
-                      )}
-                    </span>
                   </li>
                 ))}
               </ol>

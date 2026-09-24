@@ -32,7 +32,7 @@ Copy the title, authors, date and sources exactly as the PDF gives them. The `su
 | `publishedAt` (`YYYY-MM-DD`) | Citations, sitemap, archive year facet | Date on the cover, colophon or footer |
 | `summary` | Page lede, meta description, OG image, llms.txt, search | Executive summary, Summary, Abstract, Overview, Key findings, Introduction. Use its opening paragraph or two |
 | `limitations` | Limitations panel | Limitations, Caveats, Constraints, Scope and limitations, "What this report does not cover" |
-| `sources` (each with `url` and `retrievedAt`) | Sources panel, JSON-LD `citation` | Sources, References, Bibliography, Works cited, Endnotes, footnotes, source lines under charts and tables |
+| `sources` (each with a `url`, and no retrieval date) | Sources panel, JSON-LD `citation` | Sources, References, Bibliography, Works cited, Endnotes, footnotes, source lines under charts and tables |
 | `tags` | Search, PDF keywords | Keywords line, otherwise the main subjects |
 | `area` | Archive facet, OG image, "More in" link | One of the `researchAreas` slugs (`src/lib/research-areas.ts`). Judge from the content |
 | `type` | Archive facet, page header | One of `publicationTypes`. Judge from length and form |
@@ -47,7 +47,9 @@ Information that is only in a figure, table or image (for example, a source line
 1. Search the whole document first: headings under other names, footnotes, chart captions, the back page.
 2. If it truly isn't there, draft it as record metadata. `area`, `type` and `tags` are usually drafted.
 3. List every drafted value in the PR body under **"Drafted metadata – needs approval"**, one line per field. The owner approves or corrects them before merge.
-4. For a source that has no URL, find the publisher's canonical page and record the date you retrieved it. List it as drafted.
+4. For a source that has no URL, find the publisher's canonical page. List it as drafted.
+
+**No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.
 
 Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 
@@ -70,7 +72,7 @@ These run for every report, including the specimen `TC-EX-000`.
   - `publishedAt` is a valid ISO date.
   - `area` and `type` are known values.
   - The title, authors, summary and tags are filled in.
-  - There is at least one record-level source, and every source has a URL and an ISO `retrievedAt`.
+  - There is at least one record-level source, and every source has a URL and no `retrievedAt`.
   - A supplied report has an empty `body`.
 - `tests/report-pdf.test.ts`:
   - The PDF and cover exist, and the file size matches the manifest.

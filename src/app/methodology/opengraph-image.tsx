@@ -9,8 +9,7 @@ export default function OpenGraphImage() {
     tone: "light",
     eyebrow: "Sources & Methodology",
     title: "Sources and methodology.",
-    description:
-      "Sources are recorded with their period, retrieval date, interpretation and limitations.",
+    description: "Sources are recorded with their period, interpretation and limitations.",
     meta: [
       { label: "Scope", value: "Canada & Europe" },
       { label: "Status", value: "Methodology" },

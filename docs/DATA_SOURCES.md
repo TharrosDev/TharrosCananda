@@ -24,15 +24,16 @@ For any factual block, record as much of the following as the source supports:
 3. stable source URL or identifier;
 4. reference period;
 5. publication/update date;
-6. retrieval date when material;
-7. licence or reuse terms;
-8. classification and unit;
-9. transformations performed by Tharros;
-10. material limitations.
+6. licence or reuse terms;
+7. classification and unit;
+8. transformations performed by Tharros;
+9. material limitations.
 
 If values are transformed, document the transformation in code and tests.
 
-For a published report, the record keeps its sources with a `url` and an ISO `retrievedAt`, which the tests check. See `docs/REPORT_REQUIREMENTS.md`.
+For a published report, the record keeps its sources with a `url`, which the tests check. See `docs/REPORT_REQUIREMENTS.md`.
+
+**No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.
 
 ## Live data
 

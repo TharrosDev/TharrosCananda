@@ -633,9 +633,6 @@ function ArchiveRecord({
                 ) : (
                   <em>{source.title}</em>
                 )}
-                {source.retrievedAt && (
-                  <small>Retrieved {formatLongDate(source.retrievedAt)}</small>
-                )}
               </li>
             ))}
           </ul>

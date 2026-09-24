@@ -33,7 +33,6 @@ export function ReportBlocks({ blocks }: { blocks: ReportBlock[] }) {
               <li key={i}>
                 {s.publisher}. <em>{s.title}.</em>
                 {s.period ? ` ${s.period}.` : ""}
-                {s.retrievedAt ? ` Retrieved ${s.retrievedAt}.` : ""}
               </li>
             ))}
           </ol>

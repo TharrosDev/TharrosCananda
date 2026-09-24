@@ -24,7 +24,7 @@ export type PublicationSource = {
   title: string;
   url?: string;
   period?: string;
-  retrievedAt?: string;
+  // No retrieval or access dates on sources (owner's instruction, 2026-09-24).
 };
 
 export type ReportBlock =
@@ -92,101 +92,86 @@ export const publications: Publication[] = [
         publisher: "Bank of Canada",
         title: "Daily Exchange Rates",
         url: "https://www.bankofcanada.ca/rates/exchange/daily-exchange-rates/",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Council of the European Union",
         title:
           "SAFE: Council Adopts €150 Billion Boost for Joint Procurement on European Security and Defence",
         url: "https://www.consilium.europa.eu/en/press/press-releases/2025/05/27/safe-council-adopts-150-billion-boost-for-joint-procurement-on-european-security-and-defence/",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Euronews",
         title:
           "Did the EU Charge the UK Billions More Than Canada to Join Its Defence Loan Scheme?",
         url: "https://www.euronews.com/my-europe/2026/02/20/did-the-eu-charge-the-uk-billions-more-than-canada-to-join-its-defence-loan-scheme",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "European Commission, Directorate-General for Defence Industry and Space",
         title: "Poland Receives First €6.6 Billion Payment under SAFE",
         url: "https://defence-industry-space.ec.europa.eu/poland-receives-first-eu66-billion-payment-under-safe-2026-05-29_en",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "European Commission, Directorate-General for Defence Industry and Space",
         title: "SAFE | Security Action for Europe",
         url: "https://defence-industry-space.ec.europa.eu/eu-defence-industry/safe-security-action-europe_en",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "European Parliament",
         title:
           "Security Action for Europe (SAFE) through the Reinforcement of European Defence Industry Instrument",
         url: "https://www.europarl.europa.eu/legislative-train/theme-a-new-era-for-european-defence-and-security/file-security-action-for-europe-(safe)",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Global Affairs Canada",
         title:
           "Agreement between Canada and the European Union Laying Down the Conditions for the Participation of Canadian Legal Entities and Products Originating in Canada to Procurement under the SAFE Instrument",
         url: "https://www.international.gc.ca/world-monde/international_relations-relations_internationales/eu-ue/text-texte.aspx?lang=eng",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Global Affairs Canada",
         title:
           "Agreement between the European Union and Canada Concerning Participation under the SAFE Instrument",
         url: "https://www.international.gc.ca/world-monde/international_relations-relations_internationales/eu-ue/agreement-accord.aspx?lang=eng",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Global Affairs Canada",
         title:
           "Annual Report on Strategic Goods and Technologies Pursuant to Section 27 of the Export and Import Permits Act – 2024",
         url: "https://international.canada.ca/en/global-affairs/corporate/reports/export-import-controls/strategic-goods-2024",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Global Affairs Canada",
         title:
           "Annual Report on Strategic Goods and Technologies Pursuant to Section 27 of the Export and Import Permits Act – 2025",
         url: "https://international.canada.ca/en/global-affairs/corporate/reports/export-import-controls/strategic-goods-2025",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher:
           "Innovation, Science and Economic Development Canada, Statistics Canada, and Canadian Association of Defence and Security Industries",
         title: "State of Canada’s Defence Industry Report – Spring 2026",
         url: "https://ised-isde.canada.ca/site/ised/sites/default/files/documents/State_of_Defence_2026_eng.pdf",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Liam Nohr, Eastern Europe and Transatlantic Network, Carleton University",
         title: "SAFE Is Not So Safe: The Limits of UK–EU Defence Cooperation",
         url: "https://carleton.ca/eetn/wp-content/uploads/sites/44/2026/03/SAFE-is-not-so-Safe-The-Limits-of-UK%E2%80%93EU-Defence-Cooperation.pdf",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Prime Minister of Canada",
         title:
           "Prime Minister Carney Secures Canada’s Participation in the European Union’s SAFE Initiative",
         url: "https://www.pm.gc.ca/en/news/news-releases/2025/12/01/prime-minister-carney-secures-canadas-participation-european-unions",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Prime Minister of Canada",
         title:
           "Prime Minister Carney Secures New Partnerships in Defence and Critical Minerals at the 2026 G7 Leaders’ Summit",
         url: "https://www.pm.gc.ca/en/news/news-releases/2026/06/17/prime-minister-carney-secures-new-partnerships-defence-and-critical",
-        retrievedAt: "2026-09-24",
       },
       {
         publisher: "Publications Office of the European Union",
         title: "Tenders Electronic Daily (TED)",
         url: "https://ted.europa.eu",
-        retrievedAt: "2026-09-24",
       },
     ],
     body: [],
@@ -216,25 +201,21 @@ export const publications: Publication[] = [
         publisher: "City of Ottawa (Open Ottawa)",
         title: "Traffic Collisions by Location 2017–2024 (excluding 2023)",
         url: "https://open.ottawa.ca/datasets/ottawa::traffic-collisions-by-location-2017-2024-excluding-2023/explore?location=45.280000%2C-75.747200%2C1&showTable=true",
-        retrievedAt: "2026-09-13",
       },
       {
         publisher: "City of Ottawa (Open Ottawa)",
         title: "Traffic Collisions by Location 2017–2024 (excluding 2023): About",
         url: "https://open.ottawa.ca/datasets/ottawa::traffic-collisions-by-location-2017-2024-excluding-2023/about",
-        retrievedAt: "2026-09-13",
       },
       {
         publisher: "City of Ottawa (ArcGIS)",
         title: "Traffic Collisions by Location 2017–2024 (excluding 2023): ISO-19139 Metadata",
         url: "https://www.arcgis.com/sharing/rest/content/items/710b179eba564aa58fbb3f34d5d599d9/info/metadata/metadata.xml?format=default&output=html",
-        retrievedAt: "2026-09-13",
       },
       {
         publisher: "City of Ottawa",
         title: "Open Data Licence Version 2.0",
         url: "https://ottawa.ca/en/city-hall/open-transparent-and-accountable-government/open-data/open-data-licence-version-20",
-        retrievedAt: "2026-09-13",
       },
     ],
     body: [],
@@ -254,7 +235,6 @@ const placeholderSource = {
   // ponytail: reserved example domain and a fixed date so the specimen passes the same source checks as real work.
   url: "https://example.org/",
   period: "Reference period",
-  retrievedAt: "2026-09-01",
 };
 
 // A layout specimen, not a publication: placeholder text only, never indexable.
