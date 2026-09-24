@@ -96,5 +96,58 @@
     ],
     "width": 612,
     "height": 792
+  },
+  "canada-inside-safe": {
+    "file": "/research/TC-2026-002.pdf",
+    "cover": "/research/TC-2026-002-cover.jpg",
+    "pages": 7,
+    "bytes": 196108,
+    "sha": "95270c71ee6c535a",
+    "outline": [
+      {
+        "title": "Overview",
+        "level": 0,
+        "page": 1,
+        "top": 0.288
+      },
+      {
+        "title": "The Agreement",
+        "level": 0,
+        "page": 1,
+        "top": 0.509
+      },
+      {
+        "title": "Who has gained so far?",
+        "level": 0,
+        "page": 2,
+        "top": 0.576
+      },
+      {
+        "title": "How much does Canada have to gain?",
+        "level": 0,
+        "page": 3,
+        "top": 0.239
+      },
+      {
+        "title": "What this report cannot show",
+        "level": 0,
+        "page": 4,
+        "top": 0.758
+      },
+      {
+        "title": "Conclusion",
+        "level": 0,
+        "page": 5,
+        "top": 0.229
+      },
+      {
+        "title": "Bibliography",
+        "level": 0,
+        "page": 7,
+        "top": 0.082
+      }
+    ],
+    "width": 612,
+    "height": 792
   }
 }
