@@ -91,12 +91,9 @@ describe("motion safety", () => {
 });
 
 describe("legibility", () => {
-  // report.css shapes the printed PDF (fixed page scale), so the screen minimum does not apply there. The services
-  // shelf shows each sample's cover at thumbnail scale with `zoom`: an aria-hidden picture of a page whose readable
+  // The services shelf shows each sample's cover at thumbnail scale with `zoom`: an aria-hidden picture of a page whose readable
   // version is the dialog, so zoomed thumbnails are exempt by design (DESIGN.md, Services).
-  const screenCss = cssFiles(join(process.cwd(), "src")).filter(
-    (file) => !file.endsWith("report.css"),
-  );
+  const screenCss = cssFiles(join(process.cwd(), "src"));
 
   it("never sets screen type below the 11.5px label minimum", () => {
     const small: string[] = [];

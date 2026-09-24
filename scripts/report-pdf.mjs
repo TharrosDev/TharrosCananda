@@ -1,15 +1,11 @@
-// Generates committed report PDFs from the print surface. Usage: npm run build && npm run report:pdf -- <slug> [...]
-// Vercel builds cannot run Chromium, so artifacts are committed; tests/report-pdf.test.ts fails when they go stale.
-// Supplied reports (docs/REPORT_REQUIREMENTS.md) skip printing: the author's PDF is only read, never written.
-import { spawn } from "node:child_process";
+// Reads an author's PDF as supplied and records what the site's tools need from it. Usage: npm run report:pdf -- <slug> [...]
+// It never writes the PDF (docs/REPORT_REQUIREMENTS.md, Rule #1); tests/report-pdf.test.ts fails if the file changes afterwards.
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { chromium } from "@playwright/test";
-import { PDFDocument } from "pdf-lib";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { createCanvas } from "@napi-rs/canvas";
-import { allPublications } from "../src/data/publications.ts";
+import { publications } from "../src/data/publications.ts";
 
 const slugs = process.argv.slice(2);
 if (!slugs.length) {
@@ -18,33 +14,10 @@ if (!slugs.length) {
 }
 
 const records = slugs.map((slug) => {
-  const record = allPublications.find((p) => p.slug === slug);
+  const record = publications.find((p) => p.slug === slug);
   if (!record) throw new Error(`No publication with slug ${slug}`);
   return record;
 });
-
-const port = 3300;
-const base = `http://127.0.0.1:${port}`;
-// Run next directly (no shell) so killing the child stops the server; a stale server would print an old build.
-const server = records.every((p) => p.supplied) ? null : spawn(process.execPath, [join("node_modules", "next", "dist", "bin", "next"), "start", "-p", String(port), "-H", "127.0.0.1"], { stdio: "ignore" });
-
-async function waitForServer() {
-  try {
-    await fetch(base);
-    throw new Error(`Port ${port} is already in use; stop that server first.`);
-  } catch (error) {
-    if (error instanceof Error && error.message.startsWith("Port")) throw error;
-  }
-  for (let i = 0; i < 60; i += 1) {
-    try {
-      if ((await fetch(base)).ok) return;
-    } catch {
-      // not up yet
-    }
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-  }
-  throw new Error("next start did not come up; run npm run build first.");
-}
 
 async function extract(bytes) {
   const doc = await getDocument({ data: new Uint8Array(bytes), useSystemFonts: false }).promise;
@@ -76,7 +49,6 @@ async function extract(bytes) {
 
 const squash = (text) => text.replace(/\s+/g, " ").trim().toLowerCase();
 
-// Reads the author's PDF as-is and checks what the site's tools need from it (docs/REPORT_REQUIREMENTS.md).
 async function ingest(record) {
   const file = `/research/${record.reference}.pdf`;
   const cover = `/research/${record.reference}-cover.jpg`;
@@ -90,7 +62,7 @@ async function ingest(record) {
   const doc = await getDocument({ data: new Uint8Array(bytes), useSystemFonts: false }).promise;
   const first = await doc.getPage(1);
   const [, , width, height] = first.view;
-  // Cover thumbnail at the same 816px width as house reports.
+  // Cover thumbnail 816px wide, the width the viewer and archive expect.
   const viewport = first.getViewport({ scale: 816 / width });
   const canvas = createCanvas(Math.round(viewport.width), Math.round(viewport.height));
   await first.render({ canvas, canvasContext: canvas.getContext("2d"), viewport }).promise;
@@ -104,68 +76,17 @@ async function ingest(record) {
 const readJson = async (path) => JSON.parse(await readFile(path, "utf8"));
 const writeJson = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + "\n");
 
-try {
-  if (server) await waitForServer();
-  const browser = server ? await chromium.launch() : null;
-  const page = await browser?.newPage();
-  const manifestPath = join("src", "data", "report-pdf.json");
-  const textPath = join("src", "data", "report-text.json");
-  const manifest = await readJson(manifestPath);
-  const texts = await readJson(textPath);
-  await mkdir(join("public", "research"), { recursive: true });
+const manifestPath = join("src", "data", "report-pdf.json");
+const textPath = join("src", "data", "report-text.json");
+const manifest = await readJson(manifestPath);
+const texts = await readJson(textPath);
 
-  for (const record of records) {
-    const { slug } = record;
-    if (record.supplied) {
-      const { pages, asset } = await ingest(record);
-      texts[slug] = pages;
-      manifest[slug] = asset;
-      console.log(`${slug}: supplied, ${asset.pages} pages, ${asset.bytes} bytes, ${asset.outline.length} outline entries`);
-      continue;
-    }
-    // Print media for everything below: page.pdf, the cover screenshot and the @media print rules.
-    await page.emulateMedia({ media: "print" });
-    await page.setViewportSize({ width: 816, height: 1056 });
-    const response = await page.goto(`${base}/research/${slug}/print`, { waitUntil: "networkidle" });
-    if (!response?.ok()) throw new Error(`/research/${slug}/print returned ${response?.status()}`);
-    await page.evaluate(() => document.fonts.ready);
-    const meta = await page.evaluate(() =>
-      Object.fromEntries(
-        [...document.querySelectorAll('meta[name^="report-"]')].map((m) => [m.getAttribute("name").slice(7), m.getAttribute("content")]),
-      ),
-    );
-
-    const printed = await page.pdf({ printBackground: true, preferCSSPageSize: true, outline: true, tagged: true });
-    const pdf = await PDFDocument.load(printed, { updateMetadata: false });
-    // A fixed date keeps regenerated files stable for the same content.
-    const stamp = new Date(`${meta.published}T00:00:00Z`);
-    pdf.setTitle(meta.title, { showInWindowTitleBar: true });
-    pdf.setAuthor(JSON.parse(meta.authors).join(", "));
-    pdf.setSubject(meta.abstract);
-    pdf.setKeywords([meta.reference, ...meta.keywords.split(",").map((k) => k.trim()).filter(Boolean)]);
-    pdf.setCreator("Tharros Canada");
-    pdf.setProducer("Tharros Canada report pipeline");
-    pdf.setLanguage("en-CA");
-    pdf.setCreationDate(stamp);
-    pdf.setModificationDate(stamp);
-    const bytes = await pdf.save();
-
-    const file = `/research/${meta.reference}.pdf`;
-    const cover = `/research/${meta.reference}-cover.jpg`;
-    await writeFile(join("public", file), bytes);
-
-    // Cover thumbnail: the first Letter-sized page as printed (816 x 1056 CSS px).
-    await page.screenshot({ path: join("public", cover), type: "jpeg", quality: 82, clip: { x: 0, y: 0, width: 816, height: 1056 } });
-
-    const { pages, outline } = await extract(bytes);
-    texts[slug] = pages;
-    manifest[slug] = { file, cover, pages: pages.length, bytes: bytes.length, sha: meta.sha, outline };
-    console.log(`${slug}: ${pages.length} pages, ${bytes.length} bytes, ${outline.length} outline entries`);
-  }
-
-  await writeJson(manifestPath, manifest);
-  await writeJson(textPath, texts);
-  await browser?.close();
-} finally {
-  server?.kill();
+for (const record of records) {
+  const { pages, asset } = await ingest(record);
+  texts[record.slug] = pages;
+  manifest[record.slug] = asset;
+  console.log(`${record.slug}: ${asset.pages} pages, ${asset.bytes} bytes, ${asset.outline.length} outline entries`);
 }
+
+await writeJson(manifestPath, manifest);
+await writeJson(textPath, texts);

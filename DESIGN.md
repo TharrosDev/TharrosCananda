@@ -86,7 +86,7 @@ The visual material is **research itself**: source registers, archival metadata,
 - **Slim banners:**
   - Research: clamp(34px, 3.2vw, 46px);
   - the report page: clamp(34px, 3.4vw, 50px).
-- **Minimum screen size:** 11.5px outside `report.css`, enforced by `tests/css-guard.test.ts`.
+- **Minimum screen size:** 11.5px, enforced by `tests/css-guard.test.ts`.
 - **Labels:** field labels are compact sans, uppercase only when the label names a datum. Context labels are compact uppercase sans, used sparingly.
 
 ## Layout and responsive rules
@@ -127,13 +127,13 @@ Dark surfaces are the Home field plate, the Request hero, the report running hea
 
 1. **Front page (ivory).**
    - Cols 1–6: the H1, the deck, and the actions Read the research and Commission research.
-   - Cols 7–12: the **latest release**, which is the newest publication or a `featured` one. The specimen never appears here. It has:
+   - Cols 7–12: the **latest release**, which is the newest publication or a `featured` one. It has:
      - a dark bar reading "Latest release", with the reference and format;
      - an ivory-light sheet with the real cover, the title and the summary's first sentence ending "… Read more" (the owner wants it compact; the full summary lives on the report page);
      - a one-row ledger: published date only;
      - Read the report and Download PDF.
    - Up to two earlier releases follow as ruled rows.
-   - With nothing published, the bar reads "Public research." over one calm line and the example report link.
+   - With nothing published, the bar reads "Public research." over one calm line.
 2. **Field plate (dark, full width).** "Five connected fields." and the Atlantic map fill cols 1–7. Beside them, the five research areas form a ledger:
    - an area with publications links to its archive filter and shows a steel count;
    - an area without any shows only its scope, so no link leads to an empty filter.
@@ -206,7 +206,7 @@ Top to bottom:
 - **No prices or tiers.** Scope and price are set in the written proposal.
 
 **Sample documents** (`src/components/sample-document.tsx`):
-- They open in a native modal `<dialog>` styled as a PDF reader: A4 pages in the house report style (red section numbers, ink rules, steel data marks).
+- They open in a native modal `<dialog>` styled as a PDF reader: A4 pages in a report style (red section numbers, ink rules, steel data marks).
 - The text is lorem only, labelled "Sample · placeholder text" on every page, and never downloadable. The owner approved them as placeholders. Replace them with real redacted samples once work exists.
 - **Opening morphs the shelf cover into the reader's first page** with a same-document View Transition. The two share a `view-transition-name` only while the transition runs. Closing folds it back while the cover is still in view.
 - Without View Transitions, or under reduced motion, the dialog simply opens.

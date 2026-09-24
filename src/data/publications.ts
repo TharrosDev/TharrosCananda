@@ -27,18 +27,6 @@ export type PublicationSource = {
   // No retrieval or access dates on sources (owner's instruction, 2026-09-24).
 };
 
-export type ReportBlock =
-  | { kind: "heading"; text: string; number?: number }
-  | { kind: "lede"; text: string }
-  | { kind: "paragraph"; text: string }
-  | { kind: "findings"; items: { lead: string; text: string }[] }
-  | { kind: "callout"; text: string }
-  // ponytail: one placeholder figure style; add real chart kinds with the first data-bearing report.
-  | { kind: "figure"; caption: string; source: string }
-  | { kind: "list"; items: string[] }
-  | { kind: "sources"; items: PublicationSource[] }
-  | { kind: "columns"; left: ReportBlock[]; right: ReportBlock[] };
-
 export type Publication = {
   slug: string;
   reference: string;
@@ -52,18 +40,15 @@ export type Publication = {
   summary: string;
   tags?: string[];
   sources: PublicationSource[];
-  body: ReportBlock[];
-  /** Stated limitations of a supplied PDF, rephrased faithfully for the site; house reports use a "Limitations" heading in `body`. */
+  /** Stated limitations, rephrased faithfully from the PDF for the site. */
   limitations?: string[];
-  /** The author's own PDF at public/research/<reference>.pdf, served byte-for-byte (docs/REPORT_REQUIREMENTS.md). `body` stays empty. */
-  supplied?: true;
   /** Only true for verified, published work. Gates robots, citation_* meta, sitemap and the PDF's X-Robots-Tag. */
   indexable: boolean;
   featured?: boolean;
-  specimen?: boolean;
 };
 
-// Verified Tharros Canada research only (docs/REPORT_REQUIREMENTS.md).
+// Verified Tharros Canada research only. Each report is the author's PDF at public/research/<reference>.pdf, served
+// byte-for-byte (docs/REPORT_REQUIREMENTS.md).
 // Independent work must use origin: "independent". Use "commissioned" only for work actually commissioned by a client and permitted for publication.
 export const publications: Publication[] = [
   {
@@ -174,9 +159,7 @@ export const publications: Publication[] = [
         url: "https://ted.europa.eu",
       },
     ],
-    body: [],
     indexable: true,
-    supplied: true,
   },
   {
     slug: "ottawa-traffic-collisions-2017-2024",
@@ -218,113 +201,15 @@ export const publications: Publication[] = [
         url: "https://ottawa.ca/en/city-hall/open-transparent-and-accountable-government/open-data/open-data-licence-version-20",
       },
     ],
-    body: [],
     indexable: true,
-    supplied: true,
   },
 ];
 
-const lorem = [
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Maecenas faucibus mollis interdum, nulla vitae elit libero, a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla.",
-  "Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum, sed posuere consectetur est at lobortis.",
-  "Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.",
-];
-const placeholderSource = {
-  publisher: "Publisher",
-  title: "Dataset or document title",
-  // ponytail: reserved example domain and a fixed date so the specimen passes the same source checks as real work.
-  url: "https://example.org/",
-  period: "Reference period",
-};
-
-// A layout specimen, not a publication: placeholder text only, never indexable.
-export const researchSpecimenPublication: Publication = {
-  slug: "example-report",
-  reference: "TC-EX-000",
-  title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  subtitle:
-    "Sed posuere consectetur est at lobortis: vestibulum id ligula porta felis euismod semper.",
-  type: "Research Report",
-  area: "trade-economic-integration",
-  origin: "independent",
-  publishedAt: "2026-09-01",
-  authors: ["Author Name"],
-  summary:
-    "A clearly labelled specimen showing how a published report appears and how its evidence, findings, methodology and sources are structured. Placeholder text only.",
-  tags: ["Example layout", "Publication structure"],
-  sources: [placeholderSource],
-  indexable: false,
-  specimen: true,
-  body: [
-    { kind: "heading", text: "Executive summary" },
-    { kind: "lede", text: lorem[0] },
-    {
-      kind: "columns",
-      left: [
-        { kind: "heading", text: "Key findings" },
-        {
-          kind: "findings",
-          items: [
-            {
-              lead: "Lorem ipsum dolor sit amet.",
-              text: "Consectetur adipiscing elit, integer posuere erat a ante venenatis dapibus.",
-            },
-            {
-              lead: "Maecenas faucibus mollis interdum.",
-              text: "Nulla vitae elit libero, a pharetra augue donec ullamcorper.",
-            },
-            {
-              lead: "Vestibulum id ligula porta.",
-              text: "Felis euismod semper, cras mattis consectetur purus sit amet.",
-            },
-          ],
-        },
-      ],
-      right: [
-        {
-          kind: "figure",
-          caption: "Lorem ipsum dolor sit amet (illustrative placeholder, no data).",
-          source: "Publisher, dataset, period.",
-        },
-      ],
-    },
-    { kind: "heading", number: 1, text: "Lorem ipsum dolor sit amet" },
-    { kind: "paragraph", text: lorem[1] },
-    { kind: "paragraph", text: lorem[2] },
-    {
-      kind: "callout",
-      text: "Observation. Nullam quis risus eget urna mollis ornare vel eu leo, etiam porta sem malesuada magna.",
-    },
-    { kind: "heading", number: 2, text: "Methodology" },
-    { kind: "paragraph", text: lorem[2] },
-    {
-      kind: "columns",
-      left: [
-        { kind: "heading", number: 3, text: "Limitations" },
-        {
-          kind: "list",
-          items: [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "Integer posuere erat a ante venenatis dapibus.",
-            "Donec ullamcorper nulla non metus auctor fringilla.",
-          ],
-        },
-      ],
-      right: [
-        { kind: "heading", number: 4, text: "Sources" },
-        { kind: "sources", items: [placeholderSource, placeholderSource, placeholderSource] },
-      ],
-    },
-  ],
-};
-
-export const allPublications: Publication[] = [...publications, researchSpecimenPublication];
-
 export function publicationBySlug(slug: string) {
-  return allPublications.find((publication) => publication.slug === slug);
+  return publications.find((publication) => publication.slug === slug);
 }
 
 export function publicationByReference(reference: string) {
   const wanted = reference.toUpperCase();
-  return allPublications.find((publication) => publication.reference === wanted);
+  return publications.find((publication) => publication.reference === wanted);
 }

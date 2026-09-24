@@ -525,7 +525,6 @@ export function ReportViewer({
                   aria-current={i === section ? "location" : undefined}
                   onClick={(event) => openSection(event, entry)}
                 >
-                  <span className="report-contents-number">{entry.number}</span>
                   <span className="report-contents-title">{entry.title}</span>
                   <span className="report-contents-page">p. {entry.page}</span>
                 </a>

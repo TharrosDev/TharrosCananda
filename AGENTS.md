@@ -24,8 +24,7 @@ The everyday checks are in `README.md` (Checks). Commands you will also need:
 
 ```bash
 npx playwright test e2e/site.spec.ts             # one spec; the full e2e suite takes about 30 min locally
-npm run build && npm run report:pdf -- <slug>    # regenerate a house report's PDF, cover and extracted text
-npm run report:pdf -- <slug>                     # supplied PDFs: reads the file only, no build needed
+npm run report:pdf -- <slug>                     # reads a report's PDF (never writes it): cover, text, bookmarks, hash
 npx -y deno@2 check supabase/functions/research-intake/index.ts
 ```
 
@@ -38,7 +37,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 | `src/app/api/research-event` | Records readership events (reads and citations). Always answers 204. |
 | `src/data/` | Content registries: `publications.ts`, `sources.ts`, `organization.ts`, plus the generated `report-*.json`. |
 | `src/lib/` | Domain logic: services, research-request validation, citation, archive search (minisearch), metrics, `site.ts` (siteUrl, `pageMetadata()`, JSON-LD, locale-free dates). |
-| `src/components/report/` | Report viewer (pdf.js), print document and toolbar. |
+| `src/components/report/` | Report viewer (pdf.js) and toolbar. |
 | `supabase/` | Migrations, the `research-intake` Edge Function and `config.toml` (`verify_jwt = false`). |
 | `e2e/` | Playwright functional, axe and visual tests, with Linux baselines in `visual.spec.ts-snapshots/`. |
 | `tests/` | Vitest unit and contract tests, including the guard tests described below. |
@@ -46,10 +45,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 ## Things that will bite you
 
 **Tests and CI**
-- **Report source hash.** `npm test` fails if a publication record, or any file in `REPORT_SOURCE_PATHS` (`src/lib/report-source.ts`), changes without the PDF being regenerated.
-  - The files are `report.css`, `report-document.tsx`, `research/[slug]/print/page.tsx` and `citation.ts`.
-  - Running prettier on them counts as a change.
-  - Regenerate locally, because Vercel cannot run Chromium, and commit the outputs.
+- **E2E doesn't grow with the archive.** Report and archive tests run against one fixed report, `TC-2026-001` (`e2e/fixture.ts`), and the accessibility sweep covers the core routes plus that report. Don't loop e2e tests over every publication; per-report checks go in the file-only unit tests (`tests/report-pdf.test.ts`, `tests/publications.test.ts`).
 - **Visual baselines are Linux-only.** Any visible change fails CI `browser` until the baselines are refreshed.
   - Push a branch commit whose message contains `[update-baselines]`, or run `gh workflow run "Update visual baselines" --ref <branch>`.
   - Then review the committed images.
@@ -61,7 +57,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 - **`tests/css-guard.test.ts` enforces the motion and type rules.** Update the guard if the design changes on purpose.
   - It checks the motion tokens `--dur-1` and `--dur-2`.
   - Scroll-linked `animation-timeline` is allowed only behind `prefers-reduced-motion: no-preference`, and only for transform, translate, scale or stroke-dashoffset keyframes (see DESIGN.md, Motion).
-  - Outside `report.css`, screen font sizes must be at least 11.5px.
+  - Screen font sizes must be at least 11.5px.
 - **Occasional flake.** The site.spec focus-ring test sometimes fails; re-run it.
 
 **Code**
@@ -83,7 +79,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
   - `organization.ts` fields stay empty until the owner supplies verified values, and the UI hides empty fields.
   - `organization.lead` stays `null`.
 - **Published research.** The first real report, `TC-2026-001`, was published 2026-09-16.
-- **The example report `TC-EX-000`** is a labelled lorem specimen. It must stay `indexable: false`, and it is the only research document you may edit.
+- **Every report is the owner's own PDF.** The lorem specimen `TC-EX-000` and the house-typeset pipeline were removed on 2026-09-24 at the owner's request; don't add placeholder reports back.
 - **Sample documents** on Research Services are lorem placeholders approved by the owner. Keep them labelled as placeholders.
 - **No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.
 - **Live data feeds** (the monitor and StatCan market data) were removed at the owner's request. Don't bring them back unasked.

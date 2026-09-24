@@ -122,9 +122,6 @@ export default function HomePage() {
                   The first publications are in preparation. Each will carry named authorship,
                   methodology, sources and limitations.
                 </p>
-                <Link className="text-link" href="/research/example-report">
-                  See how a report is published <ArrowIcon />
-                </Link>
               </div>
             )}
             {earlier.length > 0 && (

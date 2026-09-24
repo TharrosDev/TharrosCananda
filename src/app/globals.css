@@ -375,16 +375,6 @@ legend:focus:not(:focus-visible) { outline: none; }
 .page-hero .hero-index { opacity: .94; }
 
 
-/* ---------- Report notice ---------- */
-.report-notice { width: var(--shell); margin: 0 auto; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; gap: 32px; border-bottom: 1px solid var(--rule-strong); }
-.report-notice strong { display: block; margin-bottom: 6px; color: var(--red); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.report-notice p { max-width: 80ch; margin: 0; color: var(--ink-soft); font-size: 17px; }
-.report-notice .text-link { flex: 0 0 auto; }
-@media (max-width: 760px) {
-  .report-notice { display: block; }
-  .report-notice .text-link { margin-top: 16px; }
-}
-
 /* ---------- Report page ---------- */
 /* Wide and short: the title and abstract read across the page; the record sits beside them. */
 .report-header { width: var(--shell); margin: 0 auto; padding: clamp(32px, 4vw, 56px) 0 clamp(28px, 3vw, 40px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 28px; align-items: start; border-bottom: 1px solid var(--rule); }

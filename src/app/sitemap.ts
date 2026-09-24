@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { allPublications } from "@/data/publications";
+import { publications } from "@/data/publications";
 import { reportAsset } from "@/lib/reports";
 import { coreRoutes, siteUrl as base } from "@/lib/site";
 
@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "weekly" | "monthly",
     priority: index === 0 ? 1 : index < 6 ? 0.9 : 0.6,
   }));
-  const research = allPublications
+  const research = publications
     .filter((p) => p.indexable)
     .flatMap((p) => {
       const asset = reportAsset(p.slug);

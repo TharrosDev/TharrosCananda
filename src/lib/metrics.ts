@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { allPublications } from "@/data/publications";
+import { publications } from "@/data/publications";
 import { supabaseServer as supabase } from "@/lib/supabase";
 
 // Server-only: read and citation counts for published research (docs/OPERATIONS.md, Research readership).
@@ -7,12 +7,9 @@ import { supabaseServer as supabase } from "@/lib/supabase";
 export type MetricKind = "read" | "cite";
 export type Counts = { reads: number; citations: number };
 
-/** Only real, published work is counted; the lorem specimen never is. */
+/** Only real, published work is counted. */
 export function isCountedSlug(slug: unknown): slug is string {
-  return (
-    typeof slug === "string" &&
-    allPublications.some((p) => p.slug === slug && p.indexable && !p.specimen)
-  );
+  return typeof slug === "string" && publications.some((p) => p.slug === slug && p.indexable);
 }
 
 const botPattern =
