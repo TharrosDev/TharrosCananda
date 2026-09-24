@@ -87,11 +87,15 @@ For major commercial pages where a dark chapter opening is useful.
 
 ### Task
 
-Compact dark hero for a working interface such as Commission Research. The task should begin quickly below it.
+Compact dark hero for a working interface such as Request Research. The task should begin quickly below it.
 
 ### Document
 
-Light ivory editorial header for Research Archive, Methodology, How It Works, Privacy and Accessibility. These pages should read like documents rather than repeated marketing landings. About uses its own restrained statement composition; Commission Research uses a task-led scope desk.
+Light ivory editorial header for Research Archive, How It Works, Privacy and Accessibility. These pages should read like documents rather than repeated marketing landings. Methodology, About and Research Services open on light ivory too, but each leads with its own instrument (below); Request Research uses the task hero and a desk.
+
+### Instruments
+
+Methodology, About, Research Services and Request Research each run one working instrument built from real material, instead of heading, prose and a ruled list. Documents and instruments sit on ivory-light sheets with a soft page shadow; steel carries every trace, connector, count and data mark.
 
 ## Primary navigation
 
@@ -149,23 +153,27 @@ As real work is produced, evidence artifacts may be added to make areas visually
 
 ## Services
 
-The page is one editorial index. A light document header states that work is scoped and priced per case, then a ruled register lists the three services: name, the question it answers, a request link, a short "You receive" list of deliverables and a **View sample** control. Custom & Partner Research leads as the flagship at a larger scale with the only primary button; the others use text links. A four-step process strip (shared with How it works via `commissionSteps`) follows the register. No prices or tiers: scope is set in the written proposal. Styles live in `src/app/research-services/services.css`.
+Research Services (`/research-services`) opens with the H1 and research-first deck beside a **Private by default.** notice (`commissionPrivacy`). Below it sits the **specimen shelf**: each service stands as the real cover of its sample document at thumbnail scale, beside its name, the question it answers, an open "You receive" list and its Request link. Custom & Partner Research is the flagship: a full-width row at a larger scale with the only primary button; the other two share the next row with text links. The four-step process strip (shared with How it works via `commissionSteps`) follows, with the no-account/no-purchase line and the further-reading links on one row. No prices or tiers: scope is set in the written proposal. Styles live in `src/app/research-services/services.css`.
 
-**Sample documents** (`src/components/sample-document.tsx`) open in a native modal `<dialog>` styled as a PDF reader: A4 pages in the house report style (red section numbers, ink rules, steel data marks), lorem text only, labelled "Sample · placeholder text" on every page, never downloadable. Replace them with real redacted samples once work exists.
+**Sample documents** (`src/components/sample-document.tsx`) open in a native modal `<dialog>` styled as a PDF reader: A4 pages in the house report style (red section numbers, ink rules, steel data marks), lorem text only, labelled "Sample · placeholder text" on every page, never downloadable. Opening a sample morphs the shelf cover into the reader's first page with a same-document View Transition (the two share a `view-transition-name` only while the transition runs); closing folds it back while the cover is still in view. Without View Transitions, or under reduced motion, the dialog simply opens. The shelf covers are aria-hidden pictures scaled with `zoom`, exempt from the type minimum because the dialog is their readable form. Replace the samples with real redacted ones once work exists.
 
 ## About
 
-About uses a spacious Canada–Europe relationship statement, an operating-principles ledger and a clear independence boundary to explain focus, method and research accountability. It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
+About is dense by the owner's request: no floating side notes or empty bands. It opens with a full-width statement H1, then the deck beside the Ottawa–Brussels great-circle route drawn as the masthead rule (the homepage map's path, static, captioned as the route between the two capitals). **The institute, on the record** is a two-up ledger counted live from the site's data: published research, the archive's research areas, sources in the register and research services. Counts that grow with each publication carry `data-volatile` for the visual tests. **Research principles** follow as a two-up grid, each linking to where it shows on the site. The **independence boundary** puts the statement and contact line beside a square ink frame holding what Tharros provides, with what lies outside the boundary listed below it (shared with How it works via `provides` / `doesNotProvide`). It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
 
 Privacy and Accessibility remain separate utility pages.
 
-## Commission Research
+## Methodology
 
-Commission Research is a task-led scope desk: a concise opening statement, a three-step commissioning sequence, the progressive intake form and adjacent trust/boundary guidance. Submission remains a request for review, not a checkout; no account or mandatory call is required, and work begins only after written scope approval.
+Methodology opens with the H1 and deck (cols 1–4) beside the **provenance trace** (`src/components/provenance-trace.tsx`). The trace quotes passages verbatim from TC-2026-001 (`src/data/trace-example.ts`, checked against the extracted PDF text by `tests/methodology.test.ts`), and their phrases are inline toggle buttons. The active phrase's record fields (publisher, dataset, period, retrieved, licence, notes) highlight, and a square-elbow steel leader is measured and drawn from the phrase's line to each field. Below 760px the claim stacks over the record and a "Traced to" line replaces the leaders. Then comes the method **rule by rule**: a sticky contents rail beside five clauses, each with a steel "In TC-2026-001" margin note. The rail marks the current clause with an IntersectionObserver, and its steel progress bar fills on a named view timeline. Then the **source atlas**: publisher seats plotted on the Atlantic line drawing, inverted to ink (`seatPlaces` in `src/data/sources.ts`, circle area proportional to the number of sources), beside the register. Pointing at a publisher lights its city. Source categories and a closing CTA to the research follow.
+
+## Request Research
+
+Request Research (`/request-research`) is a task-led desk: a compact dark hero with the three-step sequence in its foot, then the progressive intake form beside the **live brief** (`src/components/request-brief.tsx`). The brief is a document sheet that writes itself as the visitor types: the subject as title, the question, organization and question blocks, what they would receive for the chosen service, and indicative public sources from `objectiveSources`, labelled indicative. It is the review step, and its Edit buttons return only to completed steps. It runs its full length with no inner scroll. Below 980px it folds under a "Preview your brief" toggle and opens itself on review and receipt, when it takes a green "Received" stamp with the reference. The purchase terms and `commissionPrivacy` stay visible under the form actions at every width. Submission remains a request for review, not a checkout; no account or mandatory call is required, and work begins only after written scope approval.
 
 ## Motion
 
-The homepage evidence route is the primary authored data motion. It draws the evidence path into an already-readable static composition. Hover transitions may move arrows/underlines. Avoid scroll-triggered reveals and ornamental motion. All motion must collapse under `prefers-reduced-motion`.
+The homepage evidence route is the primary authored data motion. It draws the evidence path into an already-readable static composition. Hover transitions may move arrows/underlines. Scroll-linked motion may move or draw things, never reveal them. Section-opening rules (`.ruled`) draw in on a `view()` timeline, and the Methodology rail's progress bar fills on a named view timeline. A scroll-driven keyframe may animate only transform, translate, scale or stroke-dashoffset, always from an already-drawn static state, and only inside `@media (prefers-reduced-motion: no-preference)` (`tests/css-guard.test.ts` enforces this). Interaction-led motion: the trace leaders draw with WAAPI after a phrase is chosen, the sample cover morphs into the reader, and the request brief's Received stamp settles once. Avoid ornamental motion. All motion must collapse under `prefers-reduced-motion`.
 
 ## Responsive rules
 
@@ -182,7 +190,7 @@ No page should require horizontal scrolling at an equivalent 320 CSS px viewport
 
 ### Navigation
 
-The 76px ruled navigation uses the serif wordmark, four primary destinations and one red Commission Research action. The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
+The 76px ruled navigation uses the serif wordmark, the primary destinations and one red Commission action (to Research Services). The active destination is shown with a one-pixel underline. At compact widths it becomes a labelled **Menu** control with focus trapping and Escape-key return rather than an icon-only trigger.
 
 ### Buttons and text links
 
@@ -198,7 +206,7 @@ The empty archive shows a truthful zero count and the five supported formats. On
 
 ### Research scope desk
 
-The Commission Research form sits on one light editorial sheet with a small operating label, three-step progress, explicit field requirements, validation recovery, review/edit state and a non-purchase success state. The adjacent sidebar carries only information needed to submit safely.
+The request form sits flat on the page with three-step progress, explicit field requirements, point-of-need guidance (what not to send sits with the question), validation recovery and a non-purchase success state. The live brief beside it is the review surface (see Request Research).
 
 ## Do
 

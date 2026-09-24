@@ -53,6 +53,19 @@ export const commissionSteps = [
   ],
 ] as const;
 
+/** The commissioning boundary, shown on How it works and About. */
+export const provides = [
+  "Market, buyer and competitor research",
+  "Sector, policy and industry analysis",
+  "Public-source data with provenance",
+] as const;
+export const doesNotProvide = [
+  "Legal, tax or regulatory advice",
+  "Lobbying or advocacy",
+  "Investment advice",
+  "Customs brokerage or compliance determinations",
+] as const;
+
 export type Service = (typeof services)[number];
 export type ServiceSlug = Service["slug"];
 export const notSureNeed = "Not sure yet" as const;
