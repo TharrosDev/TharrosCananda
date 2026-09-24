@@ -58,6 +58,12 @@ describe("POST /api/research-request", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("rejects addresses Resend would refuse as reply_to", async () => {
+    const response = await post({ ...valid, email: "a<b>@example.com" });
+    expect(response.status).toBe(422);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("rejects unreadable and oversized bodies", async () => {
     expect((await post("{not json")).status).toBe(400);
     expect((await post({ ...valid, context: "x".repeat(40_000) })).status).toBe(413);

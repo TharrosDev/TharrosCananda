@@ -2,6 +2,7 @@ import { allPublications, publicationBySlug } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
+export const alt = "Tharros Canada research report";
 export const size = ogSize;
 export const contentType = ogContentType;
 export const dynamicParams = false;

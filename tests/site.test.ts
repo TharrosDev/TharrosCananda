@@ -7,7 +7,7 @@ describe("site helpers", () => {
   });
 
   it("escapes < in JSON-LD and strips the site URL's trailing slash", () => {
-    expect(jsonLd({ a: "</script>" })).toBe('{"a":"\u003c/script>"}');
+    expect(jsonLd({ a: "</script>" })).toBe('{"a":"\\u003c/script>"}');
     expect(siteUrl.endsWith("/")).toBe(false);
   });
 });

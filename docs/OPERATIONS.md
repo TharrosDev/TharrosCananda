@@ -36,13 +36,13 @@ form → POST /api/research-request (validate, honeypot, 32 KB cap)
 
 ## Research readership
 
-Archive cards and the report header show "N reads · N citations". The counts are engaged unique readers, not page views.
+Archive cards and the report header show "N views · N citations". The counts are engaged unique readers, not page views.
 
 - **Read:** the report viewer has been visible for 20 s in total, or the PDF was downloaded. Counted once per reader per publication per 30 days.
 - **Citation:** a successful "Copy citation". Counted once per reader per publication (key kept for 12 months).
 - **Not counted:** non-indexable publications, bots, cross-site requests and browsers sending Global Privacy Control.
 - **Reader key:** `HMAC(METRICS_SECRET, ip|slug)`. Raw IPs are never stored, and keys cannot be linked across publications. The browser also remembers what it has already sent.
-- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). If Supabase is unreachable, counts are hidden rather than guessed.
+- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). Expired keys are purged on each event and by the daily pg_cron job `purge-publication-events` (03:23 UTC). If Supabase is unreachable, counts are hidden rather than guessed.
 - **No rate limit:** the Hobby plan allows one rule, which intake uses. The dedupe caps inflation at one count per IP and publication.
 
 ## Database

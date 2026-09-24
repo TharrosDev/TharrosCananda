@@ -61,7 +61,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="home-release" aria-labelledby="release-heading">
+          <section className="home-release" aria-labelledby="release-heading">
             <div className="home-release-bar">
               <h2 id="release-heading">{lead ? "Latest release" : "Public research."}</h2>
               {lead && (
@@ -169,7 +169,7 @@ export default async function HomePage() {
                 ))}
               </ol>
             )}
-          </div>
+          </section>
         </div>
       </section>
 
