@@ -129,8 +129,8 @@ Dark surfaces are the Home field plate, the Request hero, the report running hea
    - Cols 1–6: the H1, the deck, and the actions Read the research and Commission research.
    - Cols 7–12: the **latest release**, which is the newest publication or a `featured` one. The specimen never appears here. It has:
      - a dark bar reading "Latest release", with the reference and format;
-     - an ivory-light sheet with the real cover, the title and the summary;
-     - a ledger: area, published, author, length, and readership when counts are available (`data-volatile`);
+     - an ivory-light sheet with the real cover, the title and the summary's first sentence ending "… Read more" (the owner wants it compact; the full summary lives on the report page);
+     - a one-row ledger: published date only;
      - Read the report and Download PDF.
    - Up to two earlier releases follow as ruled rows.
    - With nothing published, the bar reads "Public research." over one calm line and the example report link.
@@ -167,7 +167,7 @@ Proof comes first. An empty state is never the loudest heading, and the page nev
   - a ledger: reference, published, author, area and readership;
   - the abstract, when the entry isn't already showing it;
   - **Matches in this report**: the first match on each page, linking to `/research/<slug>#page=N&search=<word>`. Without a search, it shows **In this report** instead: the PDF's contents, with page links;
-  - its sources (publisher, document, retrieved) and its limitations.
+  - its sources (publisher, document) and its limitations.
 
 **Narrower widths:**
 - From 980 to 1180px, the pane gives way to a **Record** disclosure under each entry.
@@ -190,7 +190,7 @@ Top to bottom:
 3. The PDF viewer.
    - It shows the cover image on page 1 until pdf.js draws it.
    - It honours `#page=N&search=word`, the same fragment a browser's own PDF viewer understands: it scrolls to the page and starts its find on the first match there.
-4. Sources as a register across the page: publisher, document, retrieved.
+4. Sources as a register across the page: publisher, document. No retrieval dates (owner decision).
 5. Limitations beside the citation panel, then a three-up Continue row.
 
 ### Research Services (`/research-services`, `services.css`)
@@ -216,7 +216,7 @@ Top to bottom:
 
 1. **Opening:** the H1 and deck (cols 1–4) beside the **provenance trace** (`src/components/provenance-trace.tsx`).
    - The trace quotes passages verbatim from TC-2026-001 (`src/data/trace-example.ts`). `tests/methodology.test.ts` checks them against the extracted PDF text.
-   - Their phrases are inline toggle buttons. The active phrase highlights its record fields (publisher, dataset, period, retrieved, licence, notes).
+   - Their phrases are inline toggle buttons. The active phrase highlights its record fields (publisher, dataset, period, licence, notes).
    - A square-elbow steel leader is measured and drawn from the phrase's line to each field.
    - Below 760px, the claim stacks over the record, and a "Traced to" line replaces the leaders.
 2. **Rule by rule:** a sticky contents rail (`MethodRail`) beside five clauses, each with a steel "In TC-2026-001" margin note.

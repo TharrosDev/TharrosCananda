@@ -69,13 +69,7 @@ function sourceBlocks(blocks: ReportBlock[]): PublicationSource[] {
 export function reportSources(publication: Publication): PublicationSource[] {
   const seen = new Set<string>();
   return [...publication.sources, ...sourceBlocks(publication.body)].filter((source) => {
-    const key = JSON.stringify([
-      source.publisher,
-      source.title,
-      source.url,
-      source.period,
-      source.retrievedAt,
-    ]);
+    const key = JSON.stringify([source.publisher, source.title, source.url, source.period]);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;

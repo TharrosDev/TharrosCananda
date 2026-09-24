@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { coreRoutes } from "../src/lib/site";
 import { allPublications, publications } from "../src/data/publications";
+import { tracePhrases } from "../src/data/trace-example";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
 const researchHeading = publications.length ? "Latest release" : "Public research.";
@@ -350,7 +351,7 @@ test("the methodology trace ties each phrase to the record fields it rests on", 
 }) => {
   await page.goto("/methodology");
   const phrases = page.locator(".trace-phrase");
-  await expect(phrases).toHaveCount(7);
+  await expect(phrases).toHaveCount(tracePhrases.length);
   const period = page.getByRole("button", { name: "between 2017-2024 (excluding 2023)" });
   await period.click();
   await expect(period).toHaveAttribute("aria-pressed", "true");

@@ -21,11 +21,10 @@
 .home-release-body h3 a { text-decoration: none; }
 .home-release-body h3 a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
 .home-release-summary { margin: 0; color: var(--ink-soft); font-size: 17px; line-height: 1.55; }
-.home-release-ledger { grid-column: 1 / -1; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 20px; border-top: 1px solid var(--ink); }
+.home-release-ledger { grid-column: 1 / -1; margin: 0; display: grid; border-top: 1px solid var(--ink); }
 .home-release-ledger > div { min-width: 0; padding: 10px 0 11px; border-bottom: 1px solid var(--rule); }
 .home-release-ledger dt { color: var(--slate); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .home-release-ledger dd { margin: 3px 0 0; font-size: 16px; line-height: 1.35; }
-.home-release-ledger > div:nth-child(5) { grid-column: 1 / -1; }
 .home-release-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
 .home-release-empty { padding: 24px; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong); }
 .home-release-empty p { max-width: 44ch; margin: 0 0 20px; color: var(--ink-soft); font-size: 19px; }

@@ -16,10 +16,6 @@ export const tracePassages = [
     source: "Fit for Use Assessment",
     text: "While the dataset is well suited for identifying broader collision trends across Ottawa, the absence of 2023 limits its reliability for continuous analysis and weakens any findings and conclusions that depend on complete 2017 to 2024 comparisons.",
   },
-  {
-    source: "Footnote 1",
-    text: "City of Ottawa, “Traffic Collisions by Location 2017–2024 (excluding 2023),” Open Ottawa, accessed September 13, 2026.",
-  },
 ] as const;
 
 /** In reading order within each passage; each must appear in exactly one passage. */
@@ -30,5 +26,4 @@ export const tracePhrases: { text: string; fields: TraceField[] }[] = [
   { text: "between 2017-2024 (excluding 2023)", fields: ["period"] },
   { text: "94,406 traffic incidents", fields: ["dataset"] },
   { text: "the absence of 2023 limits its reliability for continuous analysis", fields: ["notes"] },
-  { text: "accessed September 13, 2026", fields: ["retrieved"] },
 ];

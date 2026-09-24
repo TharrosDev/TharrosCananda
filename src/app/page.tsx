@@ -5,7 +5,6 @@ import { ViewTransition } from "react";
 import { AtlanticMap } from "@/components/atlantic-map";
 import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
-import { publicationCounts } from "@/lib/metrics";
 import { reportAsset } from "@/lib/reports";
 import { researchAreas } from "@/lib/research-areas";
 import { commissionPrivacy, services } from "@/lib/services";
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
 // Non-breaking hyphens keep year ranges like 2017-2024 on one line.
 const keepRanges = (title: string) => title.replace(/(\d)-(\d)/g, "$1‑$2");
 
-export default async function HomePage() {
+export default function HomePage() {
   // Newest first; a `featured` report leads regardless of date.
   const researchToShow = [...publications]
     .sort(
@@ -36,9 +35,8 @@ export default async function HomePage() {
     .slice(0, 3);
   const [lead, ...earlier] = researchToShow;
   const leadAsset = lead && reportAsset(lead.slug);
-  const leadArea = lead && researchAreas.find((area) => area.slug === lead.area)?.name;
-  const counts = lead ? await publicationCounts() : null;
-  const leadCounts = lead && counts ? (counts[lead.slug] ?? { reads: 0, citations: 0 }) : null;
+  // The summary's first sentence as a teaser; the full summary is on the report page.
+  const leadTeaser = lead?.summary.split(/(?<=[.?!])\s+(?=[A-Z])/)[0].replace(/[.?!]$/, "");
   const perArea = (slug: string) => publications.filter((p) => p.area === slug).length;
 
   return (
@@ -95,42 +93,17 @@ export default async function HomePage() {
                   <h3>
                     <Link href={`/research/${lead.slug}`}>{keepRanges(lead.title)}</Link>
                   </h3>
-                  <p className="home-release-summary">{lead.summary}</p>
+                  <p className="home-release-summary">
+                    {leadTeaser}… <Link href={`/research/${lead.slug}`}>Read more</Link>
+                  </p>
                 </div>
                 <dl className="home-release-ledger">
-                  {leadArea && (
-                    <div>
-                      <dt>Area</dt>
-                      <dd>{leadArea}</dd>
-                    </div>
-                  )}
                   <div>
                     <dt>Published</dt>
                     <dd>
                       <time dateTime={lead.publishedAt}>{formatLongDate(lead.publishedAt)}</time>
                     </dd>
                   </div>
-                  <div>
-                    <dt>{lead.authors.length === 1 ? "Author" : "Authors"}</dt>
-                    <dd>{lead.authors.join(", ")}</dd>
-                  </div>
-                  {leadAsset && (
-                    <div>
-                      <dt>Length</dt>
-                      <dd>{leadAsset.pages} pages</dd>
-                    </div>
-                  )}
-                  {leadCounts && (
-                    <div>
-                      <dt>Readership</dt>
-                      <dd data-volatile>
-                        {leadCounts.reads.toLocaleString("en-CA")}{" "}
-                        {leadCounts.reads === 1 ? "view" : "views"} ·{" "}
-                        {leadCounts.citations.toLocaleString("en-CA")}{" "}
-                        {leadCounts.citations === 1 ? "citation" : "citations"}
-                      </dd>
-                    </div>
-                  )}
                 </dl>
                 <div className="home-release-actions">
                   <Link className="button-secondary" href={`/research/${lead.slug}`}>

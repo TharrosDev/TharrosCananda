@@ -418,15 +418,14 @@ legend:focus:not(:focus-visible) { outline: none; }
 .report-appendix-block { min-width: 0; padding-top: 14px; border-top: 2px solid var(--ink); }
 .report-appendix-block h2 { margin: 0 0 14px; font-size: 26px; font-weight: 500; }
 .report-appendix-block ol, .report-appendix-block ul { margin: 0; padding-left: 1.3em; color: var(--ink-soft); font-size: 17px; line-height: 1.5; }
-/* Sources as a register across the page: publisher, document, retrieval date. */
+/* Sources as a register across the page: publisher, document. */
 .report-appendix-block#sources { grid-column: 1 / -1; }
 .report-appendix-sources { padding-left: 0 !important; list-style: none; }
-.report-appendix-sources li { padding: 12px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr) 14em; column-gap: var(--col-gap); align-items: baseline; border-bottom: 1px solid var(--rule); }
+.report-appendix-sources li { padding: 12px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); column-gap: var(--col-gap); align-items: baseline; border-bottom: 1px solid var(--rule); }
 .report-appendix-sources li + li { margin-top: 0 !important; }
 .report-appendix-sources li > span:first-child { color: var(--ink); font-weight: 600; }
 .report-appendix-sources a { color: var(--ink); overflow-wrap: anywhere; }
 .report-appendix-sources small { display: block; color: var(--slate); font-size: 15px; }
-.report-appendix-sources li > span:last-child { color: var(--slate); font-size: 15.5px; }
 .report-appendix-more { grid-column: 1 / -1; }
 .report-appendix-more ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--col-gap); }
 .report-appendix-block li + li { margin-top: 8px; }

@@ -85,6 +85,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 - **Published research.** The first real report, `TC-2026-001`, was published 2026-09-16.
 - **The example report `TC-EX-000`** is a labelled lorem specimen. It must stay `indexable: false`, and it is the only research document you may edit.
 - **Sample documents** on Research Services are lorem placeholders approved by the owner. Keep them labelled as placeholders.
+- **No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.
 - **Live data feeds** (the monitor and StatCan market data) were removed at the owner's request. Don't bring them back unasked.
 
 **Rule #1 for supplied reports: never edit the owner's PDF**, not even its metadata or bookmarks. Anything missing goes in the record, and drafted values are flagged in the PR. See `docs/REPORT_REQUIREMENTS.md`.

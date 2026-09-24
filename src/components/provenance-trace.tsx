@@ -2,7 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
-export type TraceField = "publisher" | "dataset" | "period" | "retrieved" | "licence" | "notes";
+export type TraceField = "publisher" | "dataset" | "period" | "licence" | "notes";
 export type TraceLink = { label: string; url: string };
 export type TraceRecordRow = {
   field: TraceField;
@@ -135,7 +135,10 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
     <div className="trace" ref={root}>
       <div className="trace-claim">
         {passages.map((passage, index) => (
-          <blockquote key={passage.source} className={index ? "trace-quote is-minor" : "trace-quote"}>
+          <blockquote
+            key={passage.source}
+            className={index ? "trace-quote is-minor" : "trace-quote"}
+          >
             <p>
               {render(
                 passage.text,
