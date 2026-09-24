@@ -55,5 +55,46 @@
         "top": 0.1
       }
     ]
+  },
+  "ottawa-traffic-collisions-2017-2024": {
+    "file": "/research/TC-2026-001.pdf",
+    "cover": "/research/TC-2026-001-cover.jpg",
+    "pages": 3,
+    "bytes": 314584,
+    "sha": "1d2fc2e6067f14b2",
+    "outline": [
+      {
+        "title": "Overview",
+        "level": 0,
+        "page": 1,
+        "top": 0.231
+      },
+      {
+        "title": "Technical Contents",
+        "level": 0,
+        "page": 1,
+        "top": 0.439
+      },
+      {
+        "title": "Quality & Limitations",
+        "level": 0,
+        "page": 2,
+        "top": 0.129
+      },
+      {
+        "title": "Fit for Use Assessment",
+        "level": 0,
+        "page": 2,
+        "top": 0.298
+      },
+      {
+        "title": "Bibliography",
+        "level": 0,
+        "page": 3,
+        "top": 0.076
+      }
+    ],
+    "width": 612,
+    "height": 792
   }
 }

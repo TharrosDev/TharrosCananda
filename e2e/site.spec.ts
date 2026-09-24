@@ -225,7 +225,7 @@ test.describe("home flow", () => {
     const order = [
       "Start with a question.",
       "Five connected fields.",
-      "Public research.",
+      "Selected releases.",
       "Have a research question?",
     ].map((heading) => headings.indexOf(heading));
     expect(
@@ -235,13 +235,15 @@ test.describe("home flow", () => {
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  test("the empty research block links to the example report", async ({ page }) => {
+  test("the research block lists published work, never the specimen", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Public research." })).toBeVisible();
-    await expect(page.getByRole("link", { name: /See how a report is published/ })).toHaveAttribute(
+    const block = page.locator(".research-threshold");
+    await expect(block.getByRole("heading", { name: "Selected releases." })).toBeVisible();
+    await expect(block.getByRole("link", { name: /Traffic Collisions by Location/ })).toHaveAttribute(
       "href",
-      "/research/example-report",
+      "/research/ottawa-traffic-collisions-2017-2024",
     );
+    await expect(block.getByRole("link", { name: /Lorem ipsum/ })).toHaveCount(0);
   });
 });
 
