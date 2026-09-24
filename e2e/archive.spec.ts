@@ -130,6 +130,10 @@ test("the record pane follows the selected result and links matches to their pag
   test.skip(isMobile, "The record pane is the wide-screen layout; phones open the record under each entry");
   await page.goto("/research?q=vestibulum");
   const pane = page.getByRole("complementary", { name: "Selected publication" });
+  // The pane starts off; Preview opens it, and the choice survives a reload.
+  await expect(pane).toHaveCount(0);
+  await page.getByRole("button", { name: "Preview" }).click();
+  await page.reload();
   await expect(pane.getByRole("heading", { name: /Lorem ipsum dolor sit amet/ })).toBeVisible();
   const match = pane.getByRole("link", { name: /p\. \d/ }).first();
   await expect(match).toHaveAttribute("href", /\/research\/example-report#page=\d+&search=vestibulum/i);

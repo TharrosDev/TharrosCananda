@@ -149,20 +149,20 @@ Proof comes first. An empty state is never the loudest heading, and the page nev
 
 **When empty,** it states the absence once, calmly, and shows the five formats, with no defensive anti-fabrication copy.
 
-**When populated,** it sits under the slim "Published Research" banner, with the sources-and-limitations line and the Methodology link beneath it. From 1180px, three zones sit side by side:
+**When populated,** it sits under the slim "Published Research" banner, with the sources-and-limitations line and the Methodology link beneath it. The **search bar** spans the full width on top: full-text search across titles, summaries, tags, references and the text inside every PDF, with fuzzy and prefix matching. "/" focuses it. From 1180px, three zones sit side by side below it:
 
 - **Rail** (cols 1–3; sticky on screens at least 820px tall):
-  - full-text search across titles, summaries, tags, references and the text inside every PDF, with fuzzy and prefix matching. "/" focuses it;
   - the research areas as ruled rows with steel counts. The pressed row fills with ink and shows its scope;
   - Format and Year chips;
   - every facet counts against the query and the other filters, and disables at zero.
-- **Results** (cols 4–8):
-  - the aria-live count, sort (relevance while searching), density and Clear all;
+- **Results** (cols 4–12, or 4–8 with the record pane open):
+  - the aria-live count, sort (relevance while searching), density, Preview and Clear all;
     - density is Compact by default, and the choice is remembered per browser;
+    - Preview (1180px and up) opens the record pane. It is off by default and remembered per browser; while it is off, each Expanded entry carries the **Record** disclosure instead;
   - ruled entries, each with its cover, metadata, a highlighted snippet or the summary, and tags;
   - actions on each entry: Cite, PDF (counted as a read) and Copy link (with a visible fallback field);
-  - the selected entry lifts onto an ivory-light sheet, and ↑/↓ step between titles.
-- **Record pane** (cols 9–12, sticky; runs its full length with no inner scroll). For the selected publication it shows:
+  - with the pane open, the selected entry lifts onto an ivory-light sheet; ↑/↓ step between titles.
+- **Record pane** (cols 9–12, when Preview is on; sticky; runs its full length with no inner scroll). For the selected publication it shows:
   - the title, Read the report and PDF;
   - a ledger: reference, published, author, area and readership;
   - the abstract, when the entry isn't already showing it;
