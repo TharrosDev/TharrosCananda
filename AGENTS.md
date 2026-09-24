@@ -44,7 +44,7 @@ Product intent: `PRODUCT.md`. Visual system: `DESIGN.md`. Infrastructure and run
 ## Things that will bite you
 
 - **Report source hash.** `npm test` fails if any file in `REPORT_SOURCE_PATHS` (`src/lib/report-source.ts`) or a publication record changes without the PDF being regenerated. Those files are `report.css`, `report-document.tsx`, `research/[slug]/print/page.tsx` and `citation.ts`. Regenerate locally (Vercel cannot run Chromium) and commit the outputs. Prettier on these files counts as a change.
-- **Visual baselines are Linux-only.** Any visible change fails CI "browser" until the baselines are refreshed. Push a branch commit whose message contains `[update-baselines]`, or run `gh workflow run "Update visual baselines" --ref <branch>`. Then review the committed images.
+- **Visual baselines are Linux-only.** Any visible change fails CI "browser" until the baselines are refreshed. Push a branch commit whose message contains `[update-baselines]`, or run `gh workflow run "Update visual baselines" --ref <branch>`. Then review the committed images. The baselines workflow starts CI on its own commit, so no empty commit is needed.
 - **`tests/css-guard.test.ts`** checks the motion tokens (`--dur-1`, `--dur-2`), bans `animation-timeline` (scroll-driven reveals are a design decision, see DESIGN.md) and sets an 11.5px minimum screen font size outside `report.css`. Update the guard if the design intentionally changes.
 - **CSS formatting.** The CSS uses one rule per line on purpose, so don't run prettier on it. TS/TSX follows prettier: double quotes, width 100.
 - **`pageMetadata()`** must be used by every page. A child `openGraph` replaces the layout's wholesale.

@@ -18,33 +18,70 @@ export default function AccessibilityPage() {
       <PageHero
         variant="document"
         title="Accessibility."
-        description="How the site supports keyboard navigation, assistive technology and reduced motion."
+        description="The standard the site aims for, how it is checked, and what is still imperfect."
+        index={[
+          { label: "Target", href: "#target" },
+          { label: "How it is checked", href: "#checked" },
+          { label: "Research documents", href: "#documents" },
+          { label: "Known limitations", href: "#limitations" },
+          { label: "Report a problem", href: "#report" },
+        ]}
       />
       <section className="section policy-page">
-        <article>
+        <p className="policy-updated">Last updated September 23, 2026.</p>
+        <article id="target">
           <h2>Target</h2>
-          <p>Tharros Canada aims to meet WCAG 2.2 AA.</p>
-        </article>
-        <article>
-          <h2>Current interface practices</h2>
           <p>
-            The site includes a skip link, visible keyboard focus, semantic form labels and errors,
-            reduced-motion handling, minimum target sizing and sticky-header offsets for anchored
-            content.
+            Tharros Canada aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level
+            AA across the site.
           </p>
         </article>
-        <article>
-          <h2>Data and document formats</h2>
+        <article id="checked">
+          <h2>How it is checked</h2>
+          <p>Every change to the site runs automated checks before it is published:</p>
+          <ul>
+            <li>
+              An axe accessibility audit of every page, which blocks serious and critical issues.
+            </li>
+            <li>No horizontal scrolling at widths from 320 to 1440 pixels.</li>
+            <li>Touch targets of at least 44 pixels on phones.</li>
+            <li>Consistent, visible keyboard focus on links, buttons and form fields.</li>
+            <li>Keyboard use of the menu, the report viewer and the request form.</li>
+          </ul>
           <p>
-            Research remains available in HTML when a downloadable report is provided. Any chart
-            published in a report comes with a text or table equivalent.
+            The site also includes a skip link, labelled form fields with clear errors, reduced
+            motion when your system asks for it, and headings that stay visible below the sticky
+            header when you follow a link.
           </p>
         </article>
-        <article>
+        <article id="documents">
+          <h2>Research documents</h2>
+          <p>
+            Every report page gives its summary, sources and limitations as ordinary web text. The
+            full report opens in a viewer with selectable, searchable text, and can be downloaded as
+            a PDF.
+          </p>
+        </article>
+        <article id="limitations">
+          <h2>Known limitations</h2>
+          <ul>
+            <li>
+              Reports supplied by their authors are published exactly as written, so their PDF
+              tagging and image descriptions vary. An accessible version can be provided on request.
+            </li>
+            <li>
+              Automated checks run in Chromium at desktop and phone sizes. Other browsers and screen
+              readers are not tested automatically, so reports of problems there are especially
+              useful.
+            </li>
+          </ul>
+        </article>
+        <article id="report">
           <h2>Report a problem</h2>
           <p>
-            Send the page, device or assistive technology involved and a short description to{" "}
-            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+            Send the page, your device or assistive technology, and a short description to{" "}
+            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. Requests for an accessible
+            version of a report are welcome in the same way.
           </p>
         </article>
       </section>
