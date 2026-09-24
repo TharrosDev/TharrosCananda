@@ -25,22 +25,8 @@ export default async function ResearchPage() {
 
   return (
     <>
-      <header className="research-hero">
-        <div className="research-hero-copy">
-          <p>Research archive</p>
-          <h1>Published research.</h1>
-          <p>Search every report in full, or browse by area, format and year.</p>
-        </div>
-        <div className="research-hero-manifest">
-          <span>Each publication carries</span>
-          <ol>
-            <li>Named authorship</li>
-            <li>Executive summary</li>
-            <li>Methodology</li>
-            <li>Sources & limitations</li>
-            <li>Stable URL</li>
-          </ol>
-        </div>
+      <header className="research-banner">
+        <h1>Published Research</h1>
       </header>
       <section className="archive-principle">
         <p>Every report records its sources, retrieval dates and limitations.</p>
