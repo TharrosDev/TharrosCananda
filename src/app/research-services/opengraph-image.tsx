@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 export default function OpenGraphImage() {
   return renderOgImage({
     tone: "dark",
-    eyebrow: "Commission research",
+    eyebrow: "Research services",
     title: "Research, scoped to your question.",
     description: "Custom and partner research, market assessments, buyer and partner research.",
     meta: [

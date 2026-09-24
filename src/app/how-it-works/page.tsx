@@ -3,7 +3,12 @@ import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
-import { commissionPrivacy, commissionSteps as steps } from "@/lib/services";
+import {
+  commissionPrivacy,
+  commissionSteps as steps,
+  doesNotProvide,
+  provides,
+} from "@/lib/services";
 
 export const metadata: Metadata = pageMetadata({
   title: "How Commissioned Research Works",
@@ -38,11 +43,7 @@ export default function HowItWorksPage() {
         <div>
           <h2>Tharros provides</h2>
           <ul>
-            {[
-              "Market, buyer and competitor research",
-              "Sector, policy and industry analysis",
-              "Public-source data with provenance",
-            ].map((item) => (
+            {provides.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -50,12 +51,7 @@ export default function HowItWorksPage() {
         <div>
           <h2>Tharros does not provide</h2>
           <ul>
-            {[
-              "Legal, tax or regulatory advice",
-              "Lobbying or advocacy",
-              "Investment advice",
-              "Customs brokerage or compliance determinations",
-            ].map((item) => (
+            {doesNotProvide.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>

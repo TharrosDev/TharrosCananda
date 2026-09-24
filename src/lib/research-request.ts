@@ -1,4 +1,5 @@
 import { emailPattern } from "@/lib/contact";
+import type { PublicSource } from "@/data/sources";
 import { researchNeeds, serviceBySlug, type ResearchNeed } from "@/lib/services";
 export { researchNeeds, type ResearchNeed };
 
@@ -13,6 +14,45 @@ export const objectives = [
   "Understand a policy or industrial development",
 ] as const;
 export type Objective = (typeof objectives)[number];
+
+type Publisher = PublicSource["publisher"];
+/** Where the source route usually starts for each purpose. Shown as indicative only: the written scope confirms it. */
+export const objectiveSources: Record<Objective, readonly Publisher[]> = {
+  "Enter the Canadian market": [
+    "Statistics Canada",
+    "Canada Border Services Agency",
+    "Innovation, Science and Economic Development Canada",
+  ],
+  "Enter the European market": ["Eurostat", "European Commission Access2Markets"],
+  "Find buyers": [
+    "Innovation, Science and Economic Development Canada",
+    "CanadaBuys",
+    "Tenders Electronic Daily (TED)",
+  ],
+  "Find a distributor or partner": ["Innovation, Science and Economic Development Canada"],
+  "Understand competitors": ["Statistics Canada", "Eurostat"],
+  "Validate demand": ["Statistics Canada", "Eurostat"],
+  "Map a sector or supply chain": ["Statistics Canada", "Eurostat", "Government of Canada Open Data"],
+  "Understand a policy or industrial development": [
+    "Government of Canada Open Data",
+    "CanadaBuys",
+    "Tenders Electronic Daily (TED)",
+  ],
+};
+const tariffSources: readonly Publisher[] = [
+  "Canada Border Services Agency",
+  "European Commission Access2Markets",
+];
+
+/** The indicative source route for a request, in first-mentioned order. An HS code adds the tariff sources. */
+export function indicativeSources(values: Pick<ResearchRequestPayload, "objectives" | "hsCode">) {
+  return [
+    ...new Set([
+      ...values.objectives.flatMap((objective) => objectiveSources[objective] ?? []),
+      ...(values.hsCode.trim() ? tariffSources : []),
+    ]),
+  ];
+}
 
 export type ResearchRequestPayload = {
   companyName: string;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseRequestDraft, parseResearchRequest, prefillFromSearchParams, requestResearchHref, validateResearchRequest } from "../src/lib/research-request";
+import { indicativeSources, objectives, parseRequestDraft, parseResearchRequest, prefillFromSearchParams, requestResearchHref, validateResearchRequest } from "../src/lib/research-request";
 
 const valid={companyName:"Example GmbH",country:"Germany",email:"market@example.com",product:"Industrial LED lighting",objectives:["Find a distributor or partner"],researchNeed:"Market Assessment",consent:true};
 
@@ -38,5 +38,12 @@ describe("parseRequestDraft (sessionStorage, untrusted)",()=>{
     const draft=parseRequestDraft(JSON.stringify({consent:true,country:7,researchNeed:"Free consulting",companyName:"x".repeat(500)}));
     expect(draft).not.toHaveProperty("consent");expect(draft).not.toHaveProperty("country");expect(draft).not.toHaveProperty("researchNeed");
     expect(draft.companyName).toHaveLength(160);
+  });
+});
+describe("indicative source route",()=>{
+  it("gives every purpose a starting source and adds tariff sources for an HS code",()=>{
+    for(const objective of objectives)expect(indicativeSources({objectives:[objective],hsCode:""}).length).toBeGreaterThan(0);
+    expect(indicativeSources({objectives:["Validate demand","Understand competitors"],hsCode:""})).toEqual(["Statistics Canada","Eurostat"]);
+    expect(indicativeSources({objectives:[],hsCode:"9405.11"})).toEqual(["Canada Border Services Agency","European Commission Access2Markets"]);
   });
 });

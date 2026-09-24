@@ -2,6 +2,8 @@
 
 import { cloneElement, FormEvent, type ReactElement, useEffect, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
+import { RequestBrief } from "@/components/request-brief";
+import { commissionPrivacy } from "@/lib/services";
 import { track } from "@/lib/analytics";
 import { readStorage, removeStorage, writeStorage } from "@/lib/storage";
 import {
@@ -207,343 +209,347 @@ export function ResearchRequestForm({ initial = {}, contactEmail }: Props) {
     track("research_request_submitted", { need: values.researchNeed || "unclassified" });
   }
 
+  const brief = (
+    <RequestBrief
+      values={values}
+      step={step}
+      reference={status === "success" ? reference : undefined}
+      onEdit={goTo}
+    />
+  );
+
   if (status === "success")
     return (
-      <div className="form-success" role="status">
-        <span className="success-mark">
-          <CheckIcon />
-        </span>
-        <h2 ref={successRef} tabIndex={-1}>
-          Your research request has been received.
-        </h2>
-        <p>
-          Reference <strong>{reference.slice(0, 8).toUpperCase()}</strong>. Nothing has been
-          purchased.
-        </p>
-        <ol className="success-steps">
-          <li>Tharros reviews the request.</li>
-          <li>
-            You receive a proposed scope, price and timeline at <strong>{values.email}</strong>.
-          </li>
-          <li>Research begins after written approval.</li>
-        </ol>
-        <p>
-          To add information, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
-        </p>
+      <div className="request-desk">
+        <div className="form-success" role="status">
+          <span className="success-mark">
+            <CheckIcon />
+          </span>
+          <h2 ref={successRef} tabIndex={-1}>
+            Your research request has been received.
+          </h2>
+          <p>
+            Reference <strong>{reference.slice(0, 8).toUpperCase()}</strong>. Nothing has been
+            purchased.
+          </p>
+          <ol className="success-steps">
+            <li>Tharros reviews the request.</li>
+            <li>
+              You receive a proposed scope, price and timeline at <strong>{values.email}</strong>.
+            </li>
+            <li>Research begins after written approval.</li>
+          </ol>
+          <p>
+            To add information, write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+          </p>
+        </div>
+        {brief}
       </div>
     );
 
   const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent(`Research request: ${values.companyName}`)}&body=${encodeURIComponent(requestAsEmailBody(values))}`;
 
   return (
-    <form className="request-form" onSubmit={submit} noValidate ref={formRef}>
-      <ol className="form-stepper" aria-label="Request steps">
-        {stepLabels.map((label, index) => (
-          <li
-            key={label}
-            aria-current={index === step ? "step" : undefined}
-            className={index < step ? "is-done" : undefined}
+    <div className="request-desk">
+      <form className="request-form" onSubmit={submit} noValidate ref={formRef}>
+        <ol className="form-stepper" aria-label="Request steps">
+          {stepLabels.map((label, index) => (
+            <li
+              key={label}
+              aria-current={index === step ? "step" : undefined}
+              className={index < step ? "is-done" : undefined}
+            >
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <span className="form-step-label">{label}</span>
+              {index < step && <span className="sr-only">, completed</span>}
+            </li>
+          ))}
+        </ol>
+        <div className="form-progress">
+          <div
+            role="progressbar"
+            aria-label="Request progress"
+            aria-valuemin={1}
+            aria-valuemax={totalSteps}
+            aria-valuenow={step + 1}
+            aria-valuetext={`Step ${step + 1} of ${totalSteps}: ${stepLabels[step]}`}
           >
-            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-            <span className="form-step-label">{label}</span>
-            {index < step && <span className="sr-only">, completed</span>}
-          </li>
-        ))}
-      </ol>
-      <div className="form-progress">
-        <div
-          role="progressbar"
-          aria-label="Request progress"
-          aria-valuemin={1}
-          aria-valuemax={totalSteps}
-          aria-valuenow={step + 1}
-          aria-valuetext={`Step ${step + 1} of ${totalSteps}: ${stepLabels[step]}`}
-        >
-          <span style={{ transform: `scaleX(${(step + 1) / totalSteps})` }} />
+            <span style={{ transform: `scaleX(${(step + 1) / totalSteps})` }} />
+          </div>
         </div>
-      </div>
-      <div className="form-trap" aria-hidden="true">
-        <label htmlFor="request-fax">Fax</label>
-        <input
-          id="request-fax"
-          name={honeypotField}
-          tabIndex={-1}
-          autoComplete="off"
-          value={trap}
-          onChange={(e) => setTrap(e.target.value)}
-        />
-      </div>
+        <div className="form-trap" aria-hidden="true">
+          <label htmlFor="request-fax">Fax</label>
+          <input
+            id="request-fax"
+            name={honeypotField}
+            tabIndex={-1}
+            autoComplete="off"
+            value={trap}
+            onChange={(e) => setTrap(e.target.value)}
+          />
+        </div>
 
-      {step === 0 && (
-        <fieldset>
-          <legend tabIndex={-1}>Who is the research for?</legend>
-          <FormField id="company-name" label="Organization" error={errors.companyName} required>
-            <input
-              value={values.companyName}
-              onChange={(e) => update("companyName", e.target.value)}
-              onBlur={() => blur("companyName")}
-              autoComplete="organization"
-              maxLength={maxLengths.companyName}
-            />
-          </FormField>
-          <FormField id="company-country" label="Country" error={errors.country} required>
-            <input
-              value={values.country}
-              onChange={(e) => update("country", e.target.value)}
-              onBlur={() => blur("country")}
-              autoComplete="country-name"
-              placeholder="e.g. Germany"
-              maxLength={maxLengths.country}
-            />
-          </FormField>
-          <FormField
-            id="company-website"
-            label="Company website"
-            hint="Optional"
-            error={errors.website}
-          >
-            <input
-              type="url"
-              value={values.website}
-              onChange={(e) => update("website", e.target.value)}
-              onBlur={() => blur("website")}
-              autoComplete="url"
-              placeholder="example.com"
-              maxLength={maxLengths.website}
-            />
-          </FormField>
-          <FormField id="business-email" label="Business email" error={errors.email} required>
-            <input
-              type="email"
-              value={values.email}
-              onChange={(e) => update("email", e.target.value)}
-              onBlur={() => blur("email")}
-              autoComplete="email"
-              maxLength={maxLengths.email}
-            />
-          </FormField>
-        </fieldset>
-      )}
+        {step === 0 && (
+          <fieldset>
+            <legend tabIndex={-1}>Who is the research for?</legend>
+            <FormField id="company-name" label="Organization" error={errors.companyName} required>
+              <input
+                value={values.companyName}
+                onChange={(e) => update("companyName", e.target.value)}
+                onBlur={() => blur("companyName")}
+                autoComplete="organization"
+                maxLength={maxLengths.companyName}
+              />
+            </FormField>
+            <FormField id="company-country" label="Country" error={errors.country} required>
+              <input
+                value={values.country}
+                onChange={(e) => update("country", e.target.value)}
+                onBlur={() => blur("country")}
+                autoComplete="country-name"
+                placeholder="e.g. Germany"
+                maxLength={maxLengths.country}
+              />
+            </FormField>
+            <FormField
+              id="company-website"
+              label="Company website"
+              hint="Optional"
+              error={errors.website}
+            >
+              <input
+                type="url"
+                value={values.website}
+                onChange={(e) => update("website", e.target.value)}
+                onBlur={() => blur("website")}
+                autoComplete="url"
+                placeholder="example.com"
+                maxLength={maxLengths.website}
+              />
+            </FormField>
+            <FormField id="business-email" label="Business email" error={errors.email} required>
+              <input
+                type="email"
+                value={values.email}
+                onChange={(e) => update("email", e.target.value)}
+                onBlur={() => blur("email")}
+                autoComplete="email"
+                maxLength={maxLengths.email}
+              />
+            </FormField>
+          </fieldset>
+        )}
 
-      {step === 1 && (
-        <fieldset aria-describedby={errors.objectives ? "objectives-error" : undefined}>
-          <legend tabIndex={-1}>What should Tharros answer?</legend>
-          <p className="field-intro">Describe the subject and intended use.</p>
-          <FormField
-            id="product-service"
-            label="Subject, product or sector"
-            error={errors.product}
-            required
-          >
-            <input
-              value={values.product}
-              onChange={(e) => update("product", e.target.value)}
-              onBlur={() => blur("product")}
-              placeholder="e.g. Critical-mineral offtake in Quebec"
-              maxLength={maxLengths.product}
-            />
-          </FormField>
-          <FormField
-            id="product-description"
-            label="The question in a sentence or two"
-            hint="Recommended"
-            error={errors.description}
-          >
-            <textarea
-              rows={4}
-              value={values.description}
-              onChange={(e) => update("description", e.target.value)}
-              onBlur={() => blur("description")}
-              placeholder="What do you need to know, and what decision does it support?"
-              maxLength={maxLengths.description}
-            />
-          </FormField>
-          <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}>
-            <input
-              value={values.industry}
-              onChange={(e) => update("industry", e.target.value)}
-              onBlur={() => blur("industry")}
-              maxLength={maxLengths.industry}
-            />
-          </FormField>
-          <FormField
-            id="hs-code"
-            label="HS code"
-            hint="Optional, for product research"
-            error={errors.hsCode}
-          >
-            <input
-              value={values.hsCode}
-              onChange={(e) => update("hsCode", e.target.value)}
-              onBlur={() => blur("hsCode")}
-              inputMode="decimal"
-              placeholder="e.g. 9405.11"
-              maxLength={maxLengths.hsCode}
-            />
-          </FormField>
-          <div className="form-field" role="group" aria-labelledby="objectives-label">
-            <label id="objectives-label">
-              What will the research support? <em>Required</em>
-            </label>
-            <div className="choice-grid">
-              {objectives.map((objective) => (
-                <label
-                  key={objective}
-                  className={
-                    values.objectives.includes(objective) ? "choice is-selected" : "choice"
-                  }
-                >
-                  <input
-                    type="checkbox"
-                    checked={values.objectives.includes(objective)}
-                    onChange={() => toggleObjective(objective)}
-                    aria-invalid={Boolean(errors.objectives)}
-                    aria-describedby={errors.objectives ? "objectives-error" : undefined}
-                  />
-                  <span className="choice-check">
-                    <CheckIcon />
-                  </span>
-                  <span>{objective}</span>
-                </label>
-              ))}
+        {step === 1 && (
+          <fieldset aria-describedby={errors.objectives ? "objectives-error" : undefined}>
+            <legend tabIndex={-1}>What should Tharros answer?</legend>
+            <p className="field-intro">
+              Describe the subject and the decision it supports. Leave out trade secrets, passwords,
+              customer lists and unrelated personal information.
+            </p>
+            <FormField
+              id="product-service"
+              label="Subject, product or sector"
+              error={errors.product}
+              required
+            >
+              <input
+                value={values.product}
+                onChange={(e) => update("product", e.target.value)}
+                onBlur={() => blur("product")}
+                placeholder="e.g. Critical-mineral offtake in Quebec"
+                maxLength={maxLengths.product}
+              />
+            </FormField>
+            <FormField
+              id="product-description"
+              label="The question in a sentence or two"
+              hint="Recommended"
+              error={errors.description}
+            >
+              <textarea
+                rows={4}
+                value={values.description}
+                onChange={(e) => update("description", e.target.value)}
+                onBlur={() => blur("description")}
+                placeholder="What do you need to know, and what decision does it support?"
+                maxLength={maxLengths.description}
+              />
+            </FormField>
+            <FormField id="industry" label="Industry" hint="Optional" error={errors.industry}>
+              <input
+                value={values.industry}
+                onChange={(e) => update("industry", e.target.value)}
+                onBlur={() => blur("industry")}
+                maxLength={maxLengths.industry}
+              />
+            </FormField>
+            <FormField
+              id="hs-code"
+              label="HS code"
+              hint="Optional, for product research"
+              error={errors.hsCode}
+            >
+              <input
+                value={values.hsCode}
+                onChange={(e) => update("hsCode", e.target.value)}
+                onBlur={() => blur("hsCode")}
+                inputMode="decimal"
+                placeholder="e.g. 9405.11"
+                maxLength={maxLengths.hsCode}
+              />
+            </FormField>
+            <div className="form-field" role="group" aria-labelledby="objectives-label">
+              <label id="objectives-label">
+                What will the research support? <em>Required</em>
+              </label>
+              <div className="choice-grid">
+                {objectives.map((objective) => (
+                  <label
+                    key={objective}
+                    className={
+                      values.objectives.includes(objective) ? "choice is-selected" : "choice"
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      checked={values.objectives.includes(objective)}
+                      onChange={() => toggleObjective(objective)}
+                      aria-invalid={Boolean(errors.objectives)}
+                      aria-describedby={errors.objectives ? "objectives-error" : undefined}
+                    />
+                    <span className="choice-check">
+                      <CheckIcon />
+                    </span>
+                    <span>{objective}</span>
+                  </label>
+                ))}
+              </div>
+              {errors.objectives && (
+                <p className="field-message is-error" id="objectives-error">
+                  {errors.objectives}
+                </p>
+              )}
             </div>
-            {errors.objectives && (
-              <p className="field-message is-error" id="objectives-error">
-                {errors.objectives}
+            <FormField
+              id="research-format"
+              label="Service"
+              hint={
+                preselectedNeed
+                  ? "Prefilled from the service you selected; change it if needed"
+                  : "Optional. Tharros can suggest the smallest useful scope"
+              }
+              error={errors.researchNeed}
+            >
+              <select
+                value={values.researchNeed}
+                onChange={(e) =>
+                  update("researchNeed", e.target.value as ResearchRequestPayload["researchNeed"])
+                }
+              >
+                <option value="">Let Tharros suggest one</option>
+                {researchNeeds.map((need) => (
+                  <option key={need} value={need}>
+                    {need}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+          </fieldset>
+        )}
+
+        {step === 2 && (
+          <fieldset>
+            <legend tabIndex={-1}>Review the brief and send.</legend>
+            <p className="field-intro">
+              Check the brief, add anything Tharros should know, then send it.
+            </p>
+            <FormField
+              id="additional-context"
+              label="Additional context"
+              hint="Optional"
+              error={errors.context}
+            >
+              <textarea
+                rows={5}
+                value={values.context}
+                onChange={(e) => update("context", e.target.value)}
+                onBlur={() => blur("context")}
+                placeholder="Timing, geography, constraints, or anything already known."
+                maxLength={maxLengths.context}
+              />
+            </FormField>
+            <label className="consent-row">
+              <input
+                type="checkbox"
+                aria-required="true"
+                checked={values.consent}
+                onChange={(e) => update("consent", e.target.checked)}
+                aria-invalid={Boolean(errors.consent)}
+                aria-describedby={errors.consent ? "consent-error" : undefined}
+              />
+              <span>
+                I consent to Tharros Canada reviewing this information to respond to my request.
+                This is not consent to marketing.
+              </span>
+            </label>
+            {errors.consent && (
+              <p className="field-message is-error" id="consent-error">
+                {errors.consent}
               </p>
             )}
-          </div>
-          <FormField
-            id="research-format"
-            label="Service"
-            hint={
-              preselectedNeed
-                ? "Prefilled from the service you selected; change it if needed"
-                : "Optional. Tharros can suggest the smallest useful scope"
-            }
-            error={errors.researchNeed}
-          >
-            <select
-              value={values.researchNeed}
-              onChange={(e) =>
-                update("researchNeed", e.target.value as ResearchRequestPayload["researchNeed"])
-              }
-            >
-              <option value="">Let Tharros suggest one</option>
-              {researchNeeds.map((need) => (
-                <option key={need} value={need}>
-                  {need}
-                </option>
-              ))}
-            </select>
-          </FormField>
-        </fieldset>
-      )}
+          </fieldset>
+        )}
 
-      {step === 2 && (
-        <fieldset>
-          <legend tabIndex={-1}>Review and send.</legend>
-          <p className="field-intro">Check the request before sending it.</p>
-          <div className="request-review">
-            <div className="request-review-block">
-              <h3>Organization</h3>
-              <p>
-                <strong>{values.companyName}</strong> · {values.country}
-              </p>
-              <p>
-                {values.email}
-                {values.website ? ` · ${values.website}` : ""}
-              </p>
-              <button className="request-review-edit" type="button" onClick={() => goTo(0)}>
-                Edit
-              </button>
-            </div>
-            <div className="request-review-block">
-              <h3>Research question</h3>
-              <p>
-                <strong>{values.product}</strong>
-                {values.industry ? ` · ${values.industry}` : ""}
-              </p>
-              {values.description && <p>{values.description}</p>}
-              <p>{values.objectives.join(" · ")}</p>
-              <p>
-                {values.researchNeed || "Service to be suggested by Tharros"}
-                {values.hsCode ? ` · HS ${values.hsCode}` : ""}
-              </p>
-              <button className="request-review-edit" type="button" onClick={() => goTo(1)}>
-                Edit
-              </button>
-            </div>
-          </div>
-          <FormField
-            id="additional-context"
-            label="Additional context"
-            hint="Optional"
-            error={errors.context}
-          >
-            <textarea
-              rows={5}
-              value={values.context}
-              onChange={(e) => update("context", e.target.value)}
-              onBlur={() => blur("context")}
-              placeholder="Timing, geography, constraints, or anything already known."
-              maxLength={maxLengths.context}
-            />
-          </FormField>
-          <label className="consent-row">
-            <input
-              type="checkbox"
-              aria-required="true"
-              checked={values.consent}
-              onChange={(e) => update("consent", e.target.checked)}
-              aria-invalid={Boolean(errors.consent)}
-              aria-describedby={errors.consent ? "consent-error" : undefined}
-            />
-            <span>
-              I consent to Tharros Canada reviewing this information to respond to my request. This
-              is not consent to marketing.
-            </span>
-          </label>
-          {errors.consent && (
-            <p className="field-message is-error" id="consent-error">
-              {errors.consent}
+        {status === "error" && (
+          <div className="form-error" role="alert">
+            <strong>The request was not sent.</strong>
+            <p>{serverMessage}</p>
+            <p>
+              You can try again, or <a href={mailto}>send the same details by email</a> to{" "}
+              {contactEmail}. Your email app opens with the request filled in.
             </p>
+          </div>
+        )}
+        <div className="form-actions">
+          {step > 0 && (
+            <button className="button-secondary" type="button" onClick={() => goTo(step - 1)}>
+              Back
+            </button>
           )}
-        </fieldset>
-      )}
-
-      {status === "error" && (
-        <div className="form-error" role="alert">
-          <strong>The request was not sent.</strong>
-          <p>{serverMessage}</p>
-          <p>
-            You can try again, or <a href={mailto}>send the same details by email</a> to{" "}
-            {contactEmail}. Your email app opens with the request filled in.
-          </p>
+          {/* Distinct keys: reusing one element would let the click on Continue land as a submit once it
+              re-renders as the Submit button, showing the consent error on arrival. */}
+          {step < totalSteps - 1 ? (
+            <button key="continue" className="button-primary" type="button" onClick={next}>
+              Continue <ArrowIcon />
+            </button>
+          ) : (
+            <button
+              key="submit"
+              className="button-primary"
+              type="submit"
+              disabled={status === "submitting"}
+            >
+              {status === "submitting"
+                ? "Sending request…"
+                : status === "error"
+                  ? "Try again"
+                  : "Submit research request"}
+              <ArrowIcon />
+            </button>
+          )}
         </div>
-      )}
-      <div className="form-actions">
-        {step > 0 && (
-          <button className="button-secondary" type="button" onClick={() => goTo(step - 1)}>
-            Back
-          </button>
-        )}
-        {step < totalSteps - 1 ? (
-          <button className="button-primary" type="button" onClick={next}>
-            Continue <ArrowIcon />
-          </button>
-        ) : (
-          <button className="button-primary" type="submit" disabled={status === "submitting"}>
-            {status === "submitting"
-              ? "Sending request…"
-              : status === "error"
-                ? "Try again"
-                : "Submit research request"}
-            <ArrowIcon />
-          </button>
-        )}
-      </div>
-    </form>
+        <p className="request-terms">
+          Submitting does not create a purchase. Work starts after written approval.{" "}
+          {commissionPrivacy}
+        </p>
+        <p className="form-alt">
+          Prefer email? Write to <a href={`mailto:${contactEmail}`}>{contactEmail}</a> with the same
+          information.
+        </p>
+      </form>
+      {brief}
+    </div>
   );
 }
 

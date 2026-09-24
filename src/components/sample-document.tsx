@@ -167,7 +167,7 @@ function Meter({ value }: { value: number }) {
 
 function Dots({ filled }: { filled: number }) {
   return (
-    <span className="faux-dots" aria-label={`${filled} of 4`}>
+    <span className="faux-dots" role="img" aria-label={`${filled} of 4`}>
       {[0, 1, 2, 3].map((i) => (
         <span key={i} className={i < filled ? "is-on" : undefined} />
       ))}
@@ -175,15 +175,33 @@ function Dots({ filled }: { filled: number }) {
   );
 }
 
-function CustomResearch() {
-  const meta: Meta = {
+const sampleMeta: Record<ServiceSlug, Meta> = {
+  "custom-research": {
     code: "TC-SAMPLE-CR",
     type: "Research Report",
     area: "Trade & Economic Integration",
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing",
     subtitle:
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua across Canada and Europe.",
-  };
+  },
+  "market-assessment": {
+    code: "TC-SAMPLE-MA",
+    type: "Market Assessment",
+    area: "Energy, Resources & Industry",
+    title: "Lorem ipsum market: structure, size and incumbents",
+    subtitle: "Duis aute irure dolor in reprehenderit, and where the openings may lie.",
+  },
+  "buyer-partner-research": {
+    code: "TC-SAMPLE-BP",
+    type: "Buyer & Partner Research",
+    area: "Technology & Strategic Industries",
+    title: "Lorem ipsum: candidate buyers and partners in Europe",
+    subtitle: "Which organizations could realistically adipiscing elit, ranked by fit.",
+  },
+};
+
+function CustomResearch() {
+  const meta = sampleMeta["custom-research"];
   const total = 4;
   return (
     <>
@@ -270,13 +288,7 @@ function CustomResearch() {
 }
 
 function MarketAssessment() {
-  const meta: Meta = {
-    code: "TC-SAMPLE-MA",
-    type: "Market Assessment",
-    area: "Energy, Resources & Industry",
-    title: "Lorem ipsum market: structure, size and incumbents",
-    subtitle: "Duis aute irure dolor in reprehenderit, and where the openings may lie.",
-  };
+  const meta = sampleMeta["market-assessment"];
   const total = 4;
   return (
     <>
@@ -379,13 +391,7 @@ function MarketAssessment() {
 }
 
 function BuyerPartner() {
-  const meta: Meta = {
-    code: "TC-SAMPLE-BP",
-    type: "Buyer & Partner Research",
-    area: "Technology & Strategic Industries",
-    title: "Lorem ipsum: candidate buyers and partners in Europe",
-    subtitle: "Which organizations could realistically adipiscing elit, ranked by fit.",
-  };
+  const meta = sampleMeta["buyer-partner-research"];
   const total = 4;
   return (
     <>
@@ -473,31 +479,99 @@ const samples: Record<ServiceSlug, { file: string; Body: () => ReactNode }> = {
   "buyer-partner-research": { file: "TC-SAMPLE-BP.pdf", Body: BuyerPartner },
 };
 
+// The newest morph; an older one's cleanup must not clear names a newer one set (e.g. Escape during the open).
+let latest: ViewTransition | undefined;
+
+/**
+ * Runs `update` as a view transition in which `from` grows or shrinks into `to` (the shelf cover and the
+ * reader's first page share one name for the length of the transition). Without support, or under reduced
+ * motion, `update` simply runs.
+ */
+function morph(
+  name: string,
+  from: HTMLElement | null,
+  to: () => HTMLElement | null,
+  update: () => void,
+) {
+  if (
+    !from ||
+    !("startViewTransition" in document) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    update();
+    return;
+  }
+  from.style.viewTransitionName = name;
+  const transition = document.startViewTransition(() => {
+    from.style.viewTransitionName = "";
+    update();
+    const target = to();
+    if (target) target.style.viewTransitionName = name;
+  });
+  latest = transition;
+  transition.finished.finally(() => {
+    if (latest !== transition) return;
+    const target = to();
+    if (target) target.style.viewTransitionName = "";
+  });
+}
+
 export function SampleDocument({ service, name }: { service: ServiceSlug; name: string }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const shelf = useRef<HTMLDivElement>(null);
   const { file, Body } = samples[service];
   const titleId = `sample-${service}-title`;
+  const transitionName = `sample-${service}`;
+  const readerCover = () => dialog.current?.querySelector<HTMLElement>(".faux-cover") ?? null;
+
+  function open() {
+    if (dialog.current?.open) return;
+    morph(transitionName, shelf.current, readerCover, () => {
+      dialog.current?.showModal();
+      dialog.current?.querySelector(".sample-pages")?.scrollTo(0, 0);
+    });
+  }
+  function close() {
+    const pages = dialog.current?.querySelector(".sample-pages");
+    // Only fold back into the shelf when the cover is still in view; otherwise just close.
+    const from = pages && pages.scrollTop < 200 ? readerCover() : null;
+    morph(
+      transitionName,
+      from,
+      () => shelf.current,
+      () => dialog.current?.close(),
+    );
+  }
 
   return (
     <>
-      <button type="button" className="sample-open" onClick={() => dialog.current?.showModal()}>
+      {/* The cover is a picture of the sample; the button below is the accessible way in. */}
+      <div className="shelf-cover" ref={shelf} aria-hidden="true" onClick={open}>
+        <Cover meta={sampleMeta[service]} total={4} />
+      </div>
+      <button type="button" className="sample-open" onClick={open}>
         View sample<span className="sr-only"> {name} document</span>
       </button>
       <dialog
         ref={dialog}
         className="sample-dialog"
         aria-labelledby={titleId}
+        onCancel={(event) => {
+          event.preventDefault();
+          close();
+        }}
         // A click on the backdrop lands on the dialog element itself.
-        onClick={(event) => event.target === dialog.current && dialog.current.close()}
+        onClick={(event) => event.target === dialog.current && close()}
       >
         <div className="sample-toolbar">
           <span id={titleId}>{file}</span>
           <span>Sample · placeholder text</span>
-          <button type="button" onClick={() => dialog.current?.close()}>
+          <button type="button" onClick={close}>
             Close<span className="sr-only"> sample</span>
           </button>
         </div>
-        <div className="sample-pages">
+        {/* The pages scroll on their own, so the region takes keyboard focus. */}
+        <div className="sample-pages" tabIndex={0} role="region" aria-labelledby={titleId}>
           <Body />
         </div>
       </dialog>

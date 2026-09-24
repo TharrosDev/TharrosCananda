@@ -29,12 +29,12 @@ Tharros presents itself as an independent research institute: research first, co
 ## Current public surfaces
 
 - Home
-- Services
+- Research Services
 - Research archive and report pages
 - Methodology
 - How It Works
 - About
-- Commission Research
+- Request Research
 - Privacy, Accessibility and Copyright (public research is licensed CC BY 4.0)
 
 ## Commercial products

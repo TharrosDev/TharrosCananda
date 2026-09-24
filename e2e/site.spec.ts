@@ -44,6 +44,8 @@ test("commissioning reaches a complete review without forcing a product classifi
   await expect(page.getByText("research@example.com")).toBeVisible();
   await expect(page.getByText("Industrial components")).toBeVisible();
   await expect(page.getByText("Service to be suggested by Tharros")).toBeVisible();
+  // Arriving on review must not count as a submit attempt.
+  await expect(page.locator("#consent-error")).toHaveCount(0);
   await page.getByRole("button", { name: "Edit" }).first().click();
   await expect(page.getByText("Who is the research for?")).toBeVisible();
 });
@@ -257,7 +259,7 @@ test("the commission page states privacy and lists each option once, with no pri
   await expect(page.locator(".commission-privacy")).toContainText(
     "published only if that client asks",
   );
-  const entries = page.locator(".services-index > ol > li");
+  const entries = page.locator(".services-index > li");
   await expect(entries).toHaveCount(3);
   await expect(page.locator("main")).not.toContainText("C$");
   for (const entry of await entries.all()) {
@@ -270,9 +272,6 @@ test("the commission page states privacy and lists each option once, with no pri
 
 test("each service opens a labelled lorem sample in a dialog", async ({ page }) => {
   await page.goto("/research-services");
-  // Samples sit inside the collapsed "What you receive" panels.
-  for (const summary of await page.locator(".service-output > summary").all())
-    await summary.click();
   const open = page.getByRole("button", { name: /^View sample/ });
   await expect(open).toHaveCount(3);
   await open.first().click();
@@ -280,8 +279,68 @@ test("each service opens a labelled lorem sample in a dialog", async ({ page }) 
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText("placeholder text");
   await expect(dialog.locator("a[download], a[href$='.pdf']")).toHaveCount(0);
+  // The open reader is part of the page too: audit it while it is showing.
+  const results = await new AxeBuilder({ page }).include(".sample-dialog[open]").analyze();
+  expect(
+    results.violations
+      .filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))
+      .map((violation) => violation.id),
+  ).toEqual([]);
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
+});
+
+test("the request page states privacy and purchase terms before the brief is opened", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/request-research");
+  await expect(page.getByText("published only if that client asks")).toBeVisible();
+  await expect(
+    page.getByText("Submitting does not create a purchase.", { exact: false }),
+  ).toBeVisible();
+});
+
+test("About counts only what exists and has no commissioned-work row", async ({ page }) => {
+  await page.goto("/about");
+  await expect(page.locator(".about-ledger dt")).toHaveText([
+    "Published research",
+    "Research areas",
+    "Sources in the register",
+    "Research services",
+  ]);
+  await expect(page.locator("main")).not.toContainText("Commissioned work published");
+});
+
+test("the request brief writes itself from the form", async ({ page }) => {
+  await page.goto("/request-research");
+  const brief = page.locator(".request-brief");
+  await expect(brief).toContainText("Draft · not sent");
+  await page.getByLabel("Organization").fill("Example GmbH");
+  await page.getByLabel("Country").fill("Germany");
+  await expect(brief).toContainText("Example GmbH · Germany");
+  await page.getByLabel("Business email").fill("research@example.com");
+  await page.getByRole("button", { name: /continue/i }).click();
+  await page.getByLabel("Enter the Canadian market").check();
+  // Indicative sources follow the purpose chosen.
+  await expect(brief).toContainText("Statistics Canada");
+});
+
+test("the methodology trace ties each phrase to the record fields it rests on", async ({
+  page,
+}) => {
+  await page.goto("/methodology");
+  const phrases = page.locator(".trace-phrase");
+  await expect(phrases).toHaveCount(7);
+  const period = page.getByRole("button", { name: "between 2017-2024 (excluding 2023)" });
+  await period.click();
+  await expect(period).toHaveAttribute("aria-pressed", "true");
+  const active = page.locator(".trace-record > div[data-active]");
+  await expect(active).toHaveCount(1);
+  await expect(active).toContainText("Period");
+  await period.press("Tab");
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".trace-record > div[data-active] dt")).toContainText("Dataset");
 });
 
 test.describe("request form", () => {
@@ -424,7 +483,7 @@ test.describe("every sitemap route", () => {
 });
 
 test("each page previews as itself when shared", async ({ page }) => {
-  for (const path of ["/about", "/research-services", "/methodology"]) {
+  for (const path of ["/about", "/research-services", "/request-research", "/methodology"]) {
     await page.goto(path);
     const og = (property: string) =>
       page.locator(`meta[property="${property}"]`).getAttribute("content");

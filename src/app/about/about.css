@@ -1,0 +1,96 @@
+/* About: a masthead ruled by the Ottawa–Brussels route, the institute on the record, principles you can check,
+   and the independence boundary. */
+
+/* ---------- Masthead ---------- */
+.about-masthead { width: var(--shell); margin: 0 auto; padding: clamp(48px, 5vw, 76px) 0 var(--space-section); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: clamp(28px, 3vw, 40px); align-items: end; }
+.about-masthead h1 { grid-column: 1 / -1; max-width: none; margin: 0; font-size: clamp(52px, 6.2vw, 98px); font-weight: 350; letter-spacing: -.036em; line-height: .93; }
+.about-deck { grid-column: 1 / span 5; max-width: 40ch; margin: 0; color: var(--ink-soft); font-size: clamp(19px, 1.5vw, 22px); line-height: 1.55; }
+.about-route { grid-column: 6 / -1; position: relative; margin: 0; padding: 34px 0 54px; }
+.about-route svg { display: block; width: 100%; height: auto; overflow: visible; }
+.about-route path { fill: none; stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.about-route circle { fill: var(--ivory); stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.about-route-end, .about-route-distance { position: absolute; margin: 0; white-space: nowrap; color: var(--slate); font-size: 14px; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.about-route-end strong { display: block; color: var(--ink); font-family: var(--display); font-size: 21px; font-weight: 400; letter-spacing: -.01em; }
+/* Positions are the route nodes in the SVG frame (viewBox 40 168 610 80), measured from the plate below the padding. */
+.about-route-end.is-ottawa { top: calc(34px + (100% - 88px) * .844); left: 4.44%; translate: -8px 14px; }
+.about-route-end.is-brussels { top: calc(34px + (100% - 88px) * .23); left: 94.46%; translate: calc(-100% + 8px) 14px; text-align: right; }
+.about-route-distance { top: calc(34px + (100% - 88px) * .2); left: 50%; width: max-content; max-width: 88%; translate: -50% calc(-100% - 10px); color: var(--ink); font-weight: 600; letter-spacing: .02em; text-align: center; white-space: normal; }
+
+/* ---------- Shared section frame ---------- */
+.about-section { width: var(--shell); margin: 0 auto; padding: 0 0 var(--space-section); }
+.about-section-head { margin-bottom: 8px; padding-top: 20px; }
+.about-section-head h2 { margin: 0 0 6px; font-size: clamp(32px, 3vw, 44px); letter-spacing: -.015em; }
+.about-section-head p { margin: 0; color: var(--slate); font-size: 18px; }
+
+/* ---------- On the record: a two-up ledger ---------- */
+.about-ledger { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--col-gap); }
+.about-ledger > div { padding: 20px 0 22px; display: grid; align-content: start; grid-template-columns: clamp(52px, 4.4vw, 68px) minmax(0, 1fr); column-gap: 16px; row-gap: 4px; align-items: baseline; border-bottom: 1px solid var(--rule); }
+.about-count { grid-column: 1; grid-row: 1; margin: 0; font-family: var(--display); font-size: clamp(38px, 3.2vw, 48px); line-height: .9; font-variant-numeric: tabular-nums lining-nums; }
+.about-ledger dt { grid-column: 2; font-size: 19px; font-weight: 600; }
+.about-ledger dd { margin: 0; }
+.about-ledger dd:last-child { grid-column: 2; color: var(--ink-soft); font-size: 18px; line-height: 1.5; }
+.about-ledger dd a { color: var(--ink); font-weight: 600; }
+
+/* ---------- Principles: a two-up grid ---------- */
+.about-principles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--col-gap); }
+.about-principles > li { padding: 22px 0 26px; }
+.about-principles > li::before { background: var(--rule-strong); }
+.about-principles h3 { margin: 0 0 10px; font-size: clamp(26px, 2.2vw, 32px); font-weight: 400; letter-spacing: -.015em; line-height: 1.1; }
+.about-principles p { max-width: 50ch; margin: 0 0 10px; color: var(--ink-soft); font-size: 19px; line-height: 1.55; }
+.about-check { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--ink); font-size: 16px; font-weight: 600; text-decoration: none; }
+.about-check svg { width: 16px; height: 16px; flex: 0 0 16px; transition: transform var(--dur-2) var(--ease-out); }
+.about-check:hover svg { transform: translateX(4px); }
+
+/* ---------- Independence: the statement beside its boundary ---------- */
+#independence { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 40px; align-items: start; }
+.about-independence-lead { grid-column: 1 / span 5; }
+.about-independence-lead h2 { max-width: 16ch; margin: 0 0 22px; font-size: clamp(36px, 3.4vw, 50px); letter-spacing: -.025em; line-height: .98; }
+.about-independence-lead p { max-width: 44ch; margin: 0; color: var(--ink-soft); font-size: 19px; line-height: 1.55; }
+.boundary { grid-column: 7 / -1; padding-top: 12px; }
+.boundary-inside { position: relative; padding: 32px clamp(22px, 2.6vw, 36px) 22px; border: 2px solid var(--ink); }
+/* The heading sits on the boundary line, like a legend on a map frame. */
+.boundary-inside h3 { position: absolute; top: 0; left: clamp(14px, 1.8vw, 26px); margin: 0; padding: 0 10px; translate: 0 -50%; background: var(--ivory); }
+.boundary h3 { margin: 0 0 8px; font-family: var(--sans); font-size: 12.5px; font-weight: 700; letter-spacing: .09em; line-height: 1.4; text-transform: uppercase; }
+.boundary ul { margin: 0; padding: 0; list-style: none; }
+.boundary-inside li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-family: var(--display); font-size: clamp(21px, 1.8vw, 24px); line-height: 1.3; }
+.boundary-inside li:first-of-type { padding-top: 0; }
+.boundary-inside li:last-child { border-bottom: 0; padding-bottom: 0; }
+.boundary-outside { margin-top: 26px; }
+.boundary-outside h3 { color: var(--slate); }
+.boundary-outside ul { column-count: 2; column-gap: var(--col-gap); }
+.boundary-outside li { padding: 9px 0; break-inside: avoid; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 17px; line-height: 1.4; }
+.about-contact { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); }
+.about-contact > p { margin: 0 0 12px; color: var(--ink-soft); font-size: 19px; }
+.about-contact a { color: var(--ink); font-weight: 600; }
+
+/* ---------- Accountability (shown once verified details exist) ---------- */
+.about-accountability .about-contact { margin-top: 0; padding-top: 0; border-top: 0; }
+.about-lead { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.about-lead h3 { margin-bottom: 4px; font-size: 29px; font-weight: 450; }
+.about-lead-role { color: var(--slate) !important; font-size: 15px; font-weight: 600; letter-spacing: .04em; }
+.company-details { margin: 20px 0 0; border-top: 1px solid var(--rule); }
+.company-details > div { padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.company-details dt { color: var(--slate); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.company-details dd { margin: 3px 0 0; }
+.about-section:has(+ .closing-cta) { padding-bottom: 0; }
+/* The action lines up with the column the boundary opens on, and the band ends closer to the footer. */
+.about-section + .closing-cta { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); padding: var(--space-section) 0; }
+.about-section + .closing-cta h2 { grid-column: 1 / span 6; }
+.about-section + .closing-cta .button-primary { grid-column: 7 / -1; justify-self: start; }
+
+@media (max-width: 980px) {
+  .about-masthead h1, .about-deck, .about-route, .about-independence-lead, .boundary { grid-column: 1 / -1; }
+  .about-route { padding-top: 38px; }
+}
+
+@media (max-width: 760px) {
+  .about-ledger, .about-principles { grid-template-columns: minmax(0, 1fr); }
+  .about-section + .closing-cta { display: flex; }
+  .boundary-outside ul { column-count: 1; }
+}
+
+@media (max-width: 700px) {
+  .about-masthead h1 { font-size: clamp(46px, 13.5vw, 72px); }
+  .about-route-end strong { font-size: 18px; }
+  .about-route-end { font-size: 13px; }
+}
