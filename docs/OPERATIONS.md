@@ -1,17 +1,21 @@
 # Operations
 
-Infrastructure, data flows and runbooks. This describes the live setup as of 2026-09-23.
+Infrastructure, data flows and runbooks for the live setup, as of 2026-09-24. Update this file in the same PR whenever the infrastructure changes.
 
 ## Systems
 
 | System | What | Notes |
 | --- | --- | --- |
-| Vercel | Project `tharroscananda` (team `meridiansocietycanada-7533s-projects`), Hobby plan | Serves `tharros.ca`. `www` 308-redirects to the apex. Also runs Vercel Analytics, which the site skips when the browser sends Global Privacy Control. |
+| Vercel | Project `tharroscananda` (team `meridiansocietycanada-7533s-projects`), Hobby plan, Node 24.x | Serves `tharros.ca`, and `www` 308-redirects to the apex. Vercel Analytics also runs there, and the site skips it when the browser sends Global Privacy Control. Deploys `main` automatically. |
 | Supabase | Project `tharros-canada`, ref `kgiptvgefhnwxktzncui`, ca-central-1 | Postgres tables plus the `research-intake` Edge Function. |
 | Resend | Sends from `requests@tharros.ca` | DKIM `resend._domainkey`; return path `send.tharros.ca`. |
 | DNS | Vercel DNS | Apex SPF `v=spf1 -all`. DMARC is `p=none` with no report address, because the domain has no mailbox. |
 
-The Vercel Production env vars are `RESEARCH_INTAKE_WEBHOOK_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `METRICS_SECRET`, `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_RESEARCH_EMAIL`. Preview deployments have no Supabase access, so previews count nothing and cannot submit intake.
+Every variable is described in `README.md` (Environment).
+- **Production** sets all of them except `RESEARCH_INTAKE_WEBHOOK_SECRET`, which comes from `intake_config`.
+- **Preview** sets only `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_RESEARCH_EMAIL` and `RESEARCH_INTAKE_WEBHOOK_URL`.
+  - Without Supabase access, previews count nothing.
+  - Intake can't read the signing secret there, so previews can't submit it.
 
 ## Research intake
 
@@ -46,6 +50,11 @@ Archive cards and the report header show "N reads · N citations". The counts ar
 Every table has RLS enabled with no policies. That is intentional: only `service_role` can touch them, and the Supabase advisor's "RLS enabled, no policy" INFO notices are expected. SECURITY DEFINER functions use `search_path = ''`.
 
 ## Runbooks
+
+**Check a production deploy.** Vercel occasionally misses a merge.
+1. After merging, run `vercel ls`.
+2. If no new Production build appeared, run `vercel deploy --prod --yes` from an up-to-date `main`.
+3. Then run `npm run smoke -- https://tharros.ca`.
 
 **Apply a migration.**
 1. Add `supabase/migrations/<timestamp>_<name>.sql` with a timestamp after the latest live version.

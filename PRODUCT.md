@@ -20,22 +20,49 @@ What they come to do:
 
 ## Product purpose
 
-Tharros Canada is an independent research institute working across Canada and Europe. Published research comes first: reports on Canada–Europe questions and data notes that test whether public datasets are fit for use. Commissioned research is the second strand and funds the published work. The site makes it easy to see what Tharros can research, to inspect its source discipline and published work, and to commission a scoped answer asynchronously.
+Tharros Canada is an independent research institute working across Canada and Europe.
+- **Published research comes first:**
+  - reports on Canada–Europe questions;
+  - data notes that test whether public datasets are fit for use.
+- **Commissioned research is second.** It funds the published work.
+
+The site makes three things easy:
+- seeing what Tharros can research;
+- inspecting its source discipline and published work;
+- commissioning a scoped answer asynchronously.
 
 ## Positioning
 
-Tharros presents itself as an independent research institute: research first, commissions second. It is not a government body, legal or regulatory adviser, or generic consultancy, and it makes no think-tank claims it cannot show (fellows, policy positions, funders). Its credibility comes from sources a reader can inspect, explicit limitations and real published work. The site never implies scale, clients, team members, partnerships or findings that are not verified.
+**What Tharros is not:**
+- a government body;
+- a legal or regulatory adviser;
+- a generic consultancy.
+
+**No think-tank claims it cannot show:** no fellows, policy positions or funders.
+
+**Where its credibility comes from:**
+- sources a reader can inspect;
+- explicit limitations;
+- real published work.
+
+The site never implies scale, clients, team members, partnerships or findings that aren't verified.
 
 ## Current public surfaces
 
-- Home
-- Research Services
-- Research archive and report pages
-- Methodology
-- How It Works
-- About
-- Request Research
-- Privacy, Accessibility and Copyright (public research is licensed CC BY 4.0)
+- **Home:** the front page, led by the latest release.
+- **Research:** the reading room archive, report pages at `/research/<slug>`, and the stable `/research/id/<reference>` URLs.
+- **Research Services:** the three services and their sample documents.
+- **Methodology**
+- **About**
+- **Request Research**
+- **Documents:**
+  - How it works;
+  - Privacy;
+  - Accessibility;
+  - Copyright. Public research is licensed CC BY 4.0.
+- **The 404 page**, with an archive search.
+
+Primary navigation: Research · Methodology · About, plus the Commission action.
 
 ## Commercial products
 
