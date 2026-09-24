@@ -1,5 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { allPublications } from "../src/data/publications";
+
+// Derived from the records so adding a report never needs a test edit. The specimen is the stable fixture.
+const everything = `${allPublications.length} ${allPublications.length === 1 ? "publication" : "publications"}`;
+const specimenCard = (page: import("@playwright/test").Page) =>
+  page.locator("article", { hasText: /Lorem ipsum dolor sit amet/ });
 
 const search = (page: import("@playwright/test").Page) => page.getByRole("searchbox", { name: "Search the archive" });
 
@@ -28,14 +34,14 @@ test("area chips toggle a shareable filter", async ({ page }) => {
 
 test("garbage URL parameters fall back to the full archive", async ({ page }) => {
   await page.goto("/research?area=nope&year=abc&sort=x");
-  await expect(page.locator(".archive-result-count").getByText("2 publications", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText(everything, { exact: true })).toBeVisible();
 });
 
 test("no matches offers a way back", async ({ page }) => {
   await page.goto("/research?q=zzzzqqq");
   await expect(page.getByText("No publications match.")).toBeVisible();
   await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(page.locator(".archive-result-count").getByText("2 publications", { exact: true })).toBeVisible();
+  await expect(page.locator(".archive-result-count").getByText(everything, { exact: true })).toBeVisible();
 });
 
 test("typing does not flood browser history", async ({ page }) => {
@@ -50,9 +56,9 @@ test("typing does not flood browser history", async ({ page }) => {
 test("result actions cite with the stable reference", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/research");
-  await page.locator("article").first().getByText("Cite", { exact: true }).click();
-  await page.getByRole("button", { name: "Copy citation" }).click();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain("TC-2026-001");
+  await specimenCard(page).getByText("Cite", { exact: true }).click();
+  await specimenCard(page).getByRole("button", { name: "Copy citation" }).click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain("TC-EX-000");
 });
 
 test("archive with a query has no serious accessibility violations", async ({ page }) => {
@@ -91,8 +97,7 @@ test("the cite popover stays on screen on phones", async ({ page }) => {
 
 test("the specimen cover thumbnail is not indexable", async ({ page, request }) => {
   await page.goto("/research");
-  const specimen = page.locator("article", { hasText: /Lorem ipsum dolor sit amet/ });
-  const src = await specimen.locator(".archive-cover img").getAttribute("src");
+  const src = await specimenCard(page).locator(".archive-cover img").getAttribute("src");
   const response = await request.get(src!);
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
 });
