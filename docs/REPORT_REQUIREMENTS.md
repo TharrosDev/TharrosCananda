@@ -1,6 +1,6 @@
 # Report requirements
 
-This guide is for adding a research report the owner supplies as a PDF. It covers what every site tool needs from that report, where to find each value in the PDF, and the checks that block a merge when something is missing. House-typeset reports (typed `body` blocks, printed by the site) follow `README.md` "Publishing a report" and pass the same record checks.
+This guide is for adding a research report the owner supplies as a PDF. It covers what every site tool needs from that report, where to find each value in the PDF, and the checks that block a merge when something is missing. House-typeset reports (typed `body` blocks, printed by the site) follow `README.md` (Publishing a report) and pass the same record checks.
 
 ## Rule #1: never edit the document
 
@@ -66,15 +66,14 @@ The tests read their expectations from `src/data/publications.ts`. Adding a repo
 These run for every report, including the specimen `TC-EX-000`.
 
 - `tests/publications.test.ts`:
-  - The reference matches `TC-<YEAR>-<NNN>`.
-  - The ISO date is valid.
+  - The reference matches `TC-<YEAR>-<NNN>` (the specimen uses `TC-EX-000`).
+  - `publishedAt` is a valid ISO date.
   - `area` and `type` are known values.
   - The title, authors, summary and tags are filled in.
   - There is at least one record-level source, and every source has a URL and an ISO `retrievedAt`.
   - A supplied report has an empty `body`.
 - `tests/report-pdf.test.ts`:
-  - The PDF and cover exist and the byte count matches.
-  - The text layer matches the page count and contains the title.
-  - The bookmarks are valid.
-  - For supplied PDFs, the file hash is unchanged since intake (Rule #1).
-  - For house reports, the PDF is not stale.
+  - The PDF and cover exist, and the file size matches the manifest.
+  - The extracted text has one entry per page and contains the title.
+  - Supplied PDFs: the file hash is unchanged since intake (Rule #1), and the page size is recorded.
+  - House reports: the PDF is not stale, the text contains the reference, and the bookmarks point at real pages.

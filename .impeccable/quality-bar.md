@@ -1,15 +1,26 @@
-# Quality bar — Tharros Canada
+# Quality bar: Tharros Canada
 
-- A visitor understands the Canada–Europe commercial research proposition and the Commission Research action within five seconds.
-- Services lead the information architecture; public research and data act as evidence of method and expertise.
-- No report, author, client, testimonial, partner, award, image or quantitative finding is fabricated.
-- The Research Archive remains honest when empty, states that absence once, and scales without redesign when verified publications are added.
-- Canadian and European public-source routes are both represented in Methodology.
-- Document pages use a lighter editorial hierarchy instead of repeating the dark commercial hero.
-- Mobile preserves reading order, actions, data equivalents and keyboard accessibility without horizontal scrolling.
-- Long prose stays near 64ch; tabular values use tabular numerals.
-- Sticky elements and anchor targets never obscure keyboard focus or headings.
-- Red means action; steel means data; green means positive state/change, not editorial approval. The wordmark slash is the only standing brand-mark exception.
-- The site looks like a rigorous commercial-intelligence house, not a government site, think tank, generic agency or SaaS dashboard.
-
-- Browser regression checks cover responsive overflow, the commissioning journey and automated accessibility on core routes.
+- **Five-second test:** a visitor understands the proposition and finds the Commission action.
+  - The proposition: independent research across Canada and Europe, research first and commissions second.
+- **Published research leads the information architecture.** The services are how to commission more of it.
+- **No fabrication:** no report, author, client, testimonial, partner, award, image, price or quantitative finding.
+- **No think-tank trappings** it can't show: fellows, funders or policy positions.
+- **`/research` never regresses in tools.** `e2e/archive.spec.ts` is its contract.
+- **The archive is honest when empty.** It states the absence once and scales without redesign.
+- **Methodology shows Canadian and European public-source routes**, and proves the method on a real report.
+- **Document pages use the light document treatment**, not a dark marketing hero.
+- **Layouts are dense.** No empty bands and no floating right-aligned side text.
+- **Readability:**
+  - long prose stays near 64ch;
+  - tabular values use tabular numerals;
+  - no screen text is smaller than 11.5px.
+- **Colour roles:**
+  - red means action;
+  - steel means data;
+  - green means a positive state, never editorial approval;
+  - the wordmark slash is the only standing brand-mark exception.
+- **Accessibility:** WCAG 2.2 AA.
+  - Mobile keeps the reading order, actions, data equivalents and keyboard access, with no horizontal scrolling at 320px.
+  - Sticky elements never hide focus or headings.
+- **Browser checks** cover responsive overflow, the commissioning journey, the archive contract, axe on the core routes, and visual regression.
+- **Finish:** lint, typecheck, unit tests and e2e pass, and `DESIGN.md` matches what shipped.
