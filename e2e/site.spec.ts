@@ -244,7 +244,7 @@ test.describe("home flow", () => {
     const block = page.locator(".research-threshold");
     await expect(block.getByRole("heading", { name: researchHeading })).toBeVisible();
     const slugs = publications.map((p) => `/research/${p.slug}`);
-    for (const link of await block.locator('a[href^="/research/"]').all()) {
+    for (const link of await block.locator('a[href^="/research/"]:not([download])').all()) {
       const href = await link.getAttribute("href");
       if (publications.length) expect(slugs).toContain(href);
       else expect(href).toBe("/research/example-report");

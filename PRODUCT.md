@@ -20,7 +20,7 @@ What they come to do:
 
 ## Product purpose
 
-Tharros Canada is an independent commercial research business, and commissioned human research is its commercial core. The site makes it easy to see what Tharros can research, to inspect its source discipline and published work, and to commission a scoped answer asynchronously.
+Tharros Canada is an independent research business working across Canada and Europe. Commissioned human research on Canada–Europe questions is its commercial core; published data notes that test whether public datasets are fit for use are its second strand. The site makes it easy to see what Tharros can research, to inspect its source discipline and published work, and to commission a scoped answer asynchronously.
 
 ## Positioning
 
@@ -66,6 +66,7 @@ Warm ivory, graphite and soft black, slate, a muted Canadian red for actions, st
   - Defence & Security
   - Energy, Resources & Industry
   - Technology & Strategic Industries
+  - Data Quality & Validity
 - Prefer a narrow real capability over a broad simulated one.
 - Keep commissioning possible without an account or a call.
 - Let demand justify new capability. Accounts, billing, CRM, AI chat and automated report generation have not been built because nothing needs them yet, not because they are ruled out.

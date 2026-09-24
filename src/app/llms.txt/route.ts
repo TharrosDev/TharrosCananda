@@ -13,7 +13,7 @@ export function GET() {
   const lines = [
     "# Tharros Canada",
     "",
-    "> Independent research firm for organizations working between Canada and Europe. Tharros researches trade, defence, energy, industry and technology questions from public, dated and attributed sources, and states the limitations of every finding. Work is commissioned: each engagement is scoped and priced per case, in writing, before it begins. Tharros is not a government body or think tank and does not give legal, tax, regulatory, lobbying or investment advice.",
+    "> Independent research firm working across Canada and Europe. Tharros researches trade, defence, energy, industry and technology questions, and publishes assessments of whether public datasets are fit for use, from public, dated and attributed sources, and states the limitations of every finding. Work is commissioned: each engagement is scoped and priced per case, in writing, before it begins. Tharros is not a government body or think tank and does not give legal, tax, regulatory, lobbying or investment advice.",
     "",
     "## Services",
     "",

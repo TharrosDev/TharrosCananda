@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
     description:
       "Tharros studies the trade, policy, industry and organizations connecting both markets.",
     meta: [
-      { label: "Scope", value: "Canada–Europe" },
+      { label: "Scope", value: "Canada & Europe" },
       { label: "Status", value: "Independent" },
     ],
   });

@@ -15,7 +15,7 @@ export function Footer() {
             <span className="wordmark-slash">/</span>
             <span>CANADA</span>
           </Link>
-          <p>Independent Canada–Europe research.</p>
+          <p>Independent research across Canada and Europe.</p>
           <a className="footer-contact" href={`mailto:${contactEmail}`}>
             {contactEmail}
           </a>

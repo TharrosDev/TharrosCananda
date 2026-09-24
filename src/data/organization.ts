@@ -42,7 +42,9 @@ export function organizationJsonLd(
     "@id": `${url}/#organization`,
     name: "Tharros Canada",
     url,
-    description: "Independent research firm for organizations working between Canada and Europe.",
+    // Raster logo for search results (Google needs at least 112 px, not SVG).
+    logo: `${url}/tharros-logo.png`,
+    description: "Independent research firm working across Canada and Europe.",
     areaServed: ["Canada", "European Union"],
     knowsAbout: researchAreas.map((area) => area.name),
     ...(email ? { email } : {}),

@@ -9,9 +9,9 @@ export default function OpenGraphImage() {
     tone: "light",
     eyebrow: "Research Archive",
     title: "Independent research, published as it is finished.",
-    description: "Trade, defence, energy, industry and technology across Canada and Europe.",
+    description: "Trade, defence, energy, industry, technology and public data across Canada and Europe.",
     meta: [
-      { label: "Scope", value: "Canada–Europe" },
+      { label: "Scope", value: "Canada & Europe" },
       { label: "Status", value: "Growing archive" },
     ],
   });

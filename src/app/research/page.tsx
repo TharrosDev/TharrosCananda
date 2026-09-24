@@ -11,9 +11,9 @@ import { publicationCounts } from "@/lib/metrics";
 import { reportAsset, reportText } from "@/lib/reports";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Canada–Europe Research Archive",
+  title: "Research Archive",
   description:
-    "Independent Tharros Canada research on Canada–Europe trade, defence, energy, industry and technology, searchable in full text.",
+    "Published Tharros Canada research and data notes on trade, defence, energy, industry, technology and public data across Canada and Europe, searchable in full text.",
   path: "/research",
 });
 
@@ -28,7 +28,7 @@ export default async function ResearchPage() {
       <header className="research-hero">
         <div className="research-hero-copy">
           <p>Research archive</p>
-          <h1>Canada–Europe research.</h1>
+          <h1>Published research.</h1>
           <p>Search every report in full, or browse by area, format and year.</p>
         </div>
         <div className="research-hero-manifest">
