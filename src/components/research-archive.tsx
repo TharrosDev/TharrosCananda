@@ -138,7 +138,6 @@ export function ResearchArchive({
   };
 
   const years = Object.keys(facets.year).sort().reverse();
-  const onlySpecimens = docs.length > 0 && docs.every((d) => d.specimen);
   const activeFilters = [state.area, state.type, state.year].filter((v) => v !== "all").length;
   const filtered = state.q.trim() !== "" || activeFilters > 0;
   const suggestions =
@@ -333,13 +332,6 @@ export function ResearchArchive({
           </span>
         </div>
 
-        {onlySpecimens && (
-          <p className="archive-specimen-note">
-            The first Tharros publications are in preparation. The example below shows how each
-            report is published.
-          </p>
-        )}
-
         {results.length ? (
           <ol
             className={compact ? "archive-list is-compact" : "archive-list"}
@@ -445,7 +437,7 @@ function ArchiveCard({
         <div className="archive-card-body">
           <p className="archive-card-meta">
             <span>{doc.reference}</span>
-            <span>{doc.specimen ? `Example · ${doc.type}` : doc.type}</span>
+            <span>{doc.type}</span>
             {areaName && <span>{areaName}</span>}
             <time dateTime={doc.publishedAt}>{formatMonthYear(doc.publishedAt)}</time>
             {doc.pages && <span>{doc.pages} pages</span>}

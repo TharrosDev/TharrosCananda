@@ -1,8 +1,9 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { coreRoutes } from "../src/lib/site";
-import { allPublications, publications } from "../src/data/publications";
+import { publications } from "../src/data/publications";
 import { tracePhrases } from "../src/data/trace-example";
+import { fixturePath } from "./fixture";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
 const researchHeading = publications.length ? "Latest release" : "Public research.";
@@ -12,7 +13,7 @@ const paths = [
   "/research",
   "/research-services",
   "/request-research",
-  "/research/example-report",
+  fixturePath,
   "/this-page-does-not-exist",
 ];
 
@@ -183,7 +184,7 @@ test.describe("tap targets", () => {
     "/research",
     "/research-services",
     "/request-research",
-    "/research/example-report",
+    fixturePath,
     "/about",
     "/methodology",
     "/copyright",
@@ -257,17 +258,13 @@ test.describe("home flow", () => {
     expect(order).toEqual([...order].sort((a, b) => a - b));
   });
 
-  test("the research block lists published work, never the specimen", async ({ page }) => {
+  test("the research block lists published work", async ({ page }) => {
     await page.goto("/");
     const block = page.locator(".home-release");
     await expect(block.getByRole("heading", { name: researchHeading })).toBeVisible();
     const slugs = publications.map((p) => `/research/${p.slug}`);
-    for (const link of await block.locator('a[href^="/research/"]:not([download])').all()) {
-      const href = await link.getAttribute("href");
-      if (publications.length) expect(slugs).toContain(href);
-      else expect(href).toBe("/research/example-report");
-    }
-    await expect(block.getByRole("link", { name: /Lorem ipsum/ })).toHaveCount(0);
+    for (const link of await block.locator('a[href^="/research/"]:not([download])').all())
+      expect(slugs).toContain(await link.getAttribute("href"));
   });
 });
 
@@ -454,12 +451,10 @@ test("the not-found page leads with research, then commissioning", async ({ page
   await expect(links.nth(2)).toHaveAttribute("href", "/research-services");
 });
 
-// One test per sitemap route (from the same sources as the sitemap, at collection) so the sweep spreads across
-// workers instead of running page by page in one long test. The live sitemap.xml is checked against it.
-const sitemapRoutes = [
-  ...coreRoutes.map((route) => route || "/"),
-  ...allPublications.filter((p) => p.indexable || p.specimen).map((p) => `/research/${p.slug}`),
-];
+// One test per core route plus the fixture report, so the sweep spreads across workers and stays the same size
+// however many reports are published. The live sitemap.xml is checked against every route, cheaply, as text.
+const coreSitemapRoutes = coreRoutes.map((route) => route || "/");
+const sweptRoutes = [...coreSitemapRoutes, fixturePath];
 
 test.describe("every sitemap route", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop sweep; the loop sets its own widths");
@@ -470,13 +465,15 @@ test.describe("every sitemap route", () => {
       .map((match) => new URL(match[1]).pathname)
       .filter((path) => !path.endsWith(".pdf"));
     expect(served.length).toBeGreaterThan(8);
-    // The specimen is swept but never listed in the sitemap.
     expect(new Set(served)).toEqual(
-      new Set(sitemapRoutes.filter((path) => path !== "/research/example-report")),
+      new Set([
+        ...coreSitemapRoutes,
+        ...publications.filter((p) => p.indexable).map((p) => `/research/${p.slug}`),
+      ]),
     );
   });
 
-  for (const path of sitemapRoutes) {
+  for (const path of sweptRoutes) {
     test(`${path} has no overflow and no serious accessibility violations`, async ({ page }) => {
       for (const width of [320, 1024]) {
         await page.setViewportSize({ width, height: 800 });

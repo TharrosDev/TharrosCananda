@@ -40,8 +40,7 @@ describe("bot filter", () => {
 });
 
 describe("counted publications", () => {
-  it("never counts the lorem specimen or unknown slugs", () => {
-    expect(isCountedSlug("example-report")).toBe(false);
+  it("never counts unknown slugs", () => {
     expect(isCountedSlug("nope")).toBe(false);
     expect(isCountedSlug(42)).toBe(false);
   });

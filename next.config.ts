@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
-import { allPublications } from "./src/data/publications";
+import { publications } from "./src/data/publications";
 import reportAssets from "./src/data/report-pdf.json";
 
-// Non-indexable reports (e.g. the lorem specimen) keep their PDF and cover out of search engines too.
-const noindexFiles = allPublications
+// Non-indexable reports keep their PDF and cover out of search engines too.
+const noindexFiles = publications
   .filter((p) => !p.indexable)
   .flatMap((p) => {
     const asset = (reportAssets as Record<string, { file: string; cover: string }>)[p.slug];

@@ -26,7 +26,6 @@ const doc = (over: Partial<ArchiveDoc>): ArchiveDoc => ({
   cover: null,
   file: null,
   bytes: null,
-  specimen: false,
   counted: false,
   authors: ["Tharros Canada"],
   contents: [],

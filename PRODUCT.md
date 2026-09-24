@@ -78,7 +78,7 @@ No prices are published. Every engagement is scoped and priced per case, in writ
 - Publisher, source, reference period, licence and limitations stay visible wherever data or research is shown.
 - When a source is unavailable, the site shows that it is unavailable rather than plausible substitute values.
 - Naming a public institution identifies a source only and never implies endorsement.
-- The archive holds real work only. The example report is labelled as a specimen.
+- The archive holds real work only, with no placeholder reports.
 - Commissioned work stays private to the client unless the client asks to publish it, so the archive holds Tharros's own research only. Say this wherever commissioning is offered (`commissionPrivacy` in `src/lib/services.ts`).
 
 ## Brand

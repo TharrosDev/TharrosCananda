@@ -1,13 +1,13 @@
 # Report requirements
 
-This guide is for adding a research report the owner supplies as a PDF. It covers what every site tool needs from that report, where to find each value in the PDF, and the checks that block a merge when something is missing. House-typeset reports (typed `body` blocks, printed by the site) follow `README.md` (Publishing a report) and pass the same record checks.
+This guide is for adding a research report the owner supplies as a PDF, which is the only way reports reach the site. It covers what every site tool needs from that report, where to find each value in the PDF, and the checks that block a merge when something is missing.
 
 ## Rule #1: never edit the document
 
 **No AI edits the supplied PDF.** Don't modify it, re-export it, re-save it, optimise it, add bookmarks or change its metadata. The file in `public/research/<reference>.pdf` must be byte-for-byte what the owner sent.
 
 - Anything the site needs that isn't in the PDF goes into the **record** (`src/data/publications.ts`), never into the file.
-- `npm run report:pdf` only reads a supplied PDF. It records a hash of the file, and `tests/report-pdf.test.ts` fails if the file changes afterwards.
+- `npm run report:pdf` only reads the PDF. It records a hash of the file, and `tests/report-pdf.test.ts` fails if the file changes afterwards.
 - If the PDF can't meet a requirement below, stop and ask the owner for a new export. Don't fix it yourself.
 
 ## What the PDF must have
@@ -56,26 +56,26 @@ Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 ## Intake steps
 
 1. Save the owner's file unchanged as `public/research/<reference>.pdf`.
-2. Add a record to `publications` in `src/data/publications.ts` with `supplied: true`, `body: []` and the fields above. Set `indexable: true` only for verified, published work.
-3. Run `npm run report:pdf -- <slug>`. It reads the PDF and writes the cover JPEG, extracted text, bookmarks, page size and file hash to `src/data/report-*.json`. It needs no build or server for supplied reports.
+2. Add a record to `publications` in `src/data/publications.ts` with the fields above. Set `indexable: true` only for verified, published work.
+3. Run `npm run report:pdf -- <slug>`. It reads the PDF and writes the cover JPEG, extracted text, bookmarks, page size and file hash to `src/data/report-*.json`. It needs no build or server.
 4. Run `npm run lint && npm run typecheck && npm test`, then check `/research/<slug>` in `npm run dev`: viewer, Contents, Limitations, Sources, Cite and archive search.
 5. Open a PR with the drafted-metadata list. Merge once `verify` and `browser` are green and the owner has approved the drafted values.
 
 ## Hard checks (CI)
 
-The tests read their expectations from `src/data/publications.ts`. Adding a report needs no test edits and no new visual baselines: the visual snapshots hide the homepage research list and the archive year chips, and they filter the archive to the specimen.
+The tests read their expectations from `src/data/publications.ts`. Adding a report needs no test edits and no new visual baselines: the visual snapshots hide the homepage research list, the archive year chips and About's latest line, and they filter the archive to the fixture report.
 
-These run for every report, including the specimen `TC-EX-000`.
+**The e2e suite does not grow with the archive.** Browser tests run against one fixed report, `TC-2026-001` (`e2e/fixture.ts`), plus the core routes. Don't loop e2e tests over every publication; per-report checks belong in the file-only unit tests below, which stay fast however many reports there are.
+
+These run for every report:
 
 - `tests/publications.test.ts`:
-  - The reference matches `TC-<YEAR>-<NNN>` (the specimen uses `TC-EX-000`).
+  - The reference matches `TC-<YEAR>-<NNN>`.
   - `publishedAt` is a valid ISO date.
   - `area` and `type` are known values.
   - The title, authors, summary and tags are filled in.
   - There is at least one record-level source, and every source has a URL and no `retrievedAt`.
-  - A supplied report has an empty `body`.
 - `tests/report-pdf.test.ts`:
   - The PDF and cover exist, and the file size matches the manifest.
   - The extracted text has one entry per page and contains the title.
-  - Supplied PDFs: the file hash is unchanged since intake (Rule #1), and the page size is recorded.
-  - House reports: the PDF is not stale, the text contains the reference, and the bookmarks point at real pages.
+  - The file hash is unchanged since intake (Rule #1), and the page size is recorded.

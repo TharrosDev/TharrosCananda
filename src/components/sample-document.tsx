@@ -5,7 +5,7 @@ import type { ServiceSlug } from "@/lib/services";
 import "./sample-document.css";
 
 // Faux documents: placeholder text laid out like a delivered PDF, so a client can see the shape of the output.
-// They follow the house report style (report.css) but are screen-only and never downloadable.
+// Screen-only and never downloadable.
 // ponytail: static lorem only; swap for real redacted samples once work exists.
 
 const L1 =

@@ -1,11 +1,6 @@
 import MiniSearch from "minisearch";
 import type { Publication, PublicationSource } from "@/data/publications";
-import {
-  type ContentsEntry,
-  reportContents,
-  reportLimitations,
-  reportSources,
-} from "@/lib/report-sections";
+import { type ContentsEntry, reportContents } from "@/lib/report-sections";
 import type { ReportAsset } from "@/lib/reports";
 
 /** One archive entry: publication metadata plus its PDF's extracted text, so search reaches inside reports. */
@@ -26,7 +21,6 @@ export type ArchiveDoc = {
   cover: string | null;
   file: string | null;
   bytes: number | null;
-  specimen: boolean;
   /** Real, published work whose reads and citations are counted. */
   counted: boolean;
   authors: string[];
@@ -218,12 +212,11 @@ export function buildArchiveDocs(
       cover: a?.cover ?? null,
       file: a?.file ?? null,
       bytes: a?.bytes ?? null,
-      specimen: Boolean(p.specimen),
-      counted: p.indexable && !p.specimen,
+      counted: p.indexable,
       authors: p.authors,
       contents: a ? reportContents(p, a.outline) : [],
-      sources: reportSources(p),
-      limitations: reportLimitations(p),
+      sources: p.sources,
+      limitations: p.limitations ?? [],
     };
   });
 }

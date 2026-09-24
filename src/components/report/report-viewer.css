@@ -11,7 +11,6 @@
 .report-contents-list a { min-height: 44px; padding: 8px 0 8px 12px; display: flex; align-items: baseline; gap: 8px; border-left: 2px solid var(--rule); color: var(--ink-soft); font-size: 16px; line-height: 1.35; text-decoration: none; transition: color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
 .report-contents-list a:hover { color: var(--ink); border-left-color: var(--rule-strong); }
 .report-contents-list a[aria-current="location"] { color: var(--ink); border-left-color: var(--red); font-weight: 600; }
-.report-contents-number { min-width: 1.2em; color: var(--red); font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .report-contents-title { flex: 1; }
 .report-contents-page { color: var(--slate); font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; }
 

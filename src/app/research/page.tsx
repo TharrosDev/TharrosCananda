@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { Suspense } from "react";
 import { ResearchArchive, ResearchArchiveWithUrl } from "@/components/research-archive";
-import { allPublications, publicationTypes } from "@/data/publications";
+import { publications, publicationTypes } from "@/data/publications";
 import { buildArchiveDocs } from "@/lib/archive";
 import { researchAreas } from "@/lib/research-areas";
 import { publicationCounts } from "@/lib/metrics";
@@ -20,7 +20,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function ResearchPage() {
   // Built at build time: metadata plus each PDF's extracted text, so search reaches inside reports.
-  const docs = buildArchiveDocs(allPublications, reportAsset, reportText);
+  const docs = buildArchiveDocs(publications, reportAsset, reportText);
   const counts = await publicationCounts();
   const archive = { docs, areas: researchAreas, types: publicationTypes, counts };
 

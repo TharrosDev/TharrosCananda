@@ -6,17 +6,17 @@ import { CitationPanel } from "@/components/citation-panel";
 import { ArrowIcon } from "@/components/icons";
 import { ReportActions } from "@/components/report/report-actions";
 import { ReportViewer } from "@/components/report/report-viewer";
-import { allPublications, publicationBySlug } from "@/data/publications";
+import { publications, publicationBySlug } from "@/data/publications";
 import type { CitationInput } from "@/lib/citation";
 import { researchAreas } from "@/lib/research-areas";
-import { reportContents, reportLimitations, reportSources } from "@/lib/report-sections";
+import { reportContents } from "@/lib/report-sections";
 import { reportAsset } from "@/lib/reports";
 import { researchLicence } from "@/lib/licence";
 import { isCountedSlug, publicationCounts } from "@/lib/metrics";
 import { ReadTracker } from "@/components/read-tracker";
 import { formatLongDate, jsonLd, pageMetadata, siteUrl } from "@/lib/site";
 
-export const generateStaticParams = () => allPublications.map((p) => ({ slug: p.slug }));
+export const generateStaticParams = () => publications.map((p) => ({ slug: p.slug }));
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -69,8 +69,7 @@ export default async function ReportPage({ params }: Props) {
     url: stableUrl,
     reference: p.reference,
   };
-  const sources = reportSources(p);
-  const limitations = reportLimitations(p);
+  const { sources, limitations = [] } = p;
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Report",
@@ -102,21 +101,6 @@ export default async function ReportPage({ params }: Props) {
 
   return (
     <>
-      {p.specimen && (
-        <div className="report-notice" role="note">
-          <div>
-            <strong>Example layout</strong>
-            <p>
-              This shows how a Tharros research report is published. Every word is lorem ipsum
-              placeholder text, and the figure contains no data. It is not a publication and is kept
-              out of search engines.
-            </p>
-          </div>
-          <Link className="text-link" href="/research">
-            Back to the research archive <ArrowIcon />
-          </Link>
-        </div>
-      )}
       <header className="report-header">
         {/* The document's running head: format and area on the left, its reference on the right. */}
         <div className="report-header-bar">

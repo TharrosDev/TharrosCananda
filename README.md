@@ -72,19 +72,7 @@ docs/             operations, report intake, evidence policy (index: docs/README
 
 ## Publishing a report
 
-There are two paths:
-
-- **A PDF supplied by the owner** is served unchanged and never edited. Follow `docs/REPORT_REQUIREMENTS.md`; no build is needed.
-- **A house-typeset report** is written as typed `body` blocks and printed by the site. Steps:
-  1. Add a record to `publications` in `src/data/publications.ts`:
-     - a reference `TC-<YEAR>-<NNN>`;
-     - typed `body` blocks;
-     - `indexable: true` only for verified, published work.
-  2. Run `npm run build && npm run report:pdf -- <slug>`.
-     - It prints `/research/<slug>/print` to `public/research/<reference>.pdf`.
-     - It also writes the cover, `src/data/report-text.json` and `src/data/report-pdf.json`.
-     - Commit all of these, because Vercel cannot run Chromium.
-  3. Read the PDF before you commit. `npm test` fails when the record, or any file in `REPORT_SOURCE_PATHS`, changes without regenerating.
+Every report is a PDF the owner supplies, served unchanged and never edited. Follow `docs/REPORT_REQUIREMENTS.md`; no build is needed.
 
 **Indexable reports get:**
 - Google Scholar `citation_*` tags;
@@ -92,7 +80,7 @@ There are two paths:
 - sitemap entries;
 - a stable URL `/research/id/<reference>`.
 
-The example report `TC-EX-000` is a labelled lorem specimen and stays `indexable: false`. Don't add dummy entries to fill the archive.
+Don't add dummy or placeholder entries to fill the archive.
 
 ## Boundaries
 
