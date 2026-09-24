@@ -32,21 +32,30 @@ import { formatCounts, NO_COUNTS, sendMetric } from "@/lib/metrics-client";
 import { formatLongDate, formatMonthYear, siteUrl } from "@/lib/site";
 import { readStorage, writeStorage } from "@/lib/storage";
 
-// Compact rows hide the summary, tags and actions. Compact is the default; Expanded is a per-browser
-// preference ("0"). Kept in memory too, so the toggle still works when storage is blocked; the server
-// render is always compact.
+// Compact rows hide the summary, tags and actions; the record pane (Preview) sits beside the list on
+// wide screens. Compact on and Preview off are the defaults; the other choice is a per-browser
+// preference. Kept in memory too, so the toggles still work when storage is blocked; the server render
+// always uses the defaults.
 const COMPACT_KEY = "tharros.archive.compact";
+const PREVIEW_KEY = "tharros.archive.preview";
 let compactChoice: boolean | null = null;
-const densityListeners = new Set<() => void>();
-const subscribeDensity = (listener: () => void) => {
-  densityListeners.add(listener);
-  return () => densityListeners.delete(listener);
+let previewChoice: boolean | null = null;
+const viewListeners = new Set<() => void>();
+const subscribeView = (listener: () => void) => {
+  viewListeners.add(listener);
+  return () => viewListeners.delete(listener);
 };
 const readCompact = () => compactChoice ?? readStorage(COMPACT_KEY) !== "0";
+const readPreview = () => previewChoice ?? readStorage(PREVIEW_KEY) === "1";
 function setDensity(compact: boolean) {
   compactChoice = compact;
   writeStorage(COMPACT_KEY, compact ? "1" : "0");
-  densityListeners.forEach((listener) => listener());
+  viewListeners.forEach((listener) => listener());
+}
+function setPreview(show: boolean) {
+  previewChoice = show;
+  writeStorage(PREVIEW_KEY, show ? "1" : "0");
+  viewListeners.forEach((listener) => listener());
 }
 
 type Counts = { reads: number; citations: number };
@@ -95,7 +104,8 @@ export function ResearchArchive({
   );
   const set = (patch: Partial<ArchiveState>) => onChange?.({ ...state, ...patch });
 
-  const compact = useSyncExternalStore(subscribeDensity, readCompact, () => true);
+  const compact = useSyncExternalStore(subscribeView, readCompact, () => true);
+  const preview = useSyncExternalStore(subscribeView, readPreview, () => false);
 
   // The field is local so typing stays instant; the URL follows after a short pause. The field only
   // resyncs from the URL when the change came from elsewhere (back/forward, a chip, a suggestion),
@@ -173,8 +183,12 @@ export function ResearchArchive({
   };
 
   return (
-    <div className="archive-tool">
-      <form className="archive-controls" role="search" onSubmit={(event) => event.preventDefault()}>
+    <div className={preview ? "archive-tool has-preview" : "archive-tool"}>
+      <form
+        className="archive-searchbar"
+        role="search"
+        onSubmit={(event) => event.preventDefault()}
+      >
         <label className="archive-search">
           <span>Search the archive</span>
           <input
@@ -189,6 +203,9 @@ export function ResearchArchive({
             /
           </kbd>
         </label>
+      </form>
+
+      <div className="archive-controls">
         {/* Always open on wide screens (CSS); a disclosure on narrow ones, so results come first. */}
         <details className="archive-filters">
           <summary>
@@ -270,7 +287,7 @@ export function ResearchArchive({
             </div>
           </div>
         </details>
-      </form>
+      </div>
 
       <div className="archive-results">
         <div className="archive-result-count">
@@ -298,6 +315,14 @@ export function ResearchArchive({
                 Compact
               </button>
             </span>
+            <button
+              type="button"
+              className="archive-preview-toggle"
+              aria-pressed={preview}
+              onClick={() => setPreview(!preview)}
+            >
+              Preview
+            </button>
             {filtered && (
               <button type="button" className="archive-clear" onClick={clearAll}>
                 Clear all
@@ -357,7 +382,7 @@ export function ResearchArchive({
         )}
       </div>
 
-      {selected && (
+      {preview && selected && (
         <aside className="archive-record-pane" aria-label="Selected publication">
           <ArchiveRecord
             doc={selected}
