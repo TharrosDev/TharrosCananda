@@ -3,12 +3,12 @@ import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { ArrowIcon } from "@/components/icons";
 import { PageHero } from "@/components/page-hero";
-import { commissionSteps as steps } from "@/lib/services";
+import { commissionPrivacy, commissionSteps as steps } from "@/lib/services";
 
 export const metadata: Metadata = pageMetadata({
   title: "How Commissioned Research Works",
   description:
-    "How Tharros Canada scopes, prices, sources, verifies and delivers commissioned Canada–Europe research: written scope first, work only after approval.",
+    "How Tharros Canada scopes, prices, sources, verifies and delivers commissioned research: written scope first, work only after approval, and private to the client unless they choose to publish.",
   path: "/how-it-works",
 });
 
@@ -18,7 +18,7 @@ export default function HowItWorksPage() {
       <PageHero
         variant="document"
         title="How commissioned research works."
-        description="Scope, price and timing are agreed in writing before work begins."
+        description={`Scope, price and timing are agreed in writing before work begins. ${commissionPrivacy}`}
         index={steps.map(([title], position) => ({ label: title, href: `#step-${position + 1}` }))}
       />
       <section className="section process-page">

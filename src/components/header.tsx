@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
 const links: { href: string; label: string; prefetch?: boolean }[] = [
-  { href: "/research-services", label: "Services" },
   { href: "/research", label: "Research" },
   { href: "/methodology", label: "Methodology" },
   { href: "/about", label: "About" },
@@ -101,8 +100,13 @@ export function Header() {
               </Link>
             ))}
           </div>
-          <Link className="nav-action" href="/request-research" onClick={() => setOpen(false)}>
-            Commission research
+          <Link
+            className="nav-action"
+            href="/research-services"
+            aria-current={isCurrent("/research-services") ? "page" : undefined}
+            onClick={() => setOpen(false)}
+          >
+            Commission
           </Link>
         </nav>
       </div>

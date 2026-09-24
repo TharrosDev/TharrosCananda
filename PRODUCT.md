@@ -20,11 +20,11 @@ What they come to do:
 
 ## Product purpose
 
-Tharros Canada is an independent research business working across Canada and Europe. Commissioned human research on Canada–Europe questions is its commercial core; published data notes that test whether public datasets are fit for use are its second strand. The site makes it easy to see what Tharros can research, to inspect its source discipline and published work, and to commission a scoped answer asynchronously.
+Tharros Canada is an independent research institute working across Canada and Europe. Published research comes first: reports on Canada–Europe questions and data notes that test whether public datasets are fit for use. Commissioned research is the second strand and funds the published work. The site makes it easy to see what Tharros can research, to inspect its source discipline and published work, and to commission a scoped answer asynchronously.
 
 ## Positioning
 
-Tharros is not a government body, think tank, legal or regulatory adviser, or generic consultancy. Its credibility comes from sources a reader can inspect, explicit limitations and real published work. The site never implies scale, clients, team members, partnerships or findings that are not verified.
+Tharros presents itself as an independent research institute: research first, commissions second. It is not a government body, legal or regulatory adviser, or generic consultancy, and it makes no think-tank claims it cannot show (fellows, policy positions, funders). Its credibility comes from sources a reader can inspect, explicit limitations and real published work. The site never implies scale, clients, team members, partnerships or findings that are not verified.
 
 ## Current public surfaces
 
@@ -52,6 +52,7 @@ No prices are published. Every engagement is scoped and priced per case, in writ
 - When a source is unavailable, the site shows that it is unavailable rather than plausible substitute values.
 - Naming a public institution identifies a source only and never implies endorsement.
 - The archive holds real work only. The example report is labelled as a specimen.
+- Commissioned work stays private to the client unless the client asks to publish it, so the archive holds Tharros's own research only. Say this wherever commissioning is offered (`commissionPrivacy` in `src/lib/services.ts`).
 
 ## Brand
 

@@ -44,7 +44,7 @@ export function organizationJsonLd(
     url,
     // Raster logo for search results (Google needs at least 112 px, not SVG).
     logo: `${url}/tharros-logo.png`,
-    description: "Independent research firm working across Canada and Europe.",
+    description: "Independent research institute working across Canada and Europe.",
     areaServed: ["Canada", "European Union"],
     knowsAbout: researchAreas.map((area) => area.name),
     ...(email ? { email } : {}),

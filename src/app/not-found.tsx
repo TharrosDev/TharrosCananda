@@ -10,13 +10,13 @@ export default function NotFound() {
       <h1>Page not found.</h1>
       <p>The page may have moved, or the address may be incomplete.</p>
       <nav className="not-found-links" aria-label="Useful pages">
-        <Link className="text-link" href="/research">
-          Research <ArrowIcon />
+        <Link className="button-primary" href="/research">
+          Research archive <ArrowIcon />
+        </Link>
+        <Link className="text-link" href="/methodology">
+          Methodology <ArrowIcon />
         </Link>
         <Link className="text-link" href="/research-services">
-          Services <ArrowIcon />
-        </Link>
-        <Link className="button-primary" href="/request-research">
           Commission research <ArrowIcon />
         </Link>
       </nav>

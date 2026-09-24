@@ -6,7 +6,7 @@ import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
 import { reportAsset } from "@/lib/reports";
 import { researchAreas } from "@/lib/research-areas";
-import { services } from "@/lib/services";
+import { commissionPrivacy, services } from "@/lib/services";
 import { formatLongDate, formatMonthYear, pageMetadata } from "@/lib/site";
 
 const homeTitle = "Tharros Canada | Independent research across Canada and Europe";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: homeTitle,
     description:
-      "Independent research firm working across Canada and Europe: custom research, market assessments and buyer and partner research on trade, defence, energy, industry and technology, plus published assessments of the public data behind them.",
+      "Independent research institute working across Canada and Europe: published research on trade, defence, energy, industry and technology, and assessments of the public data behind it. Research can also be commissioned.",
     path: "/",
   }),
   title: { absolute: homeTitle },
@@ -39,15 +39,15 @@ export default function HomePage() {
           <div className="home-intro-copy">
             <h1>Independent research across Canada and Europe.</h1>
             <p className="home-intro-deck">
-              Custom research, market assessments and buyer and partner research on trade, defence,
-              energy, industry and technology, and published notes on whether public data holds up.
+              Published research on trade, defence, energy, industry and technology, and notes on
+              whether the public data behind it holds up. Questions can also be commissioned.
             </p>
             <div className="hero-actions">
-              <Link className="button-primary" href="/request-research">
-                Commission research <ArrowIcon />
+              <Link className="button-primary" href="/research">
+                Read the research <ArrowIcon />
               </Link>
-              <Link className="text-link" href="/research">
-                View research <ArrowIcon />
+              <Link className="text-link" href="/research-services">
+                Commission research <ArrowIcon />
               </Link>
             </div>
           </div>
@@ -55,34 +55,13 @@ export default function HomePage() {
         </div>
         <div className="home-intro-foot">
           <p>Canada ↔ Europe</p>
-          <Link href="#start">
-            Start with a question <span aria-hidden="true">↓</span>
+          <Link href="#areas">
+            Research areas <span aria-hidden="true">↓</span>
           </Link>
         </div>
       </section>
 
-      <section className="section home-services" id="start">
-        <div className="home-section-lead">
-          <h2>Start with a question.</h2>
-          <p>Every engagement is scoped and priced per case, in writing, before work begins.</p>
-          <Link className="text-link" href="/research-services">
-            All services <ArrowIcon />
-          </Link>
-        </div>
-        <ul className="service-catalogue" aria-label="Research services">
-          {services.map((service) => (
-            <li key={service.slug}>
-              <Link href={`/research-services#${service.slug}`}>
-                <h3>{service.name}</h3>
-                <p>{service.question}</p>
-                <ArrowIcon />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="expertise-spread">
+      <section className="expertise-spread" id="areas">
         <div className="expertise-spread-inner">
           <div className="expertise-statement">
             <p>Research areas</p>
@@ -200,11 +179,29 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="closing-cta">
-        <h2>Have a research question?</h2>
-        <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
-        </Link>
+      <section className="section home-services" id="commission">
+        <div className="home-section-lead">
+          <h2>Commissioned research.</h2>
+          <p>
+            Set a question and Tharros answers it with the same sources and method. Every commission
+            is scoped and priced in writing before work begins.
+          </p>
+          <p>{commissionPrivacy}</p>
+          <Link className="text-link" href="/research-services">
+            Commission research <ArrowIcon />
+          </Link>
+        </div>
+        <ul className="service-catalogue" aria-label="What can be commissioned">
+          {services.map((service) => (
+            <li key={service.slug}>
+              <Link href={`/research-services#${service.slug}`}>
+                <h3>{service.name}</h3>
+                <p>{service.question}</p>
+                <ArrowIcon />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
     </>
   );
