@@ -23,7 +23,7 @@ The owner can get bookmarks in Word through *File → Save as → PDF → Option
 
 ## Field map: record ← PDF
 
-Take each value **verbatim** from the PDF. Sections are often named differently, so match on meaning rather than on the exact heading.
+Copy the title, authors, date and sources exactly as the PDF gives them. The `summary` and `limitations` may be rephrased to read well on the site, but they must stay faithful to the report and add no claims, figures or conclusions it doesn't make. Sections are often named differently, so match on meaning rather than on the exact heading.
 
 | Record field | Used by | Where to find it in the PDF |
 |---|---|---|

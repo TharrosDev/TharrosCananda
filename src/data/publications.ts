@@ -53,7 +53,7 @@ export type Publication = {
   tags?: string[];
   sources: PublicationSource[];
   body: ReportBlock[];
-  /** Stated limitations quoted verbatim from a supplied PDF; house reports use a "Limitations" heading in `body`. */
+  /** Stated limitations of a supplied PDF, rephrased faithfully for the site; house reports use a "Limitations" heading in `body`. */
   limitations?: string[];
   /** The author's own PDF at public/research/<reference>.pdf, served byte-for-byte (docs/REPORT_REQUIREMENTS.md). `body` stays empty. */
   supplied?: true;
@@ -75,14 +75,14 @@ export const publications: Publication[] = [
     origin: "independent",
     publishedAt: "2026-09-16",
     authors: ["Magnus Abdelnour"],
-    // Verbatim from the PDF's "Fit for Use Assessment".
+    // Rephrased from the PDF's "Overview" and "Fit for Use Assessment".
     summary:
-      "This dataset is fit to be used for needs pertaining to geographic distribution, characteristics, and trends in reported traffic collisions in the City of Ottawa. While the dataset is well suited for identifying broader collision trends across Ottawa, the absence of 2023 limits its reliability for continuous analysis and weakens any findings and conclusions that depend on complete 2017 to 2024 comparisons.",
+      "An assessment of the City of Ottawa's open dataset of 94,406 reported traffic collisions from 2017 to 2024, excluding 2023. The data suits analysis of where and how collisions happen and of broad trends, but the missing 2023 year weakens any continuous 2017 to 2024 comparison.",
     tags: ["Ottawa", "Traffic collisions", "Open data", "Fitness for use"],
-    // Verbatim from "Quality & Limitations" and "Technical Contents".
+    // Rephrased from "Quality & Limitations" and "Technical Contents".
     limitations: [
-      "However, the complete absence of 2023 creates a significant gap and limits the dataset’s usefulness for continuous 2017 to 2024 trend analysis.",
-      "However, I found no separate data dictionary or methodological guide.",
+      "The dataset has no 2023 records, which limits continuous 2017 to 2024 trend analysis.",
+      "No separate data dictionary or methodological guide was found for the dataset.",
     ],
     sources: [
       {
