@@ -9,6 +9,7 @@ import { buildArchiveDocs } from "@/lib/archive";
 import { researchAreas } from "@/lib/research-areas";
 import { publicationCounts } from "@/lib/metrics";
 import { reportAsset, reportText } from "@/lib/reports";
+import "./research.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "Research Archive",
@@ -27,14 +28,14 @@ export default async function ResearchPage() {
     <>
       <header className="research-banner">
         <h1>Published Research</h1>
+        <p>
+          Every report records its sources, retrieval dates and limitations.{" "}
+          <Link href="/methodology">
+            Methodology <ArrowIcon />
+          </Link>
+        </p>
       </header>
-      <section className="archive-principle">
-        <p>Every report records its sources, retrieval dates and limitations.</p>
-        <Link href="/methodology">
-          Methodology <ArrowIcon />
-        </Link>
-      </section>
-      <section className="section section--compact archive-page">
+      <section className="archive-page" aria-label="Research archive">
         {/* Without JavaScript (or before hydration) the default view renders; the URL-aware tool takes over after. */}
         <Suspense fallback={<ResearchArchive {...archive} />}>
           <ResearchArchiveWithUrl {...archive} />

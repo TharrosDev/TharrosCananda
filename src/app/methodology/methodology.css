@@ -48,20 +48,7 @@
 .method-head h2, .atlas-head h2, .evidence-classes h2 { margin: 0 0 6px; font-size: clamp(32px, 3vw, 44px); letter-spacing: -.015em; }
 .method-head p, .atlas-head p { max-width: 64ch; margin: 0; color: var(--slate); font-size: 18px; }
 .method-body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: start; view-timeline-name: --clauses; view-timeline-axis: block; }
-.method-rail { grid-column: 1 / span 3; position: sticky; top: calc(var(--header-height) + 32px); padding-left: 22px; }
-.method-rail ol { margin: 0; padding: 0; list-style: none; }
-.method-rail a { min-height: 44px; padding: 9px 0; display: flex; align-items: baseline; gap: 12px; color: var(--slate); font-size: 17px; font-weight: 600; text-decoration: none; transition: color var(--dur-1) var(--ease-out); }
-.method-rail a span { font-size: 13px; font-variant-numeric: tabular-nums; }
-.method-rail a:hover, .method-rail a[aria-current] { color: var(--ink); }
-.method-rail a[aria-current] span { color: var(--steel); }
-.method-rail-progress { position: absolute; top: 12px; bottom: 12px; left: 0; width: 2px; background: var(--rule); }
-.method-rail-progress::after { content: ""; position: absolute; inset: 0; background: var(--steel); transform-origin: top; }
-@keyframes rail-fill { from { transform: scaleY(0); } }
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .method-rail-progress::after { animation-name: rail-fill; animation-duration: auto; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --clauses; animation-range: contain 0% contain 100%; }
-  }
-}
+.method-body .method-rail { grid-column: 1 / span 3; }
 .method-clauses { grid-column: 4 / -1; margin: 0; padding: 0; list-style: none; }
 .method-clauses > li { padding: 30px 0 44px; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); column-gap: clamp(28px, 3vw, 48px); }
 .method-clauses > li::before { background: var(--rule-strong); }
@@ -125,7 +112,6 @@
 }
 
 @media (max-width: 980px) {
-  .method-rail { display: none; }
   .method-clauses { grid-column: 1 / -1; }
   .method-clauses > li { grid-template-columns: minmax(0, 1fr); }
   .clause-note { grid-column: 1; grid-row: auto; margin-top: 22px; }

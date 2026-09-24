@@ -8,6 +8,11 @@ const specimenCard = (page: import("@playwright/test").Page) =>
   page.locator("article", { hasText: /Lorem ipsum dolor sit amet/ });
 
 const search = (page: import("@playwright/test").Page) => page.getByRole("searchbox", { name: "Search the archive" });
+/** Narrow screens fold the filters behind a "Filters" disclosure; wide screens always show them. */
+const openFilters = async (page: import("@playwright/test").Page) => {
+  const summary = page.locator(".archive-filters > summary");
+  if (await summary.isVisible()) await summary.click();
+};
 
 test("full-text search finds words inside the PDF and highlights them", async ({ page }) => {
   await page.goto("/research");
@@ -24,6 +29,7 @@ test("typos still find the report", async ({ page }) => {
 
 test("area chips toggle a shareable filter", async ({ page }) => {
   await page.goto("/research");
+  await openFilters(page);
   const chip = page.getByRole("group", { name: "Research area" }).getByRole("button", { name: /Trade & Economic Integration/ });
   await chip.click();
   await expect(page).toHaveURL(/area=trade-economic-integration/);
@@ -113,4 +119,50 @@ test("compact rows hide the summary, tags and actions, and the choice survives a
   await expect(specimenCard(page).locator(".archive-summary")).toBeHidden();
   await page.getByRole("group", { name: "List density" }).getByRole("button", { name: "Expanded" }).click();
   await expect(specimenCard(page).locator(".archive-summary")).toBeVisible();
+});
+
+test("the record pane follows the selected result and links matches to their page", async ({ page, isMobile }) => {
+  test.skip(isMobile, "The record pane is the wide-screen layout; phones open the record under each entry");
+  await page.goto("/research?q=vestibulum");
+  const pane = page.getByRole("complementary", { name: "Selected publication" });
+  await expect(pane.getByRole("heading", { name: /Lorem ipsum dolor sit amet/ })).toBeVisible();
+  const match = pane.getByRole("link", { name: /p\. \d/ }).first();
+  await expect(match).toHaveAttribute("href", /\/research\/example-report#page=\d+&search=vestibulum/i);
+  await expect(pane.getByRole("heading", { name: "Sources" })).toBeVisible();
+});
+
+test("slash jumps to the search field", async ({ page, isMobile }) => {
+  test.skip(isMobile, "A keyboard shortcut");
+  await page.goto("/research");
+  await page.locator("main h1").click();
+  await page.keyboard.press("/");
+  await expect(search(page)).toBeFocused();
+  await expect(search(page)).toHaveValue("");
+});
+
+test("phones fold the filters, and the record opens under its entry", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "The narrow layout");
+  await page.goto("/research");
+  const areas = page.getByRole("group", { name: "Research area" });
+  await expect(areas).toBeHidden();
+  await openFilters(page);
+  await expect(areas).toBeVisible();
+  const card = specimenCard(page);
+  await card.getByText("Record", { exact: true }).click();
+  await expect(card.getByRole("link", { name: /p\. 1/ }).first()).toHaveAttribute("href", /#page=1$/);
+});
+
+test("a search match opens the report at its page with the word found", async ({ page }) => {
+  await page.goto("/research/example-report#page=2&search=vestibulum");
+  await expect(page.locator("[data-report-viewer]")).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  await expect(page.getByRole("searchbox", { name: "Find in report" })).toHaveValue("vestibulum");
+  await expect(page.locator('.report-sheet[data-page="2"]')).toBeInViewport();
+});
+
+test("the not-found page searches the archive", async ({ page }) => {
+  await page.goto("/this-page-does-not-exist");
+  await page.getByLabel("Search the research").fill("lorem");
+  await page.getByLabel("Search the research").press("Enter");
+  await expect(page).toHaveURL(/\/research\?q=lorem/);
+  await expect(page.getByRole("link", { name: /Lorem ipsum dolor sit amet/ }).first()).toBeVisible();
 });

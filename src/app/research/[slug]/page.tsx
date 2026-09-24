@@ -117,11 +117,15 @@ export default async function ReportPage({ params }: Props) {
         </div>
       )}
       <header className="report-header">
-        <div className="report-header-main">
-          <p className="report-header-kicker">
+        {/* The document's running head: format and area on the left, its reference on the right. */}
+        <div className="report-header-bar">
+          <p>
             {p.type} ·{" "}
             {area ? <Link href={`/research?area=${area.slug}`}>{area.name}</Link> : p.area}
           </p>
+          <p>{p.reference}</p>
+        </div>
+        <div className="report-header-main">
           <h1>{p.title}</h1>
           {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
           <p className="report-header-abstract">{p.summary}</p>
@@ -178,6 +182,8 @@ export default async function ReportPage({ params }: Props) {
           pages={asset.pages}
           title={p.title}
           contents={reportContents(p, asset.outline)}
+          cover={asset.cover}
+          slug={p.slug}
           pageWidth={asset.width}
           pageHeight={asset.height}
         />
@@ -195,16 +201,25 @@ export default async function ReportPage({ params }: Props) {
               <ol className="report-appendix-sources">
                 {sources.map((s, i) => (
                   <li key={i}>
-                    {s.publisher}.{" "}
-                    {s.url ? (
-                      <a href={s.url} rel="noreferrer">
-                        {s.title}
-                      </a>
-                    ) : (
-                      <em>{s.title}</em>
-                    )}
-                    .{s.period && ` ${s.period}.`}
-                    {s.retrievedAt && ` Retrieved ${s.retrievedAt}.`}
+                    <span>{s.publisher}</span>
+                    <span>
+                      {s.url ? (
+                        <a href={s.url} rel="noreferrer">
+                          {s.title}
+                        </a>
+                      ) : (
+                        <em>{s.title}</em>
+                      )}
+                      {s.period && <small>{s.period}</small>}
+                    </span>
+                    <span>
+                      {s.retrievedAt && (
+                        <>
+                          Retrieved{" "}
+                          <time dateTime={s.retrievedAt}>{formatLongDate(s.retrievedAt)}</time>
+                        </>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ol>

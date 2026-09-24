@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 // Key routes on desktop and mobile; the footer year is masked. Content that grows with every
-// published report is hidden (home research list, archive year chips) or filtered to the specimen
+// published report is hidden (home latest release and area counts, archive year chips) or filtered to the specimen
 // (the archive query), so adding a report never needs new baselines. Functional specs cover that content.
 const routes = [
   ["home", "/"],
@@ -23,7 +23,8 @@ for (const [name, path] of routes) {
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
     await page.addStyleTag({
-      content: '.research-threshold, .archive-chips[aria-label="Year"] { display: none !important; }',
+      content:
+        '.home-release, .home-field-count, .archive-chips[aria-label="Year"], .archive-group-label:has(+ .archive-chips[aria-label="Year"]) { display: none !important; }',
     });
     await expect(page).toHaveScreenshot(`${name}.png`, {
       fullPage: true,

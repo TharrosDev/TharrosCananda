@@ -40,3 +40,32 @@ FIRST VIEWPORT: Methodology: H1 and deck (cols 1–4) beside the provenance trac
 FORM: overdrive direction "Evidence Instruments", chosen by the owner through a structured question (no concept-seed roll). Signature interactions: the trace's steel leaders drawn from a phrase's line to its record fields (WAAPI); the sample cover morphing into the reader (View Transitions); the brief filling live and taking a green "Received" stamp. Motion grammar: section rules draw in on a view() timeline (transform only), the method rail fills on a named view timeline; nothing is hidden by scroll-linked motion.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+
+## Direction contract: Front page and Reading room (Home, Research, documents; 2026-09-24)
+
+THESIS: The proof comes first, and the research tool does not regress. Home leads with the latest real release as a document. The archive becomes a reading room where a search reaches inside the PDFs and lands on the page it matched.
+
+OWN-WORLD: Tokens are unchanged, and the Evidence Instruments grammar is extended:
+- ivory-light sheets under dark running-head bars (the Methodology trace bar);
+- steel for counts, page numbers and match highlights;
+- red for actions only;
+- square geometry and one rule per boundary.
+The 12-column construction grid is exposed only behind the home front page.
+
+STORY:
+1. Home: read the latest release, then the five fields on the Atlantic plate, then commission a question.
+2. Research: search or filter in the rail, scan the results, and inspect the record (matches by page, contents, sources, limitations) without leaving the page.
+3. Open the report at the exact page.
+
+FIRST VIEWPORT:
+- Home: the H1 and actions (cols 1–6) beside the latest-release sheet (cols 7–12).
+- Research: the slim banner with the method line, then the rail, results and record pane side by side from 1180px.
+- Documents: the H1 and deck beside the document's record (updated, contact, standard or licence), then the contents rail beside one sheet of numbered clauses.
+
+FORM: The overdrive directions "Front page" (Home) and "Reading room" (Research) were chosen by the owner through a structured question, alongside tame document upgrades for Privacy, Accessibility, Copyright, How it works, the 404 and the report page.
+- Signature interaction: a report cover on Home or in the archive morphs into the report's first page (React ViewTransition, shared name `cover-<slug>`).
+- Match deep links: `#page=N&search=word` opens the viewer at the page, with its find already running.
+- Every archive feature is preserved: search, facets, URL state, density, sort, suggestions, Cite, PDF, Copy link and the no-JS list.
+
+FINISH: The build ends with lint, typecheck, unit tests and the e2e suites passing. Visual baselines are refreshed on CI and reviewed, DESIGN.md is rewritten to the shipped state, and the new labels are flagged for owner approval in the PR. The owner asked for no multi-agent review, so the finish check was done inline.

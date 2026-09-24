@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 export type HeroIndexItem = { label: string; href?: string; note?: string };
+export type HeroRecordItem = { label: string; value: ReactNode };
 export type PageHeroVariant = "home" | "standard" | "task" | "document";
 
 /** Shared dark hero with deliberately different density for home, editorial and task pages. */
@@ -11,6 +12,7 @@ export function PageHero({
   index,
   indexLabel = "On this page",
   variant = "standard",
+  record,
   children,
 }: {
   title: string;
@@ -18,6 +20,8 @@ export function PageHero({
   index?: readonly HeroIndexItem[];
   indexLabel?: string;
   variant?: PageHeroVariant;
+  /** A document's own facts (updated, contact, standard), in place of an index. */
+  record?: readonly HeroRecordItem[];
   children?: ReactNode;
 }) {
   const hasLinkedItems = index?.some((item) => Boolean(item.href)) ?? false;
@@ -57,6 +61,16 @@ export function PageHero({
               {indexContents}
             </div>
           ))}
+        {record && (
+          <dl className="hero-record">
+            {record.map((item) => (
+              <div key={item.label}>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </section>
   );

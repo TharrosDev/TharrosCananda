@@ -2,8 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-/** Contents rail for the method clauses: marks the clause being read. Plain in-page links without JavaScript. */
-export function MethodRail({ items }: { items: readonly { id: string; label: string }[] }) {
+/** Contents rail for numbered clauses (Methodology, the policy pages): marks the clause being read. Plain in-page links without JavaScript. */
+export function MethodRail({
+  items,
+  label = "Method clauses",
+}: {
+  items: readonly { id: string; label: string }[];
+  label?: string;
+}) {
   const [current, setCurrent] = useState(items[0]?.id);
 
   useEffect(() => {
@@ -28,7 +34,7 @@ export function MethodRail({ items }: { items: readonly { id: string; label: str
   }, [items]);
 
   return (
-    <nav className="method-rail" aria-label="Method clauses">
+    <nav className="method-rail" aria-label={label}>
       <span className="method-rail-progress" aria-hidden="true" />
       <ol>
         {items.map((item, index) => (

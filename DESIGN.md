@@ -65,7 +65,7 @@ Long prose is normally capped around 64ch. Large interpretive copy can use appro
 
 **Schibsted Grotesk** is the operating voice: navigation, prose, controls, metadata and tabular readouts.
 
-- Home hero: clamp(58px, 7.5vw, 116px), tightening to the mobile display scale below 700px
+- Home front page: clamp(56px, 6.4vw, 104px), tightening to clamp(46px, 13.5vw, 64px) below 700px
 - Standard dark hero: clamp(44px, 4.8vw, 72px)
 - Compact task hero: clamp(42px, 4.2vw, 64px)
 - Light document hero: standard display scale on ivory
@@ -79,7 +79,7 @@ There are four purposeful hero modes.
 
 ### Home
 
-The strongest brand moment. Dark full-bleed surface, large proposition and action-led index.
+The strongest brand moment, set as a front page on ivory: the statement-scale proposition and its actions sit beside the latest release, which stands as a document sheet. The 12-column construction grid shows faintly behind it; this is the only place it is exposed. The dark full-bleed band follows as the field plate (see Homepage architecture).
 
 ### Standard
 
@@ -91,7 +91,7 @@ Compact dark hero for a working interface such as Request Research. The task sho
 
 ### Document
 
-Light ivory editorial header for Research Archive, How It Works, Privacy and Accessibility. These pages should read like documents rather than repeated marketing landings. Methodology, About and Research Services open on light ivory too, but each leads with its own instrument (below); Request Research uses the task hero and a desk.
+Light ivory editorial header for How It Works, Privacy, Accessibility and Copyright. These pages read as documents, not as repeated marketing landings. In place of an index, the header carries the document's own record: updated, contact, and the standard or licence where one applies. The body is one ivory-light sheet of numbered clauses beside a sticky contents rail. The rail is the Methodology `MethodRail`, labelled "Sections", and its steel bar fills on the `--clauses` view timeline. The clause numbers are steel and exist so that a clause can be referred to. Short lists sit two-up (`ul.is-grid`). The wording stays as the statement of record, and the treatment stays tame. The Research archive uses a slim title banner instead (see Research archive). Methodology, About and Research Services open on light ivory too, but each leads with its own instrument (below); Request Research uses the task hero and a desk.
 
 ### Instruments
 
@@ -111,15 +111,23 @@ The navigation tightens before collapsing. Around 1020px it becomes a labelled *
 
 ## Homepage architecture
 
-1. Atlantic map first viewport, brand proposition and Commission Research
-2. "Start with a question": the three services as a ruled list, each led by the question it answers
-3. Four-area Canada–Europe research summary
-4. Public research (selected releases, or one calm empty-state line plus the example report)
-5. Ivory closing CTA (shared `.closing-cta`), so the footer is the only dark block at the foot of the page
+Home is a front page (`src/app/page.tsx`, with styles in `src/app/home.css`):
 
-Section headings share one size (`--type-section`); no chapter out-shouts the next, and an empty state is never the loudest heading on the page.
+1. **Front page (ivory).**
+   - Cols 1–6 hold the H1, the deck, and Read the research and Commission research.
+   - Cols 7–12 hold the **latest release**, the newest publication or a `featured` one. The specimen never appears here. It has:
+     - a dark bar reading "Latest release", with the reference and format;
+     - under it, an ivory-light sheet with the real cover, the title and the summary;
+     - a ledger: area, published, author, length, and readership when counts are available (`data-volatile`);
+     - Read the report and Download PDF.
+   - Up to two earlier releases follow as ruled rows.
+   - With nothing published, the bar reads "Public research." over one calm line and the example report link.
+2. **Field plate (dark, full width).** "Five connected fields." and the Atlantic map fill cols 1–7. Beside them, the five research areas form a ledger:
+   - an area that holds publications links to its archive filter and shows a steel count;
+   - an area without any shows only its scope, so no link leads to an empty filter.
+3. **Commissioned research.** Cols 1–4 hold the heading, the copy and `commissionPrivacy`. Beside them are the three services, each led by the question it answers: the flagship across the row and the other two side by side. This section closes the page, so there is no separate closing CTA.
 
-The homepage uses the Atlantic route between Canada and Europe as its opening visual material, then alternates large editorial statements with working registers. It proves the operation through method and source registers and must not pretend unfinished research is already published.
+Section headings share one size (`--type-section`), so no chapter out-shouts the next, and an empty state is never the loudest heading on the page. Proof comes first, and the page must never pretend unfinished research is published. The visual tests hide the latest release and the area counts, because both change with every publication.
 
 ## Research archive
 
@@ -127,18 +135,42 @@ The archive is a permanent structure for real work.
 
 When empty, it states the absence once, calmly, and shows the publication formats without defensive anti-fabrication copy.
 
-When populated, it supports:
+When populated, it is a **reading room** (`src/components/research-archive.tsx`, with styles in `src/app/research/research.css`). It sits under the slim "Published Research" banner, which has the sources-and-limitations line and the Methodology link directly beneath it. From 1180px, three zones sit side by side:
 
-- search across titles, summaries and tags;
-- research-area filter;
-- publication-type filter;
-- publication-date filter and date/type metadata;
-- tags;
-- stable report/article links.
+- **Rail** (cols 1–3, sticky on screens at least 820px tall):
+  - Full-text search across titles, summaries, tags, references and the text inside every PDF, with fuzzy and prefix matching. "/" focuses it.
+  - The research areas as ruled rows with steel counts. The pressed row fills with ink and shows its scope.
+  - Format and Year chips.
+  - Every facet counts against the query and the other filters, and disables at zero.
+- **Results** (cols 4–8):
+  - The aria-live count, sort (relevance while searching), Expanded/Compact density (remembered per browser) and Clear all.
+  - Ruled entries, each with its cover, metadata, a highlighted snippet or the summary, and tags.
+  - Actions on each entry: Cite, PDF (counted as a read) and Copy link (with a visible fallback field).
+  - The selected entry lifts onto an ivory-light sheet, and ↑/↓ step between titles.
+- **Record pane** (cols 9–12, sticky). It runs its full length with no inner scroll and shows, for the selected publication:
+  - the title, Read the report and PDF;
+  - a ledger: reference, published, author, area and readership;
+  - the abstract, when the entry is not already showing it;
+  - **Matches in this report**: the first match on each page, linking to `/research/<slug>#page=N&search=<word>`. Without a search it shows **In this report** instead: the PDF's contents with page links;
+  - its sources (publisher, document, retrieved) and its limitations.
+
+At narrower widths:
+- From 980 to 1180px, the pane gives way to a **Record** disclosure under each entry.
+- Below 980px, the filters fold behind a **Filters** disclosure that shows the active-filter count. On wide screens they are forced open through `::details-content`, falling back to the disclosure where that is unsupported.
+
+Every view is in the URL (`?q=&area=&type=&year=&sort=`), written with `replaceState`, and garbage parameters fall back to the full archive. A failed search offers "Did you mean" suggestions and Clear all filters. Without JavaScript, the default list still renders and links to every report.
 
 The planned formats are Intelligence Brief, Research Report, Market Note, Data Note and Sector Analysis. The five research areas are archive taxonomy and a homepage summary, not a dedicated public route.
 
-A real report page should eventually include verified authorship, date, executive summary, key findings, charts/tables, methodology, sources, limitations, related research and a commission CTA.
+**Report page** (`src/app/research/[slug]/page.tsx`), top to bottom:
+
+1. A dark running head: the format, the area (linked to its filter) and the reference.
+2. The title, subtitle and abstract, beside the record ledger and actions.
+3. The PDF viewer.
+4. Sources as a register across the page: publisher, document, retrieved.
+5. Limitations beside the citation panel, then a three-up Continue row.
+
+The viewer shows the cover image on page 1 until pdf.js draws it. It honours `#page=N&search=word`, the same fragment a browser's own PDF viewer understands: it scrolls to the page and starts its find on the first match there.
 
 ## Research areas
 
@@ -161,7 +193,7 @@ Research Services (`/research-services`) opens with the H1 and research-first de
 
 About is dense by the owner's request: no floating side notes or empty bands. It opens with a full-width statement H1, then the deck beside the Ottawa–Brussels great-circle route drawn as the masthead rule (the homepage map's path, static, captioned as the route between the two capitals). **The institute, on the record** is a two-up ledger counted live from the site's data: published research, the archive's research areas, sources in the register and research services. Counts that grow with each publication carry `data-volatile` for the visual tests. **Research principles** follow as a two-up grid, each linking to where it shows on the site. The **independence boundary** puts the statement and contact line beside a square ink frame holding what Tharros provides, with what lies outside the boundary listed below it (shared with How it works via `provides` / `doesNotProvide`). It must not invent founder/team profiles. Add verified people only when accurate public biographical information is approved.
 
-Privacy and Accessibility remain separate utility pages.
+Privacy, Accessibility and Copyright remain separate utility pages, in the document treatment (see Hero hierarchy, Document).
 
 ## Methodology
 
@@ -173,7 +205,11 @@ Request Research (`/request-research`) is a task-led desk: a compact dark hero w
 
 ## Motion
 
-The homepage evidence route is the primary authored data motion. It draws the evidence path into an already-readable static composition. Hover transitions may move arrows/underlines. Scroll-linked motion may move or draw things, never reveal them. Section-opening rules (`.ruled`) draw in on a `view()` timeline, and the Methodology rail's progress bar fills on a named view timeline. A scroll-driven keyframe may animate only transform, translate, scale or stroke-dashoffset, always from an already-drawn static state, and only inside `@media (prefers-reduced-motion: no-preference)` (`tests/css-guard.test.ts` enforces this). Interaction-led motion: the trace leaders draw with WAAPI after a phrase is chosen, the sample cover morphs into the reader, and the request brief's Received stamp settles once. Avoid ornamental motion. All motion must collapse under `prefers-reduced-motion`.
+The homepage evidence route is the primary authored data motion. It draws the evidence path into an already-readable static composition. Hover transitions may move arrows/underlines. Scroll-linked motion may move or draw things, never reveal them. Section-opening rules (`.ruled`) draw in on a `view()` timeline, and the Methodology rail's progress bar fills on a named view timeline. A scroll-driven keyframe may animate only transform, translate, scale or stroke-dashoffset, always from an already-drawn static state, and only inside `@media (prefers-reduced-motion: no-preference)` (`tests/css-guard.test.ts` enforces this). Interaction-led motion:
+- the trace leaders draw with WAAPI after a phrase is chosen;
+- the sample cover morphs into the reader;
+- a report cover on Home or in the archive morphs into the report's first page when it opens. Both ends use React `<ViewTransition name="cover-<slug>" share="cover">`, and only one element per page carries a name;
+- the request brief's Received stamp settles once. Avoid ornamental motion. All motion must collapse under `prefers-reduced-motion`.
 
 ## Responsive rules
 
@@ -198,11 +234,15 @@ Primary actions are square muted-red fields with a trailing arrow. Secondary act
 
 ### Atlantic map
 
-The homepage map (`src/components/atlantic-map.tsx`) is an orthographic line drawing of the North Atlantic: Natural Earth coastlines, a faint 10° graticule and the real great-circle route from Ottawa to Brussels in red, with endpoint coordinates and the route distance. Edges fade through a radial mask. Labels are HTML overlays so they keep true type sizes at every width. It is geography only, never an implied dataset. The coastline and graticule paths were generated once and are served as the cached static file `public/atlantic-map.svg`; the route stays inline so it can animate. The route draw is disabled under reduced motion.
+The homepage map (`src/components/atlantic-map.tsx`, on the field plate) is an orthographic line drawing of the North Atlantic: Natural Earth coastlines, a faint 10° graticule and the real great-circle route from Ottawa to Brussels in red, with endpoint coordinates and the route distance. Edges fade through a radial mask. Labels are HTML overlays so they keep true type sizes at every width. It is geography only, never an implied dataset. The coastline and graticule paths were generated once and are served as the cached static file `public/atlantic-map.svg`; the route stays inline so it can animate. The route draw is disabled under reduced motion.
 
 ### Research archive
 
-The empty archive shows a truthful zero count and the five supported formats. Once publications exist, a square control row provides title/summary/tag search plus research-area, publication-type and year filters, followed by a newest-first result count and ruled publication entries.
+The empty archive shows a truthful zero count and the five supported formats. Once publications exist, it is the reading room described above: rail, results and record pane.
+
+### 404
+
+The not-found page puts a statement H1 beside a plain GET search form into the archive, which works without JavaScript. The three useful pages follow as ruled rows, in this order: Research archive, Methodology, Commission research.
 
 ### Research scope desk
 
