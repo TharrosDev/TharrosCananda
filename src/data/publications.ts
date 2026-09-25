@@ -63,8 +63,14 @@ export const publications: Publication[] = [
     authors: ["Magnus Abdelnour"],
     // Rephrased from the PDF's "Overview" and "Conclusion".
     summary:
-      "What Canada's place in the EU's €150B SAFE defence initiative has cost so far, and which Canadian firms have gained. Canada has paid a €10 million contribution and owes a 15% fee on Canadian content in qualifying contracts, first billed in March 2027. Nine months on, the only public Canadian SAFE contract is Marconi Technologies' order of tactical radios for Poland, worth over C$10 million, and it is too soon to judge whether the agreement has opened the \"massive new opportunities\" the government announced.",
-    tags: ["EU SAFE", "Defence procurement", "Canada–EU", "Defence exports"],
+      "What Canada's place in the EU's €150B Security Action for Europe (SAFE) defence initiative has cost so far, and which Canadian firms have gained. Canada has paid a €10 million contribution and owes a 15% fee on Canadian content in qualifying contracts, first billed in March 2027. Nine months on, the only public Canadian SAFE contract is Marconi Technologies' order of tactical radios for Poland, worth over C$10 million, and it is too soon to judge whether the agreement has opened the \"massive new opportunities\" the government announced.",
+    tags: [
+      "EU SAFE",
+      "Security Action for Europe",
+      "Defence procurement",
+      "Canada–EU",
+      "Defence exports",
+    ],
     // Rephrased from "What this report cannot show".
     limitations: [
       "Neither the European Commission nor the Canadian government has published a full list of SAFE contract awards, so Canadian contracts may exist that are not yet public.",
