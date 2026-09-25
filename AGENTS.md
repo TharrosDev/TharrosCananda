@@ -78,7 +78,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 - **The business is pre-incorporation.**
   - `organization.ts` fields stay empty until the owner supplies verified values, and the UI hides empty fields.
   - `organization.lead` stays `null`.
-- **Published research.** The first real report, `TC-2026-001`, was published 2026-09-16.
+- **Published research.** The first real report, `TC-2026-001`, was published 2026-09-16. Since 2026-09-24 every report is `indexable: false` (live by link, out of search, sitemap, llms.txt and readership counts) until the owner decides to go public. Don't flip it back unasked.
 - **Every report is the owner's own PDF.** The lorem specimen `TC-EX-000` and the house-typeset pipeline were removed on 2026-09-24 at the owner's request; don't add placeholder reports back.
 - **Sample documents** on Research Services are lorem placeholders approved by the owner. Keep them labelled as placeholders.
 - **No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.

@@ -165,7 +165,7 @@ export const publications: Publication[] = [
         url: "https://ted.europa.eu",
       },
     ],
-    indexable: true,
+    indexable: false,
   },
   {
     slug: "ottawa-traffic-collisions-2017-2024",
@@ -207,7 +207,7 @@ export const publications: Publication[] = [
         url: "https://ottawa.ca/en/city-hall/open-transparent-and-accountable-government/open-data/open-data-licence-version-20",
       },
     ],
-    indexable: true,
+    indexable: false,
   },
 ];
 

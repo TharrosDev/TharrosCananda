@@ -39,9 +39,9 @@ test("viewer fails closed with a download link when the PDF cannot load", async 
   ).toHaveAttribute("href", fixturePdf);
 });
 
-test("a published report carries Scholar tags and its reference", async ({ page }) => {
+test("a report carries Scholar tags only when indexable, and its reference", async ({ page }) => {
   await page.goto(fixturePath);
-  await expect(page.locator('meta[name="citation_title"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="citation_title"]')).toHaveCount(fixture.indexable ? 1 : 0);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Analytical Report");
   await expect(page.getByText(ref).first()).toBeVisible();
 });
