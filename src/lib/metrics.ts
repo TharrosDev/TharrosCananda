@@ -47,6 +47,7 @@ export async function recordEvent(slug: string, kind: MetricKind, reader: string
 
 /** All counts keyed by slug, refreshed every 10 minutes; null when unavailable so pages hide counts instead of guessing. */
 export async function publicationCounts(): Promise<Record<string, Counts> | null> {
+  if (!metricsSecret() || !publications.some((p) => p.indexable)) return null;
   const db = supabase();
   if (!db) return null;
   try {
@@ -59,10 +60,23 @@ export async function publicationCounts(): Promise<Record<string, Counts> | null
       },
     );
     if (!response.ok) return null;
-    const rows = (await response.json()) as { slug: string; reads: number; citations: number }[];
-    return Object.fromEntries(
-      rows.map((row) => [row.slug, { reads: Number(row.reads), citations: Number(row.citations) }]),
-    );
+    const rows: unknown = await response.json();
+    if (!Array.isArray(rows)) return null;
+    const entries: [string, Counts][] = [];
+    for (const row of rows) {
+      if (!row || typeof row !== "object" || typeof row.slug !== "string") return null;
+      if (!isCountedSlug(row.slug)) continue;
+      // Invalid counts are unavailable, never coerced into a plausible zero or shown as NaN.
+      if (
+        !Number.isSafeInteger(row.reads) ||
+        row.reads < 0 ||
+        !Number.isSafeInteger(row.citations) ||
+        row.citations < 0
+      )
+        return null;
+      entries.push([row.slug, { reads: row.reads, citations: row.citations }]);
+    }
+    return Object.fromEntries(entries);
   } catch {
     return null;
   }

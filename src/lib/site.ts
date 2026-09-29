@@ -1,7 +1,22 @@
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://tharros.ca").replace(
-  /\/+$/,
-  "",
-);
+/** Canonical URLs require a bare HTTP(S) origin; an empty or malformed optional override uses the default. */
+export function resolveSiteUrl(value: string | undefined) {
+  try {
+    const url = new URL(value?.trim() ?? "");
+    if (
+      (url.protocol === "https:" || url.protocol === "http:") &&
+      !url.username &&
+      !url.password &&
+      /^\/+$/u.test(url.pathname) &&
+      !url.search &&
+      !url.hash
+    )
+      return url.origin;
+  } catch {
+    // Optional deployment configuration must not break every page's metadata.
+  }
+  return "https://tharros.ca";
+}
+export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 /** JSON for a <script type="application/ld+json">; escapes "<" so data can never close the tag. */
 export const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");

@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { canvasRatio, findPattern, nextZoom } from "../src/lib/viewer";
+import { canvasRatio, findPattern, nextZoom, reportPage } from "../src/lib/viewer";
 
 describe("report viewer helpers", () => {
+  it("addresses only finite whole pages from fields and fragments", () => {
+    expect(reportPage(2.5, 3)).toBe(2);
+    expect(reportPage(Infinity, 3)).toBe(1);
+    expect(reportPage(NaN, 3)).toBe(1);
+    expect(reportPage(-1, 3)).toBe(1);
+    expect(reportPage(100, 3)).toBe(3);
+  });
   it("caps the canvas pixel ratio so a page stays under the iOS canvas limit", () => {
     expect(canvasRatio(816, 1056, 2)).toBe(2);
     const ratio = canvasRatio(1632, 2112, 3);

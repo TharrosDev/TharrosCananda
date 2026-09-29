@@ -25,6 +25,11 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    const desktop = window.matchMedia("(min-width: 1021px)");
+    const onResize = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", onResize);
     // Locks page scroll behind the mobile sheet (CSS: html[data-menu-open]).
     document.documentElement.setAttribute("data-menu-open", "");
     function onPointerDown(event: PointerEvent) {
@@ -58,6 +63,7 @@ export function Header() {
       document.documentElement.removeAttribute("data-menu-open");
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
+      desktop.removeEventListener("change", onResize);
     };
   }, [open]);
 

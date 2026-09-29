@@ -26,6 +26,8 @@ After the research-only site is deployed:
 
 The historical receiver contract and code remain in `supabase/functions/research-intake/`; do not redeploy it for the research-only site. The `research_requests` and `intake_config` migrations are historical and must not be removed from migration history.
 
+The retained source shares a bounded streaming body reader with the site's readership route, rejects malformed UUIDs and email recipients, and returns 503 when configuration or storage is unreachable. These source corrections do not reactivate the public request endpoint or replace the retirement runbook above.
+
 ## Research readership
 
 Archive cards and the report header show "N views · N citations" for indexable publications. These are engaged unique readers, not page views.
@@ -33,10 +35,13 @@ Archive cards and the report header show "N views · N citations" for indexable 
 - **Read:** the report viewer has been visible for 20 seconds in total, or the PDF was downloaded. Counted once per reader per publication per 30 days.
 - **Citation:** a successful "Copy citation". Counted once per reader per publication (key kept for 12 months).
 - **Not counted:** non-indexable publications, bots, cross-site requests and browsers sending Global Privacy Control.
+- **Availability:** counts are fetched only when `METRICS_SECRET` and the server credentials are set and at least one report is approved for indexing. Malformed database counts are hidden. Requests are capped at 512 UTF-8 bytes as the body streams in; both Origin and Fetch Metadata are checked, and `Sec-GPC: 1` disables counting at the server.
 - **Reader key:** `HMAC(METRICS_SECRET, ip|slug)`. Raw IPs are never stored, and keys cannot be linked across publications. The browser also remembers what it has counted.
-- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). Expired keys are purged on each event and by the daily pg_cron job `purge-publication-events` (03:23 UTC). If Supabase is unreachable, counts are hidden.
+- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). The daily pg_cron job `purge-publication-events` (03:23 UTC) purges expired keys. After the targeted-dedupe migration below, each event refreshes only its own expired key. If Supabase is unreachable, counts are hidden.
 
 Every table has RLS enabled with no policies. Only `service_role` can touch them, and the Supabase advisor's "RLS enabled, no policy" INFO notices are expected. SECURITY DEFINER functions use `search_path = ''`.
+
+The migration `20260929160000_targeted_publication_dedupe.sql` refreshes only the current reader's expired dedupe key with an atomic upsert, avoiding a global expired-key delete on every event. The daily purge and retention windows stay in place. Apply this migration separately after the site changes merge; until then the previous database function remains active. Local TypeScript and browser checks do not validate execution of this migration in PostgreSQL.
 
 ## Runbooks
 

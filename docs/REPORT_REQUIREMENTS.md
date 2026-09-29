@@ -55,11 +55,11 @@ Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 ## Intake steps
 
 1. Save the owner's file unchanged as `public/research/<reference>.pdf`.
-2. Add a record to `publications` in `src/data/publications.ts` with the fields above. Set `indexable: true` only for verified, published work.
+2. Add a record to `publications` in `src/data/publications.ts` with the fields above. Keep `indexable: false` until the owner explicitly approves public indexing, even for verified, published work.
 3. Run `npm run report:pdf -- <slug>`. It reads the PDF and writes the cover JPEG, extracted text, bookmarks, page size and file hash to `src/data/report-*.json`. It needs no build or server.
 4. Run `npm run lint && npm run typecheck && npm test`, then check `/research/<slug>` in `npm run dev`: viewer, Contents, Limitations, Sources, Cite and archive search.
 5. Open a PR with the drafted-metadata list. Merge once `verify` and `browser` are green and the owner has approved the drafted values.
-6. After the deploy, tell Bing (and so DuckDuckGo, Copilot and ChatGPT search) about the new page with IndexNow. The key file is `public/89cf8d3fe454283021685da5dd58be1b.txt`:
+6. Only after explicit owner approval of public indexing and deployment with `indexable: true`, submit the page to IndexNow. Never submit a non-indexable report. The key file is `public/89cf8d3fe454283021685da5dd58be1b.txt`:
 
    ```sh
    curl -s -o /dev/null -w "%{http_code}\n" "https://api.indexnow.org/indexnow?url=https://tharros.ca/research/<slug>&key=89cf8d3fe454283021685da5dd58be1b"

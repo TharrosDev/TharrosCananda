@@ -19,31 +19,52 @@ const records = slugs.map((slug) => {
   return record;
 });
 
-async function extract(bytes) {
-  const doc = await getDocument({ data: new Uint8Array(bytes), useSystemFonts: false }).promise;
+async function extract(doc) {
   const pages = [];
   for (let n = 1; n <= doc.numPages; n += 1) {
     const content = await (await doc.getPage(n)).getTextContent();
-    const text = content.items.map((item) => ("str" in item ? item.str + (item.hasEOL ? "\n" : "") : "")).join("");
-    pages.push(text.replace(/[ \t]+/g, " ").replace(/ ?\n ?/g, "\n").trim());
+    const text = content.items
+      .map((item) => ("str" in item ? item.str + (item.hasEOL ? "\n" : "") : ""))
+      .join("");
+    pages.push(
+      text
+        .replace(/[ \t]+/g, " ")
+        .replace(/ ?\n ?/g, "\n")
+        .trim(),
+    );
   }
   // The PDF's own bookmarks become the on-page contents: title, depth, page and how far down that page it starts.
   const outline = [];
   const walk = async (items, level) => {
     for (const item of items ?? []) {
       const dest = typeof item.dest === "string" ? await doc.getDestination(item.dest) : item.dest;
-      if (Array.isArray(dest) && dest[0]) {
+      if (Array.isArray(dest) && dest[0] !== undefined && dest[0] !== null) {
         const index = typeof dest[0] === "number" ? dest[0] : await doc.getPageIndex(dest[0]);
-        const height = (await doc.getPage(index + 1)).view[3];
-        // XYZ destinations carry the target's distance from the page bottom in PDF points.
-        const top = dest[1]?.name === "XYZ" && typeof dest[3] === "number" ? Math.min(1, Math.max(0, 1 - dest[3] / height)) : 0;
-        outline.push({ title: item.title.trim(), level, page: index + 1, top: Math.round(top * 1000) / 1000 });
+        const page = await doc.getPage(index + 1);
+        const viewport = page.getViewport({ scale: 1 });
+        // Use the viewport transform so crop offsets and rotated pages are handled correctly.
+        const top =
+          dest[1]?.name === "XYZ" && typeof dest[3] === "number"
+            ? Math.min(
+                1,
+                Math.max(
+                  0,
+                  viewport.convertToViewportPoint(dest[2] ?? page.view[0], dest[3])[1] /
+                    viewport.height,
+                ),
+              )
+            : 0;
+        outline.push({
+          title: item.title.trim(),
+          level,
+          page: index + 1,
+          top: Math.round(top * 1000) / 1000,
+        });
       }
       await walk(item.items, level + 1);
     }
   };
   await walk(await doc.getOutline(), 0);
-  await doc.cleanup();
   return { pages, outline };
 }
 
@@ -53,24 +74,38 @@ async function ingest(record) {
   const file = `/research/${record.reference}.pdf`;
   const cover = `/research/${record.reference}-cover.jpg`;
   const bytes = await readFile(join("public", file));
-  const { pages, outline } = await extract(bytes);
-  const words = pages.join(" ").split(/\s+/).filter(Boolean).length;
-  // A scan has no text layer: search, find and reading time would all come up empty.
-  if (words < 20 * pages.length) throw new Error(`${record.slug}: ${file} has almost no text layer (${words} words). Ask the author for a PDF exported from Word, not a scan.`);
-  if (!squash(pages.join(" ")).includes(squash(record.title))) throw new Error(`${record.slug}: the record title does not appear in ${file}. Copy it from the PDF verbatim.`);
+  const loadingTask = getDocument({ data: new Uint8Array(bytes), useSystemFonts: false });
+  try {
+    // Text, bookmarks and cover share one PDF document; always release its worker, including on errors.
+    const doc = await loadingTask.promise;
+    const { pages, outline } = await extract(doc);
+    const words = pages.join(" ").split(/\s+/).filter(Boolean).length;
+    // A scan has no text layer: search, find and reading time would all come up empty.
+    if (words < 20 * pages.length)
+      throw new Error(
+        `${record.slug}: ${file} has almost no text layer (${words} words). Ask the author for a PDF exported from Word, not a scan.`,
+      );
+    if (!squash(pages.join(" ")).includes(squash(record.title)))
+      throw new Error(
+        `${record.slug}: the record title does not appear in ${file}. Copy it from the PDF verbatim.`,
+      );
 
-  const doc = await getDocument({ data: new Uint8Array(bytes), useSystemFonts: false }).promise;
-  const first = await doc.getPage(1);
-  const [, , width, height] = first.view;
-  // Cover thumbnail 816px wide, the width the viewer and archive expect.
-  const viewport = first.getViewport({ scale: 816 / width });
-  const canvas = createCanvas(Math.round(viewport.width), Math.round(viewport.height));
-  await first.render({ canvas, canvasContext: canvas.getContext("2d"), viewport }).promise;
-  await writeFile(join("public", cover), await canvas.encode("jpeg", 82));
-  await doc.cleanup();
+    const first = await doc.getPage(1);
+    const { width, height } = first.getViewport({ scale: 1 });
+    // Cover thumbnail 816px wide, the width the viewer and archive expect.
+    const viewport = first.getViewport({ scale: 816 / width });
+    const canvas = createCanvas(Math.round(viewport.width), Math.round(viewport.height));
+    await first.render({ canvas, canvasContext: canvas.getContext("2d"), viewport }).promise;
+    await writeFile(join("public", cover), await canvas.encode("jpeg", 82));
 
-  const sha = createHash("sha256").update(bytes).digest("hex").slice(0, 16);
-  return { pages, asset: { file, cover, pages: pages.length, bytes: bytes.length, sha, outline, width, height } };
+    const sha = createHash("sha256").update(bytes).digest("hex").slice(0, 16);
+    return {
+      pages,
+      asset: { file, cover, pages: pages.length, bytes: bytes.length, sha, outline, width, height },
+    };
+  } finally {
+    await loadingTask.destroy();
+  }
 }
 
 const readJson = async (path) => JSON.parse(await readFile(path, "utf8"));
@@ -85,7 +120,9 @@ for (const record of records) {
   const { pages, asset } = await ingest(record);
   texts[record.slug] = pages;
   manifest[record.slug] = asset;
-  console.log(`${record.slug}: ${asset.pages} pages, ${asset.bytes} bytes, ${asset.outline.length} outline entries`);
+  console.log(
+    `${record.slug}: ${asset.pages} pages, ${asset.bytes} bytes, ${asset.outline.length} outline entries`,
+  );
 }
 
 await writeJson(manifestPath, manifest);

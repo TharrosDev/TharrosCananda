@@ -12,4 +12,5 @@ Each fact lives in one doc; the others link to it. Update a doc in the same PR a
 | [`REPORT_REQUIREMENTS.md`](REPORT_REQUIREMENTS.md) | Adding a report the owner supplies as a PDF, and the checks it must pass | You are publishing a report |
 | [`DATA_SOURCES.md`](DATA_SOURCES.md) | Source register, evidence rules, rules for any future live data | You are adding sources, data or figures |
 | [`SECURITY.md`](../SECURITY.md) | Reporting a vulnerability | You found a security issue |
+| [`AUDIT-2026-09-29.md`](AUDIT-2026-09-29.md) | Codebase findings, fixes and scoped validation evidence | You are reviewing the September 29 audit changes |
 | [`.impeccable/`](../.impeccable/) | Design direction contract and quality bar for design work | You are running a design pass |

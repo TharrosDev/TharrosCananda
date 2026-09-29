@@ -138,8 +138,16 @@ export function runArchiveQuery(
 
 /** Case-insensitive whole-word pattern for the given terms (regex characters escaped); null when empty. */
 export function termPattern(terms: string[], flags = "i") {
-  const escaped = terms.filter(Boolean).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  return escaped.length ? new RegExp(`\\b(${escaped.join("|")})\\b`, flags) : null;
+  const escaped = [...new Set(terms.filter(Boolean))]
+    .sort((a, b) => b.length - a.length)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  // JavaScript's \b only knows ASCII word characters. Reports also contain French names and accents.
+  return escaped.length
+    ? new RegExp(
+        `(?<![\\p{L}\\p{N}_])(${escaped.join("|")})(?![\\p{L}\\p{N}_])`,
+        flags.includes("u") ? flags : `${flags}u`,
+      )
+    : null;
 }
 
 /** Plain-text window around the first matching term, ellipsised; null when no term appears in the text. */
@@ -167,9 +175,11 @@ export function pageHits(
   radius = 80,
 ) {
   const hits: { page: number; term: string; snippet: string }[] = [];
+  const pattern = termPattern(terms);
+  if (!pattern) return hits;
   for (let i = 0; i < doc.pageStarts.length && hits.length < max; i += 1) {
     const text = doc.text.slice(doc.pageStarts[i], doc.pageStarts[i + 1]);
-    const term = termPattern(terms)?.exec(text)?.[0];
+    const term = pattern.exec(text)?.[0];
     const found = term && snippet(text, terms, radius);
     if (found) hits.push({ page: i + 1, term, snippet: found });
   }

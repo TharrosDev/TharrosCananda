@@ -1,8 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { isBot, isCountedSlug, readerKey } from "../src/lib/metrics";
 import { alreadyCounted, formatCounts, sendMetric } from "../src/lib/metrics-client";
 
 const DAY = 86_400_000;
+afterEach(() => vi.unstubAllGlobals());
 
 describe("reader key", () => {
   it("is stable for one reader and publication, and never contains the IP", () => {
@@ -56,6 +57,7 @@ describe("browser dedupe window", () => {
     expect(alreadyCounted(String(now - 200 * DAY), "cite", now)).toBe(true);
     expect(alreadyCounted(null, "cite", now)).toBe(false);
     expect(alreadyCounted("garbage", "read", now)).toBe(false);
+    expect(alreadyCounted(String(now + DAY), "read", now)).toBe(false);
   });
 });
 
@@ -70,6 +72,28 @@ describe("count formatting", () => {
 });
 
 describe("sendMetric", () => {
+  it("suppresses overlapping sends and releases a failed attempt for retry", async () => {
+    let finish!: (response: Response) => void;
+    const fetchMock = vi.fn(() => new Promise<Response>((resolve) => (finish = resolve)));
+    vi.stubGlobal("fetch", fetchMock);
+    sendMetric("concurrent-report", "read");
+    sendMetric("concurrent-report", "read");
+    expect(fetchMock).toHaveBeenCalledOnce();
+    finish(new Response(null, { status: 503 }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    sendMetric("concurrent-report", "read");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    finish(new Response(null, { status: 503 }));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  it("sends nothing under Global Privacy Control", () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("navigator", { globalPrivacyControl: true });
+    sendMetric("private-report", "cite");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
   it("remembers an event only after the server accepted it", async () => {
     const store = new Map<string, string>();
     vi.stubGlobal("localStorage", {

@@ -61,6 +61,7 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
     const claimRight = text.getBoundingClientRect().right - origin.left;
     const lines = button.getClientRects();
     const line = lines[lines.length - 1];
+    if (!line) return setPaths([]);
     const targets = [...box.querySelectorAll<HTMLElement>(".trace-record > div[data-active]")];
     const next = targets.flatMap((row) => {
       const rect = row.getBoundingClientRect();
@@ -77,13 +78,19 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
   }, [active]);
 
   useEffect(() => {
+    let active = true;
     measure();
     const box = root.current;
     if (!box) return;
     const observer = new ResizeObserver(() => measure());
     observer.observe(box);
-    document.fonts?.ready.then(() => measure());
-    return () => observer.disconnect();
+    void document.fonts?.ready.then(() => {
+      if (active) measure();
+    });
+    return () => {
+      active = false;
+      observer.disconnect();
+    };
   }, [measure]);
 
   // Draw the leaders in after an interaction; the first render and resizes place them without motion.

@@ -29,7 +29,7 @@ export default function AccessibilityPage() {
         title="Accessibility."
         description="The standard the site aims for, how it is checked, and what is still imperfect."
         record={[
-          { label: "Updated", value: "September 23, 2026" },
+          { label: "Updated", value: "September 29, 2026" },
           { label: "Standard", value: "WCAG 2.2 AA" },
           { label: "Contact", value: <a href={`mailto:${contactEmail}`}>{contactEmail}</a> },
         ]}
@@ -49,12 +49,13 @@ export default function AccessibilityPage() {
             <p>Every change to the site runs automated checks before it is published:</p>
             <ul>
               <li>
-                An axe accessibility audit of every page, which blocks serious and critical issues.
+                An axe accessibility audit of the core pages and a representative report, which
+                blocks serious and critical issues.
               </li>
               <li>No horizontal scrolling at widths from 320 to 1440 pixels.</li>
               <li>Touch targets of at least 44 pixels on phones.</li>
               <li>Consistent, visible keyboard focus on links, buttons and form fields.</li>
-              <li>Keyboard use of the menu, the report viewer and the request form.</li>
+              <li>Keyboard use of the menu, the research archive and the report viewer.</li>
             </ul>
             <p>
               The site also includes a skip link, labelled form fields with clear errors, reduced

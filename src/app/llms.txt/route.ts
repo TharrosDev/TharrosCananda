@@ -26,7 +26,7 @@ export function GET() {
             `- [${p.title}](${siteUrl}/research/${p.slug}) (${p.type}, ${p.publishedAt}): ${p.summary}`,
         )
       : [
-          "No research has been published yet. The archive lists publications as they are released.",
+          "No research is currently approved for public indexing. Reports available by link are omitted from this listing.",
         ]),
     "",
     "## Key pages",

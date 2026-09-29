@@ -2,13 +2,12 @@ import type { NextConfig } from "next";
 import { publications } from "./src/data/publications";
 import reportAssets from "./src/data/report-pdf.json";
 
-// Non-indexable reports keep their PDF and cover out of search engines too.
-const noindexFiles = publications
-  .filter((p) => !p.indexable)
-  .flatMap((p) => {
-    const asset = (reportAssets as Record<string, { file: string; cover: string }>)[p.slug];
-    return asset ? [asset.file, asset.cover] : [];
-  });
+// Non-indexable reports keep their PDF, cover and generated social image out of search engines too.
+const unindexed = publications.filter((p) => !p.indexable);
+const noindexFiles = unindexed.flatMap((p) => {
+  const asset = (reportAssets as Record<string, { file: string; cover: string }>)[p.slug];
+  return asset ? [asset.file, asset.cover] : [];
+});
 
 const isProduction = process.env.NODE_ENV === "production";
 // ponytail: script-src keeps 'unsafe-inline' for Next's inline bootstrap scripts. A nonce would force every
@@ -86,6 +85,10 @@ const nextConfig: NextConfig = {
       },
       ...noindexFiles.map((source) => ({
         source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      })),
+      ...unindexed.map((p) => ({
+        source: `/research/${p.slug}/:path*`,
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       })),
       // next/image serves covers from /_next/image?url=<file>: gate that URL too.
