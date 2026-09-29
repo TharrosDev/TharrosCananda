@@ -26,9 +26,9 @@ typography:
   display: "Source Serif 4, Georgia, serif"
   body: "Schibsted Grotesk, Helvetica Neue, Arial, sans-serif"
 spacing:
-  page: "clamp(64px, 7vw, 104px)"
-  section: "clamp(52px, 5.5vw, 80px)"
-  block: "clamp(32px, 4vw, 56px)"
+  page: "clamp(48px, 6vw, 96px)"
+  section: "clamp(40px, 5vw, 72px)"
+  block: "clamp(24px, 3.5vw, 48px)"
   readingMeasure: "64ch"
 ---
 
@@ -75,8 +75,8 @@ The visual material is **research itself**: source registers, archival metadata,
 - **Body:** 18px / 1.6, and 17px at 640px and below.
 - **Section headings:** all share `--type-section`, clamp(40px, 4.4vw, 64px), so no chapter out-shouts the next.
 - **Statement H1s (openings):**
-  - Home: clamp(56px, 6.4vw, 104px);
-  - About: clamp(52px, 6.2vw, 98px);
+  - Home: clamp(56px, 6.4vw, 96px);
+  - About: clamp(52px, 6.2vw, 96px);
   - Methodology: clamp(46px, 4.6vw, 72px);
   - the 404: clamp(52px, 6.4vw, 96px).
   - Home and About tighten to about clamp(46px, 13.5vw, 64–72px) on phones.
@@ -89,18 +89,25 @@ The visual material is **research itself**: source registers, archival metadata,
 
 ## Layout and responsive rules
 
-- **Shell:** a 12-column grid, `--shell: min(1440px, 100vw − 2 × gutter)`.
+- **Shell:** a 12-column grid capped at 1440px. Its width subtracts the start and end gutters from the containing block, rather than using `100vw`, so a scrollbar never enlarges the page. Each gutter respects the device's safe-area inset.
   - The construction grid is visible only behind the Home front page.
 - **Around 1020px:** the primary navigation collapses into a labelled **Menu** control.
 - **1180px:** the archive's three zones (rail, results, record pane) appear side by side.
+- **1180px and below:** the report title and record stack; from 641px the record and actions share a two-column row. Methodology margin notes move beneath their clause rather than squeezing beside it.
 - **980px:**
   - major split layouts stack;
   - the archive filters fold behind a **Filters** disclosure;
 - **760px:** the Methodology trace stacks its claim over the record.
 - **640px:** indexes, controls and ledgers become single-column, and the body text drops to 17px.
-- **420px:** the footer becomes one column.
+- **641–980px:** the homepage field ledger and method notes use two columns, as does the Methodology publisher register. About principles stay two-up until 640px.
+- **560px and below:** the PDF toolbar has explicit rows in the same order as keyboard focus: page, zoom, find, full screen and download. At 380px and below page and zoom each receive a row.
+- **420px:** the wordmark tightens to preserve the labelled Menu button; contents links become one column. Footer navigation stays two columns.
 
 No page may scroll horizontally at a 320 CSS px viewport. Mobile keeps the reading order, the actions, HTML equivalents for graphics, and keyboard access.
+
+Page, section, block and row spacing have distinct fluid roles: 48–96px, 40–72px, 24–48px and 16–28px. Phone sections should not inherit desktop-sized empty bands. Reading measures stay bounded on ultrawide screens; full-width dark bands carry the background, not stretched paragraphs. Landscape viewports at 600px high and below release contents rails, maps and PDF toolbars from sticky positioning so the reading area remains usable.
+
+Standalone PDF and citation controls have 44px targets at every width, including touch tablets. Search inputs in the PDF use at least 16px type. Phone archive entries retain the cover beside the title but place the summary, tags, actions and inline record across the entry's full width; an open citation grows in normal flow. Citation URLs and metadata can wrap without widening the page.
 
 ## Page openings
 
@@ -145,7 +152,7 @@ Proof comes first. An empty state is never the loudest heading, and the page nev
 
 **When populated,** it sits under the slim "Published Research" banner, with the sources-and-limitations line and the Methodology link beneath it. The **search bar** spans the full width on top: full-text search across titles, summaries, tags, references and the text inside every PDF, with fuzzy and prefix matching. "/" focuses it. From 1180px, three zones sit side by side below it:
 
-- **Rail** (cols 1–3; sticky on screens at least 820px tall):
+- **Rail** (cols 1–3; sticky on screens at least 820px tall when the panel fits below the header):
   - the research areas as ruled rows with steel counts. The pressed row fills with ink and shows its scope;
   - Format and Year chips;
   - every facet counts against the query and the other filters, and disables at zero.
@@ -156,7 +163,7 @@ Proof comes first. An empty state is never the loudest heading, and the page nev
   - ruled entries, each with its cover, metadata, a highlighted snippet or the summary, and tags;
   - actions on each entry: Cite, PDF (counted as a read) and Copy link (with a visible fallback field);
   - with the pane open, the selected entry lifts onto an ivory-light sheet; ↑/↓ step between titles.
-- **Record pane** (cols 9–12, when Preview is on; sticky; runs its full length with no inner scroll). For the selected publication it shows:
+- **Record pane** (cols 9–12, when Preview is on; sticky only when its measured height fits below the header; otherwise in normal page flow, with no inner scroll). A ResizeObserver updates this as the content or viewport changes. For the selected publication it shows:
   - the title, Read the report and PDF;
   - a ledger: reference, published, author, area and readership;
   - the abstract, when the entry isn't already showing it;
@@ -197,6 +204,7 @@ The viewer's fullscreen fallback contains keyboard focus, makes the surrounding 
    - A square-elbow steel leader is measured and drawn from the phrase's line to each field.
    - Below 760px, the claim stacks over the record, and a "Traced to" line replaces the leaders.
 2. **Rule by rule:** a sticky contents rail (`MethodRail`) beside five clauses, each with a steel "In TC-2026-001" margin note.
+   - At 980px and below the contents stay visible as an "On this page" index above the clauses, two-up until 420px, then single-column. Short landscape screens keep the rail in normal flow.
    - The rail marks the current clause with an IntersectionObserver.
    - Its steel progress bar fills on a named view timeline.
 3. **Source atlas:** publisher seats plotted on the Atlantic line drawing, inverted to ink, beside the register.
@@ -227,6 +235,7 @@ About states that Tharros is an independent student research project. No persona
 These read as documents, not as marketing landings.
 - **Header:** a light `PageHero` that carries the document's own record: updated, contact, and the standard or licence where one applies.
 - **Body:** one ivory-light sheet of numbered clauses beside a sticky contents rail.
+  - At 980px and below the contents become an "On this page" index above the sheet, retaining plain anchor links and the no-JavaScript path.
   - The rail is the Methodology `MethodRail`, labelled "Sections", and its steel bar fills on the `--clauses` view timeline.
   - The clause numbers are steel, so a clause can be referred to.
   - Short lists sit two-up (`ul.is-grid`).

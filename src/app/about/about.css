@@ -3,7 +3,7 @@
 
 /* ---------- Masthead ---------- */
 .about-masthead { width: var(--shell); margin: 0 auto; padding: clamp(48px, 5vw, 76px) 0 var(--space-section); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: clamp(28px, 3vw, 40px); align-items: end; }
-.about-masthead h1 { grid-column: 1 / -1; max-width: none; margin: 0; font-size: clamp(52px, 6.2vw, 98px); font-weight: 350; letter-spacing: -.036em; line-height: .93; }
+.about-masthead h1 { grid-column: 1 / -1; max-width: none; margin: 0; font-size: clamp(52px, 6.2vw, 96px); font-weight: 350; letter-spacing: -.036em; line-height: .98; }
 .about-deck { grid-column: 1 / span 5; max-width: 40ch; margin: 0; color: var(--ink-soft); font-size: clamp(19px, 1.5vw, 22px); line-height: 1.55; }
 .about-route { grid-column: 6 / -1; position: relative; margin: 0; padding: 34px 0 54px; }
 .about-route svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -79,8 +79,14 @@
 }
 
 @media (max-width: 760px) {
-  .about-ledger, .about-principles { grid-template-columns: minmax(0, 1fr); }
+  .about-ledger { grid-template-columns: minmax(0, 1fr); }
   .boundary-outside ul { column-count: 1; }
+}
+@media (max-width: 640px) {
+  .about-principles { grid-template-columns: minmax(0, 1fr); }
+  .about-masthead { row-gap: 24px; }
+  .about-section-head { margin-bottom: 12px; }
+  #independence { row-gap: 28px; }
 }
 
 @media (max-width: 700px) {
