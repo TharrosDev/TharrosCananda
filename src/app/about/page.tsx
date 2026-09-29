@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { formatLongDate, pageMetadata } from "@/lib/site";
 import Link from "next/link";
-import { ROUTE } from "@/components/atlantic-map";
+import { formatLongDate, pageMetadata } from "@/lib/site";
 import { ArrowIcon } from "@/components/icons";
+import { AboutContact } from "@/components/about-contact";
 import { organization } from "@/data/organization";
 import { publications } from "@/data/publications";
 import { publicSources } from "@/data/sources";
@@ -17,19 +17,39 @@ export const metadata: Metadata = pageMetadata({
   path: "/about",
 });
 
+const principles = [
+  {
+    title: "Start with the question.",
+    body: "Each report defines the question it can answer and the evidence needed to investigate it.",
+    label: "Research archive",
+    href: "/research",
+  },
+  {
+    title: "Separate fact from inference.",
+    body: "Material facts are sourced and dated. Interpretation is identified. Unresolved uncertainty remains visible.",
+    label: "Human verification",
+    href: "/methodology#human-research",
+  },
+  {
+    title: "Make the work inspectable.",
+    body: "Public research identifies authorship, publication date, methodology, sources and material limitations.",
+    label: "A worked source trace",
+    href: "/methodology#trace-caption",
+  },
+  {
+    title: "Stay relevant.",
+    body: "Research is organized around the question, not the volume of material collected.",
+    label: "Fitness for use",
+    href: "/methodology#fitness",
+  },
+];
+
 export default function AboutPage() {
   const contactEmail = researchEmail();
   const { lead, legal, profiles } = organization;
-  // Until accountability details are verified, contact sits with Independence rather than in a near-empty section of its own.
   const hasAccountability = Boolean(lead || legal || profiles.length);
   const latest = [...publications].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
-  const contactLine = (
-    <p>
-      Questions, corrections and collaboration:{" "}
-      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-    </p>
-  );
-  const links = (items: { label: string; url: string }[]) => (
+  const profileLinks = (items: { label: string; url: string }[]) => (
     <p className="about-links">
       {items.map((link, index) => (
         <span key={link.url}>
@@ -43,84 +63,45 @@ export default function AboutPage() {
     </p>
   );
 
-  const principles = [
-    {
-      title: "Start with the question.",
-      body: "Each report defines the question it can answer and the evidence needed to investigate it.",
-      check: { label: "Research archive", href: "/research" },
-    },
-    {
-      title: "Separate fact from inference.",
-      body: "Material facts are sourced and dated. Interpretation is identified. Unresolved uncertainty remains visible.",
-      check: { label: "Human verification", href: "/methodology#human-research" },
-    },
-    {
-      title: "Make the work inspectable.",
-      body: "Public research identifies authorship, publication date, methodology, sources and material limitations.",
-      // Changes with each new publication, so visual tests mask it (data-volatile).
-      volatile: true,
-      check: latest
-        ? { label: latest.reference, href: `/research/${latest.slug}` }
-        : { label: "Research archive", href: "/research" },
-    },
-    {
-      title: "Stay relevant.",
-      body: "Research is organized around the question, not the volume of material collected.",
-      check: { label: "Research archive", href: "/research" },
-    },
-  ];
-
   return (
     <>
       <header className="about-masthead">
-        <h1>A student research project focused on Canada and Europe.</h1>
-        <p className="about-deck">
-          Tharros Canada is an independent student research project. It publishes reports on the
-          policies and industries connecting Canada and Europe, and examines the public evidence
-          behind them.
-        </p>
-        <figure className="about-route">
-          {/* The same great-circle route as the homepage map, cropped to a masthead rule. */}
-          <svg viewBox="40 168 610 80" role="img" aria-labelledby="about-route-title">
-            <title id="about-route-title">
-              The 5,674 km great-circle route from Ottawa to Brussels
-            </title>
-            <path d={ROUTE} pathLength={1} />
-            <circle cx="67.1" cy="235.5" r="3" />
-            <circle cx="616.2" cy="186.4" r="3" />
-          </svg>
-          <p className="about-route-end is-ottawa" aria-hidden="true">
-            <strong>Ottawa</strong> 45.42°N 75.70°W
+        <h1>
+          A student research project.
+          <br />
+          Canada and Europe,
+          <br />
+          question by question.
+        </h1>
+        <div className="about-introduction">
+          <p className="about-deck">
+            Tharros Canada is an independent student research project. It publishes reports on the
+            policies and industries connecting Canada and Europe, and examines the public evidence
+            behind them.
           </p>
-          <p className="about-route-distance" aria-hidden="true">
-            5,674 km · the great-circle route between the two capitals
-          </p>
-          <p className="about-route-end is-brussels" aria-hidden="true">
-            <strong>Brussels</strong> 50.85°N 4.35°E
-          </p>
-        </figure>
-      </header>
-
-      <section className="about-section" aria-labelledby="record-title">
-        <div className="about-section-head ruled ruled-strong">
-          <h2 id="record-title">The project, on the record.</h2>
-          <p>What exists today, counted from this site&rsquo;s own records.</p>
+          <div className="about-opening-actions">
+            <Link className="button-primary" href="/research">
+              Read the research <ArrowIcon />
+            </Link>
+            <a className="about-check" href="#fields">
+              Explore the questions <ArrowIcon />
+            </a>
+          </div>
         </div>
-        <dl className="about-ledger">
+        <dl className="about-ledger" aria-label="The project on the record">
           <div>
             <dt>Published research</dt>
-            {/* Both change with each publication; visual tests mask data-volatile. */}
             <dd className="about-count" data-volatile="">
               {publications.length}
             </dd>
             <dd data-volatile="">
               {latest ? (
                 <>
-                  Latest: <Link href={`/research/${latest.slug}`}>{latest.reference}</Link>, a{" "}
-                  {latest.type} published {formatLongDate(latest.publishedAt)}.
+                  Latest: <Link href={`/research/${latest.slug}`}>{latest.reference}</Link> ·{" "}
+                  {formatLongDate(latest.publishedAt)}
                 </>
               ) : (
-                "The first publications are in preparation."
+                "No publications yet."
               )}
             </dd>
           </div>
@@ -128,67 +109,160 @@ export default function AboutPage() {
             <dt>Research areas</dt>
             <dd className="about-count">{researchAreas.length}</dd>
             <dd>
-              The archive&rsquo;s fields: {researchAreas.map((area) => area.name).join(" · ")}.
+              <a href="#fields">Explore the fields below</a>
             </dd>
           </div>
           <div>
             <dt>Sources in the register</dt>
             <dd className="about-count">{publicSources.length}</dd>
             <dd>
-              Public routes the research can draw on, in Canada and the EU. A listing is not an
-              endorsement. <Link href="/methodology#atlas-title">See the register</Link>.
+              <Link href="/methodology#atlas-title">Inspect the public-source register</Link>
             </dd>
           </div>
         </dl>
-      </section>
+      </header>
 
-      <section className="about-section" id="principles" aria-labelledby="principles-title">
-        <div className="about-section-head ruled ruled-strong">
-          <h2 id="principles-title">Research principles.</h2>
-          <p>Where each one shows on this site.</p>
+      <nav className="about-contents" aria-label="About sections">
+        <span>On this page</span>
+        <ul>
+          <li>
+            <a href="#fields">Research fields</a>
+          </li>
+          <li>
+            <a href="#principles">Research principles</a>
+          </li>
+          <li>
+            <a href="#independence">Independence</a>
+          </li>
+          <li>
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+
+      <section className="about-section about-fields" id="fields" aria-labelledby="fields-title">
+        <div className="about-section-head">
+          <h2 id="fields-title">The questions behind the research.</h2>
+          <p>
+            Five fields, each with its own questions and evidence. Open a field to explore what it
+            can investigate.
+          </p>
         </div>
-        <ol className="about-principles">
-          {principles.map((principle, index) => (
-            <li key={principle.title} id={index === 0 ? "method" : undefined} className="ruled">
-              <h3>{principle.title}</h3>
-              <div>
-                <p>{principle.body}</p>
-                <Link
-                  className="about-check"
-                  href={principle.check.href}
-                  data-volatile={principle.volatile ? "" : undefined}
-                >
-                  {principle.check.label} <ArrowIcon />
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="about-field-register">
+          {researchAreas.map((area, index) => {
+            const count = publications.filter(
+              (publication) => publication.area === area.slug,
+            ).length;
+            return (
+              <details
+                className="about-field"
+                key={area.slug}
+                open={index === 0}
+                id={`field-${area.slug}`}
+              >
+                <summary>
+                  <h3>{area.name}</h3>
+                  <p>{area.scope}</p>
+                  <span className="about-disclosure" aria-hidden="true">
+                    <svg viewBox="0 0 20 20">
+                      <path d="M3 10h14" />
+                      <path className="about-disclosure-vertical" d="M10 3v14" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="about-field-body">
+                  <div className="about-field-questions">
+                    <h4>Questions this field can investigate</h4>
+                    <ul>
+                      {area.questions.map((question) => (
+                        <li key={question}>{question}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="about-field-evidence">
+                    <h4>Evidence it can draw on</h4>
+                    <ul>
+                      {area.evidence.map((evidence) => (
+                        <li key={evidence}>{evidence}</li>
+                      ))}
+                    </ul>
+                    <Link className="about-check" href="/methodology#atlas-title">
+                      How sources are selected <ArrowIcon />
+                    </Link>
+                  </div>
+                  <div className="about-field-publications" data-volatile="">
+                    <p>
+                      {count > 0
+                        ? `${count} published ${count === 1 ? "report" : "reports"} in this field.`
+                        : "No published research in this field yet."}
+                    </p>
+                    <Link
+                      className="about-check"
+                      href={count > 0 ? `/research?area=${area.slug}` : "/research"}
+                    >
+                      {count > 0 ? `Read ${area.name} research` : "Browse the research archive"}{" "}
+                      <ArrowIcon />
+                    </Link>
+                  </div>
+                </div>
+              </details>
+            );
+          })}
+        </div>
+        <p className="about-register-note">
+          These fields describe the project&rsquo;s scope. Published work is counted from the
+          archive; an open research question is not a claim that a report already exists.
+        </p>
       </section>
 
-      <section className="about-section" id="independence" aria-labelledby="independence-title">
+      <section className="about-standards band" id="principles" aria-labelledby="principles-title">
+        <div className="about-standards-inner">
+          <div className="about-standards-lead">
+            <h2 id="principles-title">Research you can inspect.</h2>
+            <p>
+              Research principles matter when a reader can see them in the work. Each one has a
+              route back to the evidence, the method or the report.
+            </p>
+            <Link className="about-check" href="/methodology">
+              Read the methodology <ArrowIcon />
+            </Link>
+          </div>
+          <ol className="about-principles">
+            {principles.map((principle, index) => (
+              <li key={principle.title} id={index === 0 ? "method" : undefined}>
+                <h3>{principle.title}</h3>
+                <p>{principle.body}</p>
+                <Link className="about-check" href={principle.href}>
+                  {principle.label} <ArrowIcon />
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section
+        className="about-section about-independence"
+        id="independence"
+        aria-labelledby="independence-title"
+      >
         <div className="about-independence-lead">
           <h2 id="independence-title">Independent from the sources it studies.</h2>
           <p>
             Tharros Canada is an independent student research project, not a government body. Naming
             a public source identifies it; it never implies endorsement or affiliation.
           </p>
-          {!hasAccountability && (
-            <div className="about-contact" id="contact">
-              {contactLine}
-            </div>
-          )}
         </div>
-        <div className="boundary">
-          <div className="boundary-inside">
-            <h3>Tharros publishes</h3>
+        <div className="about-boundaries">
+          <div>
+            <h3>What Tharros publishes</h3>
             <ul>
               <li>Reports on Canada–Europe policy and industry questions</li>
               <li>Data notes on the fitness of public evidence</li>
               <li>Sources, methods and material limitations alongside each report</li>
             </ul>
           </div>
-          <div className="boundary-outside">
+          <div>
             <h3>Outside the boundary</h3>
             <ul>
               <li>Legal, tax, regulatory, lobbying or investment advice</li>
@@ -198,21 +272,63 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {hasAccountability && (
-        <section className="about-section about-accountability" id="contact">
-          <div className="about-section-head ruled ruled-strong">
-            <h2>{lead ? "Who is accountable." : "Contact."}</h2>
-          </div>
-          <div className="about-contact">
+      <section
+        className="about-section about-contact-section"
+        id="contact"
+        aria-labelledby="contact-title"
+      >
+        <div className="about-contact-lead">
+          <h2 id="contact-title">An open line to the project.</h2>
+          <p>
+            Questions, corrections and collaboration belong in the same conversation as the
+            research.
+          </p>
+          <AboutContact email={contactEmail} />
+        </div>
+        <div className="about-contact-routes">
+          {[
+            {
+              title: "Ask about the research",
+              body: "Name the report or research question you would like to discuss.",
+              subject: "Research question",
+              action: "Email a question",
+            },
+            {
+              title: "Flag a correction",
+              body: "Include the report reference, page or passage, and a source for the correction.",
+              subject: "Research correction",
+              action: "Email a correction",
+            },
+            {
+              title: "Explore a collaboration",
+              body: "Describe the topic, your proposed contribution and the evidence available.",
+              subject: "Research collaboration",
+              action: "Email about collaboration",
+            },
+          ].map((route) => (
+            <div key={route.title}>
+              <h3>{route.title}</h3>
+              <p>{route.body}</p>
+              <a
+                className="about-check"
+                href={`mailto:${contactEmail}?subject=${encodeURIComponent(route.subject)}`}
+              >
+                {route.action} <ArrowIcon />
+              </a>
+            </div>
+          ))}
+        </div>
+        {hasAccountability && (
+          <div className="about-accountability">
+            <h3>Project accountability</h3>
             {lead && (
               <div className="about-lead">
-                <h3>{lead.name}</h3>
+                <h4>{lead.name}</h4>
                 <p className="about-lead-role">{lead.role}</p>
                 <p>{lead.bio}</p>
-                {lead.links.length > 0 && links(lead.links)}
+                {lead.links.length > 0 && profileLinks(lead.links)}
               </div>
             )}
-            {contactLine}
             {legal && (
               <dl className="company-details">
                 <div>
@@ -239,10 +355,10 @@ export default function AboutPage() {
                 )}
               </dl>
             )}
-            {profiles.length > 0 && links(profiles)}
+            {profiles.length > 0 && profileLinks(profiles)}
           </div>
-        </section>
-      )}
+        )}
+      </section>
     </>
   );
 }
