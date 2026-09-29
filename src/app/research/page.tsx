@@ -41,12 +41,6 @@ export default async function ResearchPage() {
           <ResearchArchiveWithUrl {...archive} />
         </Suspense>
       </section>
-      <section className="closing-cta">
-        <h2>Need research on a specific question?</h2>
-        <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
-        </Link>
-      </section>
     </>
   );
 }

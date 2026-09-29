@@ -1,4 +1,4 @@
-/** The expertise areas that organize commissioned work and future Tharros-produced research. */
+/** The subject areas used to organize Tharros's published research. */
 export const researchAreas = [
   {
     slug: "trade-economic-integration",

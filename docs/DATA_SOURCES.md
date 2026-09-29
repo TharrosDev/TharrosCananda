@@ -9,7 +9,6 @@
   - the Methodology source atlas;
   - the About ledger count;
   - `llms.txt`;
-  - the indicative sources in the request brief, which `objectiveSources` in `src/lib/research-request.ts` picks.
 
 A listing means only that the source is a relevant public research route. It does **not** mean:
 - that Tharros has integrated the source into the site;

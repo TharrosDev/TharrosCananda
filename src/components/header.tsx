@@ -100,14 +100,6 @@ export function Header() {
               </Link>
             ))}
           </div>
-          <Link
-            className="nav-action"
-            href="/research-services"
-            aria-current={isCurrent("/research-services") ? "page" : undefined}
-            onClick={() => setOpen(false)}
-          >
-            Commission
-          </Link>
         </nav>
       </div>
     </header>

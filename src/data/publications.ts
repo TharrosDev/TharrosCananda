@@ -34,7 +34,6 @@ export type Publication = {
   subtitle?: string;
   type: (typeof publicationTypes)[number]["name"];
   area: ResearchArea["slug"];
-  origin: "independent" | "commissioned";
   publishedAt: string;
   authors: string[];
   summary: string;
@@ -49,7 +48,7 @@ export type Publication = {
 
 // Verified Tharros Canada research only. Each report is the author's PDF at public/research/<reference>.pdf, served
 // byte-for-byte (docs/REPORT_REQUIREMENTS.md).
-// Independent work must use origin: "independent". Use "commissioned" only for work actually commissioned by a client and permitted for publication.
+// The archive contains only Tharros's independent research.
 export const publications: Publication[] = [
   {
     slug: "canada-inside-safe",
@@ -58,7 +57,6 @@ export const publications: Publication[] = [
       "Canada Inside SAFE: What Access to Europe’s €150B Defence Initiative Has Cost, and Who’s Gained So Far",
     type: "Research Report",
     area: "defence-security",
-    origin: "independent",
     publishedAt: "2026-09-24",
     authors: ["Magnus Abdelnour"],
     // Rephrased from the PDF's "Overview" and "Conclusion".
@@ -173,7 +171,6 @@ export const publications: Publication[] = [
     title: "Analytical Report: Traffic Collisions by Location 2017-2024 (excluding 2023)",
     type: "Data Note",
     area: "data-quality-validity",
-    origin: "independent",
     publishedAt: "2026-09-16",
     authors: ["Magnus Abdelnour"],
     // Rephrased from the PDF's "Overview" and "Fit for Use Assessment".

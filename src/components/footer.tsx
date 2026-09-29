@@ -15,7 +15,7 @@ export function Footer() {
             <span className="wordmark-slash">/</span>
             <span>CANADA</span>
           </Link>
-          <p>Independent research across Canada and Europe.</p>
+          <p>An independent student research project across Canada and Europe.</p>
           <a className="footer-contact" href={`mailto:${contactEmail}`}>
             {contactEmail}
           </a>
@@ -27,12 +27,7 @@ export function Footer() {
             <Link href="/methodology">Sources & methodology</Link>
           </div>
           <div>
-            <p className="footer-heading">Commission</p>
-            <Link href="/research-services">Commission research</Link>
-            <Link href="/how-it-works">How it works</Link>
-          </div>
-          <div>
-            <p className="footer-heading">Company</p>
+            <p className="footer-heading">Project</p>
             <Link href="/about">About</Link>
             <Link href="/about#contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>

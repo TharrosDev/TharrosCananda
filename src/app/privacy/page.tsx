@@ -4,20 +4,17 @@ import { MethodRail } from "@/components/method-rail";
 import { PageHero } from "@/components/page-hero";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
-import { commissionPrivacy } from "@/lib/services";
 
 export const metadata: Metadata = pageMetadata({
   title: "Privacy",
   description:
-    "What Tharros Canada collects through its request form, readership counts and cookie-free site measurement, where it is kept, for how long, and how to ask for access or deletion.",
+    "What Tharros Canada collects through readership counts and cookie-free site measurement, how earlier research requests are retained, and how to ask for access or deletion.",
   path: "/privacy",
 });
 
 const sections = [
   ["summary", "In short"],
-  ["requests", "Research requests"],
-  ["where", "Where it is kept"],
-  ["commissions", "Commissioned work"],
+  ["requests", "Earlier research requests"],
   ["measurement", "Site measurement"],
   ["readership", "Readership counts"],
   ["rights", "Access and deletion"],
@@ -33,7 +30,7 @@ export default function PrivacyPage() {
         title="Privacy."
         description="What the site collects, where it is kept, for how long, and how to ask for it back."
         record={[
-          { label: "Updated", value: "September 23, 2026" },
+          { label: "Updated", value: "September 29, 2026" },
           ...(organization.intakeRetention
             ? [{ label: "Requests kept", value: organization.intakeRetention }]
             : []),
@@ -47,55 +44,38 @@ export default function PrivacyPage() {
             <h2>In short</h2>
             <ul className="is-grid">
               <li>No cookies, no advertising trackers and no account.</li>
-              <li>
-                A request you send is used only to reply to it, and is deleted after a set period.
-              </li>
+              <li>Earlier research requests remain subject to the stated retention period.</li>
               <li>Readership counts keep a one-way code, never your IP address.</li>
               <li>A Global Privacy Control signal turns off measurement and counting.</li>
             </ul>
           </article>
           <article id="requests">
-            <h2>Research requests</h2>
+            <h2>Earlier research requests</h2>
             <p>
-              The request form collects your organization, country, optional website, business
-              email, research subject and purpose, and any context you choose to add. It is used to
-              review the request and reply with a scope. Consent to that review is required; there
-              is no preselected marketing consent and no mailing list.
+              The research request form has been retired. Requests submitted before its retirement
+              included an organization, country, optional website, business email, research subject
+              and purpose, and any context the sender chose to add. They were used to review and
+              reply to the request; there was no mailing list.
             </p>
             <p>
-              Do not send passwords, unrelated personal information, confidential customer lists or
-              trade secrets through the public form. Sensitive material can be shared later, once a
-              scope is agreed.
-            </p>
-          </article>
-          <article id="where">
-            <h2>Where it is kept</h2>
-            <p>
-              The website does not store your request. It sends it once, over an encrypted
-              connection, to the Tharros intake database, hosted by Supabase in Canada (Montréal). A
-              notification with the request is then emailed to the Tharros inbox through Resend. The
-              website&apos;s own logs record a reference number and whether delivery succeeded,
-              never what you wrote.
+              Those requests were sent over an encrypted connection to the Tharros intake database,
+              hosted by Supabase in Canada (Montréal). Notifications were emailed to the Tharros
+              inbox through Resend. Website logs recorded a reference number and delivery outcome,
+              not the request text.
             </p>
             {organization.intakeRetention && (
               <p>
-                Requests are kept for {organization.intakeRetention}, then deleted automatically.
+                Earlier requests are kept for {organization.intakeRetention}, then deleted
+                automatically.
               </p>
             )}
-          </article>
-          <article id="commissions">
-            <h2>Commissioned work</h2>
-            <p>
-              {commissionPrivacy} Material a client shares for a commission is used only for that
-              commission.
-            </p>
           </article>
           <article id="measurement">
             <h2>Site measurement</h2>
             <p>
-              The site uses Vercel Web Analytics to count page views and a few events, such as
-              starting the request form. It sets no cookies and does not identify you. Nothing is
-              sent when your browser sends a Global Privacy Control signal.
+              The site uses Vercel Web Analytics to count page views. It sets no cookies and does
+              not identify you. Nothing is sent when your browser sends a Global Privacy Control
+              signal.
             </p>
           </article>
           <article id="readership">
@@ -114,8 +94,8 @@ export default function PrivacyPage() {
             <h2>Access and deletion</h2>
             <p>
               You can ask what Tharros holds about you, have it corrected, or have it deleted. Write
-              to <a href={`mailto:${contactEmail}`}>{contactEmail}</a> from the address you used, or
-              with the reference number shown after you submitted.
+              to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. For an earlier research
+              request, write from the address you used or include its reference number.
             </p>
             <p>
               If this page changes in a way that affects information already submitted, the date

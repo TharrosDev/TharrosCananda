@@ -1,5 +1,5 @@
 // Deployment smoke test: node scripts/smoke.mjs https://tharros.ca
-// Read-only apart from one deliberately invalid intake POST, which is rejected (422) and never forwarded.
+// Read-only apart from one POST to the retired intake endpoint, which must return 410.
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const failures = [];
 // A hung deployment must fail the smoke run, not stall it.
@@ -12,13 +12,10 @@ const check = (ok, label) => {
 for (const path of [
   "/",
   "/research",
-  "/research-services",
-  "/how-it-works",
   "/methodology",
   "/about",
   "/privacy",
   "/accessibility",
-  "/request-research",
   "/sitemap.xml",
   "/robots.txt",
 ]) {
@@ -26,18 +23,25 @@ for (const path of [
   check(response.status === 200, `${path} -> ${response.status}`);
 }
 
-const legacy = await get(`${base}/ecommerce-readiness`, { redirect: "manual" });
-check(legacy.status === 308, `/ecommerce-readiness -> ${legacy.status} (expected 308)`);
+for (const [path, destination] of [
+  ["/ecommerce-readiness", "/research"],
+  ["/research-services", "/research"],
+  ["/request-research", "/research"],
+  ["/how-it-works", "/methodology"],
+]) {
+  const legacy = await get(base + path, { redirect: "manual" });
+  check(
+    legacy.status === 308 && legacy.headers.get("location") === destination,
+    `${path} -> ${legacy.status} ${legacy.headers.get("location")}, expected 308 ${destination}`,
+  );
+}
 
 const intake = await get(`${base}/api/research-request`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ consent: false }),
 });
-check(
-  intake.status === 422,
-  `POST /api/research-request (invalid) -> ${intake.status}, expected 422`,
-);
+check(intake.status === 410, `POST /api/research-request -> ${intake.status}, expected 410`);
 
 const headers = (await get(base)).headers;
 for (const name of [

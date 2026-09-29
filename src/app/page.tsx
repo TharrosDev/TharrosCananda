@@ -7,7 +7,6 @@ import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
 import { reportAsset } from "@/lib/reports";
 import { researchAreas } from "@/lib/research-areas";
-import { commissionPrivacy, services } from "@/lib/services";
 import { formatLongDate, formatMonthYear, pageMetadata } from "@/lib/site";
 import "./home.css";
 
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: homeTitle,
     description:
-      "Independent research institute working across Canada and Europe: published research on trade, defence, energy, industry and technology, and assessments of the public data behind it. Research can also be commissioned.",
+      "Independent research across Canada and Europe. Read sourced reports on policy, trade, defence, industry and the public data behind them.",
     path: "/",
   }),
   title: { absolute: homeTitle },
@@ -46,15 +45,15 @@ export default function HomePage() {
           <div className="home-front-copy">
             <h1 id="home-title">Independent research across Canada and Europe.</h1>
             <p className="home-front-deck">
-              Published research on trade, defence, energy, industry and technology, and notes on
-              whether the public data behind it holds up. Questions can also be commissioned.
+              Read sourced reports on the policies and industries connecting Canada and Europe, with
+              the evidence, uncertainty and limitations kept in view.
             </p>
             <div className="hero-actions">
               <Link className="button-primary" href="/research">
                 Read the research <ArrowIcon />
               </Link>
-              <Link className="text-link" href="/research-services">
-                Commission research <ArrowIcon />
+              <Link className="text-link" href="/methodology">
+                How the research is made <ArrowIcon />
               </Link>
             </div>
           </div>
@@ -175,33 +174,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section
-        className="section home-commission"
-        id="commission"
-        aria-labelledby="commission-heading"
-      >
-        <div className="home-commission-head">
-          <h2 id="commission-heading">Commissioned research.</h2>
+      <section className="section home-method" aria-labelledby="home-method-heading">
+        <div>
+          <h2 id="home-method-heading">The method stays visible.</h2>
           <p>
-            Set a question and Tharros answers it with the same sources and method. Every commission
-            is scoped and priced in writing before work begins.
+            Each publication shows the evidence behind its conclusions and the limits of that
+            evidence.
           </p>
-          <p>{commissionPrivacy}</p>
-          <Link className="text-link" href="/research-services">
-            Commission research <ArrowIcon />
+          <Link className="text-link" href="/methodology">
+            Explore the methodology <ArrowIcon />
           </Link>
         </div>
-        <ul className="home-commission-list" aria-label="What can be commissioned">
-          {services.map((service) => (
-            <li key={service.slug}>
-              <Link href={`/research-services#${service.slug}`}>
-                <h3>{service.name}</h3>
-                <p>{service.question}</p>
-                <ArrowIcon />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <ol>
+          <li>
+            <strong>Source the facts.</strong> Name the public record behind each material claim.
+          </li>
+          <li>
+            <strong>Separate interpretation.</strong> Show what follows from the evidence and what
+            remains uncertain.
+          </li>
+          <li>
+            <strong>State the limits.</strong> Explain what the available data cannot support.
+          </li>
+        </ol>
       </section>
     </>
   );

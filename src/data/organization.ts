@@ -31,7 +31,7 @@ export const organization: Organization = {
 
 import { researchAreas } from "@/lib/research-areas";
 
-/** schema.org Organization with only the fields that are actually set. `@id` lets other nodes (WebSite, Service, Report) reference it. */
+/** schema.org publisher record with only verified fields. `@id` lets WebSite and Report nodes reference it. */
 export function organizationJsonLd(
   org: Organization,
   { url, email }: { url: string; email: string | null },
@@ -44,7 +44,8 @@ export function organizationJsonLd(
     url,
     // Raster logo for search results (Google needs at least 112 px, not SVG).
     logo: `${url}/tharros-logo.png`,
-    description: "Independent research institute working across Canada and Europe.",
+    description:
+      "Independent student research project publishing reports across Canada and Europe.",
     areaServed: ["Canada", "European Union"],
     knowsAbout: researchAreas.map((area) => area.name),
     ...(email ? { email } : {}),

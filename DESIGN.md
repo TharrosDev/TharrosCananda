@@ -1,6 +1,6 @@
 ---
 name: Tharros Canada
-description: Independent research across Canada and Europe, presented as an evidence ledger.
+description: Independent student research across Canada and Europe, presented as an evidence ledger.
 colors:
   ivory: "#f4f1ea"
   ivory-deep: "#ebe6db"
@@ -34,7 +34,7 @@ spacing:
 
 # Design System: Tharros Canada
 
-The tokens above mirror `:root` in `src/app/globals.css`, which is the source of truth. Each page's styles live next to it (`home.css`, `research/research.css`, `research-services/services.css` and so on).
+The tokens above mirror `:root` in `src/app/globals.css`, which is the source of truth. Each page's styles live next to it (`home.css`, `research/research.css`, `about/about.css` and so on).
 
 ## North star: the evidence ledger
 
@@ -77,8 +77,6 @@ The visual material is **research itself**: source registers, archival metadata,
 - **Statement H1s (openings):**
   - Home: clamp(56px, 6.4vw, 104px);
   - About: clamp(52px, 6.2vw, 98px);
-  - Research Services: clamp(50px, 5.6vw, 88px);
-  - Request Research: clamp(46px, 5vw, 76px);
   - Methodology: clamp(46px, 4.6vw, 72px);
   - the 404: clamp(52px, 6.4vw, 96px).
   - Home and About tighten to about clamp(46px, 13.5vw, 64–72px) on phones.
@@ -98,7 +96,6 @@ The visual material is **research itself**: source registers, archival metadata,
 - **980px:**
   - major split layouts stack;
   - the archive filters fold behind a **Filters** disclosure;
-  - the request brief folds.
 - **760px:** the Methodology trace stacks its claim over the record.
 - **640px:** indexes, controls and ledgers become single-column, and the body text drops to 17px.
 - **420px:** the footer becomes one column.
@@ -114,19 +111,18 @@ Pages don't share one hero. Each opens with the surface that suits its job:
 | Home | Ivory front page: H1 and actions beside the latest-release sheet. |
 | Research | Slim ivory "Published Research" banner, then the reading room. |
 | Report page | Dark running head, then the title beside the record ledger. |
-| Research Services, Methodology, About | Light ivory opening led by the page's instrument. |
-| Request Research | Compact dark task hero (`.request-hero`) with the three-step sequence. |
-| How it works, Privacy, Accessibility, Copyright | `PageHero variant="document"`: a light document header. |
+| Methodology, About | Light ivory opening led by the page's instrument. |
+| Privacy, Accessibility, Copyright | `PageHero variant="document"`: a light document header. |
 | 404 | Statement H1 beside an archive search. |
 
-Dark surfaces are the Home field plate, the Request hero, the report running head, the dark sheet bars and the footer. Never use a large dark hero on every page. `PageHero` still has `home`, `standard` and `task` variants, but no page uses them today.
+Dark surfaces are the Home field plate, the report running head, the dark sheet bars and the footer. Never use a large dark hero on every page. `PageHero` still has `home`, `standard` and `task` variants, but no page uses them today.
 
 ## Pages
 
 ### Home (`src/app/page.tsx`, `home.css`)
 
 1. **Front page (ivory).**
-   - Cols 1–6: the H1, the deck, and the actions Read the research and Commission research.
+   - Cols 1–6: the H1, the deck, and the actions Read the research and How the research is made.
    - Cols 7–12: the **latest release**, which is the newest publication or a `featured` one. It has:
      - a dark bar reading "Latest release", with the reference and format;
      - an ivory-light sheet with the real cover, the title and the summary's first sentence ending "… Read more" (the owner wants it compact; the full summary lives on the report page);
@@ -137,9 +133,7 @@ Dark surfaces are the Home field plate, the Request hero, the report running hea
 2. **Field plate (dark, full width).** "Five connected fields." and the Atlantic map fill cols 1–7. Beside them, the five research areas form a ledger:
    - an area with publications links to its archive filter and shows a steel count;
    - an area without any shows only its scope, so no link leads to an empty filter.
-3. **Commissioned research.** Cols 1–4 hold the heading, the copy and `commissionPrivacy`. Beside them are the three services, each led by the question it answers:
-   - the flagship spans the row, and the other two sit side by side;
-   - this section closes the page, so there is no separate closing CTA.
+3. **Method notes.** A light closing section explains source selection, the separation of interpretation and stated limitations, with a link to Methodology.
 
 Proof comes first. An empty state is never the loudest heading, and the page never pretends that unfinished research is published. The visual tests hide the latest release and the area counts, because both change with every publication.
 
@@ -193,25 +187,6 @@ Top to bottom:
 4. Sources as a register across the page: publisher, document. No retrieval dates (owner decision).
 5. Limitations beside the citation panel, then a three-up Continue row.
 
-### Research Services (`/research-services`, `services.css`)
-
-- **Opening:** the H1 and the research-first deck, beside a **Private by default.** notice (`commissionPrivacy`).
-- **Specimen shelf:** each service stands as the real cover of its sample document at thumbnail scale, beside:
-  - its name;
-  - the question it answers;
-  - an open "You receive" list;
-  - its Request link.
-  - Custom & Partner Research is the flagship. It gets a full-width row at a larger scale and the only primary button. The other two share the next row and use text links.
-- **Process strip:** the four steps, shared with How it works through `commissionSteps`. The no-account/no-purchase line and the further-reading links sit on one row.
-- **No prices or tiers.** Scope and price are set in the written proposal.
-
-**Sample documents** (`src/components/sample-document.tsx`):
-- They open in a native modal `<dialog>` styled as a PDF reader: A4 pages in a report style (red section numbers, ink rules, steel data marks).
-- The text is lorem only, labelled "Sample · placeholder text" on every page, and never downloadable. The owner approved them as placeholders. Replace them with real redacted samples once work exists.
-- **Opening morphs the shelf cover into the reader's first page** with a same-document View Transition. The two share a `view-transition-name` only while the transition runs. Closing folds it back while the cover is still in view.
-- Without View Transitions, or under reduced motion, the dialog simply opens.
-- The shelf covers are aria-hidden pictures scaled with `zoom`. They are exempt from the type minimum, because the dialog is their readable form.
-
 ### Methodology (`/methodology`)
 
 1. **Opening:** the H1 and deck (cols 1–4) beside the **provenance trace** (`src/components/provenance-trace.tsx`).
@@ -231,37 +206,21 @@ Top to bottom:
 
 Dense, at the owner's request.
 1. **Opening:** a full-width statement H1, then the deck beside the Ottawa–Brussels great-circle route drawn as the masthead rule. It is the homepage map's path, static, captioned as the route between the two capitals.
-2. **The institute, on the record:** a two-up ledger counted live from the site's data:
+2. **The project, on the record:** a three-column ledger counted live from the site's data:
    - published research;
    - research areas;
    - sources in the register;
-   - research services.
    Counts that grow with each publication carry `data-volatile` for the visual tests.
 3. **Research principles:** a two-up grid, each principle linking to where it shows on the site.
 4. **Independence boundary:**
    - the statement and contact line;
    - beside them, a square ink frame holding what Tharros provides;
    - below it, what lies outside the boundary.
-   The lists are shared with How it works through `provides` / `doesNotProvide`.
+   The lists describe published outputs and research boundaries.
 
-No founder or team profiles until the owner approves accurate, verified details.
+About states that Tharros is an independent student research project. No personal profile appears until the owner supplies and approves accurate details.
 
-### Request Research (`/request-research`)
-
-A task-led desk:
-- **Hero:** the compact dark hero, with the three-step sequence in its foot.
-- **Form and brief:** the progressive intake form beside the **live brief** (`src/components/request-brief.tsx`).
-- **The brief** is a document sheet that writes itself as the visitor types:
-  - the subject as the title;
-  - the question, organization and question blocks;
-  - what they would receive for the chosen service;
-  - indicative public sources from `objectiveSources`, labelled as indicative.
-- **It is also the review step.** Its Edit buttons return only to completed steps. It runs its full length with no inner scroll.
-- **Below 980px,** it folds under a "Preview your brief" toggle. It opens itself on review and on receipt, when it takes a green "Received" stamp with the reference.
-- **The purchase terms and `commissionPrivacy`** stay visible under the form actions at every width.
-- **Submission is a request for review, not a checkout.** No account or call is required, and work begins only after written scope approval.
-
-### Documents (How it works, Privacy, Accessibility, Copyright)
+### Documents (Privacy, Accessibility, Copyright)
 
 These read as documents, not as marketing landings.
 - **Header:** a light `PageHero` that carries the document's own record: updated, contact, and the standard or licence where one applies.
@@ -274,12 +233,12 @@ These read as documents, not as marketing landings.
 ### 404 (`src/app/not-found.tsx`)
 
 - A statement H1 beside a plain GET search form into the archive, which works without JavaScript.
-- Three ruled rows follow, in this order: Research archive, Methodology, Commission research.
+- Three ruled rows follow, in this order: Research archive, Methodology, About Tharros.
 
 ## Components
 
 - **Navigation** (`src/components/header.tsx`):
-  - a 76px ruled bar with the serif wordmark, Research · Methodology · About, and one red **Commission** action to Research Services;
+  - a 76px ruled bar with the serif wordmark and Research · Methodology · About;
   - the active destination gets a one-pixel underline;
   - at compact widths, the labelled **Menu** control traps focus and returns it on Escape.
 - **Buttons and links:**
@@ -297,7 +256,7 @@ These read as documents, not as marketing landings.
   - the homepage ledger;
   - area metadata on publications;
   - archive filters;
-  - links into relevant services.
+  - links into relevant research and methodology.
   Evidence artifacts may make an area distinctive once real work exists. Never invent a chart, map or project for decoration.
 
 ## Motion
@@ -313,11 +272,9 @@ Scroll-linked motion may move or draw things, but never reveal them.
 **Interaction-led motion:**
 - The Atlantic map's route draws into an already-readable map.
 - The trace leaders draw with WAAPI after a phrase is chosen.
-- A sample cover morphs into the reader.
 - A report cover on Home or in the archive morphs into the report's first page.
   - Both ends use React `<ViewTransition name="cover-<slug>" share="cover">`.
   - Only one element per page carries a given name.
-- The request brief's Received stamp settles once.
 - Hover transitions may move arrows and underlines.
 
 Avoid ornamental motion. All motion collapses under `prefers-reduced-motion`.
@@ -328,7 +285,7 @@ Avoid ornamental motion. All motion collapses under `prefers-reduced-motion`.
 - Keep source periods, retrieval context and limitations explicit.
 - Keep the archive honest when empty.
 - Make states and controls understandable without colour alone.
-- Keep Commission visible, without repeating it excessively.
+- Keep the research archive and method easy to find.
 - Keep strong focus states and full keyboard navigation.
 
 ## Don't
@@ -339,4 +296,3 @@ Avoid ornamental motion. All motion collapses under `prefers-reduced-motion`.
 - Use government logos or marks in a way that suggests affiliation.
 - Build decorative dashboard cards.
 - Open every page with a large dark hero.
-- Publish prices. Engagements are priced per case, in writing.
