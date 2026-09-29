@@ -106,6 +106,40 @@ export function ResearchArchive({
 
   const compact = useSyncExternalStore(subscribeView, readCompact, () => true);
   const preview = useSyncExternalStore(subscribeView, readPreview, () => false);
+  const toolRef = useRef<HTMLDivElement>(null);
+  const hasResults = results.length > 0;
+
+  // Sticky panels must fit below the header, including after a filter, record or font changes.
+  // Taller records stay in normal flow so every source and limitation can be reached without an inner scroll.
+  useEffect(() => {
+    const panels = toolRef.current?.querySelectorAll<HTMLElement>(
+      ".archive-controls, .archive-record-pane",
+    );
+    if (!panels) return;
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const headerHeight = parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--header-height"),
+        );
+        for (const panel of panels)
+          panel.toggleAttribute(
+            "data-sticky-fit",
+            panel.getBoundingClientRect().height <= window.innerHeight - headerHeight - 48,
+          );
+      });
+    };
+    const observer = new ResizeObserver(measure);
+    panels.forEach((panel) => observer.observe(panel));
+    window.addEventListener("resize", measure);
+    measure();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [preview, hasResults]);
 
   // The field is local so typing stays instant; the URL follows after a short pause. The field only
   // resyncs from the URL when the change came from elsewhere (back/forward, a chip, a suggestion),
@@ -184,7 +218,7 @@ export function ResearchArchive({
   };
 
   return (
-    <div className={preview ? "archive-tool has-preview" : "archive-tool"}>
+    <div className={preview ? "archive-tool has-preview" : "archive-tool"} ref={toolRef}>
       <form
         className="archive-searchbar"
         role="search"

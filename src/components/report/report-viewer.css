@@ -18,17 +18,17 @@
 .report-viewer-pages, .report-viewer-zoom, .report-viewer-find { display: flex; align-items: center; gap: 8px; }
 .report-viewer-find { flex: 1 1 260px; min-width: 0; }
 .report-viewer-pages label { font-weight: 600; }
-.report-viewer-pages input, .report-viewer-find input { height: 40px; border: 1px solid var(--rule-strong); background: var(--ivory-light); color: var(--ink); font: inherit; }
+.report-viewer-pages input, .report-viewer-find input { height: 44px; border: 1px solid var(--rule-strong); background: var(--ivory-light); color: var(--ink); font: inherit; font-size: 16px; }
 .report-viewer-pages input { width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
 .report-viewer-find input { width: 0; min-width: 0; flex: 1 1 10em; max-width: 18em; padding: 0 10px; }
 .report-viewer-find-status { min-width: 5.5em; color: var(--slate); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.report-viewer-zoom button, .report-viewer-find button, .report-viewer-fullscreen { min-width: 40px; height: 40px; padding: 0 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+.report-viewer-zoom button, .report-viewer-find button, .report-viewer-fullscreen { min-width: 44px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
 .report-viewer-find button { padding: 0; }
 .report-viewer-zoom button:hover, .report-viewer-zoom button[aria-pressed="true"], .report-viewer-find button:hover:not(:disabled), .report-viewer-fullscreen:hover, .report-viewer-fullscreen[aria-pressed="true"] { background: var(--ink); color: var(--ivory-light); }
 .report-viewer-find button:disabled { cursor: default; opacity: .45; }
 .report-viewer-zoom output { min-width: 4.5ch; text-align: center; font-variant-numeric: tabular-nums; }
 .report-viewer-fullscreen { font-weight: 600; }
-.report-viewer-download { margin-left: auto; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.report-viewer-download { min-height: 44px; margin-left: auto; display: inline-flex; align-items: center; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .report-viewer-sheets { display: grid; justify-items: center; gap: 32px; overflow-x: auto; padding: 4px 0 12px; }
 .report-viewer-sheets:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
 .report-sheet { position: relative; flex: none; background: var(--ivory-light) center / 100% 100% no-repeat; box-shadow: 0 1px 0 var(--rule-strong), 0 24px 60px -30px rgba(22, 23, 25, .35); }
@@ -59,19 +59,24 @@ html[data-viewer-overlay] { overflow: hidden; }
   .report-viewer-find button { min-width: 44px; }
   .report-viewer-download { min-height: 44px; display: inline-flex; align-items: center; }
 }
-/* Phones: three short rows (page and zoom, find, full screen and download), so the toolbar never crowds the page. */
+/* Phones: page and zoom, find, then full screen and download. DOM and keyboard order follow these rows. */
 @media (max-width: 560px) {
-  .report-viewer-toolbar { top: 0; position: static; gap: 8px 12px; }
+  .report-viewer-toolbar { top: 0; position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .report-reader[data-fullscreen] .report-viewer-toolbar { position: sticky; }
-  .report-viewer-pages { order: 1; }
-  .report-viewer-zoom { order: 2; margin-left: auto; gap: 6px; }
+  .report-viewer-zoom { justify-self: end; gap: 6px; }
   .report-viewer-zoom output { min-width: 3.6ch; }
   .report-viewer-fit-extra { display: none; }
-  .report-viewer-find { order: 3; flex-basis: 100%; }
+  .report-viewer-find { grid-column: 1 / -1; }
   .report-viewer-find input { max-width: none; }
-  .report-viewer-fullscreen { order: 4; }
-  .report-viewer-download { order: 5; margin-left: auto; }
+  .report-viewer-fullscreen { justify-self: start; }
+  .report-viewer-download { justify-self: end; margin-left: 0; }
   .report-viewer-sheets { gap: 18px; }
+}
+@media (max-width: 380px) {
+  .report-viewer-pages, .report-viewer-zoom { grid-column: 1 / -1; justify-self: start; }
+}
+@media (max-height: 600px) {
+  .report-viewer-toolbar, .report-reader[data-fullscreen] .report-viewer-toolbar { position: static; }
 }
 
 /* pdf.js text layer (from pdfjs-dist/web/pdf_viewer.css, 6.x): transparent positioned text over the canvas. */

@@ -615,6 +615,23 @@ function ReportViewerDocument({
             />
             <span id="report-page-total">of {pages}</span>
           </form>
+          <div className="report-viewer-zoom">
+            <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">
+              −
+            </button>
+            <output aria-live="polite">{Math.round(scale * 100)}%</output>
+            <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">
+              +
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoom("fit")}
+              aria-pressed={zoom === "fit"}
+              aria-label="Fit width"
+            >
+              Fit<span className="report-viewer-fit-extra"> width</span>
+            </button>
+          </div>
           <form
             className="report-viewer-find"
             role="search"
@@ -657,23 +674,6 @@ function ReportViewerDocument({
               ↓
             </button>
           </form>
-          <div className="report-viewer-zoom">
-            <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">
-              −
-            </button>
-            <output aria-live="polite">{Math.round(scale * 100)}%</output>
-            <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">
-              +
-            </button>
-            <button
-              type="button"
-              onClick={() => setZoom("fit")}
-              aria-pressed={zoom === "fit"}
-              aria-label="Fit width"
-            >
-              Fit<span className="report-viewer-fit-extra"> width</span>
-            </button>
-          </div>
           <button
             type="button"
             className="report-viewer-fullscreen"

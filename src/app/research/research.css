@@ -65,7 +65,7 @@
 .archive-preview-toggle { min-height: 44px; padding: 0 13px; border: 1px solid var(--rule-strong); background: var(--ivory-light); color: var(--ink); font: inherit; font-size: 15px; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
 .archive-preview-toggle[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--ivory-light); }
 .archive-clear, .archive-suggestion { padding: 0; border: 0; background: none; color: var(--ink); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-.archive-clear { min-height: 44px; }
+.archive-clear, .archive-suggestion { min-height: 44px; }
 
 .archive-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
 .archive-list > li { border-bottom: 1px solid var(--rule); }
@@ -86,9 +86,9 @@
 .archive-card-actions > a, .archive-card-actions > button, .archive-card-actions .cite-popover > summary { min-height: 44px; padding: 0 14px; display: inline-flex; align-items: center; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; font-size: 14.5px; font-weight: 600; letter-spacing: 0; text-transform: none; text-decoration: none; cursor: pointer; }
 .archive-card-actions > a:hover, .archive-card-actions > button:hover, .archive-card-actions .cite-popover > summary:hover { border-color: var(--ink); }
 .archive-card-actions .cite-popover { position: static; }
-.archive-card-actions .cite-popover-body { left: 0; right: auto; }
+.archive-card-actions .cite-popover-body { left: 0; right: auto; max-width: 100%; }
 .archive-card-actions .citation-text { font-size: 14px; }
-.archive-link-field { height: 44px; min-width: 260px; padding: 0 10px; border: 1px solid var(--rule-strong); background: var(--ivory-light); font: inherit; font-size: 14px; }
+.archive-link-field { height: 44px; min-width: 0; width: 100%; padding: 0 10px; border: 1px solid var(--rule-strong); background: var(--ivory-light); font: inherit; font-size: 14px; }
 .archive-list.is-compact .archive-summary, .archive-list.is-compact .archive-tags, .archive-list.is-compact .archive-card-actions, .archive-list.is-compact .archive-record-inline { display: none; }
 .archive-list.is-compact .archive-card { padding: 14px 0; grid-template-columns: 52px minmax(0, 1fr); gap: 18px; }
 .archive-list.is-compact .archive-cover { width: 52px; height: 67px; }
@@ -138,12 +138,9 @@
   .has-preview .archive-card[data-selected]::before { content: ""; position: absolute; z-index: -1; inset: 0 -16px; background: var(--ivory-light); box-shadow: 0 1px 0 var(--rule-strong), 0 18px 36px -30px rgba(22, 23, 25, .5); }
   .has-preview .archive-list > li:has(.archive-card[data-selected]) { border-bottom-color: transparent; }
 }
-/* Rail and record stay in view while the list scrolls, where the screen is tall enough to hold the rail.
-   ponytail: the record runs its full length (no inner scroll, as the request brief); a record taller than the
-   screen shows its foot once the list ends. Cap it with an inner scroll if long lists make that a problem. */
+/* Only stick panels that fit the usable viewport. Long records remain in the page's reading flow. */
 @media (min-width: 1180px) and (min-height: 820px) {
-  .archive-controls, .archive-record-pane { position: sticky; top: calc(var(--header-height) + 24px); }
-  .archive-controls { top: calc(var(--header-height) + 8px); }
+  .archive-controls[data-sticky-fit], .archive-record-pane[data-sticky-fit] { position: sticky; top: calc(var(--header-height) + 24px); }
 }
 /* Wide screens: the filters are always open (the summary only folds them on narrow screens). */
 @supports selector(::details-content) {
@@ -173,4 +170,17 @@
   .archive-card-actions { position: static; }
   .archive-link-field { min-width: 0; width: 100%; }
   .archive-record-ledger { grid-template-columns: minmax(0, 1fr); }
+  .archive-card-actions .cite-popover { width: 100%; }
+  .archive-card-actions .cite-popover-body { position: static; width: 100%; margin-top: 12px; box-shadow: none; }
+  .archive-list:not(.is-compact) .archive-card { row-gap: 12px; }
+  .archive-list:not(.is-compact) .archive-card-body { display: contents; }
+  .archive-list:not(.is-compact) .archive-cover { grid-row: 1 / span 2; }
+  .archive-list:not(.is-compact) .archive-card-meta, .archive-list:not(.is-compact) .archive-card h2 { grid-column: 2; margin-bottom: 0; }
+  .archive-list:not(.is-compact) :is(.archive-summary, .archive-tags, .archive-card-actions, .archive-record-inline) { grid-column: 1 / -1; }
+}
+@media (max-width: 420px) {
+  .archive-card { grid-template-columns: 52px minmax(0, 1fr); gap: 14px; }
+  .archive-cover { width: 52px; height: 67px; }
+  .archive-card-actions { gap: 8px; }
+  .archive-card-actions > a, .archive-card-actions > button { padding-inline: 10px; }
 }

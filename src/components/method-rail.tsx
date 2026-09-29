@@ -35,6 +35,7 @@ export function MethodRail({
 
   return (
     <nav className="method-rail" aria-label={label}>
+      <span className="method-rail-heading">On this page</span>
       <span className="method-rail-progress" aria-hidden="true" />
       <ol>
         {items.map((item, index) => (
