@@ -52,14 +52,17 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   turbopack: { root: process.cwd() },
-  // Retired route: the cross-border checklist folded into Market Assessment. 308 keeps old links and search results working.
+  // Retired service pages send existing links to the research archive and methodology.
   async redirects() {
     return [
       {
         source: "/ecommerce-readiness",
-        destination: "/research-services#market-assessment",
+        destination: "/research",
         permanent: true,
       },
+      { source: "/research-services", destination: "/research", permanent: true },
+      { source: "/request-research", destination: "/research", permanent: true },
+      { source: "/how-it-works", destination: "/methodology", permanent: true },
     ];
   },
   async headers() {

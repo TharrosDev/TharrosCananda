@@ -38,7 +38,6 @@ Copy the title, authors, date and sources exactly as the PDF gives them. The `su
 | `type` | Archive facet, page header | One of `publicationTypes`. Judge from length and form |
 | `reference` | Stable URL `/research/id/<reference>` | Assigned by the site: `TC-<YEAR>-<NNN>`, next free number |
 | `slug` | URL | Assigned by the site: short, lowercase and hyphenated, based on the title |
-| `origin` | Page header | `independent` unless the owner says it was commissioned and cleared for publication |
 
 Information that is only in a figure, table or image (for example, a source line printed inside a chart) is read visually and transcribed **into the record**. The PDF stays as it is.
 

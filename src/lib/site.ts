@@ -86,11 +86,8 @@ export function pageMetadata({
 /** Every static public page, in sitemap order. The sitemap and the e2e route sweep both read this. */
 export const coreRoutes = [
   "",
-  "/research-services",
   "/research",
-  "/request-research",
   "/about",
-  "/how-it-works",
   "/methodology",
   "/privacy",
   "/accessibility",

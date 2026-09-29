@@ -35,8 +35,8 @@ export default function NotFound() {
           <Link href="/methodology">
             Methodology <ArrowIcon />
           </Link>
-          <Link href="/research-services">
-            Commission research <ArrowIcon />
+          <Link href="/about">
+            About Tharros <ArrowIcon />
           </Link>
         </nav>
       </div>

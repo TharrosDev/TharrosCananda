@@ -10,10 +10,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Tharros Canada
 
-The site of an independent research institute working across Canada and Europe, served at https://tharros.ca.
+The site of an independent student research project publishing reports across Canada and Europe, served at https://tharros.ca.
 - **Stack:** Next.js 16 App Router, React 19, strict TypeScript and native CSS, deployed on Vercel.
 - **Backend:** the Supabase project `tharros-canada` (ref `kgiptvgefhnwxktzncui`, ca-central-1).
-- **Email:** Resend sends the notification emails.
+- **Email:** the public editorial contact is shown on About and in the footer. Resend belongs to the retired intake flow.
 - **Positioning and product rules:** `PRODUCT.md`.
 
 This file describes how the project works **today** and why, not how it must always work. If a better approach fits the product, change the code, its tests and the relevant doc together, in the same PR. Every doc is listed in `docs/README.md`.
@@ -33,12 +33,12 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 | Path | What |
 | --- | --- |
 | `src/app/` | Routes. Most pages are static. Readership counts are fetched with a 10-minute revalidate (`src/lib/metrics.ts`). |
-| `src/app/api/research-request` | Intake POST handler. It validates the form, HMAC-signs the payload and forwards it to the Edge Function. |
+| `src/app/api/research-request` | Retired POST endpoint. Always returns 410 and never forwards submissions. |
 | `src/app/api/research-event` | Records readership events (reads and citations). Always answers 204. |
 | `src/data/` | Content registries: `publications.ts`, `sources.ts`, `organization.ts`, plus the generated `report-*.json`. |
-| `src/lib/` | Domain logic: services, research-request validation, citation, archive search (minisearch), metrics, `site.ts` (siteUrl, `pageMetadata()`, JSON-LD, locale-free dates). |
+| `src/lib/` | Domain logic: citation, archive search (minisearch), metrics, `site.ts` (siteUrl, `pageMetadata()`, JSON-LD, locale-free dates). |
 | `src/components/report/` | Report viewer (pdf.js) and toolbar. |
-| `supabase/` | Migrations, the `research-intake` Edge Function and `config.toml` (`verify_jwt = false`). |
+| `supabase/` | Migrations and legacy `research-intake` Edge Function source pending deployed retirement. Keep earlier request retention intact. |
 | `e2e/` | Playwright functional, axe and visual tests, with Linux baselines in `visual.spec.ts-snapshots/`. |
 | `tests/` | Vitest unit and contract tests, including the guard tests described below. |
 
@@ -51,7 +51,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
   - Then review the committed images.
   - The baselines workflow starts CI on its own commit, so no empty commit is needed.
 - **`e2e/archive.spec.ts` is the contract for `/research`**, the most important page. It must never lose a tool: search, facets, URL state, density, sort, suggestions, Cite, PDF, Copy link and the no-JS list.
-- **No prices.** An e2e test fails on any "C$" on a page, including the lorem sample documents.
+- **No invented data.** Tests cover publication facts and the owner-supplied PDFs; do not add placeholder reports.
 - **Playwright reuses a running server.** Locally, it serves on port 3100 and reuses whatever is already there, so a leftover dev server gets tested instead of a production build. Stop it and delete `.next` before e2e runs.
   - Playwright's webServer also rebuilds `.next`, so rebuild before taking manual screenshots.
 - **`tests/css-guard.test.ts` enforces the motion and type rules.** Update the guard if the design changes on purpose.
@@ -75,12 +75,12 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 ## Content truth
 
 - **Never invent** publications, clients, people, prices, testimonials or data.
-- **The business is pre-incorporation.**
+- **The project makes no incorporation or institutional-affiliation claim.**
   - `organization.ts` fields stay empty until the owner supplies verified values, and the UI hides empty fields.
   - `organization.lead` stays `null`.
 - **Published research.** The first real report, `TC-2026-001`, was published 2026-09-16. Since 2026-09-24 every report is `indexable: false` (live by link, out of search, sitemap, llms.txt and readership counts) until the owner decides to go public. Don't flip it back unasked.
 - **Every report is the owner's own PDF.** The lorem specimen `TC-EX-000` and the house-typeset pipeline were removed on 2026-09-24 at the owner's request; don't add placeholder reports back.
-- **Sample documents** on Research Services are lorem placeholders approved by the owner. Keep them labelled as placeholders.
+- **The About page names the student project without personal details.** Keep `organization.lead` null until the owner supplies and approves a profile.
 - **No retrieval dates on sources.** The owner doesn't want source retrieval or access dates anywhere on the site (2026-09-24). Don't add `retrievedAt` to records or show "Retrieved" dates; `tests/publications.test.ts` fails if a source carries one.
 - **Live data feeds** (the monitor and StatCan market data) were removed at the owner's request. Don't bring them back unasked.
 

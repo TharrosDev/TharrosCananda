@@ -1,12 +1,12 @@
 # Tharros Canada
 
-The site for [tharros.ca](https://tharros.ca), an independent research institute working across Canada and Europe. Published research comes first and commissioned research second. Visitors read the research archive, check the methodology and, if they want a focused answer, commission one of three research services.
+The site for [tharros.ca](https://tharros.ca), an independent student research project publishing sourced reports on Canada–Europe questions. Visitors read the research archive, inspect the methodology and contact the project about questions, corrections or collaboration.
 
 **Stack.**
 - Next.js 16 App Router, React 19, strict TypeScript and native CSS with design tokens.
 - Source Serif 4 and Schibsted Grotesk, self-hosted through `next/font`.
 - minisearch for archive search and pdf.js for the report viewer.
-- Vercel hosting. Supabase runs intake and readership counts, and Resend sends the notification emails.
+- Vercel hosting. Supabase supports readership counts; the retired intake data remains under its retention policy.
 
 ## Quick start
 
@@ -18,7 +18,7 @@ cp .env.example .env.local # everything is optional locally
 npm run dev
 ```
 
-The site runs fully without env vars. The request form returns 503 and offers an email link, and readership counts stay hidden.
+The site runs without env vars. Readership counts stay hidden when their server credentials are absent.
 
 ## Checks
 
@@ -26,7 +26,7 @@ The site runs fully without env vars. The request form returns 503 and offers an
 npm run lint && npm run typecheck && npm test         # fast gate
 npm run build
 npx playwright install chromium && npm run test:e2e   # functional, axe and visual tests on a production build
-npm run smoke -- https://tharros.ca                   # post-deploy smoke test (read-only apart from one rejected POST)
+npm run smoke -- https://tharros.ca                   # post-deploy smoke test (includes one rejected POST)
 ```
 
 - **Playwright builds and serves the site itself**, on port 3100.
@@ -43,26 +43,19 @@ npm run smoke -- https://tharros.ca                   # post-deploy smoke test (
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical URLs | Defaults to `https://tharros.ca`. |
 | `NEXT_PUBLIC_RESEARCH_EMAIL` | Contact address | Defaults to TharrosDev@gmail.com (`src/lib/contact.ts`). |
-| `RESEARCH_INTAKE_WEBHOOK_URL` | Live intake | Must be https. |
-| `RESEARCH_INTAKE_WEBHOOK_SECRET` | Live intake (optional) | Falls back to the Supabase `intake_config` table. |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Metrics and the intake secret | Server-only. |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Readership counts | Server-only. |
 | `METRICS_SECRET` | Readership counts | Random hex. Without it, nothing is counted. |
-
-**Edge Function variables.**
-- The function reads `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, which Supabase sets.
-- `INTAKE_NOTIFY_TO` and `INTAKE_NOTIFY_FROM` are optional.
-- The webhook secret and the Resend key come from `intake_config`, unless a function secret with the same name is set.
 
 Which variables are set in which Vercel environment: `docs/OPERATIONS.md`.
 
 ## Layout
 
 ```text
-src/app/          routes, llms.txt; api/research-request (intake), api/research-event (readership)
+src/app/          routes, llms.txt; api/research-request (retired), api/research-event (readership)
 src/components/   UI; report/ holds the pdf.js viewer and the print document
 src/data/         publications, source register, organization details, generated report JSON
-src/lib/          services, validation, citation, archive search, metrics, site/SEO helpers
-supabase/         migrations, research-intake Edge Function, config.toml
+src/lib/          citation, archive search, metrics, site/SEO helpers
+supabase/         migrations and the legacy research-intake Edge Function pending retirement
 scripts/          report-pdf.mjs (report PDF, cover and text), smoke.mjs
 e2e/, tests/      Playwright and Vitest
 docs/             operations, report intake, evidence policy (index: docs/README.md)
@@ -84,11 +77,7 @@ Don't add dummy or placeholder entries to fill the archive.
 
 ## Boundaries
 
-**Tharros provides:**
-- commercial research;
-- market and buyer research;
-- competitor and ecosystem research;
-- research capacity for partner firms.
+**Tharros publishes:** independently produced reports and data notes on Canada–Europe questions.
 
 **It doesn't give** legal, tax, customs, regulated financial, immigration or compliance advice.
 

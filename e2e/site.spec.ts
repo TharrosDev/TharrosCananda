@@ -8,14 +8,7 @@ import { fixturePath } from "./fixture";
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
 const researchHeading = publications.length ? "Latest release" : "Public research.";
 
-const paths = [
-  "/",
-  "/research",
-  "/research-services",
-  "/request-research",
-  fixturePath,
-  "/this-page-does-not-exist",
-];
+const paths = ["/", "/research", fixturePath, "/this-page-does-not-exist"];
 
 /** Narrow screens fold the archive filters behind a "Filters" disclosure; wide screens always show them.
  *  Opened from the keyboard, so focus moved afterwards still shows its ring. */
@@ -48,36 +41,6 @@ for (const path of paths) {
   });
 }
 
-test("commissioning reaches a complete review without forcing a product classification", async ({
-  page,
-}) => {
-  await page.goto("/request-research");
-  await page.getByLabel("Organization").fill("Example GmbH");
-  await page.getByLabel("Country").fill("Germany");
-  await page.getByLabel("Business email").fill("research@example.com");
-  await page.getByRole("button", { name: /continue/i }).click();
-  await page.getByLabel("Subject, product or sector").fill("Industrial components");
-  await page.getByLabel("Enter the Canadian market").check();
-  await page.getByRole("button", { name: /continue/i }).click();
-  await expect(page.getByText("research@example.com")).toBeVisible();
-  await expect(page.getByText("Industrial components")).toBeVisible();
-  await expect(page.getByText("Service to be suggested by Tharros")).toBeVisible();
-  // Arriving on review must not count as a submit attempt.
-  await expect(page.locator("#consent-error")).toHaveCount(0);
-  await page.getByRole("button", { name: "Edit" }).first().click();
-  await expect(page.getByText("Who is the research for?")).toBeVisible();
-});
-
-test("commissioning prefills from the link that opened it", async ({ page }) => {
-  await page.goto("/request-research?product=Maple%20syrup&hs=1702.20");
-  await page.getByLabel("Organization").fill("Example GmbH");
-  await page.getByLabel("Country").fill("Germany");
-  await page.getByLabel("Business email").fill("research@example.com");
-  await page.getByRole("button", { name: /continue/i }).click();
-  await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Maple syrup");
-  await expect(page.getByLabel("HS code")).toHaveValue("1702.20");
-});
-
 for (const [label, path] of [
   ["Market Data", "/market-explorer"],
   ["Live Monitor", "/live-monitor"],
@@ -100,7 +63,7 @@ test("nested research route keeps Research navigation state", async ({ page, isM
   );
 });
 
-for (const path of ["/", "/research-services", "/request-research", "/copyright"]) {
+for (const path of ["/", "/about", "/research", "/copyright"]) {
   test(`${path} has no serious or critical automated accessibility violations`, async ({
     page,
   }) => {
@@ -143,7 +106,7 @@ test.describe("mobile navigation", () => {
     await page.getByRole("button", { name: /menu/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-menu-open", "");
     const nav = page.getByRole("navigation", { name: "Primary" });
-    await expect(nav.getByRole("link")).toHaveCount(4);
+    await expect(nav.getByRole("link")).toHaveCount(3);
     for (const link of await nav.getByRole("link").all()) await expect(link).toBeVisible();
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe(
       "hidden",
@@ -182,8 +145,6 @@ test.describe("tap targets", () => {
   for (const path of [
     "/",
     "/research",
-    "/research-services",
-    "/request-research",
     fixturePath,
     "/about",
     "/methodology",
@@ -243,12 +204,10 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("reads research first: the latest release, then areas, then commissioning", async ({
-    page,
-  }) => {
+  test("leads with research, then subjects and method", async ({ page }) => {
     await page.goto("/");
     const headings = await page.locator("main > section h2").allTextContents();
-    const order = [researchHeading, "Five connected fields.", "Commissioned research."].map(
+    const order = [researchHeading, "Five connected fields.", "The method stays visible."].map(
       (heading) => headings.indexOf(heading),
     );
     expect(
@@ -268,79 +227,34 @@ test.describe("home flow", () => {
   });
 });
 
-test("the commission page states privacy and lists each option once, with no prices", async ({
-  page,
-}) => {
-  await page.goto("/research-services");
-  await expect(page.getByRole("heading", { name: "Private by default." })).toBeVisible();
-  await expect(page.locator(".commission-privacy")).toContainText(
-    "published only if that client asks",
-  );
-  const entries = page.locator(".services-index > li");
-  await expect(entries).toHaveCount(3);
-  await expect(page.locator("main")).not.toContainText("C$");
-  for (const entry of await entries.all()) {
-    await expect(entry.getByRole("link", { name: /^Request/ })).toHaveAttribute(
-      "href",
-      /\/request-research\?service=/,
-    );
-  }
-});
-
-test("each service opens a labelled lorem sample in a dialog", async ({ page }) => {
-  await page.goto("/research-services");
-  const open = page.getByRole("button", { name: /^View sample/ });
-  await expect(open).toHaveCount(3);
-  await open.first().click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText("placeholder text");
-  await expect(dialog.locator("a[download], a[href$='.pdf']")).toHaveCount(0);
-  // The open reader is part of the page too: audit it while it is showing.
-  const results = await new AxeBuilder({ page }).include(".sample-dialog[open]").analyze();
-  expect(
-    results.violations
-      .filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))
-      .map((violation) => violation.id),
-  ).toEqual([]);
-  await page.keyboard.press("Escape");
-  await expect(dialog).toBeHidden();
-});
-
-test("the request page states privacy and purchase terms before the brief is opened", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/request-research");
-  await expect(page.getByText("published only if that client asks")).toBeVisible();
-  await expect(
-    page.getByText("Submitting does not create a purchase.", { exact: false }),
-  ).toBeVisible();
-});
-
-test("About counts only what exists and has no commissioned-work row", async ({ page }) => {
+test("About identifies the student project and counts only published work", async ({ page }) => {
   await page.goto("/about");
+  await expect(page.getByRole("heading", { name: /student research project/i })).toBeVisible();
   await expect(page.locator(".about-ledger dt")).toHaveText([
     "Published research",
     "Research areas",
     "Sources in the register",
-    "Research services",
   ]);
-  await expect(page.locator("main")).not.toContainText("Commissioned work published");
+  await expect(page.locator("main")).not.toContainText("Research services");
 });
 
-test("the request brief writes itself from the form", async ({ page }) => {
-  await page.goto("/request-research");
-  const brief = page.locator(".request-brief");
-  await expect(brief).toContainText("Draft · not sent");
-  await page.getByLabel("Organization").fill("Example GmbH");
-  await page.getByLabel("Country").fill("Germany");
-  await expect(brief).toContainText("Example GmbH · Germany");
-  await page.getByLabel("Business email").fill("research@example.com");
-  await page.getByRole("button", { name: /continue/i }).click();
-  await page.getByLabel("Enter the Canadian market").check();
-  // Indicative sources follow the purpose chosen.
-  await expect(brief).toContainText("Statistics Canada");
+test("retired commissioning pages redirect and submissions are rejected", async ({
+  request,
+  page,
+}) => {
+  for (const [path, destination] of [
+    ["/research-services", "/research"],
+    ["/request-research", "/research"],
+    ["/how-it-works", "/methodology"],
+  ]) {
+    const response = await request.get(path, { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe(destination);
+  }
+  const response = await request.post("/api/research-request", { data: { consent: true } });
+  expect(response.status()).toBe(410);
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /commission/i })).toHaveCount(0);
 });
 
 test("the methodology trace ties each phrase to the record fields it rests on", async ({
@@ -360,95 +274,14 @@ test("the methodology trace ties each phrase to the record fields it rests on", 
   await expect(page.locator(".trace-record > div[data-active] dt")).toContainText("Dataset");
 });
 
-test.describe("request form", () => {
-  const fillOrganization = async (page: import("@playwright/test").Page) => {
-    await page.getByLabel("Organization").fill("Example GmbH");
-    await page.getByLabel("Country").fill("Germany");
-    await page.getByLabel("Business email").fill("research@example.com");
-  };
-
-  test("validates a touched field on blur without pulling focus back", async ({ page }) => {
-    await page.goto("/request-research");
-    const email = page.getByLabel("Business email");
-    await email.fill("x");
-    await email.press("Tab");
-    await expect(page.getByText("Enter a valid business email address.")).toBeVisible();
-    await expect(email).toHaveAttribute("aria-invalid", "true");
-    await expect(email).not.toBeFocused();
-    await expect(page.getByLabel("Organization")).toHaveAttribute("aria-invalid", "false");
-  });
-
-  test("the stepper labels three steps and marks the current one", async ({ page }) => {
-    await page.goto("/request-research");
-    const steps = page.getByRole("list", { name: "Request steps" }).getByRole("listitem");
-    await expect(steps).toHaveText([/Organization/, /Question/, /Review/]);
-    await expect(page.locator('[aria-current="step"]')).toHaveText(/Organization/);
-    await fillOrganization(page);
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page.locator('[aria-current="step"]')).toHaveText(/Question/);
-  });
-
-  test("a draft survives a reload, and URL prefill still wins", async ({ page }) => {
-    await page.goto("/request-research");
-    await fillOrganization(page);
-    await page.getByRole("button", { name: /continue/i }).click();
-    await page.getByLabel("Subject, product or sector").fill("Draft subject");
-    await page.reload();
-    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
-    await expect(page.getByLabel("Business email")).toHaveValue("research@example.com");
-    await page.goto("/request-research?product=Maple%20syrup");
-    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Maple syrup");
-  });
-
-  test("a submitted request is not restored after a reload", async ({ page }) => {
-    await page.route("**/api/research-request", (route) =>
-      route.fulfill({ status: 201, json: { ok: true, reference: "abcdef1234567890" } }),
-    );
-    await page.goto("/request-research");
-    await fillOrganization(page);
-    await page.getByRole("button", { name: /continue/i }).click();
-    await page.getByLabel("Subject, product or sector").fill("Industrial components");
-    await page.getByLabel("Enter the Canadian market").check();
-    await page.getByRole("button", { name: /continue/i }).click();
-    await page.getByLabel(/I consent/).check();
-    await page.getByRole("button", { name: /submit research request/i }).click();
-    await expect(
-      page.getByRole("heading", { name: "Your research request has been received." }),
-    ).toBeVisible();
-    expect(await page.evaluate(() => sessionStorage.getItem("tharros.request.draft"))).toBeNull();
-    await page.reload();
-    // Prove the form hydrated and ran its restore before asserting nothing came back.
-    await page.getByLabel("Business email").fill("new@example.com");
-    await expect
-      .poll(() => page.evaluate(() => sessionStorage.getItem("tharros.request.draft") ?? ""))
-      .toContain("new@example.com");
-    await expect(page.getByLabel("Organization")).toHaveValue("");
-    await expect(page.getByLabel("Country")).toHaveValue("");
-  });
-
-  test("reloading a prefilled link keeps the visitor's edits", async ({ page }) => {
-    await page.goto("/request-research?product=Alpha");
-    await fillOrganization(page);
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Alpha");
-    await page.getByLabel("Subject, product or sector").fill("Beta");
-    await page.reload();
-    await expect(page.getByLabel("Organization")).toHaveValue("Example GmbH");
-    await page.getByRole("button", { name: /continue/i }).click();
-    await expect(page.getByLabel("Subject, product or sector")).toHaveValue("Beta");
-  });
-});
-
-test("the not-found page leads with research, then commissioning", async ({ page }) => {
+test("the not-found page leads to research and About", async ({ page }) => {
   const response = await page.goto("/this-page-does-not-exist");
   expect(response?.status()).toBe(404);
   const links = page.getByRole("navigation", { name: "Useful pages" }).getByRole("link");
-  await expect(links).toHaveText([/Research archive/, /Methodology/, /Commission research/]);
+  await expect(links).toHaveText([/Research archive/, /Methodology/, /About Tharros/]);
   await expect(links.nth(0)).toHaveAttribute("href", "/research");
   await expect(links.nth(1)).toHaveAttribute("href", "/methodology");
-  await expect(links.nth(2)).toHaveAttribute("href", "/research-services");
+  await expect(links.nth(2)).toHaveAttribute("href", "/about");
 });
 
 // One test per core route plus the fixture report, so the sweep spreads across workers and stays the same size
@@ -464,7 +297,7 @@ test.describe("every sitemap route", () => {
     const served = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
       .map((match) => new URL(match[1]).pathname)
       .filter((path) => !path.endsWith(".pdf"));
-    expect(served.length).toBeGreaterThan(8);
+    expect(served.length).toBeGreaterThan(5);
     expect(new Set(served)).toEqual(
       new Set([
         ...coreSitemapRoutes,
@@ -500,7 +333,7 @@ test.describe("every sitemap route", () => {
 });
 
 test("each page previews as itself when shared", async ({ page }) => {
-  for (const path of ["/about", "/research-services", "/request-research", "/methodology"]) {
+  for (const path of ["/about", "/research", "/methodology"]) {
     await page.goto(path);
     const og = (property: string) =>
       page.locator(`meta[property="${property}"]`).getAttribute("content");

@@ -1,4 +1,4 @@
-// Excludes address specials (<>()[]\,;:") too: Resend rejects them as reply_to, and the notification would never send.
+// Restrict the public contact override to a plain email address.
 export const emailPattern = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]{2,}$/;
 
 /** Verified public contact address (confirmed by the owner). NEXT_PUBLIC_RESEARCH_EMAIL overrides it per deployment. */

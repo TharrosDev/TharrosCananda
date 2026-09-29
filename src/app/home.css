@@ -1,4 +1,4 @@
-/* Home: the front page. The latest release stands beside the proposition; the Atlantic field plate and the commission index follow. */
+/* Home: the latest release, subject fields and research method. */
 .home-front { border-bottom: 1px solid var(--rule); }
 .home-front-grid { position: relative; isolation: isolate; width: var(--shell); margin: 0 auto; padding: clamp(40px, 5vw, 76px) 0 clamp(48px, 5vw, 76px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 48px; align-items: start; }
 /* The 12-column construction grid, exposed as texture here and nowhere else. */
@@ -63,22 +63,14 @@
 .atlantic-map figcaption { margin-top: 18px; padding-top: 14px; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--rule-dark); color: var(--on-dark-soft); font-size: 14px; }
 @keyframes atlas-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
-/* Commissioned research: the flagship across the row, the other two beside each other. */
-.home-commission { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 40px; align-items: start; }
-.home-commission-head { grid-column: 1 / span 4; }
-.home-commission-head h2 { margin: 0 0 20px; font-size: var(--type-section); letter-spacing: -.025em; line-height: .98; }
-.home-commission-head p { max-width: 36ch; color: var(--ink-soft); }
-.home-commission-list { grid-column: 5 / -1; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--col-gap); list-style: none; border-top: 2px solid var(--ink); }
-.home-commission-list li { min-width: 0; }
-.home-commission-list li:first-child { grid-column: 1 / -1; }
-.home-commission-list a { height: 100%; padding: 24px 0 26px; display: grid; grid-template-columns: minmax(0, 1fr) 20px; column-gap: 20px; align-content: start; border-bottom: 1px solid var(--rule-strong); text-decoration: none; }
-.home-commission-list h3 { grid-column: 1; margin: 0 0 10px; font-size: 28px; font-weight: 450; line-height: 1.1; }
-.home-commission-list li:first-child h3 { font-size: clamp(32px, 2.8vw, 42px); }
-.home-commission-list p { grid-column: 1; margin: 0; color: var(--ink-soft); font-size: 18px; }
-.home-commission-list li:first-child p { max-width: 46ch; font-size: 20px; }
-.home-commission-list svg { grid-column: 2; grid-row: 1; width: 20px; margin-top: 8px; transition: transform var(--dur-2) var(--ease-out); }
-.home-commission-list a:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
-.home-commission-list a:hover svg { transform: translateX(4px); }
+/* Method notes close the home page with the research practice, not a second product offer. */
+.home-method { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); row-gap: 36px; }
+.home-method > div { grid-column: 1 / span 5; }
+.home-method h2 { max-width: 11ch; margin: 0 0 20px; font-size: var(--type-section); line-height: .98; letter-spacing: -.025em; }
+.home-method p { max-width: 38ch; margin: 0 0 20px; color: var(--ink-soft); }
+.home-method ol { grid-column: 7 / -1; margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--ink); }
+.home-method li { padding: 20px 0; border-bottom: 1px solid var(--rule-strong); color: var(--ink-soft); font-size: 18px; }
+.home-method li strong { display: block; margin-bottom: 4px; color: var(--ink); font-family: var(--display); font-size: 25px; font-weight: 450; }
 
 @media (max-width: 1180px) {
   .home-front-copy { grid-column: 1 / span 5; }
@@ -86,7 +78,7 @@
   .home-front h1 { font-size: clamp(52px, 6.4vw, 80px); }
 }
 @media (max-width: 980px) {
-  .home-front-copy, .home-release, .home-field-map, .home-field-areas, .home-commission-head, .home-commission-list { grid-column: 1 / -1; }
+  .home-front-copy, .home-release, .home-field-map, .home-field-areas, .home-method > div, .home-method ol { grid-column: 1 / -1; }
   .home-front h1 { max-width: 13ch; }
   .home-release { max-width: 760px; }
 }
@@ -106,6 +98,4 @@
   .home-field-areas p { font-size: 17px; }
   .atlantic-map-label strong { font-size: 18px; }
   .atlantic-map-label span, .atlantic-map figcaption span:last-child { display: none; }
-  .home-commission-list { grid-template-columns: minmax(0, 1fr); }
-  .home-commission-list li:first-child h3 { font-size: 32px; }
 }

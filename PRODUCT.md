@@ -6,72 +6,35 @@
 
 Web.
 
-## Users
+## Readers
 
-Businesses and organizations working across the Canada–Europe relationship. That includes European companies assessing Canada, Canadian companies assessing Europe, and partner firms that need research capacity behind their own client work.
-
-What they come to do:
-- enter or evaluate a market
-- find buyers, distributors or partners
-- understand competitors
-- track a sector, policy or industrial development
-- check the evidence before commissioning
-- commission a focused answer without a mandatory sales call
+People following Canada–Europe policy and industry questions: researchers, students, journalists, practitioners and interested readers. They come to read a report, check its sources and limitations, find related work, and contact the project about a correction or collaboration.
 
 ## Product purpose
 
-Tharros Canada is an independent research institute working across Canada and Europe.
-- **Published research comes first:**
-  - reports on Canada–Europe questions;
-  - data notes that test whether public datasets are fit for use.
-- **Commissioned research is second.** It funds the published work.
+Tharros Canada is an independent student research project. It publishes its own reports on questions connecting Canada and Europe, along with data notes that test whether public evidence is fit for a stated use. The project is not a commissioned research service.
 
 The site makes three things easy:
-- seeing what Tharros can research;
-- inspecting its source discipline and published work;
-- commissioning a scoped answer asynchronously.
+- read and download real published work;
+- inspect the sources, methods and limitations behind it;
+- find the archive and send editorial questions, corrections or collaboration inquiries.
 
 ## Positioning
 
-**What Tharros is not:**
-- a government body;
-- a legal or regulatory adviser;
-- a generic consultancy.
+Tharros is a student research project, not a government body, a legal or regulatory adviser, or a generic consultancy. It does not claim institutional affiliation, fellows, clients, funders, partnerships or policy influence it cannot verify. It names the author of each report without adding a personal profile until verified details are supplied.
 
-**No think-tank claims it cannot show:** no fellows, policy positions or funders.
-
-**Where its credibility comes from:**
-- sources a reader can inspect;
-- explicit limitations;
-- real published work.
-
-The site never implies scale, clients, team members, partnerships or findings that aren't verified.
+Credibility comes from inspectable sources, explicit uncertainty and published work. The current subject scope is Canada–Europe policy and industry broadly; individual reports define their own precise questions. No tighter sector specialty is claimed yet.
 
 ## Current public surfaces
 
-- **Home:** the front page, led by the latest release.
-- **Research:** the reading room archive, report pages at `/research/<slug>`, and the stable `/research/id/<reference>` URLs.
-- **Research Services:** the three services and their sample documents.
-- **Methodology**
-- **About**
-- **Request Research**
-- **Documents:**
-  - How it works;
-  - Privacy;
-  - Accessibility;
-  - Copyright. Public research is licensed CC BY 4.0.
-- **The 404 page**, with an archive search.
+- **Home:** the latest real release, archive subjects and the research method.
+- **Research:** the searchable archive, report pages at `/research/<slug>`, and stable `/research/id/<reference>` URLs.
+- **Methodology:** source selection, human verification, freshness, fitness for use and limitations, shown through a real data note.
+- **About:** what the student project is, what it has published, its principles, boundaries and editorial contact.
+- **Documents:** Privacy, Accessibility and Copyright. Public research is licensed CC BY 4.0.
+- **The 404 page:** an archive search and useful research links.
 
-Primary navigation: Research · Methodology · About, plus the Commission action.
-
-## Commercial products
-
-Three services are defined in `src/lib/services.ts`:
-- **Custom & Partner Research** (the flagship): a client-defined Canada–Europe question, or research capacity behind a partner firm's client work.
-- **Market Assessment**
-- **Buyer & Partner Research**
-
-No prices are published. Every engagement is scoped and priced per case, in writing, before work starts.
+Primary navigation: Research · Methodology · About. Older service URLs redirect to the archive or methodology; the former request API returns 410 and accepts no submissions.
 
 ## Evidence commitments
 
@@ -79,28 +42,29 @@ No prices are published. Every engagement is scoped and priced per case, in writ
 - When a source is unavailable, the site shows that it is unavailable rather than plausible substitute values.
 - Naming a public institution identifies a source only and never implies endorsement.
 - The archive holds real work only, with no placeholder reports.
-- Commissioned work stays private to the client unless the client asks to publish it, so the archive holds Tharros's own research only. Say this wherever commissioning is offered (`commissionPrivacy` in `src/lib/services.ts`).
+- The owner's PDFs are never edited. Metadata and corrections belong in the site record, subject to `docs/REPORT_REQUIREMENTS.md`.
+- Reports remain `indexable: false` until the owner explicitly approves public indexing.
 
 ## Brand
 
-Warm ivory, graphite and soft black, slate, a muted Canadian red for actions, steel for data, and green for positive states. Source Serif 4 is the editorial voice and Schibsted Grotesk the interface and data voice. The site should read like a rigorous research publication, not a startup dashboard or a consultancy template. `DESIGN.md` has the details.
+Warm ivory, graphite and soft black, slate, a muted Canadian red for actions, steel for data, and green for positive states. Source Serif 4 is the editorial voice and Schibsted Grotesk the interface and data voice. The site reads like a rigorous research publication. `DESIGN.md` has the details.
 
 ## Product principles
 
-- Start with the client's decision, then the subject area.
+- Lead with the research and let the work establish the project's credibility.
+- Organize the archive by the question and the evidence, rather than by a claim of institutional scale.
 - Use research and data as the visual material.
-- The five research areas are a homepage summary and archive taxonomy, not destinations:
+- The five research areas are a homepage summary and archive taxonomy, not a claim that each has published work:
   - Trade & Economic Integration
   - Defence & Security
   - Energy, Resources & Industry
   - Technology & Strategic Industries
   - Data Quality & Validity
 - Prefer a narrow real capability over a broad simulated one.
-- Keep commissioning possible without an account or a call.
-- Let demand justify new capability. Accounts, billing, CRM, AI chat and automated report generation have not been built because nothing needs them yet, not because they are ruled out.
+- Let published work justify any future expansion of the taxonomy or functionality.
 
 ## Quality targets
 
-- **Accessibility:** WCAG 2.2 AA. That means semantic structure, keyboard access, visible focus, contrast, labelled controls, error recovery, reduced motion, HTML equivalents for graphics, and mobile layouts designed on purpose.
+- **Accessibility:** WCAG 2.2 AA. Semantic structure, keyboard access, visible focus, contrast, labelled controls, error recovery, reduced motion, HTML equivalents for graphics and purposeful mobile layouts.
 - **Core Web Vitals:** LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1.
-- **Browser tests:** Playwright covers responsive layout, the commissioning journey, axe checks and visual regression.
+- **Browser tests:** Playwright covers reading, archive search, report access, responsive layout, axe checks and visual regression.

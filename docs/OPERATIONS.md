@@ -1,53 +1,42 @@
 # Operations
 
-Infrastructure, data flows and runbooks for the live setup, as of 2026-09-24. Update this file in the same PR whenever the infrastructure changes.
+Infrastructure and runbooks for the research-only site. Update this file when a deployment or backend dependency changes.
 
 ## Systems
 
-| System | What | Notes |
+| System | Current role | Notes |
 | --- | --- | --- |
-| Vercel | Project `tharroscananda` (team `meridiansocietycanada-7533s-projects`), Hobby plan, Node 24.x | Serves `tharros.ca`, and `www` 308-redirects to the apex. Vercel Analytics also runs there, and the site skips it when the browser sends Global Privacy Control. Deploys `main` automatically. |
-| Supabase | Project `tharros-canada`, ref `kgiptvgefhnwxktzncui`, ca-central-1 | Postgres tables plus the `research-intake` Edge Function. |
-| Resend | Sends from `requests@tharros.ca` | DKIM `resend._domainkey`; return path `send.tharros.ca`. |
+| Vercel | Hosts `tharros.ca` and Web Analytics | Project `tharroscananda` (team `meridiansocietycanada-7533s-projects`), Hobby plan, Node 24.x. `www` 308-redirects to the apex. `main` deploys automatically. |
+| Supabase | Readership counts and retained earlier research requests | Project `tharros-canada`, ref `kgiptvgefhnwxktzncui`, ca-central-1. `publication_events` and `publication_counts` remain active. Earlier `research_requests` rows keep their retention policy. |
+| Resend | Legacy intake notifications only | The site no longer submits requests after this change deploys. Do not use Resend as a public research contact mechanism. |
 | DNS | Vercel DNS | Apex SPF `v=spf1 -all`. DMARC is `p=none` with no report address, because the domain has no mailbox. |
 
-Every variable is described in `README.md` (Environment).
-- **Production** sets all of them except `RESEARCH_INTAKE_WEBHOOK_SECRET`, which comes from `intake_config`.
-- **Preview** sets only `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_RESEARCH_EMAIL` and `RESEARCH_INTAKE_WEBHOOK_URL`.
-  - Without Supabase access, previews count nothing.
-  - Intake can't read the signing secret there, so previews can't submit it.
+`NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_RESEARCH_EMAIL` are public values. The readership API uses server-only `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `METRICS_SECRET`. Without all three, counts are hidden. See `README.md` and `.env.example`.
 
-## Research intake
+## Retired research intake
 
-```text
-form → POST /api/research-request (validate, honeypot, 32 KB cap)
-     → HMAC-signed POST to Edge Function research-intake (8 s timeout)
-     → insert into research_requests (idempotent on reference) → 200
-     → after the response: Resend email to TharrosDev@gmail.com (Reply-To: requester)
-```
+`/research-services` and `/request-research` now redirect to `/research`; `/how-it-works` redirects to `/methodology`. `POST /api/research-request` always returns 410 and never forwards its body. The old Edge Function source and SQL migrations remain in the repository while the deployed function and legacy records are retired. They are not part of the public product.
 
-- **Contract:** `X-Tharros-Signature: sha256=<hex HMAC-SHA256 of "<X-Tharros-Timestamp>.<raw body>">`. Timestamps more than 5 minutes off are rejected.
-- **Success:** the receiver returns 2xx only once the request is stored. Anything else, or no answer within 8 s, is shown to the visitor as not sent, and their answers are kept.
-- **Shared secret:** it lives in the service-role-only `intake_config` table (`webhook_secret`, `resend_api_key`), which both sides read. An env var of the same name overrides it on either side.
-  - Both sides cache the secret per instance, so rotating it means redeploying both.
-- **Email retries:** a failed email leaves `notified_at` null. The next successful request retries up to 5 such rows. That is the only retry path.
-- **Retention:** rows older than 24 months are deleted by a trigger on insert and by the daily pg_cron job `purge-research-requests` (03:17 UTC). The privacy page reads the same period from `intakeRetention` in `src/data/organization.ts`.
-- **Rate limit:** Vercel Firewall rule "Rate limit research intake": `POST /api/research-request`, 10 requests per 600 s per IP, deny. There is deliberately no in-process limiter.
+After the research-only site is deployed:
+
+1. Verify the redirects and 410 response with `npm run smoke -- https://tharros.ca`.
+2. Inspect any earlier `research_requests` rows, including undelivered notifications, before decommissioning the deployed `research-intake` Edge Function. Do not delete request data as part of the site release.
+3. Decommission the deployed function and remove unused Vercel intake environment variables and the Vercel Firewall rule named `Rate limit research intake`. Remove unused intake secrets only after the function is disabled. Backend changes are separate from the site merge.
+4. Keep the 24-month retention job `purge-research-requests` (03:17 UTC) and the table until every earlier row has expired or been handled under the privacy policy. The privacy page reads the same period from `src/data/organization.ts`.
+
+The historical receiver contract and code remain in `supabase/functions/research-intake/`; do not redeploy it for the research-only site. The `research_requests` and `intake_config` migrations are historical and must not be removed from migration history.
 
 ## Research readership
 
-Archive cards and the report header show "N views · N citations". The counts are engaged unique readers, not page views.
+Archive cards and the report header show "N views · N citations" for indexable publications. These are engaged unique readers, not page views.
 
-- **Read:** the report viewer has been visible for 20 s in total, or the PDF was downloaded. Counted once per reader per publication per 30 days.
+- **Read:** the report viewer has been visible for 20 seconds in total, or the PDF was downloaded. Counted once per reader per publication per 30 days.
 - **Citation:** a successful "Copy citation". Counted once per reader per publication (key kept for 12 months).
 - **Not counted:** non-indexable publications, bots, cross-site requests and browsers sending Global Privacy Control.
-- **Reader key:** `HMAC(METRICS_SECRET, ip|slug)`. Raw IPs are never stored, and keys cannot be linked across publications. The browser also remembers what it has already sent.
-- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). Expired keys are purged on each event and by the daily pg_cron job `purge-publication-events` (03:23 UTC). If Supabase is unreachable, counts are hidden rather than guessed.
-- **No rate limit:** the Hobby plan allows one rule, which intake uses. The dedupe caps inflation at one count per IP and publication.
+- **Reader key:** `HMAC(METRICS_SECRET, ip|slug)`. Raw IPs are never stored, and keys cannot be linked across publications. The browser also remembers what it has counted.
+- **Storage:** `publication_events` and `publication_counts`, written only through `record_publication_event()` (service role). Expired keys are purged on each event and by the daily pg_cron job `purge-publication-events` (03:23 UTC). If Supabase is unreachable, counts are hidden.
 
-## Database
-
-Every table has RLS enabled with no policies. That is intentional: only `service_role` can touch them, and the Supabase advisor's "RLS enabled, no policy" INFO notices are expected. SECURITY DEFINER functions use `search_path = ''`.
+Every table has RLS enabled with no policies. Only `service_role` can touch them, and the Supabase advisor's "RLS enabled, no policy" INFO notices are expected. SECURITY DEFINER functions use `search_path = ''`.
 
 ## Runbooks
 
@@ -63,28 +52,12 @@ Every table has RLS enabled with no policies. That is intentional: only `service
 
 The live migration history uses the versions MCP assigned at apply time, not the file names, so `supabase db push` would see drift.
 
-**Deploy the Edge Function.** Use the Supabase MCP `deploy_edge_function` with `verify_jwt: false`, and upload both `index.ts` and `payload.ts`. The Supabase CLI account here lacks deploy and secret rights. JWT verification must stay off: the function authenticates with the HMAC.
-
-**Test intake end to end.** POST a clearly labelled test to `https://tharros.ca/api/research-request` and confirm the row exists with `notified_at` set. Then delete the row.
-
-**Firewall.** Run `vercel firewall rules list`. (`vercel firewall overview` fails with a 402 on Hobby.) To recreate the rule:
-
-```bash
-vercel firewall rules add "Rate limit research intake" \
-  --condition '{"type":"path","op":"eq","value":"/api/research-request"}' \
-  --condition '{"type":"method","op":"eq","value":"POST"}' \
-  --action rate_limit --rate-limit-window 600 --rate-limit-requests 10 \
-  --rate-limit-keys ip --rate-limit-action deny --yes
-vercel firewall publish --yes
-```
-
 **Vercel API from Git Bash.** Prefix the command with `MSYS_NO_PATHCONV=1`, otherwise `/v9/...` is rewritten into a Windows path.
 
-## Open before launch
+## Open before wider publication
 
-- [ ] Fill `src/data/organization.ts` with verified details (research lead, legal entity, profiles) once the business is registered.
-- [ ] Review `/privacy` against the actual intake storage and retention, covering Canadian and relevant European obligations.
-- [ ] Confirm engagement terms: scope, payment, liability, confidentiality and advice boundaries.
-- [x] The first real report sets `indexable: true` (`TC-2026-001`, 2026-09-16). On 2026-09-24 the owner set every report back to `indexable: false` until they are ready to go public; flip it per report when they say so.
+- [ ] Fill `src/data/organization.ts` with verified details only if the owner chooses to publish them; the student project does not require a personal profile.
+- [ ] Review `/privacy` against actual legacy intake storage and retention, including applicable Canadian and European obligations.
+- [ ] Confirm decommissioning of the deployed intake function, secrets and Firewall rule after the site release.
+- [ ] Keep each report `indexable: false` until the owner explicitly approves indexing; report release and search indexing are separate decisions.
 - [ ] Run Lighthouse / Core Web Vitals and manual keyboard, screen-reader and reflow checks on production.
-- [ ] Optional: HSTS `preload` plus hstspreload.org submission, and a mailbox or forwarding for `tharros.ca` so DMARC reports can be collected.

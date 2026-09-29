@@ -133,9 +133,7 @@ export default async function ReportPage({ params }: Props) {
             </div>
             <div>
               <dt>Origin</dt>
-              <dd>
-                {p.origin === "independent" ? "Independent research" : "Commissioned research"}
-              </dd>
+              <dd>Independent research</dd>
             </div>
             {asset && (
               <div>
@@ -243,12 +241,6 @@ export default async function ReportPage({ params }: Props) {
             </ul>
           </div>
         </div>
-      </section>
-      <section className="closing-cta">
-        <h2>Need research on a specific question?</h2>
-        <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
-        </Link>
       </section>
       {counted && <ReadTracker slug={p.slug} />}
       <script

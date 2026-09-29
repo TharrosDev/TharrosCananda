@@ -8,13 +8,12 @@ import { publications } from "@/data/publications";
 import { publicSources } from "@/data/sources";
 import { researchEmail } from "@/lib/contact";
 import { researchAreas } from "@/lib/research-areas";
-import { doesNotProvide, provides, services } from "@/lib/services";
 import "./about.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Tharros Canada is an independent research institute studying the trade, policy, industry and organizations that connect Canada and Europe, and the public data behind them.",
+    "Tharros Canada is an independent student research project publishing sourced reports on Canada–Europe policy, industry and the public evidence behind them.",
   path: "/about",
 });
 
@@ -26,7 +25,8 @@ export default function AboutPage() {
   const latest = [...publications].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
   const contactLine = (
     <p>
-      Research questions and requests: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+      Questions, corrections and collaboration:{" "}
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
     </p>
   );
   const links = (items: { label: string; url: string }[]) => (
@@ -45,9 +45,9 @@ export default function AboutPage() {
 
   const principles = [
     {
-      title: "Start with the decision.",
-      body: "The deliverable, source route, exclusions, timing and price are agreed in writing before research begins.",
-      check: { label: "How commissions work", href: "/how-it-works" },
+      title: "Start with the question.",
+      body: "Each report defines the question it can answer and the evidence needed to investigate it.",
+      check: { label: "Research archive", href: "/research" },
     },
     {
       title: "Separate fact from inference.",
@@ -66,17 +66,18 @@ export default function AboutPage() {
     {
       title: "Stay relevant.",
       body: "Research is organized around the question, not the volume of material collected.",
-      check: { label: "Research services", href: "/research-services" },
+      check: { label: "Research archive", href: "/research" },
     },
   ];
 
   return (
     <>
       <header className="about-masthead">
-        <h1>Independent research focused on Canada and Europe.</h1>
+        <h1>A student research project focused on Canada and Europe.</h1>
         <p className="about-deck">
-          Tharros studies the trade, policy, industry and organizations connecting both markets, and
-          tests the public data behind them.
+          Tharros Canada is an independent student research project. It publishes reports on the
+          policies and industries connecting Canada and Europe, and examines the public evidence
+          behind them.
         </p>
         <figure className="about-route">
           {/* The same great-circle route as the homepage map, cropped to a masthead rule. */}
@@ -102,7 +103,7 @@ export default function AboutPage() {
 
       <section className="about-section" aria-labelledby="record-title">
         <div className="about-section-head ruled ruled-strong">
-          <h2 id="record-title">The institute, on the record.</h2>
+          <h2 id="record-title">The project, on the record.</h2>
           <p>What exists today, counted from this site&rsquo;s own records.</p>
         </div>
         <dl className="about-ledger">
@@ -138,14 +139,6 @@ export default function AboutPage() {
               endorsement. <Link href="/methodology#atlas-title">See the register</Link>.
             </dd>
           </div>
-          <div>
-            <dt>Research services</dt>
-            <dd className="about-count">{services.length}</dd>
-            <dd>
-              {services.map((service) => service.name).join(" · ")}. No published prices; each is
-              scoped in writing.
-            </dd>
-          </div>
         </dl>
       </section>
 
@@ -177,8 +170,8 @@ export default function AboutPage() {
         <div className="about-independence-lead">
           <h2 id="independence-title">Independent from the sources it studies.</h2>
           <p>
-            Tharros Canada is an independent research institute, not a government body. Naming a
-            public source identifies it; it never implies endorsement or affiliation.
+            Tharros Canada is an independent student research project, not a government body. Naming
+            a public source identifies it; it never implies endorsement or affiliation.
           </p>
           {!hasAccountability && (
             <div className="about-contact" id="contact">
@@ -188,19 +181,17 @@ export default function AboutPage() {
         </div>
         <div className="boundary">
           <div className="boundary-inside">
-            <h3>Tharros provides</h3>
+            <h3>Tharros publishes</h3>
             <ul>
-              {provides.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+              <li>Reports on Canada–Europe policy and industry questions</li>
+              <li>Data notes on the fitness of public evidence</li>
+              <li>Sources, methods and material limitations alongside each report</li>
             </ul>
           </div>
           <div className="boundary-outside">
             <h3>Outside the boundary</h3>
             <ul>
-              {doesNotProvide.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+              <li>Legal, tax, regulatory, lobbying or investment advice</li>
               <li>Endorsement by, or affiliation with, the sources it names</li>
             </ul>
           </div>
@@ -252,13 +243,6 @@ export default function AboutPage() {
           </div>
         </section>
       )}
-
-      <section className="closing-cta">
-        <h2>Have a question that needs research?</h2>
-        <Link className="button-primary" href="/request-research">
-          Commission research <ArrowIcon />
-        </Link>
-      </section>
     </>
   );
 }

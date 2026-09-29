@@ -6,8 +6,6 @@ import { fixture, fixturePath, fixtureWord } from "./fixture";
 // report (the archive query), so adding a report never needs new baselines. Functional specs cover that content.
 const routes = [
   ["home", "/"],
-  ["services", "/research-services"],
-  ["request", "/request-research"],
   ["about", "/about"],
   ["research", `/research?q=${fixtureWord.toLowerCase()}&area=${fixture.area}`],
   ["report", fixturePath],

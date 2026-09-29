@@ -1,7 +1,6 @@
 import { publications } from "@/data/publications";
 import { publicSources } from "@/data/sources";
 import { researchAreas } from "@/lib/research-areas";
-import { services } from "@/lib/services";
 import { siteUrl } from "@/lib/site";
 
 // llms.txt (llmstxt.org): a plain summary for AI assistants and answer engines, built from the same
@@ -13,11 +12,7 @@ export function GET() {
   const lines = [
     "# Tharros Canada",
     "",
-    "> Independent research institute working across Canada and Europe. Tharros publishes research on trade, defence, energy, industry and technology questions, and assessments of whether public datasets are fit for use, from public, dated and attributed sources, and states the limitations of every finding. Research can also be commissioned; each commission is scoped and priced in writing before it begins. Commissioned work stays private to the client who commissioned it and is published only if that client asks. Tharros is not a government body and does not give legal, tax, regulatory, lobbying or investment advice.",
-    "",
-    "## Services",
-    "",
-    ...services.map((s) => `- [${s.name}](${siteUrl}/research-services#${s.slug}): ${s.question}`),
+    "> Independent student research project publishing sourced reports on Canada–Europe policy and industry questions, and assessments of whether public datasets are fit for use. Each report states its sources and material limitations. Tharros is not a government body and does not give legal, tax, regulatory, lobbying or investment advice.",
     "",
     "## Research areas",
     "",
@@ -36,9 +31,6 @@ export function GET() {
     "",
     "## Key pages",
     "",
-    `- [Services](${siteUrl}/research-services): the three services and how they are scoped`,
-    `- [Commission research](${siteUrl}/request-research): describe a question and receive a written scope, price and timeline`,
-    `- [How it works](${siteUrl}/how-it-works): the commissioning process and what Tharros does not provide`,
     `- [Sources & methodology](${siteUrl}/methodology): source selection, verification, freshness and limitations`,
     `- [Research archive](${siteUrl}/research): searchable publications`,
     `- [About](${siteUrl}/about): research principles and independence`,

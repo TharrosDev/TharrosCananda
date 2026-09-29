@@ -24,7 +24,7 @@ export default defineConfig({
     },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  // Production build with the intake webhook unset, so form submissions return 503 and the form offers a mailto link.
+  // Production build; the former request endpoint must remain closed.
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
@@ -32,10 +32,6 @@ export default defineConfig({
         url: `http://127.0.0.1:${port}`,
         timeout: 240_000,
         reuseExistingServer: !process.env.CI,
-        env: {
-          NEXT_PUBLIC_SITE_URL: "https://tharros.ca",
-          RESEARCH_INTAKE_WEBHOOK_URL: "",
-          RESEARCH_INTAKE_WEBHOOK_SECRET: "",
-        },
+        env: { NEXT_PUBLIC_SITE_URL: "https://tharros.ca" },
       },
 });

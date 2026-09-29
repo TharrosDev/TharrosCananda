@@ -320,9 +320,6 @@ export default function MethodologyPage() {
           <Link className="button-primary" href="/research">
             Read the research <ArrowIcon />
           </Link>
-          <Link className="text-link" href="/research-services">
-            Commission research <ArrowIcon />
-          </Link>
         </div>
       </section>
     </>

@@ -4,7 +4,6 @@ import { MethodRail } from "@/components/method-rail";
 import { PageHero } from "@/components/page-hero";
 import { organization } from "@/data/organization";
 import { researchEmail } from "@/lib/contact";
-import { commissionPrivacy } from "@/lib/services";
 import { researchLicence } from "@/lib/licence";
 import { siteUrl, pageMetadata } from "@/lib/site";
 
@@ -114,10 +113,6 @@ export default function CopyrightPage() {
                 Statistics Canada, Eurostat or the City of Ottawa keep their own publishers&apos;
                 terms. The licence covers Tharros&apos;s analysis, not the source material. Each
                 report lists its sources.
-              </li>
-              <li>
-                <strong>Commissioned work.</strong> {commissionPrivacy} It is licensed only if the
-                client and Tharros agree in writing to publish it.
               </li>
               <li>
                 <strong>This website.</strong> The site&apos;s code, design and other pages are not

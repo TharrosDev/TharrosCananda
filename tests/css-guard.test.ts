@@ -91,8 +91,7 @@ describe("motion safety", () => {
 });
 
 describe("legibility", () => {
-  // The services shelf shows each sample's cover at thumbnail scale with `zoom`: an aria-hidden picture of a page whose readable
-  // version is the dialog, so zoomed thumbnails are exempt by design (DESIGN.md, Services).
+  // Scan the current screen styles for type below the agreed label minimum.
   const screenCss = cssFiles(join(process.cwd(), "src"));
 
   it("never sets screen type below the 11.5px label minimum", () => {

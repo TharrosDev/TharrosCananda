@@ -1,4 +1,4 @@
-/** The licence applied to Tharros's public research. Commissioned work, brand and site code are excluded (see /copyright). */
+/** The licence applied to Tharros's public research. Brand and site code are excluded (see /copyright). */
 export const researchLicence = {
   short: "CC BY 4.0",
   name: "Creative Commons Attribution 4.0 International",
