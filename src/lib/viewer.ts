@@ -3,6 +3,11 @@ const MAX_CANVAS_PIXELS = 16_777_216;
 const MAX_ZOOM = 2;
 const MIN_ZOOM = 0.25;
 
+/** PDF fragments and page fields must address a finite, whole page. */
+export function reportPage(value: number, pages: number) {
+  return Number.isFinite(value) ? Math.min(pages, Math.max(1, Math.trunc(value))) : 1;
+}
+
 /** Device pixel ratio for a page canvas, reduced when the backing store would exceed the pixel budget. */
 export function canvasRatio(width: number, height: number, devicePixelRatio: number) {
   const ratio = devicePixelRatio > 0 ? devicePixelRatio : 1;

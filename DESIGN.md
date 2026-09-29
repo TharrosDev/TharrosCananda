@@ -187,6 +187,8 @@ Top to bottom:
 4. Sources as a register across the page: publisher, document. No retrieval dates (owner decision).
 5. Limitations beside the citation panel, then a three-up Continue row.
 
+The viewer's fullscreen fallback contains keyboard focus, makes the surrounding page inert, and returns focus to its trigger on exit. Find results are cleared while a new query is being searched so the count and highlight always belong to the current query.
+
 ### Methodology (`/methodology`)
 
 1. **Opening:** the H1 and deck (cols 1–4) beside the **provenance trace** (`src/components/provenance-trace.tsx`).

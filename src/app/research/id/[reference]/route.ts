@@ -9,6 +9,9 @@ export async function GET(
   if (!publication) return new Response("Not found", { status: 404 });
   return new Response(null, {
     status: 308,
-    headers: { Location: `/research/${publication.slug}` },
+    headers: {
+      Location: `/research/${publication.slug}`,
+      ...(!publication.indexable ? { "X-Robots-Tag": "noindex, nofollow" } : {}),
+    },
   });
 }

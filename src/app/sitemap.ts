@@ -4,7 +4,7 @@ import { reportAsset } from "@/lib/reports";
 import { coreRoutes, siteUrl as base } from "@/lib/site";
 
 // ponytail: one date for all core pages; bump it when their copy changes so crawlers revisit.
-const pagesUpdated = new Date("2026-09-23");
+const pagesUpdated = new Date("2026-09-29");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const core = coreRoutes.map((route, index) => ({

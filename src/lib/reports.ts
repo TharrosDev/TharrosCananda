@@ -17,10 +17,10 @@ export type ReportAsset = {
 };
 
 export function reportAsset(slug: string): ReportAsset | undefined {
-  return (assets as Record<string, ReportAsset>)[slug];
+  return Object.hasOwn(assets, slug) ? (assets as Record<string, ReportAsset>)[slug] : undefined;
 }
 
 /** Extracted PDF text per page, for on-site search. Empty when the report has not been generated. */
 export function reportText(slug: string): string[] {
-  return (texts as Record<string, string[]>)[slug] ?? [];
+  return Object.hasOwn(texts, slug) ? (texts as Record<string, string[]>)[slug] : [];
 }

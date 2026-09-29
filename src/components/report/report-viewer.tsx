@@ -12,7 +12,7 @@ import {
 } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type { ContentsEntry } from "@/lib/report-sections";
-import { canvasRatio, findPattern, nextZoom } from "@/lib/viewer";
+import { canvasRatio, findPattern, nextZoom, reportPage } from "@/lib/viewer";
 import "./report-viewer.css";
 
 type Props = {
@@ -43,7 +43,12 @@ const highlights = () =>
     ? (CSS as unknown as { highlights: HighlightRegistry }).highlights
     : null;
 
-export function ReportViewer({
+export function ReportViewer(props: Props) {
+  // Navigation to a different report must reset errors, search, zoom and reading anchors together.
+  return <ReportViewerDocument key={props.file} {...props} />;
+}
+
+function ReportViewerDocument({
   file,
   pages,
   title,
@@ -72,7 +77,7 @@ export function ReportViewer({
   const [section, setSection] = useState(-1);
   const [contentsOpen, setContentsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [found, setMatches] = useState<Range[]>([]);
+  const [found, setMatches] = useState<{ key: string; ranges: Range[] }>({ key: "", ranges: [] });
   const [matchIndex, setMatchIndex] = useState(0);
   const anchor = useRef<{ page: number; offset: number } | null>(null);
   // A link from an archive match opens the report at its page with the word already found:
@@ -95,8 +100,11 @@ export function ReportViewer({
   const scale = Math.round((zoom === "fit" ? fitScale : zoom) * 100) / 100;
   const renderKey = `${file}@${scale}`;
   const rendering = renderedKey !== renderKey;
+  const searchKey = JSON.stringify([renderKey, query]);
   // Matches only count while the text layers they point into are the current ones.
-  const matches = findPattern(query) && !rendering && !failed ? found : NO_MATCHES;
+  const searching = found.key !== searchKey;
+  const matches =
+    findPattern(query) && !rendering && !failed && !searching ? found.ranges : NO_MATCHES;
 
   // One document (and one pdf.js worker) per file, destroyed when the file changes or the viewer unmounts.
   useEffect(() => {
@@ -118,7 +126,7 @@ export function ReportViewer({
         // A term too short to find is dropped, so the link still lands on its page.
         const search = findPattern(raw) ? raw : "";
         if (page || search) {
-          jumpTo.current = { page: Math.min(Math.max(1, page || 1), pages), search };
+          jumpTo.current = { page: reportPage(page, pages), search };
           if (search) setQuery(search);
         }
       } catch {
@@ -127,8 +135,7 @@ export function ReportViewer({
     })();
     return () => {
       cancelled = true;
-      setDoc(null);
-      void loadingTask?.destroy();
+      void loadingTask?.destroy().catch(() => {});
     };
   }, [file, pages]);
 
@@ -290,7 +297,7 @@ export function ReportViewer({
   }, [rendering, failed, scrollToPoint]);
 
   function goTo(n: number) {
-    const target = Math.min(Math.max(1, n || 1), pages);
+    const target = reportPage(n, pages);
     setCurrent(target);
     setPageInput(String(target));
     scrollToPoint(target, 0);
@@ -299,7 +306,16 @@ export function ReportViewer({
 
   function openSection(event: MouseEvent, entry: ContentsEntry) {
     // Without a drawn viewer the link opens the PDF at that page instead.
-    if (failed || !sheetsRef.current) return;
+    if (
+      failed ||
+      !sheetsRef.current ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    )
+      return;
     event.preventDefault();
     setContentsOpen(false);
     scrollToPoint(entry.page, entry.top);
@@ -322,13 +338,50 @@ export function ReportViewer({
   // The overlay fallback (iPhone has no element full screen) locks the page behind it and closes on Escape.
   useEffect(() => {
     if (fullscreen !== "overlay") return;
+    const root = rootRef.current;
+    if (!root) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    // The fixed viewer stays in its original DOM position: make every outside branch inert.
+    const outside: { element: HTMLElement; inert: boolean }[] = [];
+    for (let branch: HTMLElement = root; branch.parentElement; branch = branch.parentElement) {
+      for (const sibling of branch.parentElement.children) {
+        if (sibling !== branch && sibling instanceof HTMLElement) {
+          outside.push({ element: sibling, inert: sibling.inert });
+          sibling.setAttribute("inert", "");
+        }
+      }
+      if (branch.parentElement === document.body) break;
+    }
+    root.focus({ preventScroll: true });
     document.documentElement.setAttribute("data-viewer-overlay", "");
-    const onKey = (event: globalThis.KeyboardEvent) =>
-      event.key === "Escape" && setFullscreen(false);
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") setFullscreen(false);
+      if (event.key !== "Tab") return;
+      const controls = [
+        ...root.querySelectorAll<HTMLElement>(
+          "a[href], button:not(:disabled), input:not(:disabled), [tabindex='0']",
+        ),
+      ].filter((element) => element.getClientRects().length > 0);
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === root)) {
+        event.preventDefault();
+        last.focus();
+      } else if (
+        !event.shiftKey &&
+        (document.activeElement === last || document.activeElement === root)
+      ) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
     document.addEventListener("keydown", onKey);
     return () => {
       document.documentElement.removeAttribute("data-viewer-overlay");
       document.removeEventListener("keydown", onKey);
+      outside.forEach(({ element, inert }) => element.toggleAttribute("inert", inert));
+      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
     };
   }, [fullscreen]);
   // Zoom and full screen resize every sheet: put the reader back on the same point of the same page.
@@ -366,6 +419,8 @@ export function ReportViewer({
   useEffect(() => {
     const registry = highlights();
     const pattern = findPattern(query);
+    registry?.delete("report-find");
+    registry?.delete("report-find-current");
     if (!pattern || rendering || failed) {
       registry?.delete("report-find");
       registry?.delete("report-find-current");
@@ -408,12 +463,12 @@ export function ReportViewer({
           )
         : 0;
       if (target && onPage === -1) scrollToPoint(target.page, 0);
-      setMatches(ranges);
+      setMatches({ key: searchKey, ranges });
       setMatchIndex(Math.max(0, onPage));
       registry?.set("report-find", new Highlight(...ranges));
     }, 150);
     return () => clearTimeout(timer);
-  }, [query, rendering, failed, renderKey, scrollToPoint]);
+  }, [query, rendering, failed, searchKey, scrollToPoint]);
 
   const showMatch = useCallback(
     (index: number) => {
@@ -471,7 +526,7 @@ export function ReportViewer({
     ? ""
     : matches.length
       ? `${matchIndex + 1} of ${matches.length}`
-      : rendering
+      : rendering || searching
         ? "Searching…"
         : "No matches";
 
@@ -480,6 +535,9 @@ export function ReportViewer({
       ref={rootRef}
       className="report-reader"
       aria-label={`${title}: PDF`}
+      role={fullscreen === "overlay" ? "dialog" : undefined}
+      aria-modal={fullscreen === "overlay" ? true : undefined}
+      tabIndex={-1}
       data-report-viewer
       data-fullscreen={fullscreen || undefined}
       data-loading={rendering && !failed ? "" : undefined}

@@ -30,7 +30,7 @@ npm run smoke -- https://tharros.ca                   # post-deploy smoke test (
 ```
 
 - **Playwright builds and serves the site itself**, on port 3100.
-  - Locally it reuses a server already running on that port, so stop any dev server there and delete `.next` before a run.
+  - It refuses to reuse a server already running on that port, so stop any dev server there and delete `.next` before a run.
   - Set `PLAYWRIGHT_BASE_URL` to test a deployed URL instead.
 - **CI** (`.github/workflows/ci.yml`) runs two jobs, and both must pass to merge into `main`:
   - `verify`: lint, typecheck, Vitest, `npm audit` and `deno check` on the Edge Function.

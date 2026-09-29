@@ -1,7 +1,8 @@
-// Receives signed commission requests from tharros.ca, stores them, then emails a notification.
-// Contract (src/app/api/research-request/route.ts): X-Tharros-Signature = sha256=<hex HMAC of "<timestamp>.<body>">.
+// Retained historical receiver; the public site's request endpoint is retired and always returns 410.
+// Historical contract: X-Tharros-Signature = sha256=<hex HMAC of "<timestamp>.<body>">.
 // Returns 2xx only once the request is stored; the email is best effort and never fails a stored request.
 import { type IntakeRequest, oneLine, parseIntake } from "./payload.ts";
+import { readRequestBody, RequestBodyError } from "../_shared/request-body.ts";
 
 declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
@@ -18,14 +19,22 @@ const maxBodyBytes = 34_000;
 const restTimeoutMs = 3000;
 
 const encoder = new TextEncoder();
-const hex = (bytes: ArrayBuffer) => [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
+const hex = (bytes: ArrayBuffer) =>
+  [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
 async function validSignature(timestamp: string, body: string, signature: string) {
-  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
   const expected = `sha256=${hex(await crypto.subtle.sign("HMAC", key, encoder.encode(`${timestamp}.${body}`)))}`;
   if (expected.length !== signature.length) return false;
   let diff = 0;
-  for (let i = 0; i < expected.length; i += 1) diff |= expected.charCodeAt(i) ^ signature.charCodeAt(i);
+  for (let i = 0; i < expected.length; i += 1)
+    diff |= expected.charCodeAt(i) ^ signature.charCodeAt(i);
   return diff === 0;
 }
 
@@ -47,7 +56,9 @@ function emailText(r: IntakeRequest) {
     r.context ? `Context: ${r.context}` : null,
     "",
     "Reply to this email to answer the requester directly.",
-  ].filter((line) => line !== null).join("\n");
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
 }
 
 async function notify(r: IntakeRequest) {
@@ -64,14 +75,20 @@ async function notify(r: IntakeRequest) {
     }),
     signal: AbortSignal.timeout(4000),
   });
-  if (!response.ok) console.error(`[research-intake] ${r.reference}: email failed ${response.status}`);
+  if (!response.ok)
+    console.error(`[research-intake] ${r.reference}: email failed ${response.status}`);
   return response.ok;
 }
 
 const rest = (path: string, method: string, body: unknown, extra: Record<string, string> = {}) =>
   fetch(`${supabaseUrl}/rest/v1/${path}`, {
     method,
-    headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json", ...extra },
+    headers: {
+      apikey: serviceKey,
+      Authorization: `Bearer ${serviceKey}`,
+      "Content-Type": "application/json",
+      ...extra,
+    },
     body: body === undefined ? undefined : JSON.stringify(body),
     signal: AbortSignal.timeout(restTimeoutMs),
   });
@@ -90,7 +107,9 @@ async function loadConfig() {
 }
 
 async function markNotified(reference: string) {
-  await rest(`research_requests?reference=eq.${reference}`, "PATCH", { notified_at: new Date().toISOString() });
+  await rest(`research_requests?reference=eq.${reference}`, "PATCH", {
+    notified_at: new Date().toISOString(),
+  });
 }
 
 // ponytail: failed emails are only retried when a new request arrives (up to 5 oldest per request);
@@ -124,34 +143,61 @@ async function notifyAndRetry(r: IntakeRequest) {
 
 Deno.serve(async (request) => {
   if (request.method !== "POST") return new Response(null, { status: 405 });
-  if (serviceKey) await loadConfig();
+  try {
+    if (serviceKey) await loadConfig();
+  } catch {
+    return new Response("configuration unavailable", { status: 503 });
+  }
   if (!secret || !serviceKey) return new Response("not configured", { status: 503 });
 
   const timestamp = request.headers.get("x-tharros-timestamp") ?? "";
   const signature = request.headers.get("x-tharros-signature") ?? "";
-  if (Number(request.headers.get("content-length") ?? 0) > maxBodyBytes) return new Response("too large", { status: 413 });
-  const body = await request.text();
-  if (encoder.encode(body).length > maxBodyBytes) return new Response("too large", { status: 413 });
-  if (!/^\d+$/.test(timestamp) || Math.abs(Date.now() - Number(timestamp)) > maxSkewMs) return new Response("stale", { status: 401 });
-  if (!(await validSignature(timestamp, body, signature))) return new Response("bad signature", { status: 401 });
+  let body: string;
+  try {
+    body = await readRequestBody(request, maxBodyBytes);
+  } catch (error) {
+    return new Response("bad body", {
+      status: error instanceof RequestBodyError ? error.status : 400,
+    });
+  }
+  if (!/^\d+$/.test(timestamp) || Math.abs(Date.now() - Number(timestamp)) > maxSkewMs)
+    return new Response("stale", { status: 401 });
+  if (!(await validSignature(timestamp, body, signature)))
+    return new Response("bad signature", { status: 401 });
 
   const r = parseIntake(body);
   if (!r) return new Response("bad body", { status: 400 });
 
   // A retry of the same reference is accepted without a second row or a second email.
-  const stored = await rest(
-    "research_requests?on_conflict=reference",
-    "POST",
-    { reference: r.reference, submitted_at: r.submittedAt, company_name: r.companyName, email: r.email, payload: r },
-    { Prefer: "resolution=ignore-duplicates,return=representation" },
-  );
-  if (!stored.ok) {
-    console.error(`[research-intake] ${r.reference}: store failed ${stored.status}`);
-    return new Response("store failed", { status: 500 });
+  let inserted: boolean;
+  try {
+    const stored = await rest(
+      "research_requests?on_conflict=reference",
+      "POST",
+      {
+        reference: r.reference,
+        submitted_at: r.submittedAt,
+        company_name: r.companyName,
+        email: r.email,
+        payload: r,
+      },
+      { Prefer: "resolution=ignore-duplicates,return=representation" },
+    );
+    if (!stored.ok) {
+      console.error(`[research-intake] ${r.reference}: store failed ${stored.status}`);
+      return new Response("store failed", { status: 500 });
+    }
+    const rows: unknown = await stored.json();
+    if (!Array.isArray(rows)) return new Response("store unavailable", { status: 503 });
+    inserted = rows.length > 0;
+  } catch {
+    return new Response("store unavailable", { status: 503 });
   }
-  const inserted = ((await stored.json()) as unknown[]).length > 0;
 
   // Email runs after the response: the site's 8s delivery timeout only has to cover the store.
   if (inserted) EdgeRuntime.waitUntil(notifyAndRetry(r));
-  return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "Content-Type": "application/json" } });
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
 });

@@ -5,18 +5,20 @@ type Kind = "read" | "cite";
 const DAY = 86_400_000;
 // How long this browser remembers an event it already sent (the server enforces the same windows).
 const windowMs: Record<Kind, number> = { read: 30 * DAY, cite: 365 * DAY };
+const pending = new Set<string>();
 
 /** True when this browser already sent this event inside its window. */
 export function alreadyCounted(storedAt: string | null, kind: Kind, now = Date.now()) {
   const at = Number(storedAt);
-  return Number.isFinite(at) && at > 0 && now - at < windowMs[kind];
+  return Number.isFinite(at) && at > 0 && at <= now && now - at < windowMs[kind];
 }
 
 /** Sends a read or citation once per window; silent on any failure. */
 export function sendMetric(slug: string, kind: Kind) {
   if (privacySignal()) return;
   const key = `tharros.metric.${kind}.${slug}`;
-  if (alreadyCounted(readStorage(key), kind)) return;
+  if (pending.has(key) || alreadyCounted(readStorage(key), kind)) return;
+  pending.add(key);
   // Remembered only once the server answered, so a failed send is retried next time.
   void fetch("/api/research-event", {
     method: "POST",
@@ -27,7 +29,8 @@ export function sendMetric(slug: string, kind: Kind) {
     .then((response) => {
       if (response.ok) writeStorage(key, String(Date.now()));
     })
-    .catch(() => {});
+    .catch(() => {})
+    .finally(() => pending.delete(key));
 }
 
 // Grouping by hand, not toLocaleString: identical on server and every browser (no hydration drift).

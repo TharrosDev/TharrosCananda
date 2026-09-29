@@ -34,3 +34,10 @@ describe.each(publications.map((p) => [p.slug, p] as const))("report %s", (slug,
     expect(all.toLowerCase()).toContain(publication.title.replace(/\s+/g, " ").toLowerCase());
   });
 });
+
+it("unknown and inherited object keys never resolve to a report", () => {
+  for (const slug of ["unknown", "constructor", "toString", "__proto__"]) {
+    expect(reportAsset(slug)).toBeUndefined();
+    expect(reportText(slug)).toEqual([]);
+  }
+});

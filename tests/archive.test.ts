@@ -154,6 +154,13 @@ describe("helpers", () => {
     expect(readingMinutes("")).toBe(1);
     expect(readingMinutes("word ".repeat(690))).toBe(3);
   });
+
+  it("highlights accented whole words, excluding fragments inside other Unicode words", () => {
+    expect(snippet("Les données du Québec sont publiées.", ["québec"])).toContain("Québec");
+    expect(snippet("Énergie et sécurité", ["énergie"])).toContain("Énergie");
+    expect(snippet("québécois", ["québec"])).toBeNull();
+    expect(snippet("éporté", ["port"])).toBeNull();
+  });
 });
 
 describe("review fixes", () => {

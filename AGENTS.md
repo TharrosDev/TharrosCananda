@@ -52,7 +52,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
   - The baselines workflow starts CI on its own commit, so no empty commit is needed.
 - **`e2e/archive.spec.ts` is the contract for `/research`**, the most important page. It must never lose a tool: search, facets, URL state, density, sort, suggestions, Cite, PDF, Copy link and the no-JS list.
 - **No invented data.** Tests cover publication facts and the owner-supplied PDFs; do not add placeholder reports.
-- **Playwright reuses a running server.** Locally, it serves on port 3100 and reuses whatever is already there, so a leftover dev server gets tested instead of a production build. Stop it and delete `.next` before e2e runs.
+- **Playwright requires its own production server.** Locally, it serves on port 3100 and refuses to reuse an existing server. Stop any server there and delete `.next` before e2e runs.
   - Playwright's webServer also rebuilds `.next`, so rebuild before taking manual screenshots.
 - **`tests/css-guard.test.ts` enforces the motion and type rules.** Update the guard if the design changes on purpose.
   - It checks the motion tokens `--dur-1` and `--dur-2`.

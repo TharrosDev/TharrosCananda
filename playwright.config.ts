@@ -31,7 +31,8 @@ export default defineConfig({
         command: `npm run build && npx next start -p ${port} -H 127.0.0.1`,
         url: `http://127.0.0.1:${port}`,
         timeout: 240_000,
-        reuseExistingServer: !process.env.CI,
+        // Always test this production build; a leftover development server can conceal regressions.
+        reuseExistingServer: false,
         env: { NEXT_PUBLIC_SITE_URL: "https://tharros.ca" },
       },
 });

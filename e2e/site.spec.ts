@@ -10,6 +10,18 @@ const researchHeading = publications.length ? "Latest release" : "Public researc
 
 const paths = ["/", "/research", fixturePath, "/this-page-does-not-exist"];
 
+test("resizing an open mobile menu to desktop releases focus and closes the sheet", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-menu-open", "");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await expect(page.locator("html")).not.toHaveAttribute("data-menu-open", /.*/);
+  await expect(page.locator(".menu-toggle")).toHaveAttribute("aria-expanded", "false");
+});
+
 /** Narrow screens fold the archive filters behind a "Filters" disclosure; wide screens always show them.
  *  Opened from the keyboard, so focus moved afterwards still shows its ring. */
 async function openFilters(page: import("@playwright/test").Page) {

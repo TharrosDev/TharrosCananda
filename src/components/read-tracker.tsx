@@ -21,6 +21,7 @@ export function ReadTracker({ slug }: { slug: string }) {
     const send = () => {
       if (sent) return;
       sent = true;
+      window.clearInterval(timer);
       sendMetric(slug, "read");
     };
     const tick = () => {
@@ -34,7 +35,8 @@ export function ReadTracker({ slug }: { slug: string }) {
         tick();
         onScreen = entry.isIntersecting;
       },
-      { threshold: 0.25 },
+      // A report can be many viewport heights tall; a percentage of the whole viewer is unreachable.
+      { threshold: 0 },
     );
     if (viewer) observer.observe(viewer);
     const timer = window.setInterval(tick, 1000);

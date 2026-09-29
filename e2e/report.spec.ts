@@ -5,6 +5,48 @@ import { fixture, fixturePath, fixturePdf } from "./fixture";
 const ref = fixture.reference;
 const area = researchAreas.find((a) => a.slug === fixture.area)!;
 
+test("fractional PDF fragment addresses a whole page", async ({ page }) => {
+  await page.goto(`${fixturePath}#page=2.5`);
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  await expect(viewer.locator('.report-sheet[data-page="2"]')).toBeInViewport();
+  await expect(page.getByLabel("Page", { exact: true })).toHaveValue("2");
+});
+
+test("fullscreen overlay contains keyboard focus and restores the trigger", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(document, "fullscreenEnabled", { value: false, configurable: true });
+  });
+  await page.goto(fixturePath);
+  const viewer = page.locator("[data-report-viewer]");
+  const trigger = page.getByRole("button", { name: "Full screen", exact: true });
+  await trigger.click();
+  await expect(viewer).toHaveAttribute("data-fullscreen", "overlay");
+  await expect(viewer).toHaveAttribute("aria-modal", "true");
+  for (let i = 0; i < 20; i += 1) {
+    await page.keyboard.press("Tab");
+    expect(await viewer.evaluate((root) => root.contains(document.activeElement))).toBe(true);
+  }
+  await page.keyboard.press("Escape");
+  await expect(viewer).not.toHaveAttribute("data-fullscreen", /.*/);
+  await expect(trigger).toBeFocused();
+  expect(
+    await page.locator(".site-header").evaluate((header) => (header as HTMLElement).inert),
+  ).toBe(false);
+});
+
+test("search results belong to the current query", async ({ page }) => {
+  await page.goto(fixturePath);
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const field = page.getByRole("searchbox", { name: "Find in report" });
+  await field.fill("Ottawa");
+  await expect(viewer.locator(".report-viewer-find-status")).toHaveText(/\d+ of \d+/);
+  await field.fill("zzzzqqq");
+  await expect(viewer.locator(".report-viewer-find-status")).toHaveText("No matches");
+  await expect(page.getByRole("button", { name: "Next match" })).toBeDisabled();
+});
+
 test("viewer draws every PDF page as a sheet with selectable text", async ({ page }) => {
   await page.goto(fixturePath);
   const viewer = page.locator("[data-report-viewer]");
@@ -50,6 +92,24 @@ test("download serves a real PDF", async ({ request }) => {
   const response = await request.get(fixturePdf);
   expect(response.headers()["content-type"]).toContain("application/pdf");
   expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
+  if (!fixture.indexable) expect(response.headers()["x-robots-tag"]).toContain("noindex");
+});
+
+test("unindexed report images and case-insensitive stable URLs retain noindex", async ({
+  page,
+  request,
+}) => {
+  test.skip(fixture.indexable, "Only unindexed reports are gated");
+  await page.goto(fixturePath);
+  const image = await page.locator('meta[property="og:image"]').getAttribute("content");
+  expect(image).toBeTruthy();
+  // Metadata uses the canonical production origin; fetch the image from the server under test.
+  const imageUrl = new URL(image!);
+  const response = await request.get(`${imageUrl.pathname}${imageUrl.search}`);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["x-robots-tag"]).toContain("noindex");
+  const redirect = await request.get(`/research/id/${ref.toLowerCase()}`, { maxRedirects: 0 });
+  expect(redirect.headers()["x-robots-tag"]).toContain("noindex");
 });
 
 test("cite popover copies an APA citation with the stable reference URL", async ({
