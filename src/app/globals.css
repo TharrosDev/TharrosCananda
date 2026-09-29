@@ -61,7 +61,7 @@ img { max-width: 100%; height: auto; }
 p, h1, h2, h3, h4 { margin-top: 0; }
 h1, h2, h3 { font-family: var(--display); font-optical-sizing: auto; font-weight: 400; line-height: 1.15; text-wrap: balance; }
 p { text-wrap: pretty; }
-:is(h1, h2, h3, p, dd) { overflow-wrap: anywhere; }
+:is(p, dd) { overflow-wrap: anywhere; }
 ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: var(--ivory-deep); }
 ::-webkit-scrollbar-thumb { background: var(--rule-strong); border: 3px solid var(--ivory-deep); }
