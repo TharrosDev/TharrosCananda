@@ -73,13 +73,15 @@ The visual material is **research itself**: source registers, archival metadata,
 
 **Scale:**
 - **Body:** 18px / 1.6, and 17px at 640px and below.
-- **Section headings:** all share `--type-section`, clamp(40px, 4.4vw, 64px), so no chapter out-shouts the next.
+- **Section headings:** the shared scale is `--type-section`, clamp(40px, 4.4vw, 64px). About's field guide uses the section hierarchy described below.
 - **Statement H1s (openings):**
   - Home: clamp(56px, 6.4vw, 96px);
-  - About: clamp(52px, 6.2vw, 96px);
+  - About: clamp(52px, 5.9vw, 92px), weight 350, line-height 1, with three explicit lines that can wrap within each line;
   - Methodology: clamp(46px, 4.6vw, 72px);
   - the 404: clamp(52px, 6.4vw, 96px).
-  - Home and About tighten to about clamp(46px, 13.5vw, 64–72px) on phones.
+  - Home tightens to about clamp(46px, 13.5vw, 64–72px) on phones.
+  - About uses clamp(48px, 5.8vw, 70px) through 1180px, clamp(52px, 7.6vw, 76px) through 980px, then clamp(33px, 9.2vw, 58px) through 640px.
+- **About field-guide hierarchy:** light section headings use clamp(36px, 3.8vw, 56px), line-height 1.08; the dark standards heading uses clamp(40px, 4.2vw, 64px). Field titles use clamp(25px, 2.4vw, 34px), becoming 27px on phones. Question lists use the editorial serif at clamp(21px, 1.9vw, 27px), becoming 23px on phones. Sans evidence and principle prose stays at 17px; phone field summaries use 16px. Datum labels are 13px, and operational links are 14–15px.
 - **Document H1** (`PageHero`): clamp(44px, 4.8vw, 72px).
 - **Slim banners:**
   - Research: clamp(34px, 3.2vw, 46px);
@@ -94,12 +96,14 @@ The visual material is **research itself**: source registers, archival metadata,
 - **Around 1020px:** the primary navigation collapses into a labelled **Menu** control.
 - **1180px:** the archive's three zones (rail, results, record pane) appear side by side.
 - **1180px and below:** the report title and record stack; from 641px the record and actions share a two-column row. Methodology margin notes move beneath their clause rather than squeezing beside it.
+  - About's opening changes from an eight/four-column split to seven/five; principle and contact rows stack their internal title, prose and link, and the boundary lists stack within their right-hand column.
 - **980px:**
   - major split layouts stack;
   - the archive filters fold behind a **Filters** disclosure;
+  - About's H1 spans the shell; its deck and actions share a two-column row. The standards, independence and contact chapters retain two columns until 640px.
 - **760px:** the Methodology trace stacks its claim over the record.
 - **640px:** indexes, controls and ledgers become single-column, and the body text drops to 17px.
-- **641–980px:** the homepage field ledger and method notes use two columns, as does the Methodology publisher register. About principles stay two-up until 640px.
+- **641–980px:** the homepage field ledger and method notes use two columns, as does the Methodology publisher register. About's field questions and evidence stay side by side; at 640px they stack, as do its three live records and chapter columns. The disclosure symbol stays beside the field title, with the scope beneath it.
 - **560px and below:** the PDF toolbar has explicit rows in the same order as keyboard focus: page, zoom, find, full screen and download. At 380px and below page and zoom each receive a row.
 - **420px:** the wordmark tightens to preserve the labelled Menu button; contents links become one column. Footer navigation stays two columns.
 
@@ -118,11 +122,12 @@ Pages don't share one hero. Each opens with the surface that suits its job:
 | Home | Ivory front page: H1 and actions beside the latest-release sheet. |
 | Research | Slim ivory "Published Research" banner, then the reading room. |
 | Report page | Dark running head, then the title beside the record ledger. |
-| Methodology, About | Light ivory opening led by the page's instrument. |
+| Methodology | Light ivory opening led by the provenance trace. |
+| About | Ivory identity statement and purpose beside the archive action, then the live record and field-guide index. |
 | Privacy, Accessibility, Copyright | `PageHero variant="document"`: a light document header. |
 | 404 | Statement H1 beside an archive search. |
 
-Dark surfaces are the Home field plate, the report running head, the dark sheet bars and the footer. Never use a large dark hero on every page. `PageHero` still has `home`, `standard` and `task` variants, but no page uses them today.
+Dark surfaces are the Home field plate, About's research-standards chapter, the report running head, the dark sheet bars and the footer. Never use a large dark hero on every page. `PageHero` still has `home`, `standard` and `task` variants, but no page uses them today.
 
 ## Pages
 
@@ -214,19 +219,17 @@ The viewer's fullscreen fallback contains keyboard focus, makes the surrounding 
 
 ### About (`/about`)
 
-Dense, at the owner's request.
-1. **Opening:** a full-width statement H1, then the deck beside the Ottawa–Brussels great-circle route drawn as the masthead rule. It is the homepage map's path, static, captioned as the route between the two capitals.
-2. **The project, on the record:** a three-column ledger counted live from the site's data:
+The question-led field guide keeps the established ivory, graphite, serif/sans pairing and ruled registers. Its visual material is the research area's questions and evidence; it uses no map or raster illustration.
+1. **Opening:** a large identity statement beside the purpose, Read the research and Explore the questions. Below, a compact three-column ledger is counted from the site's data:
    - published research;
    - research areas;
    - sources in the register;
-   Counts that grow with each publication carry `data-volatile` for the visual tests.
-3. **Research principles:** a two-up grid, each principle linking to where it shows on the site.
-4. **Independence boundary:**
-   - the statement and contact line;
-   - beside them, a square ink frame holding what Tharros provides;
-   - below it, what lies outside the boundary.
-   The lists describe published outputs and research boundaries.
+   Steel serif counts use tabular numerals. The publication record includes the latest report's reference and date, or a plain empty state; publication-dependent details carry `data-volatile` for visual tests. Each record has a route to inspect it.
+2. **On this page:** plain anchor links to Research fields, Research principles, Independence and Contact, in normal flow.
+3. **Research fields:** five independent native disclosures from the research-area registry. The first opens by default. Each summary pairs the serif area title with its sans scope and a red SVG plus/minus. Opening a field exposes two ruled columns: questions in serif, evidence in sans, then a source-selection link and a full-width publication-state row. A field with published work links to its archive filter; an empty field links to the full archive. Questions describe scope, not completed publications. Disclosures and links work without JavaScript.
+4. **Research principles:** a full-width graphite chapter, with a bounded introductory column beside four ruled principles. Each principle links to the archive or a specific methodology passage. On phones the introduction precedes the principles.
+5. **Independence boundary:** the statement sits beside two plain ruled lists, What Tharros publishes and Outside the boundary. The lists stack within the right column below 1180px and follow the statement on phones.
+6. **Editorial contact:** a mail link and enhanced Copy email address control beside three intent-specific mail routes: research questions, corrections and collaboration. Copy success is announced inline. Clipboard failure adds a labelled, focused and selected read-only address field in normal flow; its square ivory-light surface uses 16px type and the shared focus ring. Without JavaScript the email and purpose-specific mail links remain available, while the copy control is hidden. Field, section-index and contact controls have targets of at least 44px.
 
 About states that Tharros is an independent student research project. No personal profile appears until the owner supplies and approves accurate details.
 
@@ -265,6 +268,7 @@ These read as documents, not as marketing landings.
   - The coastlines and graticule are the static file `public/atlantic-map.svg`. The route stays inline so it can animate.
 - **Research areas:** a durable classification with no page of its own. They appear only as:
   - the homepage ledger;
+  - the About question-and-evidence field guide;
   - area metadata on publications;
   - archive filters;
   - links into relevant research and methodology.
@@ -287,6 +291,7 @@ Scroll-linked motion may move or draw things, but never reveal them.
   - Both ends use React `<ViewTransition name="cover-<slug>" share="cover">`.
   - Only one element per page carries a given name.
 - Hover transitions may move arrows and underlines.
+- About's disclosure changes the SVG plus to a minus by rotating its vertical stroke (250ms, `--dur-2`, `--ease-out`); opening content stays in normal flow without a reveal animation. Its link arrows use the same duration and a 4px translation. The inherited reduced-motion rule collapses these transitions to 0.01ms.
 
 Avoid ornamental motion. All motion collapses under `prefers-reduced-motion`.
 
