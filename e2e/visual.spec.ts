@@ -28,7 +28,7 @@ for (const [name, path] of routes) {
     });
     await expect(page).toHaveScreenshot(`${name}.png`, {
       fullPage: true,
-      mask: [page.locator("[data-volatile]")],
+      mask: [page.locator("[data-volatile]:visible")],
     });
   });
 }
