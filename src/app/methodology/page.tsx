@@ -12,7 +12,7 @@ import "./methodology.css";
 export const metadata: Metadata = pageMetadata({
   title: "Sources & Methodology",
   description:
-    "How Tharros Canada checks sources, separates findings from interpretation and states limitations. Follow the evidence behind a published report.",
+    "How Tharros checks sources, separates findings from interpretation and states limitations. Follow the evidence behind an existing publication.",
   path: "/methodology",
 });
 
@@ -126,7 +126,8 @@ export default function MethodologyPage() {
         <h1>Sources and methodology.</h1>
         <p>
           Follow a finding from a published report to its sources, then see how the evidence is
-          checked.
+          checked. For the planned undergraduate submission process, see{" "}
+          <Link href="/how-it-works">how publishing works</Link>.
         </p>
       </header>
 

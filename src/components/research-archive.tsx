@@ -690,6 +690,7 @@ function ArchiveCard({
               input={{
                 title: doc.title,
                 authors: doc.authors,
+                publisher: doc.publisher,
                 publishedAt: doc.publishedAt,
                 url: stableUrl,
                 reference: doc.reference,

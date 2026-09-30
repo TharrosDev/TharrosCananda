@@ -7,7 +7,7 @@ import { researchEmail } from "@/lib/contact";
 export const metadata: Metadata = pageMetadata({
   title: "Accessibility",
   description:
-    "Tharros Canada's accessibility target (WCAG 2.2 AA), current interface practices and how to report a problem.",
+    "Tharros Undergraduate Publishing's accessibility target (WCAG 2.2 AA), current interface practices and how to report a problem.",
   path: "/accessibility",
 });
 
@@ -41,8 +41,8 @@ export default function AccessibilityPage() {
             <h2>Target</h2>
             <div className="policy-section-body">
               <p>
-                Tharros Canada aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at
-                level AA across the site.
+                Tharros aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA
+                across the site.
               </p>
             </div>
           </article>

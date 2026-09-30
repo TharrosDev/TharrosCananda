@@ -36,6 +36,8 @@ export type Publication = {
   area: ResearchArea["slug"];
   publishedAt: string;
   authors: string[];
+  /** Publisher of this edition. Existing editions retain their original publisher. */
+  publisher?: string;
   summary: string;
   tags?: string[];
   sources: PublicationSource[];
@@ -59,6 +61,7 @@ export const publications: Publication[] = [
     area: "defence-security",
     publishedAt: "2026-09-24",
     authors: ["Magnus Abdelnour"],
+    publisher: "Tharros Canada",
     // Rephrased from the PDF's "Overview" and "Conclusion".
     summary:
       "What Canada's place in the EU's €150B Security Action for Europe (SAFE) defence initiative has cost so far, and which Canadian firms have gained. Canada has paid a €10 million contribution and owes a 15% fee on Canadian content in qualifying contracts, first billed in March 2027. Nine months on, the only public Canadian SAFE contract is Marconi Technologies' order of tactical radios for Poland, worth over C$10 million, and it is too soon to judge whether the agreement has opened the \"massive new opportunities\" the government announced.",
@@ -173,6 +176,7 @@ export const publications: Publication[] = [
     area: "data-quality-validity",
     publishedAt: "2026-09-16",
     authors: ["Magnus Abdelnour"],
+    publisher: "Tharros Canada",
     // Rephrased from the PDF's "Overview" and "Fit for Use Assessment".
     summary:
       "An assessment of the City of Ottawa's open dataset of 94,406 reported traffic collisions from 2017 to 2024, excluding 2023. The data suits analysis of where and how collisions happen and of broad trends, but the missing 2023 year weakens any continuous 2017 to 2024 comparison.",

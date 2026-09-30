@@ -4,20 +4,20 @@ import { SiteAnalytics } from "@/components/analytics-beacon";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { organization, organizationJsonLd } from "@/data/organization";
+import { publishing } from "@/data/publishing";
 import { researchEmail } from "@/lib/contact";
 import { display, sans } from "@/lib/fonts";
-import { jsonLd, siteUrl } from "@/lib/site";
+import { jsonLd, siteName, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Tharros Canada | Independent research across Canada and Europe",
-    template: "%s | Tharros Canada",
+    default: `${siteName} | Publish your undergraduate work`,
+    template: `%s | ${siteName}`,
   },
-  description:
-    "Independent research on trade, defence, energy, industry, technology and public data across Canada and Europe.",
+  description: publishing.description,
   // Pages set their own Open Graph and Twitter fields through pageMetadata (src/lib/site.ts).
-  openGraph: { type: "website", locale: "en_CA", siteName: "Tharros Canada" },
+  openGraph: { type: "website", locale: "en_CA", siteName },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "Tharros Canada",
+        name: siteName,
         inLanguage: "en-CA",
         publisher: { "@id": org["@id"] },
       },

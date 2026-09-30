@@ -1,6 +1,6 @@
 # Operations
 
-Infrastructure and runbooks for the research-only site. Update this file when a deployment or backend dependency changes.
+Infrastructure and runbooks for the Tharros Undergraduate Publishing launch and its existing research archive. Update this file when a deployment or backend dependency changes.
 
 ## Systems
 
@@ -15,16 +15,18 @@ Infrastructure and runbooks for the research-only site. Update this file when a 
 
 ## Retired research intake
 
-`/research-services` and `/request-research` now redirect to `/research`; `/how-it-works` redirects to `/methodology`. `POST /api/research-request` always returns 410 and never forwards its body. The old Edge Function source and SQL migrations remain in the repository while the deployed function and legacy records are retired. They are not part of the public product.
+`/research-services` and `/request-research` retain their redirects to `/research`. `/how-it-works` is now a real page explaining the planned publishing process, and `/submit` provides submission guidelines with intake and pricing forthcoming. Neither route opens a form, upload or payment flow. See [`PUBLISHING-LAUNCH.md`](PUBLISHING-LAUNCH.md) for the current launch boundary.
 
-After the research-only site is deployed:
+`POST /api/research-request` always returns 410 and never forwards its body. The old Edge Function source and SQL migrations remain in the repository while the deployed function and legacy records are retired. They are not part of the public product.
+
+The earlier research-only release retired the public request flow. Its backend decommissioning remains separate from the current publishing launch:
 
 1. Verify the redirects and 410 response with `npm run smoke -- https://tharros.ca`.
 2. Inspect any earlier `research_requests` rows, including undelivered notifications, before decommissioning the deployed `research-intake` Edge Function. Do not delete request data as part of the site release.
 3. Decommission the deployed function and remove unused Vercel intake environment variables and the Vercel Firewall rule named `Rate limit research intake`. Remove unused intake secrets only after the function is disabled. Backend changes are separate from the site merge.
 4. Keep the 24-month retention job `purge-research-requests` (03:17 UTC) and the table until every earlier row has expired or been handled under the privacy policy. The privacy page reads the same period from `src/data/organization.ts`.
 
-The historical receiver contract and code remain in `supabase/functions/research-intake/`; do not redeploy it for the research-only site. The `research_requests` and `intake_config` migrations are historical and must not be removed from migration history.
+The historical receiver contract and code remain in `supabase/functions/research-intake/`; do not redeploy it for the publishing launch. The `research_requests` and `intake_config` migrations are historical and must not be removed from migration history.
 
 The retained source shares a bounded streaming body reader with the site's readership route, rejects malformed UUIDs and email recipients, and returns 503 when configuration or storage is unreachable. These source corrections do not reactivate the public request endpoint or replace the retirement runbook above.
 

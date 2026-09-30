@@ -11,16 +11,14 @@ export default function GlobalError({ reset }: { error: Error; reset: () => void
         <main className="not-found">
           <div className="not-found-copy">
             <h1>Something went wrong.</h1>
-            <p>
-              Tharros Canada could not be displayed. Try loading it again or return to the homepage.
-            </p>
+            <p>Tharros could not be displayed. Try loading it again or return to the homepage.</p>
           </div>
           <div className="not-found-ways">
             <button className="button-primary" type="button" onClick={reset}>
               Try again
             </button>
             <Link className="button-secondary" href="/">
-              Return to Tharros Canada
+              Return to Tharros
             </Link>
           </div>
         </main>

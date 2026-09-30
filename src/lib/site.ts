@@ -1,3 +1,5 @@
+import { publishing } from "@/data/publishing";
+
 /** Canonical URLs require a bare HTTP(S) origin; an empty or malformed optional override uses the default. */
 export function resolveSiteUrl(value: string | undefined) {
   try {
@@ -71,7 +73,7 @@ export function formatFullMonthYear(value: string) {
   return p ? `${fullMonths[months.indexOf(p.month)]} ${p.year}` : "Date unavailable";
 }
 
-export const siteName = "Tharros Canada";
+export const siteName = publishing.name;
 
 /**
  * Title, description, canonical, Open Graph and Twitter for one page. A page's openGraph object
@@ -102,8 +104,10 @@ export function pageMetadata({
 export const coreRoutes = [
   "",
   "/research",
-  "/research-areas",
+  "/how-it-works",
+  "/submit",
   "/about",
+  "/research-areas",
   "/methodology",
   "/privacy",
   "/accessibility",

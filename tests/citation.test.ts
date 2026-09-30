@@ -69,4 +69,26 @@ describe("buildCitation", () => {
       "Defence procurement pathways. Report TC-2026-001. Tharros Canada.",
     );
   });
+
+  it("uses the supplied edition publisher in every citation style", () => {
+    const publisher = "Tharros Undergraduate Publishing";
+    const edition = { ...namedReport, publisher, reference: "TUP-2026-001" };
+    for (const style of ["apa", "mla", "chicago", "harvard"] as const) {
+      const citation = buildCitation(style, edition);
+      expect(citation).toContain(publisher);
+      expect(citation).not.toContain("Tharros Canada");
+    }
+    expect(buildCitation("mla", edition)).toContain(
+      "Tharros Undergraduate Publishing Report TUP-2026-001, Tharros Undergraduate Publishing,",
+    );
+  });
+
+  it("recognizes the supplied publisher as an organization author", () => {
+    const publisher = "Tharros Undergraduate Publishing";
+    const edition = { ...orgReport, publisher, authors: [publisher] };
+    expect(buildCitation("apa", edition)).toBe(
+      "(March 2026). Canada–Europe trade corridors: a 2026 review. https://tharros.ca/research/trade-corridors-2026",
+    );
+    expect(buildCitation("harvard", edition)).toContain(`${publisher} (2026)`);
+  });
 });

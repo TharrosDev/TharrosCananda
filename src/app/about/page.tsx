@@ -3,12 +3,13 @@ import { pageMetadata } from "@/lib/site";
 import { ArrowIcon } from "@/components/icons";
 import { AboutContact } from "@/components/about-contact";
 import { researchEmail } from "@/lib/contact";
+import { publishing } from "@/data/publishing";
 import "./about.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "About Tharros Canada: independent student research on the policies, industries and public evidence connecting Canada and Europe.",
+    "Tharros Undergraduate Publishing helps strong undergraduate work become professional publications students can share beyond the classroom. Preparing for launch.",
   path: "/about",
 });
 
@@ -16,9 +17,9 @@ export default function AboutPage() {
   return (
     <div className="about-portrait">
       <header className="about-masthead">
-        <h1>About Tharros Canada</h1>
+        <h1>About {publishing.name}</h1>
         <p className="about-deck">
-          Independent student research on the policies and industries connecting Canada and Europe.
+          Strong undergraduate work deserves a life beyond the classroom.
         </p>
         <a className="button-primary" href="#contact">
           Contact <ArrowIcon />
@@ -26,28 +27,37 @@ export default function AboutPage() {
       </header>
 
       <section className="about-introduction about-row" aria-labelledby="about-title">
-        <h2 id="about-title">About</h2>
+        <h2 id="about-title">The idea</h2>
         <p>
-          Tharros Canada brings together a curiosity about international affairs and a close reading
-          of public evidence. Its reports explore Canada–Europe questions, while data notes examine
-          what the available information can tell us.
+          Tharros Undergraduate Publishing is preparing to launch a professional publishing platform
+          for undergraduate students. We will turn accepted research papers, essays, policy briefs,
+          data projects and other original academic work into polished, publicly accessible
+          publications. Our initial audience is Canadian university students, across disciplines.
         </p>
       </section>
 
       <section className="about-mission about-row" aria-labelledby="mission-title">
         <h2 id="mission-title">Mission</h2>
-        <p>
-          Make complex questions easier to understand through clear research, transparent sources
-          and room for uncertainty.
-        </p>
+        <p>Give strong undergraduate work somewhere to go after the grade.</p>
       </section>
 
       <section className="about-why about-row" aria-labelledby="why-title">
-        <h2 id="why-title">Why</h2>
+        <h2 id="why-title">Beyond the classroom</h2>
         <p>
-          Canada and Europe share connections across trade, security, industry and technology.
-          Looking closely at those connections is a way to understand how policy decisions take
-          shape, where evidence is useful and which questions deserve another look.
+          You have already done the research and written the paper. A carefully prepared publication
+          gives you a piece of work to share in your portfolio, link on your résumé or LinkedIn
+          profile, and discuss in internship, scholarship or graduate-school applications. Readers
+          get access to the work itself, its sources and its author.
+        </p>
+      </section>
+
+      <section className="about-standards about-row" aria-labelledby="standards-title">
+        <h2 id="standards-title">Editorial standards</h2>
+        <p>
+          The planned process screens for academic quality, sourcing, originality, clear writing and
+          suitability for publication. Submissions may be accepted, accepted with revisions or
+          rejected. Professional presentation begins with legitimate student work and a clear
+          editorial decision. Submissions and publication pricing are forthcoming.
         </p>
       </section>
 
@@ -59,8 +69,9 @@ export default function AboutPage() {
         <h2 id="contact-title">Contact</h2>
         <div className="about-contact-body">
           <p>
-            Have a question about the research, spotted something that needs a correction, or have
-            an idea for a future topic? Get in touch. Questions and fresh perspectives are welcome.
+            Have a question about the publishing platform, eligibility or an existing publication?
+            Get in touch. Submissions are not open yet; please wait for the submission instructions
+            before sending a paper. Corrections and questions about published work are welcome.
           </p>
           <AboutContact email={researchEmail()} />
         </div>

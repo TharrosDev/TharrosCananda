@@ -29,7 +29,7 @@ export const organization: Organization = {
   intakeRetention: "24 months after the last contact",
 };
 
-import { researchAreas } from "@/lib/research-areas";
+import { publishing } from "@/data/publishing";
 
 /** schema.org publisher record with only verified fields. `@id` lets WebSite and Report nodes reference it. */
 export function organizationJsonLd(
@@ -40,14 +40,20 @@ export function organizationJsonLd(
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${url}/#organization`,
-    name: "Tharros Canada",
+    name: publishing.name,
     url,
     // Raster logo for search results (Google needs at least 112 px, not SVG).
     logo: `${url}/tharros-logo.png`,
-    description:
-      "Independent student research project publishing reports across Canada and Europe.",
-    areaServed: ["Canada", "European Union"],
-    knowsAbout: researchAreas.map((area) => area.name),
+    description: publishing.description,
+    areaServed: ["Canada"],
+    knowsAbout: [
+      "Undergraduate publishing",
+      "Academic writing",
+      "Research papers",
+      "Policy briefs",
+      "Data analysis",
+      "Literature reviews",
+    ],
     ...(email ? { email } : {}),
     ...(org.legal ? { legalName: org.legal.legalName } : {}),
     ...(org.legal?.address ? { address: org.legal.address } : {}),

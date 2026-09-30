@@ -1,6 +1,6 @@
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "About Tharros Canada";
+export const alt = "About Tharros Undergraduate Publishing";
 export const size = ogSize;
 export const contentType = ogContentType;
 
@@ -8,12 +8,12 @@ export default function OpenGraphImage() {
   return renderOgImage({
     tone: "light",
     eyebrow: "About",
-    title: "Independent research focused on Canada and Europe.",
+    title: "Strong undergraduate work deserves somewhere to go.",
     description:
-      "Tharros studies the trade, policy, industry and organizations connecting both markets.",
+      "Professional undergraduate publishing, initially for Canadian students. Preparing for launch.",
     meta: [
-      { label: "Scope", value: "Canada & Europe" },
-      { label: "Status", value: "Independent" },
+      { label: "Focus", value: "Undergraduate work" },
+      { label: "Status", value: "Preparing for launch" },
     ],
   });
 }

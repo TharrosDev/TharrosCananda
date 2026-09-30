@@ -7,6 +7,7 @@ import { ArrowIcon } from "@/components/icons";
 import { ReportActions } from "@/components/report/report-actions";
 import { ReportViewer } from "@/components/report/report-viewer";
 import { publications, publicationBySlug } from "@/data/publications";
+import { authorByName } from "@/data/authors";
 import type { CitationInput } from "@/lib/citation";
 import { researchAreas } from "@/lib/research-areas";
 import { reportContents } from "@/lib/report-sections";
@@ -44,9 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       citation_title: p.title,
       citation_author: p.authors,
       citation_publication_date: p.publishedAt.replaceAll("-", "/"),
-      citation_publisher: "Tharros Canada",
+      citation_publisher: p.publisher ?? "Tharros Canada",
       citation_technical_report_number: p.reference,
-      citation_technical_report_institution: "Tharros Canada",
+      citation_technical_report_institution: p.publisher ?? "Tharros Canada",
       citation_language: "en",
       ...(asset ? { citation_pdf_url: `${siteUrl}${asset.file}` } : {}),
     },
@@ -69,6 +70,7 @@ export default async function ReportPage({ params }: Props) {
     publishedAt: p.publishedAt,
     url: stableUrl,
     reference: p.reference,
+    publisher: p.publisher,
   };
   const { sources, limitations = [] } = p;
   const structuredData = {
@@ -81,10 +83,10 @@ export default async function ReportPage({ params }: Props) {
     datePublished: p.publishedAt,
     inLanguage: "en-CA",
     author: p.authors.map((name) => ({
-      "@type": name === "Tharros Canada" ? "Organization" : "Person",
+      "@type": name === "Tharros Canada" || name === p.publisher ? "Organization" : "Person",
       name,
     })),
-    publisher: { "@id": `${siteUrl}/#organization` },
+    publisher: { "@type": "Organization", name: p.publisher ?? "Tharros Canada" },
     about: area?.name,
     url: `${siteUrl}/research/${p.slug}`,
     license: researchLicence.url,
@@ -144,7 +146,17 @@ export default async function ReportPage({ params }: Props) {
             </div>
             <div>
               <dt>{p.authors.length === 1 ? "Author" : "Authors"}</dt>
-              <dd>{p.authors.join(", ")}</dd>
+              <dd>
+                {p.authors.map((name, index) => {
+                  const author = authorByName(name);
+                  return (
+                    <span key={name}>
+                      {index > 0 && ", "}
+                      {author ? <Link href={`/authors/${author.slug}`}>{name}</Link> : name}
+                    </span>
+                  );
+                })}
+              </dd>
             </div>
             <div>
               <dt>Origin</dt>

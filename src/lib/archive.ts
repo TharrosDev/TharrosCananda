@@ -24,6 +24,7 @@ export type ArchiveDoc = {
   /** Real, published work whose reads and citations are counted. */
   counted: boolean;
   authors: string[];
+  publisher?: string;
   /** The record pane: the PDF's contents with page numbers, its sources and its stated limitations. */
   contents: ContentsEntry[];
   sources: PublicationSource[];
@@ -224,6 +225,7 @@ export function buildArchiveDocs(
       bytes: a?.bytes ?? null,
       counted: p.indexable,
       authors: p.authors,
+      publisher: p.publisher,
       contents: a ? reportContents(p, a.outline) : [],
       sources: p.sources,
       limitations: p.limitations ?? [],

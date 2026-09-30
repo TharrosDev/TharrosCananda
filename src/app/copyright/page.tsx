@@ -33,9 +33,9 @@ export default function CopyrightPage() {
       <PageHero
         variant="document"
         title="Copyright and licence."
-        description={`Tharros public research is open research: free to share and adapt under ${researchLicence.name} (${researchLicence.short}).`}
+        description={`Existing Tharros Canada reports are free to share and adapt under ${researchLicence.name} (${researchLicence.short}). Publication terms for future undergraduate authors are forthcoming.`}
         record={[
-          { label: "Updated", value: "September 23, 2026" },
+          { label: "Updated", value: "September 30, 2026" },
           {
             label: "Licence",
             value: (
@@ -54,12 +54,18 @@ export default function CopyrightPage() {
             <h2>What the licence covers</h2>
             <div className="policy-section-body">
               <p>
-                Publications in <Link href="/research">Research</Link> are licensed under{" "}
+                Existing Tharros Canada reports in <Link href="/research">Publications</Link> are
+                licensed under{" "}
                 <a href={researchLicence.url} rel="license">
                   {researchLicence.name}
                 </a>
                 , unless a publication states otherwise. This includes the text, charts and tables
                 Tharros produces for them, in both the web page and the PDF.
+              </p>
+              <p>
+                Licence, author permissions and publication terms for future undergraduate
+                submissions will be published before intake opens. The existing reports&apos; licence
+                does not establish terms for work that has not been submitted or accepted.
               </p>
             </div>
           </article>
@@ -115,8 +121,8 @@ export default function CopyrightPage() {
             <div className="policy-section-body">
               <ul>
                 <li>
-                  <strong>Name and brand.</strong> The Tharros Canada name, logo and wordmark are
-                  not licensed for reuse.
+                  <strong>Name and brand.</strong> The Tharros Canada and Tharros Undergraduate
+                  Publishing names, logo and wordmark are not licensed for reuse.
                 </li>
                 <li>
                   <strong>Third-party sources.</strong> Data and documents from publishers such as

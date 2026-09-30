@@ -69,7 +69,7 @@ test("nested research route keeps Research navigation state", async ({ page, isM
   test.skip(isMobile, "Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
   const primary = page.getByRole("navigation", { name: "Primary" });
-  await expect(primary.getByRole("link", { name: "Research", exact: true })).toHaveAttribute(
+  await expect(primary.getByRole("link", { name: "Publications", exact: true })).toHaveAttribute(
     "aria-current",
     "page",
   );
@@ -118,7 +118,7 @@ test.describe("mobile navigation", () => {
     await page.getByRole("button", { name: /menu/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-menu-open", "");
     const nav = page.getByRole("navigation", { name: "Primary" });
-    await expect(nav.getByRole("link")).toHaveCount(3);
+    await expect(nav.getByRole("link")).toHaveCount(4);
     for (const link of await nav.getByRole("link").all()) await expect(link).toBeVisible();
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflow)).toBe(
       "hidden",
@@ -216,21 +216,22 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("leads with real research and gives compact routes to method and research areas", async ({
-    page,
-  }) => {
+  test("preserves the hero and introduces undergraduate publishing below it", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("h1")).toHaveText("TharrosCanada");
-    await expect(page.locator(".home-upcoming-list > li")).toHaveCount(3);
-    await expect(page.locator(".home-upcoming-list > li").first()).toContainText("In progress");
-    await expect(page.locator(".home-upcoming-note")).toContainText("Draft topics");
-    await expect(page.getByRole("link", { name: "Check out our methodology" })).toHaveAttribute(
-      "href",
-      "/methodology",
+    await expect(page.locator(".home-publishing h2")).toHaveText(
+      "Your résumé looks better when you’re published.",
     );
-    await page.getByRole("link", { name: "Check out our research areas" }).click();
-    await expect(page).toHaveURL(/\/research-areas$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Research areas");
+    await expect(page.locator(".home-upcoming-list > li")).toHaveCount(4);
+    await expect(page.locator(".home-upcoming-note")).toContainText(
+      "Screening comes before payment",
+    );
+    await expect(
+      page.getByRole("link", { name: "Prepare your submission", exact: true }),
+    ).toHaveAttribute("href", "/submit");
+    await page.getByRole("link", { name: "See how publishing works" }).click();
+    await expect(page).toHaveURL(/\/how-it-works$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("How it works.");
   });
 
   test("the research block lists published work", async ({ page }) => {
@@ -245,9 +246,17 @@ test.describe("home flow", () => {
 
 test("About gives a short introduction, purpose and contact", async ({ page }) => {
   await page.goto("/about");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("About Tharros Canada");
-  await expect(page.locator("main")).toContainText("Independent student research");
-  await expect(page.locator("main section h2")).toHaveText(["About", "Mission", "Why", "Contact"]);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "About Tharros Undergraduate Publishing",
+  );
+  await expect(page.locator("main")).toContainText("professional publishing platform");
+  await expect(page.locator("main section h2")).toHaveText([
+    "The idea",
+    "Mission",
+    "Beyond the classroom",
+    "Editorial standards",
+    "Contact",
+  ]);
   await expect(page.locator("main")).not.toContainText("Research services");
 });
 
@@ -258,7 +267,6 @@ test("retired commissioning pages redirect and submissions are rejected", async 
   for (const [path, destination] of [
     ["/research-services", "/research"],
     ["/request-research", "/research"],
-    ["/how-it-works", "/methodology"],
   ]) {
     const response = await request.get(path, { maxRedirects: 0 });
     expect(response.status()).toBe(308);
@@ -351,6 +359,8 @@ test("each page previews as itself when shared", async ({ page }) => {
     const og = (property: string) =>
       page.locator(`meta[property="${property}"]`).getAttribute("content");
     expect(await og("og:url")).toMatch(new RegExp(`${path}$`));
-    expect(await og("og:title")).toBe((await page.title()).replace(/ \| Tharros Canada$/, ""));
+    expect(await og("og:title")).toBe(
+      (await page.title()).replace(/ \| Tharros Undergraduate Publishing$/, ""),
+    );
   }
 });
