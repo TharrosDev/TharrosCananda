@@ -14,7 +14,7 @@ const routes = [
   ["not-found", "/this-page-does-not-exist"],
 ] as const;
 
-// Baselines capture the settled, reduced-motion state (the map route fully drawn).
+// Baselines capture the static, reduced-motion state, with the full hero title and actions visible.
 test.use({ reducedMotion: "reduce" });
 
 for (const [name, path] of routes) {

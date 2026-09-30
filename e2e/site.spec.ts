@@ -220,7 +220,7 @@ test.describe("home flow", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.locator("h1")).toHaveText("TharrosCanada.");
+    await expect(page.locator("h1")).toHaveText("TharrosCanada");
     await expect(page.locator(".home-upcoming-list > li")).toHaveCount(3);
     await expect(page.locator(".home-upcoming-list > li").first()).toContainText("In progress");
     await expect(page.locator(".home-upcoming-note")).toContainText("Draft topics");
