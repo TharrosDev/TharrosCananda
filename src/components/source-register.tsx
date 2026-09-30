@@ -78,7 +78,7 @@ export function SourceRegister() {
       <div className="source-results-meta">
         <p role="status" aria-live="polite" aria-atomic="true">
           {matches.length} of {publicSources.length} publishers
-          {filtered ? " match your filters" : " on record"}
+          {filtered ? " match your filters" : " listed"}
         </p>
         {filtered && <button onClick={clear}>Clear filters</button>}
         <span>Official source links open in a new tab</span>

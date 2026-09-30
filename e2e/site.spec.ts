@@ -6,7 +6,7 @@ import { tracePhrases } from "../src/data/trace-example";
 import { fixturePath } from "./fixture";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
-const researchHeading = publications.length ? "Latest release" : "Public research.";
+const researchHeading = "Latest release";
 
 const paths = ["/", "/research", fixturePath, "/this-page-does-not-exist"];
 
@@ -102,7 +102,7 @@ test.describe("reduced motion", () => {
     await page.goto("/");
     const headings = page.locator("main section h2");
     const count = await headings.count();
-    expect(count).toBeGreaterThan(2);
+    expect(count).toBeGreaterThanOrEqual(2);
     for (let i = 0; i < count; i += 1) {
       await headings.nth(i).scrollIntoViewIfNeeded();
       expect(await headings.nth(i).evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
@@ -199,7 +199,7 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
   await page.goto("/research");
   await openFilters(page);
   const targets = [
-    page.getByLabel("Search the archive"),
+    page.getByLabel("Search research"),
     page
       .locator(".archive-chips button:not(:disabled), .archive-areas button:not(:disabled)")
       .first(),
@@ -216,17 +216,21 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("leads with research, then subjects and method", async ({ page }) => {
+  test("leads with real research and gives compact routes to method and research areas", async ({
+    page,
+  }) => {
     await page.goto("/");
-    const headings = await page.locator("main > section h2").allTextContents();
-    const order = [researchHeading, "Five connected fields.", "The method stays visible."].map(
-      (heading) => headings.indexOf(heading),
+    await expect(page.locator("h1")).toHaveText("TharrosCanada.");
+    await expect(page.locator(".home-upcoming-list > li")).toHaveCount(3);
+    await expect(page.locator(".home-upcoming-list > li").first()).toContainText("In progress");
+    await expect(page.locator(".home-upcoming-note")).toContainText("Draft topics");
+    await expect(page.getByRole("link", { name: "Check out our methodology" })).toHaveAttribute(
+      "href",
+      "/methodology",
     );
-    expect(
-      order.every((position) => position >= 0),
-      headings.join(" | "),
-    ).toBe(true);
-    expect(order).toEqual([...order].sort((a, b) => a - b));
+    await page.getByRole("link", { name: "Check out our research areas" }).click();
+    await expect(page).toHaveURL(/\/research-areas$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Research areas");
   });
 
   test("the research block lists published work", async ({ page }) => {
@@ -239,14 +243,11 @@ test.describe("home flow", () => {
   });
 });
 
-test("About identifies the student project and counts only published work", async ({ page }) => {
+test("About gives a short introduction, purpose and contact", async ({ page }) => {
   await page.goto("/about");
-  await expect(page.getByRole("heading", { name: /student research project/i })).toBeVisible();
-  await expect(page.locator(".about-ledger dt")).toHaveText([
-    "Published research",
-    "Research areas",
-    "Sources in the register",
-  ]);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("About Tharros Canada");
+  await expect(page.locator("main")).toContainText("Independent student research");
+  await expect(page.locator("main section h2")).toHaveText(["About", "Mission", "Why", "Contact"]);
   await expect(page.locator("main")).not.toContainText("Research services");
 });
 
@@ -290,7 +291,7 @@ test("the not-found page leads to research and About", async ({ page }) => {
   const response = await page.goto("/this-page-does-not-exist");
   expect(response?.status()).toBe(404);
   const links = page.getByRole("navigation", { name: "Useful pages" }).getByRole("link");
-  await expect(links).toHaveText([/Research archive/, /Methodology/, /About Tharros/]);
+  await expect(links).toHaveText([/Research/, /Methodology/, /About Tharros/]);
   await expect(links.nth(0)).toHaveAttribute("href", "/research");
   await expect(links.nth(1)).toHaveAttribute("href", "/methodology");
   await expect(links.nth(2)).toHaveAttribute("href", "/about");

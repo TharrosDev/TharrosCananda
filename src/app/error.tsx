@@ -8,16 +8,14 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
     <section className="not-found">
       <div className="not-found-copy">
         <h1>Something went wrong.</h1>
-        <p>
-          This page could not be displayed. Try loading it again or explore the research archive.
-        </p>
+        <p>This page could not be displayed. Try loading it again or look at the research.</p>
       </div>
       <div className="not-found-ways">
         <button className="button-primary" type="button" onClick={reset}>
           Try again
         </button>
         <Link className="button-secondary" href="/research">
-          Go to the research archive
+          Go to Research
         </Link>
       </div>
     </section>

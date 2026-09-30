@@ -1,21 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { formatLongDate, pageMetadata } from "@/lib/site";
-import { ROUTE } from "@/components/atlantic-map";
 import { ArrowIcon } from "@/components/icons";
 import { MethodRail } from "@/components/method-rail";
 import { PageContents } from "@/components/page-contents";
 import { ProvenanceTrace, type TraceRecordRow } from "@/components/provenance-trace";
-import { SourceRegister } from "@/components/source-register";
 import { publicationByReference, type Publication } from "@/data/publications";
-import { publicSources, seatPlaces, type Seat } from "@/data/sources";
 import { tracePassages, tracePhrases, traceReference } from "@/data/trace-example";
 import "./methodology.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "Sources & Methodology",
   description:
-    "How Tharros Canada selects, dates, attributes and interprets public sources such as Statistics Canada, Eurostat, CanadaBuys, TED and municipal open data, judges whether a dataset is fit for use, and states limitations. Includes a worked trace of a published report.",
+    "How Tharros Canada checks sources, separates findings from interpretation and states limitations. Follow the evidence behind a published report.",
   path: "/methodology",
 });
 
@@ -119,41 +116,8 @@ const railItems = clauses.map(({ id, label }) => ({ id, label }));
 
 const pageSections = [
   ...(trace ? [{ id: "worked-example", label: "Worked example" }] : []),
-  { id: "method-title", label: "The five rules" },
-  { id: "atlas-title", label: "Public sources" },
-  { id: "classes-title", label: "Source categories" },
+  { id: "method-title", label: "Research method" },
 ] as const;
-
-const evidenceClasses = [
-  [
-    "Trade and statistical data",
-    "Official statistical tables, classifications, customs and trade datasets.",
-  ],
-  [
-    "Procurement and public spending",
-    "Tender notices, awards, contract history, programme and budget documentation.",
-  ],
-  [
-    "Company evidence",
-    "Public filings, websites, product documentation, announcements and disclosed business activity.",
-  ],
-  [
-    "Policy and programme records",
-    "Government, EU and institutional strategies, programmes, consultations and implementation documents.",
-  ],
-  [
-    "Research and ecosystem evidence",
-    "Public funding, research programmes, institutional records and related source material.",
-  ],
-  [
-    "Open and administrative datasets",
-    "Municipal, provincial and federal open-data portals, with their metadata, licences and collection notes.",
-  ],
-] as const;
-
-const countAt = (seats: readonly Seat[]) =>
-  publicSources.filter((source) => seats.includes(source.seat)).length;
-const regions = ["Canada", "Provincial & municipal", "Europe"] as const;
 
 export default function MethodologyPage() {
   return (
@@ -161,8 +125,8 @@ export default function MethodologyPage() {
       <header className="method-opening">
         <h1>Sources and methodology.</h1>
         <p>
-          A finding is only as useful as the evidence behind it. Follow a claim from a real report
-          to its source record, then see how the research is checked.
+          Follow a finding from a published report to its sources, then see how the evidence is
+          checked.
         </p>
       </header>
 
@@ -193,7 +157,7 @@ export default function MethodologyPage() {
 
       <section className="method" aria-labelledby="method-title">
         <div className="method-head">
-          <h2 id="method-title">Five rules. One standard of evidence.</h2>
+          <h2 id="method-title">How the research is checked.</h2>
           <p>
             Each report names its sources, explains its method and states the limits that affect its
             findings. Interpretation stays separate from fact.
@@ -220,108 +184,14 @@ export default function MethodologyPage() {
         </div>
       </section>
 
-      <section className="atlas" aria-labelledby="atlas-title">
-        <div className="atlas-body">
-          <aside className="atlas-directory">
-            <div className="atlas-head">
-              <h2 id="atlas-title">Find a public source.</h2>
-              <p>
-                {publicSources.length} registered publishers across Canada and Europe. Start with
-                your question and region; a listing identifies a source, with no endorsement or
-                partnership implied.
-              </p>
-            </div>
-            <nav className="atlas-region-links" aria-label="Source register regions">
-              {regions.map((region, index) => (
-                <a key={region} href={`#source-region-${index}`}>
-                  {region}
-                  <span>{publicSources.filter((source) => source.region === region).length}</span>
-                  <ArrowIcon />
-                </a>
-              ))}
-            </nav>
-            <figure className="atlas-map">
-              <div className="atlas-plate">
-                <svg viewBox="0 0 720 420" role="img" aria-labelledby="atlas-map-title">
-                  <title id="atlas-map-title">
-                    Where the listed publishers are based: Ottawa–Gatineau, Toronto, Brussels and
-                    Luxembourg.
-                  </title>
-                  <defs>
-                    {/* The shared coastline file is drawn for dark grounds; invert it for a light ground. */}
-                    <filter id="atlas-ink" colorInterpolationFilters="sRGB">
-                      <feColorMatrix
-                        type="matrix"
-                        values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"
-                      />
-                    </filter>
-                  </defs>
-                  <image
-                    href="/atlantic-map.svg"
-                    width="720"
-                    height="420"
-                    filter="url(#atlas-ink)"
-                  />
-                  <path className="atlas-route" d={ROUTE} />
-                  {/* Area is proportional to the number of sources: r = k√n. */}
-                  {seatPlaces.map((place) => (
-                    <circle
-                      key={place.key}
-                      className="atlas-node"
-                      data-node={place.key}
-                      cx={place.x}
-                      cy={place.y}
-                      r={(3.6 * Math.sqrt(countAt(place.seats))).toFixed(1)}
-                    />
-                  ))}
-                </svg>
-                {seatPlaces.map((place) => (
-                  <p
-                    key={place.key}
-                    className={`atlas-label is-${place.key}`}
-                    data-node={place.key}
-                    style={{ left: `${(place.x / 720) * 100}%`, top: `${(place.y / 420) * 100}%` }}
-                  >
-                    <strong>{place.name}</strong>
-                  </p>
-                ))}
-              </div>
-              <figcaption>
-                Publisher seats. Circle area shows the number of registered sources. Coastlines:
-                Natural Earth.
-              </figcaption>
-            </figure>
-          </aside>
-          <SourceRegister />
-        </div>
-      </section>
-
-      <section className="evidence-classes" aria-labelledby="classes-title">
-        <div className="evidence-classes-head">
-          <h2 id="classes-title">Match the source to the question.</h2>
-          <p>
-            The question determines which sources are useful. Each report identifies the records it
-            actually uses.
-          </p>
-        </div>
-        <dl>
-          {evidenceClasses.map(([term, description]) => (
-            <div key={term}>
-              <dt>{term}</dt>
-              <dd>{description}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
       <section className="method-close" aria-labelledby="method-close-title">
         <div>
-          <h2 id="method-close-title">Put the method to work.</h2>
+          <h2 id="method-close-title">Read the research.</h2>
           <p>Read a report with its sources and limitations alongside it.</p>
         </div>
         <div className="method-close-actions">
           <Link className="method-link" href="/research">
-            Open the research archive <ArrowIcon />
+            Check out our research <ArrowIcon />
           </Link>
           <Link className="method-link" href="/about#contact">
             Question a finding or flag a correction <ArrowIcon />

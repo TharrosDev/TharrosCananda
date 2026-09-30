@@ -2,11 +2,12 @@ import { expect, test } from "@playwright/test";
 import { fixture, fixturePath, fixtureWord } from "./fixture";
 
 // Key routes on desktop and mobile; the footer year is masked. Content that grows with every published report is
-// hidden (home latest release and area counts, archive year chips, About's latest line and field counts) or filtered to the fixture
+// hidden (home latest release and research year chips) or masked (research-area counts) or filtered to the fixture
 // report (the archive query), so adding a report never needs new baselines. Functional specs cover that content.
 const routes = [
   ["home", "/"],
   ["about", "/about"],
+  ["research-areas", "/research-areas"],
   ["research", `/research?q=${fixtureWord.toLowerCase()}&area=${fixture.area}`],
   ["report", fixturePath],
   ["methodology", "/methodology"],
@@ -23,7 +24,7 @@ for (const [name, path] of routes) {
     await expect(page.locator("[data-loading]")).toHaveCount(0, { timeout: 15_000 });
     await page.addStyleTag({
       content:
-        '.home-release, .home-field-count, .archive-chips[aria-label="Year"], .archive-group-label:has(+ .archive-chips[aria-label="Year"]), .about-ledger dd[data-volatile]:not(.about-count), .about-field-publications { display: none !important; }',
+        '.home-release, .archive-chips[aria-label="Year"], .archive-group-label:has(+ .archive-chips[aria-label="Year"]) { display: none !important; }',
     });
     await expect(page).toHaveScreenshot(`${name}.png`, {
       fullPage: true,

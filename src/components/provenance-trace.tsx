@@ -165,7 +165,7 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
       </div>
       <div className="trace-evidence">
         <div className="trace-column-head">
-          <h3>Evidence record</h3>
+          <h3>Supporting evidence</h3>
           <p>The highlighted field supports the selected phrase.</p>
         </div>
         <dl className="trace-record" id="trace-source-record">

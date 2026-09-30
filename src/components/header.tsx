@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
 const links: { href: string; label: string; description: string; prefetch?: boolean }[] = [
-  { href: "/research", label: "Research", description: "Discover reports and explore the archive" },
+  { href: "/research", label: "Research", description: "Look at the published research" },
   {
     href: "/methodology",
     label: "Methodology",
     description: "Follow the evidence behind the work",
   },
-  { href: "/about", label: "About", description: "Meet the project and get in touch" },
+  { href: "/about", label: "About", description: "About Tharros Canada and how to get in touch" },
 ];
 
 export function Header() {

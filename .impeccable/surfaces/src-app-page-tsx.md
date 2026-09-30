@@ -3,29 +3,31 @@ version: 1
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
 mode: "persuade"
-related_targets: ["src/app/research/page.tsx","src/app/research/[slug]/page.tsx","src/app/about/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx","src/app/copyright/page.tsx","src/app/not-found.tsx"]
+related_targets: ["src/app/home.css","src/app/research/page.tsx","src/app/research/[slug]/page.tsx","src/app/research-areas/page.tsx","src/app/about/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx","src/app/copyright/page.tsx","src/app/not-found.tsx"]
 ---
 
 ## Scope
 
-Whole public site. Home introduces the student project and real work; the archive, report reader, evidence workshop, project portrait, and reference pages support discovery, reading, verification, and editorial contact. Preserve supplied PDFs, publication facts, indexing choices, and archive tools.
+Whole public site. Home introduces Tharros Canada and real work; Research, the supplied PDF reader, Methodology, Research areas, About and reference pages support discovery, reading, verification and editorial contact. Preserve supplied PDFs, publication facts, indexing choices and every Research tool.
 
 ## Choice history
 
-The owner first selected **Open Questions**, candidate 7, seed `f037cd34`. In a second working chooser, key `e5ea266c`, the owner directly approved **The open issue**, seed `df0d4fa0`, and explicitly required empty image places for imagery they will supply later. The second approval governs this revision.
+The owner first chose Open Questions, candidate 7, seed `f037cd34`, then The open issue, chooser `e5ea266c`, seed `df0d4fa0`. The latest direct instructions simplify those surfaces, replace blue emphasis with neutral black and sparse burgundy, and choose a Canada–Europe connecting-line animation. The latest instructions govern; the earlier choices are historical context.
 
 ## Direction contract
 
-THESIS: The open issue foregrounds independent student research as a contemporary editorial publication. A confident statement, real report spread, native question index, and inspectable evidence make the project recognisable and useful.
+THESIS: Give independent student research a recognisable, contemporary presence through the Tharros Canada name, real reports and visible sources. Keep Home compact after the opening and let dedicated pages carry the deeper explanations.
 
-OWN-WORLD: White ground, dark ink, selective ultramarine, neutral grey, restrained pale blue evidence states, and small orange identity details. Space Grotesk display voice and Schibsted Grotesk prose/interface voice. Unboxed asymmetric reading structures, functional records, precise rules, and square controls.
+OWN-WORLD: White ground, neutral ink and black surfaces, sparse burgundy `#782c3d`, deep hover `#55202c`, muted red `#9e354c`, pale selected states `#f6edf0` and neutral grey grouping. `--blue` is a compatibility alias for ink. Space Grotesk identifies Tharros and titles; Schibsted Grotesk handles prose, metadata and controls. Open reading structures, precise rules and square controls.
 
-STORY: Recognise Tharros and its Canada–Europe scope; read the latest report and find earlier work; open questions across five fields; trace a real claim and explore its sources; understand the project and contact it.
+STORY: Recognise Tharros and its Canada–Europe interests; read the latest report; glance at three draft upcoming topics; choose Methodology or Research areas; inspect published evidence; learn the purpose and get in touch.
 
-FIRST VIEWPORT: A full-width research statement leads, with introduction and research/project links below. The next section uses an approximately 8/4 publication/project spread: a real report record, title, cover, full summary, and reading/PDF actions on the larger side; project, evidence, and contact context on the smaller side. One empty 16:9 editorial frame belongs to the publication column. At narrower widths, the spread stacks in reading order.
+FIRST VIEWPORT: A large two-line Tharros Canada wordmark and concise introduction sit beside a black Canada–Europe map diagram. Fine lines draw once over 4.2 seconds, with .2/.4-second stagger, only when motion is permitted. The default and reduced-motion state show the complete diagram. Research and About are direct actions.
 
-FORM: The open issue, chooser e5ea266c, seed df0d4fa0, directly approved. A native question index follows the spread, then one full-width method invitation. About uses compact purpose, factual ledger/publication-title index, subject disclosures, an independence/principles chapter with one empty 3:2 frame, and operational contact rows. Methodology is a white evidence workshop with visible “Traced to” feedback, five continuous rules, and progressively enhanced source search/region controls with native anchors and all ten publishers available without JavaScript. Policy pages use compact white title/horizontal facts, static chapter links, and title/body rows. The footer is a white signature and compact navigation/contact composition.
+FORM: A compact latest report cover, title, type, date and Read/PDF actions sit beside three numbered draft upcoming topics. Only the first shows In progress, and a visible note makes the topics provisional. Two compact CTA boxes lead to Methodology and Research areas. About contains About, Mission, Why and Contact; Methodology contains the real evidence trace and five rules; Research areas holds the five native subject disclosures and actual publication availability. The removed homepage essays, About ledger and reference chapters, and Methodology publisher directory/taxonomy do not return. Research instruments, PDF controls, policy reference rows and mobile navigation retain their working structure.
 
-IMAGE POLICY: Exactly two editorial-image records, home:null and about:null, in src/data/editorial-images.ts. Home is 16:9; About is 3:2. Null renders no image or caption. Methodology has no editorial slot. Retain supplied report covers. Do not populate the frames before the owner supplies imagery.
+IMAGE POLICY: Real supplied report covers remain visible. Optional `home: null` and `about: null` image records remain in their existing configuration, but Home and About do not render empty frames. No placeholder, stock or generated imagery is inserted. Any future owner imagery needs truthful alt text, dimensions and credit.
 
-FINISH: Validate the integrated second revision, inspect its captures, record the independent finish verdict, and update DESIGN.md and its sidecar from final source. Earlier first-pass results are historical evidence only.
+COPY: Public destinations say Research. Use direct phrases such as Check out our research and Look at the research. Avoid decorative Record/Archive headers and referring to Tharros as the project. Topical uses of record in source metadata or procurement explanations are allowed.
+
+FINISH: Review the integrated revision at narrow and wide sizes, including reduced motion and no-JavaScript paths. Record the exact checks run and their scope. Earlier screenshots, counts and finish verdicts apply only to their historical source revision; they do not establish QA for this one. DESIGN and the sidecar describe final source.

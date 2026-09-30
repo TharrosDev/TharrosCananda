@@ -6,7 +6,7 @@
 .policy-record > div { min-width: 0; }
 .policy-record dt { margin-bottom: 4px; color: var(--slate); font-size: 13px; }
 .policy-record dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
-.policy-record a { color: var(--blue); }
+.policy-record a { color: var(--red); }
 .policy-body.document-body { display: block; padding-top: 24px; }
 .policy-body .method-rail { position: static; top: auto; margin-bottom: 36px; padding: 0 0 20px; border-left: 0; border-bottom: 1px solid var(--rule); }
 .policy-body .method-rail-progress { display: none; }
@@ -14,7 +14,7 @@
 .policy-body .method-rail ol { display: flex; flex-wrap: wrap; gap: 2px 24px; }
 .policy-body .method-rail li { border: 0; }
 .policy-body .method-rail a { min-height: 44px; padding: 8px 0; font-size: 15px; }
-.policy-body .method-rail a[aria-current="location"] { color: var(--blue); text-decoration: underline; text-underline-offset: 7px; }
+.policy-body .method-rail a[aria-current="location"] { color: var(--red); text-decoration: underline; text-underline-offset: 7px; }
 .policy-body .document-sheet { padding: 0; background: transparent; }
 .policy-body .document-sheet > article { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.45fr); gap: 28px clamp(28px, 7vw, 120px); padding: 36px 0; border-top: 1px solid var(--rule); }
 .policy-body .document-sheet > article:first-child { padding-top: 12px; border-top: 0; }
@@ -25,7 +25,7 @@
 .policy-section-body > :last-child { margin-bottom: 0; }
 .policy-section-body ul { max-width: 68ch; }
 .policy-body .policy-section-body ul.is-grid { grid-template-columns: minmax(0, 1fr); }
-.policy-body .policy-section-body a { color: var(--blue); }
+.policy-body .policy-section-body a { color: var(--red); }
 @media (max-width: 800px) {
   .policy-body .document-sheet > article { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .policy-body .document-sheet h2 { max-width: none; }

@@ -1,208 +1,250 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-30T02:53:47Z",
+  "generatedAt": "2026-09-30T11:22:30.157Z",
   "title": "Design System: Tharros Canada",
   "extensions": {
     "colorMeta": {
-      "blue": {
+      "red": {
         "role": "primary",
-        "displayName": "Ultramarine",
+        "displayName": "Burgundy",
         "tonalRamp": [
-          "oklch(15% 0.2284 266.4)",
-          "oklch(26% 0.2284 266.4)",
-          "oklch(38% 0.2284 266.4)",
-          "oklch(50% 0.2284 266.4)",
-          "oklch(62% 0.2284 266.4)",
-          "oklch(74% 0.2284 266.4)",
-          "oklch(86% 0.2284 266.4)",
-          "oklch(95% 0.2284 266.4)"
+          "oklch(15% 0.1070 9.5)",
+          "oklch(26% 0.1070 9.5)",
+          "oklch(38% 0.1070 9.5)",
+          "oklch(50% 0.1070 9.5)",
+          "oklch(62% 0.1070 9.5)",
+          "oklch(74% 0.1070 9.5)",
+          "oklch(86% 0.1070 9.5)",
+          "oklch(95% 0.1070 9.5)"
         ]
       },
-      "blue-hover": {
+      "red-hover": {
         "role": "primary",
-        "displayName": "Deeper Ultramarine",
+        "displayName": "Deep Burgundy",
         "tonalRamp": [
-          "oklch(15% 0.2027 265.9)",
-          "oklch(26% 0.2027 265.9)",
-          "oklch(38% 0.2027 265.9)",
-          "oklch(50% 0.2027 265.9)",
-          "oklch(62% 0.2027 265.9)",
-          "oklch(74% 0.2027 265.9)",
-          "oklch(86% 0.2027 265.9)",
-          "oklch(95% 0.2027 265.9)"
+          "oklch(15% 0.0796 8.6)",
+          "oklch(26% 0.0796 8.6)",
+          "oklch(38% 0.0796 8.6)",
+          "oklch(50% 0.0796 8.6)",
+          "oklch(62% 0.0796 8.6)",
+          "oklch(74% 0.0796 8.6)",
+          "oklch(86% 0.0796 8.6)",
+          "oklch(95% 0.0796 8.6)"
         ]
       },
       "sky": {
         "role": "primary",
-        "displayName": "Pale Evidence Blue",
+        "displayName": "Pale Burgundy",
         "tonalRamp": [
-          "oklch(15% 0.0093 242.8)",
-          "oklch(26% 0.0093 242.8)",
-          "oklch(38% 0.0093 242.8)",
-          "oklch(50% 0.0093 242.8)",
-          "oklch(62% 0.0093 242.8)",
-          "oklch(74% 0.0093 242.8)",
-          "oklch(86% 0.0093 242.8)",
-          "oklch(95% 0.0093 242.8)"
+          "oklch(15% 0.0105 354.9)",
+          "oklch(26% 0.0105 354.9)",
+          "oklch(38% 0.0105 354.9)",
+          "oklch(50% 0.0105 354.9)",
+          "oklch(62% 0.0105 354.9)",
+          "oklch(74% 0.0105 354.9)",
+          "oklch(86% 0.0105 354.9)",
+          "oklch(95% 0.0105 354.9)"
         ]
       },
       "accent": {
         "role": "secondary",
-        "displayName": "Orange",
+        "displayName": "Muted Red",
         "tonalRamp": [
-          "oklch(15% 0.1972 32.7)",
-          "oklch(26% 0.1972 32.7)",
-          "oklch(38% 0.1972 32.7)",
-          "oklch(50% 0.1972 32.7)",
-          "oklch(62% 0.1972 32.7)",
-          "oklch(74% 0.1972 32.7)",
-          "oklch(86% 0.1972 32.7)",
-          "oklch(95% 0.1972 32.7)"
+          "oklch(15% 0.1396 10.8)",
+          "oklch(26% 0.1396 10.8)",
+          "oklch(38% 0.1396 10.8)",
+          "oklch(50% 0.1396 10.8)",
+          "oklch(62% 0.1396 10.8)",
+          "oklch(74% 0.1396 10.8)",
+          "oklch(86% 0.1396 10.8)",
+          "oklch(95% 0.1396 10.8)"
         ]
       },
       "ground": {
         "role": "neutral",
         "displayName": "White Ground",
         "tonalRamp": [
-          "oklch(15% 0.0000 89.9)",
-          "oklch(26% 0.0000 89.9)",
-          "oklch(38% 0.0000 89.9)",
-          "oklch(50% 0.0000 89.9)",
-          "oklch(62% 0.0000 89.9)",
-          "oklch(74% 0.0000 89.9)",
-          "oklch(86% 0.0000 89.9)",
-          "oklch(95% 0.0000 89.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "ground-deep": {
         "role": "neutral",
         "displayName": "Neutral Grey",
         "tonalRamp": [
-          "oklch(15% 0.0034 247.9)",
-          "oklch(26% 0.0034 247.9)",
-          "oklch(38% 0.0034 247.9)",
-          "oklch(50% 0.0034 247.9)",
-          "oklch(62% 0.0034 247.9)",
-          "oklch(74% 0.0034 247.9)",
-          "oklch(86% 0.0034 247.9)",
-          "oklch(95% 0.0034 247.9)"
+          "oklch(15% 0.0013 106.4)",
+          "oklch(26% 0.0013 106.4)",
+          "oklch(38% 0.0013 106.4)",
+          "oklch(50% 0.0013 106.4)",
+          "oklch(62% 0.0013 106.4)",
+          "oklch(74% 0.0013 106.4)",
+          "oklch(86% 0.0013 106.4)",
+          "oklch(95% 0.0013 106.4)"
         ]
       },
       "white": {
         "role": "neutral",
         "displayName": "White Reading Surface",
         "tonalRamp": [
-          "oklch(15% 0.0000 89.9)",
-          "oklch(26% 0.0000 89.9)",
-          "oklch(38% 0.0000 89.9)",
-          "oklch(50% 0.0000 89.9)",
-          "oklch(62% 0.0000 89.9)",
-          "oklch(74% 0.0000 89.9)",
-          "oklch(86% 0.0000 89.9)",
-          "oklch(95% 0.0000 89.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
         "tonalRamp": [
-          "oklch(15% 0.0305 256.9)",
-          "oklch(26% 0.0305 256.9)",
-          "oklch(38% 0.0305 256.9)",
-          "oklch(50% 0.0305 256.9)",
-          "oklch(62% 0.0305 256.9)",
-          "oklch(74% 0.0305 256.9)",
-          "oklch(86% 0.0305 256.9)",
-          "oklch(95% 0.0305 256.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "ink-soft": {
         "role": "neutral",
         "displayName": "Soft Ink",
         "tonalRamp": [
-          "oklch(15% 0.0413 259.3)",
-          "oklch(26% 0.0413 259.3)",
-          "oklch(38% 0.0413 259.3)",
-          "oklch(50% 0.0413 259.3)",
-          "oklch(62% 0.0413 259.3)",
-          "oklch(74% 0.0413 259.3)",
-          "oklch(86% 0.0413 259.3)",
-          "oklch(95% 0.0413 259.3)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "slate": {
         "role": "neutral",
         "displayName": "Slate",
         "tonalRamp": [
-          "oklch(15% 0.0439 261.9)",
-          "oklch(26% 0.0439 261.9)",
-          "oklch(38% 0.0439 261.9)",
-          "oklch(50% 0.0439 261.9)",
-          "oklch(62% 0.0439 261.9)",
-          "oklch(74% 0.0439 261.9)",
-          "oklch(86% 0.0439 261.9)",
-          "oklch(95% 0.0439 261.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "steel": {
-        "role": "secondary",
-        "displayName": "Steel Blue",
+        "role": "neutral",
+        "displayName": "Neutral Metadata",
         "tonalRamp": [
-          "oklch(15% 0.1465 265.5)",
-          "oklch(26% 0.1465 265.5)",
-          "oklch(38% 0.1465 265.5)",
-          "oklch(50% 0.1465 265.5)",
-          "oklch(62% 0.1465 265.5)",
-          "oklch(74% 0.1465 265.5)",
-          "oklch(86% 0.1465 265.5)",
-          "oklch(95% 0.1465 265.5)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
+        ]
+      },
+      "blue": {
+        "role": "neutral",
+        "displayName": "Ink Compatibility Alias",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "rule": {
         "role": "neutral",
         "displayName": "Quiet Rule",
         "tonalRamp": [
-          "oklch(15% 0.0305 256.9)",
-          "oklch(26% 0.0305 256.9)",
-          "oklch(38% 0.0305 256.9)",
-          "oklch(50% 0.0305 256.9)",
-          "oklch(62% 0.0305 256.9)",
-          "oklch(74% 0.0305 256.9)",
-          "oklch(86% 0.0305 256.9)",
-          "oklch(95% 0.0305 256.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
         ]
       },
       "rule-strong": {
         "role": "neutral",
         "displayName": "Strong Rule",
         "tonalRamp": [
-          "oklch(15% 0.0305 256.9)",
-          "oklch(26% 0.0305 256.9)",
-          "oklch(38% 0.0305 256.9)",
-          "oklch(50% 0.0305 256.9)",
-          "oklch(62% 0.0305 256.9)",
-          "oklch(74% 0.0305 256.9)",
-          "oklch(86% 0.0305 256.9)",
-          "oklch(95% 0.0305 256.9)"
+          "oklch(15% 0.0000 0.0)",
+          "oklch(26% 0.0000 0.0)",
+          "oklch(38% 0.0000 0.0)",
+          "oklch(50% 0.0000 0.0)",
+          "oklch(62% 0.0000 0.0)",
+          "oklch(74% 0.0000 0.0)",
+          "oklch(86% 0.0000 0.0)",
+          "oklch(95% 0.0000 0.0)"
+        ]
+      },
+      "connection-line": {
+        "role": "secondary",
+        "displayName": "On-Dark Connection Line",
+        "tonalRamp": [
+          "oklch(15% 0.0723 5.5)",
+          "oklch(26% 0.0723 5.5)",
+          "oklch(38% 0.0723 5.5)",
+          "oklch(50% 0.0723 5.5)",
+          "oklch(62% 0.0723 5.5)",
+          "oklch(74% 0.0723 5.5)",
+          "oklch(86% 0.0723 5.5)",
+          "oklch(95% 0.0723 5.5)"
+        ]
+      },
+      "connection-node": {
+        "role": "secondary",
+        "displayName": "On-Dark Connection Node",
+        "tonalRamp": [
+          "oklch(15% 0.0171 359.3)",
+          "oklch(26% 0.0171 359.3)",
+          "oklch(38% 0.0171 359.3)",
+          "oklch(50% 0.0171 359.3)",
+          "oklch(62% 0.0171 359.3)",
+          "oklch(74% 0.0171 359.3)",
+          "oklch(86% 0.0171 359.3)",
+          "oklch(95% 0.0171 359.3)"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Opening Statement",
-        "purpose": "Full-width Home statement; supporting titles use task-specific scales."
+        "displayName": "Tharros Canada Identity",
+        "purpose": "Two-line homepage wordmark; supporting pages use quieter task-specific titles."
       },
       "section": {
-        "displayName": "Question Index Chapter",
-        "purpose": "Home question-index heading; denser chapters have quieter scales."
+        "displayName": "Page Opening",
+        "purpose": "About and Research areas openings; homepage section headings stay compact."
       },
       "title": {
         "displayName": "Publication Title",
-        "purpose": "Archive results; Home and About have their own title hierarchy."
+        "purpose": "Research results and compact report titles use their own hierarchy."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Global prose with purposeful local measures and sizes."
+        "purpose": "Global prose uses purposeful local measures. Intentional task-specific pixel sizes/clamp endpoints: 11.5, 12, 13, 14, 15, 16, 17, 18, 20, 22, 23, 24, 25, 26, 28, 29, 30, 34, 36, 38, 48, 49, 50, 54, 58, 60, 64, 66, 76, 96. This is not a required fixed ramp."
       },
       "control": {
         "displayName": "Control",
@@ -212,17 +254,17 @@
     "shadows": [
       {
         "name": "home-publication-cover",
-        "value": "0 10px 24px -14px rgba(23, 33, 47, .4)",
+        "value": "0 10px 24px -14px rgba(0, 0, 0, .4)",
         "purpose": "Actual report cover beside the lead title."
       },
       {
-        "name": "archive-cover",
+        "name": "research-cover",
         "value": "0 10px 24px -14px color-mix(in srgb, var(--ink) 40%, transparent)",
-        "purpose": "Actual supplied cover in an archive row."
+        "purpose": "Actual supplied cover in an Research row."
       },
       {
         "name": "pdf-sheet",
-        "value": "0 18px 44px -22px rgba(23, 33, 47, .24)",
+        "value": "0 18px 44px -22px rgba(0, 0, 0, .24)",
         "purpose": "PDF canvas page in the reader."
       },
       {
@@ -245,7 +287,12 @@
       {
         "name": "dur-2",
         "value": "250ms",
-        "purpose": "Underlines, arrows, covers, disclosure marks and source-node emphasis."
+        "purpose": "Underlines, arrows, covers and disclosure marks."
+      },
+      {
+        "name": "home-connect",
+        "value": "4.2s; delays 0s, .2s, .4s; one iteration",
+        "purpose": "Finite Canada–Europe line draw only behind prefers-reduced-motion: no-preference; default is complete."
       },
       {
         "name": "cover-transition",
@@ -259,8 +306,8 @@
       },
       {
         "name": "reduced-motion",
-        "value": ".01ms ordinary timing; no smooth scroll, view transition or trace drawing",
-        "purpose": "Keeps content and native disclosure paths available."
+        "value": ".01ms ordinary timing; no smooth scroll, view transition, hero draw or trace drawing",
+        "purpose": "The complete static diagram and native reading paths remain available."
       },
       {
         "name": "scroll-enhancement",
@@ -270,7 +317,7 @@
     ],
     "breakpoints": [
       {
-        "name": "wide-archive-preview",
+        "name": "wide-research-preview",
         "value": "1180px"
       },
       {
@@ -282,16 +329,8 @@
         "value": "1020px"
       },
       {
-        "name": "home-spread-and-source-directory-stack",
-        "value": "980px"
-      },
-      {
         "name": "policy-rows-and-footer-stack",
         "value": "800px"
-      },
-      {
-        "name": "trace-and-about-chapters-stack",
-        "value": "760px"
       },
       {
         "name": "phone",
@@ -306,20 +345,20 @@
         "value": "420px"
       },
       {
-        "name": "narrow-home-refinement",
-        "value": "360px"
-      },
-      {
         "name": "short-reader-height",
         "value": "600px"
       },
       {
-        "name": "short-source-directory-height",
+        "name": "sticky-research-minimum-height",
+        "value": "820px"
+      },
+      {
+        "name": "home-about-and-trace-stack",
         "value": "760px"
       },
       {
-        "name": "sticky-archive-minimum-height",
-        "value": "820px"
+        "name": "home-cta-stack",
+        "value": "480px"
       }
     ]
   },
@@ -328,123 +367,122 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The main destination or action, with a blue fill and white label.",
+      "description": "The main action, with a restrained burgundy fill and white label.",
       "html": "<button type=\"button\" class=\"ds-primary\">Read the research <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button>",
-      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--red,#2447dc);background:var(--red,#2447dc);color:var(--ivory-light,#fff)}.ds-primary:hover{background:var(--red-dark,#1736b6);border-color:var(--red-dark,#1736b6)}.ds-primary:active{transform:translateY(1px)}.ds-primary:disabled{cursor:progress;opacity:.6}.ds-primary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-primary:hover svg{transform:translateX(4px)}.ds-primary:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-primary svg{transition:none}}"
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--red,#782c3d);background:var(--red,#782c3d);color:var(--ivory-light,#fff)}.ds-primary:hover{background:var(--red-dark,#55202c);border-color:var(--red-dark,#55202c)}.ds-primary:active{transform:translateY(1px)}.ds-primary:disabled{cursor:progress;opacity:.6}.ds-primary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-primary:hover svg{transform:translateX(4px)}.ds-primary:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-primary svg{transition:none}}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "A blue outlined action that fills on hover.",
+      "description": "A neutral ink outline that fills with ink on hover.",
       "html": "<button type=\"button\" class=\"ds-secondary\">Read the report <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button>",
-      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--blue,#2447dc);background:transparent;color:var(--blue,#2447dc)}.ds-secondary:hover{background:var(--blue,#2447dc);color:var(--ivory-light,#fff)}.ds-secondary:active{transform:translateY(1px)}.ds-secondary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-secondary:hover svg{transform:translateX(4px)}.ds-secondary:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-secondary,.ds-secondary svg{transition:none}}"
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--ink,#151515);background:transparent;color:var(--ink,#151515)}.ds-secondary:hover{background:var(--ink,#151515);color:var(--ivory-light,#fff)}.ds-secondary:active{transform:translateY(1px)}.ds-secondary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-secondary:hover svg{transform:translateX(4px)}.ds-secondary:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-secondary,.ds-secondary svg{transition:none}}"
     },
     {
-      "name": "Archive Search",
+      "name": "Research Search",
       "kind": "input",
       "description": "A labelled white search instrument and explicit submit action within open white framing.",
       "html": "<form class=\"ds-search\"><label for=\"ds-query\">Search the research</label><div><input id=\"ds-query\" type=\"search\" placeholder=\"Title, subject or keyword\"><button type=\"submit\">Search <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button></div><p>Search titles, summaries, tags and report text.</p></form>",
-      "css": ".ds-search{display:grid;gap:12px;padding:0 0 24px;border-bottom:1px solid var(--rule,rgba(23,33,47,.15));background:transparent;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-search label{font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:17px;font-weight:600;line-height:1.4}.ds-search>div{display:flex;gap:12px;align-items:center;padding:8px 8px 8px 18px;background:var(--ivory-light,#fff);border:1px solid var(--rule-strong,rgba(23,33,47,.35))}.ds-search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:18px;caret-color:var(--red,#2447dc)}.ds-search input::placeholder{color:var(--slate,#526079)}.ds-search button{display:inline-flex;align-items:center;gap:20px;min-height:48px;padding:0 22px;border:0;background:var(--red,#2447dc);color:var(--on-dark,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;cursor:pointer;transition:background var(--dur-1,150ms)}.ds-search button:hover{background:var(--red-dark,#1736b6)}.ds-search button svg{width:20px;height:20px}.ds-search :is(input,button):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-search p{margin:0;font-size:15px;line-height:1.5}@media(max-width:420px){.ds-search>div{flex-wrap:wrap}.ds-search input{font-size:18px}.ds-search button{width:100%;justify-content:center}}@media(prefers-reduced-motion:reduce){.ds-search button{transition:none}}"
+      "css": ".ds-search{display:grid;gap:12px;padding:0 0 24px;border-bottom:1px solid var(--rule,rgba(21,21,21,.15));background:transparent;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#151515)}.ds-search label{font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:17px;font-weight:600;line-height:1.4}.ds-search>div{display:flex;gap:12px;align-items:center;padding:8px 8px 8px 18px;background:var(--ivory-light,#fff);border:1px solid var(--rule-strong,rgba(21,21,21,.35))}.ds-search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--ink,#151515);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:18px;caret-color:var(--red,#782c3d)}.ds-search input::placeholder{color:var(--slate,#606060)}.ds-search button{display:inline-flex;align-items:center;gap:20px;min-height:48px;padding:0 22px;border:0;background:var(--red,#782c3d);color:var(--on-dark,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;cursor:pointer;transition:background var(--dur-1,150ms)}.ds-search button:hover{background:var(--red-dark,#55202c)}.ds-search button svg{width:20px;height:20px}.ds-search :is(input,button):focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}.ds-search p{margin:0;font-size:15px;line-height:1.5}@media(max-width:420px){.ds-search>div{flex-wrap:wrap}.ds-search input{font-size:18px}.ds-search button{width:100%;justify-content:center}}@media(prefers-reduced-motion:reduce){.ds-search button{transition:none}}"
     },
     {
       "name": "Primary Navigation",
       "kind": "nav",
-      "description": "Research, Methodology and About with blue underline feedback for hover and the current route.",
+      "description": "Research, Methodology and About with burgundy current-route and underline feedback.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><a href=\"/research\" aria-current=\"page\">Research</a><a href=\"/methodology\">Methodology</a><a href=\"/about\">About</a></nav>",
-      "css": ".ds-nav{display:flex;flex-wrap:wrap;gap:32px;background:var(--ivory-light,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:10px 0;color:var(--ink-soft,#3d4b61);font-size:16px;font-weight:600;text-decoration:none;transition:color var(--dur-1,150ms)}.ds-nav a::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--blue,#2447dc);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-nav a:hover,.ds-nav a[aria-current=page]{color:var(--blue,#2447dc)}.ds-nav a:hover::after,.ds-nav a[aria-current=page]::after{transform:scaleX(1)}.ds-nav a:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-nav a,.ds-nav a::after{transition:none}}"
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;gap:32px;background:var(--ivory-light,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:10px 0;color:var(--ink-soft,#414141);font-size:16px;font-weight:600;text-decoration:none;transition:color var(--dur-1,150ms)}.ds-nav a::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--red,#782c3d);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-nav a:hover{color:var(--ink,#151515)}.ds-nav a[aria-current=page]{color:var(--red,#782c3d)}.ds-nav a:hover::after,.ds-nav a[aria-current=page]::after{transform:scaleX(1)}.ds-nav a:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-nav a,.ds-nav a::after{transition:none}}"
     },
     {
-      "name": "Archive Facet",
+      "name": "Research Facet",
       "kind": "chip",
       "refersTo": "facet",
       "description": "Square format/year facets with a neutral grey selected state.",
       "html": "<div class=\"ds-facets\" role=\"group\" aria-label=\"Publication type\"><button type=\"button\" aria-pressed=\"true\">Data Note</button><button type=\"button\" aria-pressed=\"false\">Research Report</button></div>",
-      "css": ".ds-facets{display:flex;flex-wrap:wrap;gap:8px}.ds-facets button{min-height:44px;padding:8px 12px;border:1px solid var(--rule-strong,rgba(23,33,47,.35));border-radius:0;background:transparent;color:var(--ink-soft,#3d4b61);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:14px;line-height:1.35;font-variant-numeric:tabular-nums;cursor:pointer;transition:background var(--dur-1,150ms),color var(--dur-1,150ms),border-color var(--dur-1,150ms)}.ds-facets button:hover:not(:disabled){border-color:var(--red,#2447dc);color:var(--red,#2447dc)}.ds-facets button[aria-pressed=\"true\"]{border-color:var(--ink,#17212f);background:var(--ivory-deep,#f0f2f4);color:var(--ink,#17212f);font-weight:600}.ds-facets button:disabled{border-color:var(--rule,rgba(23,33,47,.15));color:var(--slate,#526079);cursor:default}.ds-facets button:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-facets button{transition:none}}"
+      "css": ".ds-facets{display:flex;flex-wrap:wrap;gap:8px}.ds-facets button{min-height:44px;padding:8px 12px;border:1px solid var(--rule-strong,rgba(21,21,21,.35));border-radius:0;background:transparent;color:var(--ink-soft,#414141);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:14px;line-height:1.35;font-variant-numeric:tabular-nums;cursor:pointer;transition:background var(--dur-1,150ms),color var(--dur-1,150ms),border-color var(--dur-1,150ms)}.ds-facets button:hover:not(:disabled){border-color:var(--red,#782c3d);color:var(--red,#782c3d)}.ds-facets button[aria-pressed=\"true\"]{border-color:var(--ink,#151515);background:var(--ivory-deep,#f3f3f2);color:var(--ink,#151515);font-weight:600}.ds-facets button:disabled{border-color:var(--rule,rgba(21,21,21,.15));color:var(--slate,#606060);cursor:default}.ds-facets button:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-facets button{transition:none}}"
     },
     {
-      "name": "Publication Record",
+      "name": "Publication Entry",
       "kind": "card",
-      "description": "A flat archive row using a real publication title and reference; the preview omits its cover.",
+      "description": "A flat Research result using a real publication title and reference; the preview omits its cover.",
       "html": "<article class=\"ds-record\"><p>TC-2026-002 · Research Report · September 2026</p><h2><a href=\"/research/canada-inside-safe\">Canada Inside SAFE: What Access to Europe’s €150B Defence Initiative Has Cost, and Who’s Gained So Far</a></h2><a class=\"ds-record-read\" href=\"/research/canada-inside-safe\">Read the report</a></article>",
-      "css": ".ds-record{padding:26px 0;border-top:1px solid var(--rule,rgba(23,33,47,.15));background:transparent;color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-record>p{margin:0 0 10px;color:var(--slate,#526079);font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}.ds-record h2{max-width:42ch;margin:0 0 12px;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(23px,2vw,29px);font-weight:600;line-height:1.22;letter-spacing:-.02em}.ds-record h2 a{color:var(--ink,#17212f);text-decoration:none}.ds-record h2 a:hover{color:var(--red,#2447dc);text-decoration:underline;text-underline-offset:5px}.ds-record-read{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;background:var(--red,#2447dc);color:var(--on-dark,#fff);border:1px solid var(--red,#2447dc);font-size:14px;font-weight:600;text-decoration:none}.ds-record-read:hover{background:var(--red-dark,#1736b6);border-color:var(--red-dark,#1736b6)}.ds-record a:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}",
-      "refersTo": "publication-record"
-    },
-    {
-      "name": "Open Question Disclosure",
-      "kind": "custom",
-      "description": "Native field disclosure with a real question, scope and useful destination.",
-      "html": "<details class=\"ds-question\"><summary><h3>Trade &amp; Economic Integration</h3><p>Where is Canada–EU trade growing for a given product or sector?</p><svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h14\"/><path class=\"ds-question-vertical\" d=\"M10 3v14\"/></svg></summary><div><p>Trade, investment, CETA, market access, digital trade and supply chains.</p><ul><li>How does CETA treatment affect a specific route to market?</li><li>Which supply chains link Canadian and European producers?</li></ul><a href=\"/about#field-trade-economic-integration\">Explore the field <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></a></div></details>",
-      "css": ".ds-question{border-top:1px solid var(--ink,#17212f);border-bottom:1px solid var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-question summary{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr) 24px;column-gap:28px;min-height:136px;padding:28px 0;align-items:start;list-style:none;cursor:pointer}.ds-question summary::-webkit-details-marker{display:none}.ds-question h3{margin:0;font-size:17px;font-weight:600;line-height:1.4}.ds-question summary>p{margin:-3px 0 0;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(24px,2.4vw,34px);font-weight:500;letter-spacing:-.025em;line-height:1.22}.ds-question summary>svg{width:24px;height:24px;color:var(--blue,#2447dc)}.ds-question summary>svg path{fill:none;stroke:currentColor;stroke-width:1.5}.ds-question[open] .ds-question-vertical{display:none}.ds-question summary:hover>p,.ds-question[open] summary>p{color:var(--blue,#2447dc)}.ds-question :is(summary,a):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-question>div{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr) 24px;column-gap:28px;padding-bottom:28px}.ds-question>div>p{margin:0;color:var(--ink-soft,#3d4b61);font-size:15px;line-height:1.65}.ds-question ul{grid-column:2;margin:0;padding:0;list-style:none}.ds-question li{padding:12px 0;border-top:1px solid var(--rule,rgba(23,33,47,.15));font-size:17px;line-height:1.5}.ds-question>div>a{grid-column:2;display:inline-flex;align-items:center;gap:20px;min-height:44px;margin-top:12px;color:var(--blue,#2447dc);font-size:15px;font-weight:600;text-decoration:none}.ds-question>div>a:hover{text-decoration:underline}.ds-question a svg{width:18px;height:18px}@media(max-width:640px){.ds-question summary{min-height:0;grid-template-columns:1fr 24px;gap:18px 20px}.ds-question summary>p{grid-column:1/-1;grid-row:2;font-size:27px}.ds-question summary>svg{grid-column:2;grid-row:1}.ds-question>div{grid-template-columns:1fr;row-gap:18px}.ds-question ul,.ds-question>div>a{grid-column:1}}"
+      "css": ".ds-record{padding:26px 0;border-top:1px solid var(--rule,rgba(21,21,21,.15));background:transparent;color:var(--ink,#151515);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-record>p{margin:0 0 10px;color:var(--slate,#606060);font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}.ds-record h2{max-width:42ch;margin:0 0 12px;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(23px,2vw,29px);font-weight:600;line-height:1.22;letter-spacing:-.02em}.ds-record h2 a{color:var(--ink,#151515);text-decoration:none}.ds-record h2 a:hover{color:var(--red,#782c3d);text-decoration:underline;text-underline-offset:5px}.ds-record-read{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;background:var(--red,#782c3d);color:var(--on-dark,#fff);border:1px solid var(--red,#782c3d);font-size:14px;font-weight:600;text-decoration:none}.ds-record-read:hover{background:var(--red-dark,#55202c);border-color:var(--red-dark,#55202c)}.ds-record a:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}",
+      "refersTo": "publication-entry"
     },
     {
       "name": "Evidence Trace",
       "kind": "custom",
-      "description": "Faithful TC-2026-001 fragments, visible Traced to feedback, and the supporting period record.",
-      "html": "<div class=\"ds-trace\"><div class=\"ds-trace-claim\"><h3>Published claim</h3><p>Select an underlined phrase to inspect its evidence.</p><div class=\"ds-trace-phrases\"><span role=\"button\" tabindex=\"0\" aria-pressed=\"false\">the City of Ottawa</span><span role=\"button\" tabindex=\"0\" aria-pressed=\"true\">between 2017-2024 (excluding 2023)</span></div><p class=\"ds-traced\" aria-live=\"polite\">Traced to <strong>Period</strong></p></div><div class=\"ds-trace-evidence\"><h3>Evidence record</h3><dl><div><dt>Publisher</dt><dd>City of Ottawa</dd></div><div data-active><dt>Period</dt><dd>2017–2024, excluding 2023</dd></div></dl></div></div>",
-      "css": ".ds-trace{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:60px;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-trace-claim{padding:24px 24px 22px;background:var(--ivory-deep,#f0f2f4)}.ds-trace h3{margin:0 0 5px;font-size:15px;font-weight:700;line-height:1.4}.ds-trace-claim>p:first-of-type{margin:0 0 18px;color:var(--slate,#526079);font-size:14px;line-height:1.5}.ds-trace-phrases{font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(20px,1.55vw,23px);font-weight:500;line-height:1.55;letter-spacing:-.015em}.ds-trace-phrases span{display:inline;padding:1px 0;text-decoration:underline dotted var(--blue,#2447dc);text-underline-offset:.2em;cursor:pointer;box-decoration-break:clone}.ds-trace-phrases span+span{margin-left:10px}.ds-trace-phrases span:hover{color:var(--blue,#2447dc);text-decoration-style:solid}.ds-trace-phrases span[aria-pressed=true]{background:var(--sky,#edf3f8);color:var(--blue,#2447dc);text-decoration:underline solid var(--blue,#2447dc);text-decoration-thickness:2px}.ds-trace-phrases span:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-traced{margin:20px 0 0;padding-top:12px;border-top:1px solid var(--rule,rgba(23,33,47,.15));color:var(--slate,#526079);font-size:14px;line-height:1.5}.ds-traced strong{color:var(--blue,#2447dc);font-weight:650}.ds-trace-evidence>h3{padding:0 14px 12px;margin:0}.ds-trace dl{margin:0;border-top:1px solid var(--rule-strong,rgba(23,33,47,.35))}.ds-trace dl>div{padding:12px 14px;border-bottom:1px solid var(--rule,rgba(23,33,47,.15))}.ds-trace [data-active]{background:var(--sky,#edf3f8)}.ds-trace dt{font-size:14px;font-weight:700;line-height:1.5}.ds-trace [data-active] dt{color:var(--blue,#2447dc)}.ds-trace dd{margin:5px 0 0;font-size:16px;line-height:1.5}@media(max-width:760px){.ds-trace{grid-template-columns:1fr;gap:28px}}"
+      "description": "Faithful TC-2026-001 phrases, visible Traced to feedback and complete supporting evidence.",
+      "html": "<div class=\"ds-trace\"><div class=\"ds-trace-claim\"><h3>Published claim</h3><p>Select an underlined phrase to inspect its evidence.</p><div class=\"ds-trace-phrases\"><span role=\"button\" tabindex=\"0\" aria-pressed=\"false\">the City of Ottawa</span><span role=\"button\" tabindex=\"0\" aria-pressed=\"true\">between 2017-2024 (excluding 2023)</span></div><p class=\"ds-traced\" aria-live=\"polite\">Traced to <strong>Period</strong></p></div><div class=\"ds-trace-evidence\"><h3>Supporting evidence</h3><dl><div><dt>Publisher</dt><dd>City of Ottawa</dd></div><div data-active><dt>Period</dt><dd>2017–2024, excluding 2023</dd></div></dl></div></div>",
+      "css": ".ds-trace{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:60px;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#151515)}.ds-trace-claim{padding:24px 24px 22px;background:var(--ivory-deep,#f3f3f2)}.ds-trace h3{margin:0 0 5px;font-size:15px;font-weight:700;line-height:1.4}.ds-trace-claim>p:first-of-type{margin:0 0 18px;color:var(--slate,#606060);font-size:14px;line-height:1.5}.ds-trace-phrases{font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(20px,1.55vw,23px);font-weight:500;line-height:1.55;letter-spacing:-.015em}.ds-trace-phrases span{display:inline;padding:1px 0;text-decoration:underline dotted var(--red,#782c3d);text-underline-offset:.2em;cursor:pointer;box-decoration-break:clone}.ds-trace-phrases span+span{margin-left:10px}.ds-trace-phrases span:hover{color:var(--red,#782c3d);text-decoration-style:solid}.ds-trace-phrases span[aria-pressed=true]{background:var(--sky,#f6edf0);color:var(--red,#782c3d);text-decoration:underline solid var(--red,#782c3d);text-decoration-thickness:2px}.ds-trace-phrases span:focus-visible{outline:2px solid var(--focus,#782c3d);outline-offset:3px}.ds-traced{margin:20px 0 0;padding-top:12px;border-top:1px solid var(--rule,rgba(21,21,21,.15));color:var(--slate,#606060);font-size:14px;line-height:1.5}.ds-traced strong{color:var(--red,#782c3d);font-weight:650}.ds-trace-evidence>h3{padding:0 14px 12px;margin:0}.ds-trace dl{margin:0;border-top:1px solid var(--rule-strong,rgba(21,21,21,.35))}.ds-trace dl>div{padding:12px 14px;border-bottom:1px solid var(--rule,rgba(21,21,21,.15))}.ds-trace [data-active]{background:var(--sky,#f6edf0)}.ds-trace dt{font-size:14px;font-weight:700;line-height:1.5}.ds-trace [data-active] dt{color:var(--red,#782c3d)}.ds-trace dd{margin:5px 0 0;font-size:16px;line-height:1.5}@media(max-width:760px){.ds-trace{grid-template-columns:1fr;gap:28px}}"
     },
     {
-      "name": "Source Register",
+      "name": "Research Area Disclosure",
       "kind": "custom",
-      "description": "Labelled source search and region controls above an actual registered publisher record.",
-      "html": "<section class=\"ds-sources\"><form><label>Search the source register<input type=\"search\" placeholder=\"Publisher, subject or access type\"></label><label>Region<select><option>All regions</option><option>Canada</option><option>Provincial &amp; municipal</option><option>Europe</option></select></label><p>Search publisher names, source descriptions, cities and access types.</p></form><h3>Canada</h3><a href=\"https://www.statcan.gc.ca/en/developers/wds\" target=\"_blank\" rel=\"noreferrer\"><div><strong>Statistics Canada</strong><span>Aggregate trade, industry, economic and demographic data; WDS provides machine-readable series and metadata.</span></div><div><span>API</span><small>Ottawa <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></small></div></a></section>",
-      "css": ".ds-sources{font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-sources form{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.6fr);gap:8px 16px;margin-bottom:16px}.ds-sources label{display:block;font-size:14px;font-weight:650;line-height:1.4}.ds-sources input,.ds-sources select{display:block;width:100%;min-width:0;min-height:48px;margin-top:8px;padding:10px 12px;border:1px solid var(--rule-strong,rgba(23,33,47,.35));border-radius:0;background:var(--ivory-light,#fff);color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:15px;line-height:1.4;caret-color:var(--blue,#2447dc)}.ds-sources input::placeholder{color:var(--slate,#526079)}.ds-sources :is(input,select,a):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-sources form>p{grid-column:1/-1;margin:0;color:var(--slate,#526079);font-size:13px;line-height:1.5}.ds-sources h3{margin:20px 0 12px;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:22px;font-weight:600;line-height:1.3;letter-spacing:-.02em}.ds-sources>a{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.3fr);gap:20px;padding:16px 0 18px;border-top:1px solid var(--rule,rgba(23,33,47,.15));border-bottom:1px solid var(--rule,rgba(23,33,47,.15));color:inherit;text-decoration:none}.ds-sources>a>div{display:grid;align-content:start;gap:7px}.ds-sources strong{font-size:17px;font-weight:650;line-height:1.35}.ds-sources>a>div:first-child>span{color:var(--ink-soft,#3d4b61);font-size:15px;line-height:1.6}.ds-sources>a>div:last-child>span{color:var(--blue,#2447dc);font-size:13px;font-weight:600;line-height:1.45}.ds-sources small{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--slate,#526079);font-size:13px;line-height:1.5}.ds-sources small svg{width:16px;height:16px;color:var(--blue,#2447dc)}.ds-sources>a:hover strong{color:var(--blue,#2447dc);text-decoration:underline;text-underline-offset:4px}@media(max-width:640px){.ds-sources form,.ds-sources>a{grid-template-columns:1fr}}"
+      "description": "Native /research-areas disclosure with scope, questions and an honest Research destination.",
+      "html": "<details class=\"areas-field\" open><summary><div><h2>Trade &amp; Economic Integration</h2><p>Trade, investment, CETA, market access, digital trade and supply chains.</p></div><span class=\"areas-disclosure\" aria-hidden=\"true\"><svg viewBox=\"0 0 20 20\"><path d=\"M3 10h14\"/><path class=\"areas-disclosure-vertical\" d=\"M10 3v14\"/></svg></span></summary><div class=\"areas-field-body\"><div class=\"areas-questions\"><h3>Questions to explore</h3><ul><li>Where is Canada–EU trade growing for a given product or sector?</li></ul></div><div class=\"areas-publications\"><a class=\"areas-link\" href=\"/research\">Look at the research</a></div></div></details>",
+      "css": ".research-areas-page { width: var(--shell); margin: 0 auto; padding-bottom: var(--space-page); }\n.areas-masthead { padding: clamp(40px, 5vw, 72px) 0 clamp(32px, 4vw, 52px); }\n.areas-masthead h1 { margin: 0; font-size: clamp(38px, 4.8vw, 66px); font-weight: 600; letter-spacing: -.035em; line-height: 1.1; }\n.areas-masthead > p { max-width: 66ch; margin: 20px 0 0; color: var(--ink-soft); font-size: clamp(18px, 1.5vw, 20px); line-height: 1.6; }\n.areas-guide { border-top: 1px solid var(--ink); }\n.areas-field { border-bottom: 1px solid var(--rule-strong); }\n.areas-field summary { display: grid; grid-template-columns: minmax(0, 1fr) 28px; align-items: start; gap: 24px; padding: 26px 0; list-style: none; cursor: pointer; }\n.areas-field summary::-webkit-details-marker { display: none; }\n.areas-field summary::marker { content: \"\"; }\n.areas-field summary h2 { max-width: 35ch; margin: 0; font-size: clamp(25px, 2.7vw, 36px); font-weight: 500; line-height: 1.2; letter-spacing: -.025em; }\n.areas-field summary p { max-width: 73ch; margin: 10px 0 0; color: var(--ink-soft); font-size: 16px; line-height: 1.6; }\n.areas-field summary:hover h2 { color: var(--red); }\n.areas-disclosure { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-top: 3px; color: var(--red); }\n.areas-disclosure svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }\n.areas-disclosure-vertical { transform-origin: center; transition: transform var(--dur-2) var(--ease-out); }\n.areas-field[open] .areas-disclosure-vertical { transform: rotate(90deg); }\n.areas-field-body { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 26px 48px; margin-left: clamp(0px, 8vw, 120px); padding: 6px 52px 32px 0; }\n.areas-field-body h3 { margin: 0 0 14px; color: var(--slate); font-family: var(--sans); font-size: 14px; font-weight: 600; line-height: 1.5; letter-spacing: 0; }\n.areas-field-body ul { margin: 0; padding: 0; list-style: none; }\n.areas-questions li { max-width: 45ch; color: var(--ink); font-size: 18px; line-height: 1.6; }\n.areas-questions li + li { margin-top: 12px; }\n.areas-evidence li { color: var(--ink-soft); font-size: 16px; line-height: 1.6; }\n.areas-evidence li + li { margin-top: 10px; }\n.areas-publications { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 24px; padding-top: 18px; border-top: 1px solid var(--rule); }\n.areas-publications > p { margin: 0; color: var(--slate); font-size: 14px; line-height: 1.6; }\n.areas-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 7px 0; color: var(--red); font-size: 15px; font-weight: 600; line-height: 1.45; text-decoration: underline; text-underline-offset: 5px; }\n.areas-link svg { width: 16px; height: 16px; flex: 0 0 16px; }\n.areas-link:hover { color: var(--red-dark); text-decoration-thickness: 2px; }\n.areas-footer { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 32px; padding-top: 28px; }\n.areas-footer > p { margin: 0; color: var(--ink-soft); font-size: 17px; line-height: 1.6; }\n@media (max-width: 760px) {\n  .areas-field-body { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-left: 0; }\n  .areas-publications { grid-column: 1; }\n}\n@media (max-width: 640px) {\n  .areas-masthead { padding-top: 32px; }\n  .areas-masthead h1 { font-size: clamp(35px, 8.6vw, 49px); }\n  .areas-field summary { gap: 16px; padding: 24px 0; }\n  .areas-field summary h2 { font-size: 26px; }\n  .areas-field-body { padding-right: 0; }\n  .areas-publications { gap: 0 20px; }\n}\n"
     },
     {
-      "name": "Empty Editorial Frames",
+      "name": "Canada–Europe Connections",
       "kind": "custom",
-      "refersTo": "empty-image-frame",
-      "description": "The null owner-controlled home/About slots: 16:9 and 3:2, without images, captions or prompts.",
-      "html": "<div class=\"ds-image-slots\"><figure class=\"ds-image-slot\" data-editorial-slot=\"home\"><div class=\"ds-image-frame\" data-empty aria-hidden=\"true\"></div></figure><figure class=\"ds-image-slot\" data-editorial-slot=\"about\"><div class=\"ds-image-frame\" data-empty aria-hidden=\"true\"></div></figure></div>",
-      "css": ".ds-image-slots{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ds-image-slot{min-width:0;margin:0}.ds-image-frame{aspect-ratio:16/9;overflow:hidden;background:var(--ivory-deep,#f0f2f4)}.ds-image-slot[data-editorial-slot=about] .ds-image-frame{aspect-ratio:3/2}@media(max-width:640px){.ds-image-slots{grid-template-columns:1fr}}"
+      "description": "A black map surface with monochrome coastlines and one finite 4.2s line draw; reduced motion shows the complete paths.",
+      "html": "<div class=\"home-connections\" aria-hidden=\"true\"><svg viewBox=\"0 0 720 420\" focusable=\"false\"><image href=\"/atlantic-map.svg\" width=\"720\" height=\"420\"/><g class=\"home-connection-base\"><path d=\"M67 235 C240 80 470 80 616 186\"/><path d=\"M67 235 C240 185 470 170 616 186\"/><path d=\"M67 235 C240 315 470 290 616 186\"/></g><g class=\"home-connection-drawing\"><path pathLength=\"1\" d=\"M67 235 C240 80 470 80 616 186\"/><path pathLength=\"1\" d=\"M67 235 C240 185 470 170 616 186\"/><path pathLength=\"1\" d=\"M67 235 C240 315 470 290 616 186\"/></g><circle class=\"home-connection-node\" cx=\"67\" cy=\"235\" r=\"5\"/><circle class=\"home-connection-node\" cx=\"616\" cy=\"186\" r=\"5\"/></svg><div class=\"home-connection-labels\"><span>Canada</span><span>Europe</span></div></div>",
+      "css": "/* One finite Canada–Europe drawing moment; compact release and upcoming topics. */\n.home-masthead { width: var(--shell); margin: 0 auto; padding: clamp(36px, 5vw, 72px) 0 48px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: clamp(28px, 5vw, 72px); }\n.home-introduction h1 { margin: 0; font-size: clamp(58px, 6.6vw, 96px); font-weight: 650; letter-spacing: -.04em; line-height: 1; }\n.home-introduction h1 > span { display: block; }\n.home-title-stop { color: var(--red); }\n.home-introduction > p { max-width: 40ch; margin: 24px 0 0; color: var(--ink-soft); font-size: 20px; line-height: 1.6; }\n.home-masthead-actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }\n.home-masthead-actions .button-primary { font-size: 16px; }\n.home-masthead-actions .text-link { font-size: 15px; color: var(--ink); border-color: var(--rule-strong); }\n.home-connections { position: relative; min-width: 0; background: var(--soft-black); overflow: hidden; }\n.home-connections svg { width: 100%; height: auto; min-height: 260px; }\n.home-connections image { opacity: .7; }\n.home-connection-base path, .home-connection-drawing path { fill: none; stroke-width: 1.5; }\n.home-connection-base path { stroke: rgba(255, 255, 255, .18); }\n.home-connection-drawing path { stroke: #d398a4; stroke-dasharray: 1; stroke-dashoffset: 0; }\n.home-connection-node { fill: #f6e7eb; stroke: var(--soft-black); stroke-width: 2; }\n.home-connection-labels { display: flex; justify-content: space-between; gap: 16px; padding: 0 24px 20px; color: var(--on-dark); font-size: 14px; }\n.home-issue { width: var(--shell); margin: 0 auto; padding: 32px 0 40px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); border-top: 1px solid var(--ink); }\n.home-release, .home-upcoming { min-width: 0; }\n.home-release > h2, .home-upcoming > h2 { margin: 0 0 24px; font-size: 24px; font-weight: 600; letter-spacing: -.02em; }\n.home-lead-publication { display: flex; gap: 24px; align-items: flex-start; }\n.home-publication-cover { flex: 0 0 150px; display: block; box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .4); transition: transform var(--dur-2) var(--ease-out); }\n.home-publication-cover img { display: block; width: 100%; height: auto; }\n.home-publication-cover:hover { transform: translateY(-3px); }\n.home-publication-body { flex: 1; min-width: 0; }\n.home-publication-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 12px; color: var(--slate); font-size: 12px; font-variant-numeric: tabular-nums; }\n.home-publication-body h3 { margin: 0; font-size: clamp(22px, 2vw, 28px); font-weight: 550; letter-spacing: -.025em; line-height: 1.25; text-wrap: pretty; }\n.home-publication-body h3 a { text-decoration: none; }\n.home-publication-body h3 a:hover { text-decoration: underline; color: var(--red); }\n.home-publication-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; margin-top: 16px; }\n.home-read-link { display: inline-flex; min-height: 44px; align-items: center; gap: 16px; color: var(--red); font-size: 15px; font-weight: 600; text-decoration: none; }\n.home-read-link svg { width: 18px; height: 18px; transition: transform var(--dur-2) var(--ease-out); }\n.home-read-link:hover { text-decoration: underline; }\n.home-read-link:hover svg { transform: translateX(4px); }\n.home-pdf-link { display: inline-flex; min-height: 44px; align-items: center; color: var(--ink-soft); font-size: 13px; }\n.home-upcoming-list { margin: 0; padding: 0; list-style: none; }\n.home-upcoming-list li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-top: 1px solid var(--rule); }\n.home-upcoming-list li:first-child { padding-top: 0; border-top: 0; }\n.home-topic-number { color: var(--slate); font-size: 16px; font-variant-numeric: tabular-nums; }\n.home-upcoming-list h3 { margin: 0; max-width: 32ch; font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: -.015em; }\n.home-topic-status { width: fit-content; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px; padding: 3px 8px; background: var(--sky); color: var(--red-dark); font-size: 12px; font-weight: 600; }\n.home-topic-status::before { content: \"\"; width: 5px; height: 5px; background: currentColor; border-radius: 50%; }\n.home-upcoming-note { margin: 10px 0 0 40px; color: var(--slate); font-size: 12px; }\n.home-explore { width: var(--shell); margin: 0 auto; padding: 0 0 clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }\n.home-explore > a { min-height: 88px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid var(--rule-strong); color: var(--ink); background: var(--ivory); font-family: var(--display); font-size: clamp(18px, 1.6vw, 23px); font-weight: 550; line-height: 1.3; text-decoration: none; transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out); }\n.home-explore > a svg { flex: none; width: 22px; height: 22px; color: var(--red); transition: transform var(--dur-2) var(--ease-out); }\n.home-explore > a:hover { background: var(--ivory-deep); border-color: var(--ink); }\n.home-explore > a:hover svg { transform: translateX(4px); }\n@media (prefers-reduced-motion: no-preference) {\n  .home-connection-drawing path { animation: home-connect 4.2s var(--ease-out) both; }\n  .home-connection-drawing path:nth-child(2) { animation-delay: .2s; }\n  .home-connection-drawing path:nth-child(3) { animation-delay: .4s; }\n}\n@keyframes home-connect { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }\n@media (max-width: 1050px) {\n  .home-masthead { gap: 32px; }\n  .home-masthead-actions { gap: 8px 20px; }\n  .home-issue { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; }\n  .home-publication-cover { flex-basis: 110px; }\n  .home-lead-publication { gap: 20px; }\n}\n@media (max-width: 760px) {\n  .home-masthead { grid-template-columns: minmax(0, 1fr); padding: 32px 0; gap: 28px; }\n  .home-introduction h1 { font-size: clamp(54px, 11vw, 76px); }\n  .home-introduction > p { font-size: 18px; margin-top: 20px; }\n  .home-masthead-actions { margin-top: 20px; }\n  .home-connections svg { min-height: 0; }\n  .home-connection-labels { padding: 0 20px 16px; }\n  .home-issue { grid-template-columns: minmax(0, 1fr); padding: 28px 0 32px; gap: 32px; }\n  .home-release > h2, .home-upcoming > h2 { margin-bottom: 20px; font-size: 23px; }\n  .home-publication-cover { flex-basis: 84px; }\n  .home-lead-publication { gap: 18px; }\n  .home-publication-body h3 { font-size: 22px; }\n  .home-publication-meta { font-size: 11.5px; }\n  .home-publication-actions { gap: 0 16px; margin-top: 10px; }\n  .home-upcoming { padding-top: 28px; border-top: 1px solid var(--rule); }\n  .home-upcoming-list h3 { max-width: none; }\n  .home-explore { gap: 12px; }\n  .home-explore > a { min-height: 96px; padding: 16px; gap: 12px; font-size: 18px; }\n}\n@media (max-width: 480px) {\n  .home-explore { grid-template-columns: minmax(0, 1fr); }\n  .home-explore > a { min-height: 76px; }\n  .home-introduction h1 { font-size: clamp(50px, 14vw, 64px); }\n  .home-publication-cover { flex-basis: 72px; }\n  .home-publication-body h3 { font-size: 20px; }\n}\r\n"
+    },
+    {
+      "name": "Compact Homepage Destinations",
+      "kind": "custom",
+      "description": "Two square CTA boxes link directly to Methodology and Research areas.",
+      "html": "<section class=\"home-explore\" aria-label=\"Explore Tharros\"><a href=\"/methodology\"><span>Check out our methodology</span><svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></a><a href=\"/research-areas\"><span>Check out our research areas</span><svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></a></section>",
+      "css": "/* One finite Canada–Europe drawing moment; compact release and upcoming topics. */\n.home-masthead { width: var(--shell); margin: 0 auto; padding: clamp(36px, 5vw, 72px) 0 48px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: clamp(28px, 5vw, 72px); }\n.home-introduction h1 { margin: 0; font-size: clamp(58px, 6.6vw, 96px); font-weight: 650; letter-spacing: -.04em; line-height: 1; }\n.home-introduction h1 > span { display: block; }\n.home-title-stop { color: var(--red); }\n.home-introduction > p { max-width: 40ch; margin: 24px 0 0; color: var(--ink-soft); font-size: 20px; line-height: 1.6; }\n.home-masthead-actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }\n.home-masthead-actions .button-primary { font-size: 16px; }\n.home-masthead-actions .text-link { font-size: 15px; color: var(--ink); border-color: var(--rule-strong); }\n.home-connections { position: relative; min-width: 0; background: var(--soft-black); overflow: hidden; }\n.home-connections svg { width: 100%; height: auto; min-height: 260px; }\n.home-connections image { opacity: .7; }\n.home-connection-base path, .home-connection-drawing path { fill: none; stroke-width: 1.5; }\n.home-connection-base path { stroke: rgba(255, 255, 255, .18); }\n.home-connection-drawing path { stroke: #d398a4; stroke-dasharray: 1; stroke-dashoffset: 0; }\n.home-connection-node { fill: #f6e7eb; stroke: var(--soft-black); stroke-width: 2; }\n.home-connection-labels { display: flex; justify-content: space-between; gap: 16px; padding: 0 24px 20px; color: var(--on-dark); font-size: 14px; }\n.home-issue { width: var(--shell); margin: 0 auto; padding: 32px 0 40px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); border-top: 1px solid var(--ink); }\n.home-release, .home-upcoming { min-width: 0; }\n.home-release > h2, .home-upcoming > h2 { margin: 0 0 24px; font-size: 24px; font-weight: 600; letter-spacing: -.02em; }\n.home-lead-publication { display: flex; gap: 24px; align-items: flex-start; }\n.home-publication-cover { flex: 0 0 150px; display: block; box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .4); transition: transform var(--dur-2) var(--ease-out); }\n.home-publication-cover img { display: block; width: 100%; height: auto; }\n.home-publication-cover:hover { transform: translateY(-3px); }\n.home-publication-body { flex: 1; min-width: 0; }\n.home-publication-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 12px; color: var(--slate); font-size: 12px; font-variant-numeric: tabular-nums; }\n.home-publication-body h3 { margin: 0; font-size: clamp(22px, 2vw, 28px); font-weight: 550; letter-spacing: -.025em; line-height: 1.25; text-wrap: pretty; }\n.home-publication-body h3 a { text-decoration: none; }\n.home-publication-body h3 a:hover { text-decoration: underline; color: var(--red); }\n.home-publication-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; margin-top: 16px; }\n.home-read-link { display: inline-flex; min-height: 44px; align-items: center; gap: 16px; color: var(--red); font-size: 15px; font-weight: 600; text-decoration: none; }\n.home-read-link svg { width: 18px; height: 18px; transition: transform var(--dur-2) var(--ease-out); }\n.home-read-link:hover { text-decoration: underline; }\n.home-read-link:hover svg { transform: translateX(4px); }\n.home-pdf-link { display: inline-flex; min-height: 44px; align-items: center; color: var(--ink-soft); font-size: 13px; }\n.home-upcoming-list { margin: 0; padding: 0; list-style: none; }\n.home-upcoming-list li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-top: 1px solid var(--rule); }\n.home-upcoming-list li:first-child { padding-top: 0; border-top: 0; }\n.home-topic-number { color: var(--slate); font-size: 16px; font-variant-numeric: tabular-nums; }\n.home-upcoming-list h3 { margin: 0; max-width: 32ch; font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: -.015em; }\n.home-topic-status { width: fit-content; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px; padding: 3px 8px; background: var(--sky); color: var(--red-dark); font-size: 12px; font-weight: 600; }\n.home-topic-status::before { content: \"\"; width: 5px; height: 5px; background: currentColor; border-radius: 50%; }\n.home-upcoming-note { margin: 10px 0 0 40px; color: var(--slate); font-size: 12px; }\n.home-explore { width: var(--shell); margin: 0 auto; padding: 0 0 clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }\n.home-explore > a { min-height: 88px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid var(--rule-strong); color: var(--ink); background: var(--ivory); font-family: var(--display); font-size: clamp(18px, 1.6vw, 23px); font-weight: 550; line-height: 1.3; text-decoration: none; transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out); }\n.home-explore > a svg { flex: none; width: 22px; height: 22px; color: var(--red); transition: transform var(--dur-2) var(--ease-out); }\n.home-explore > a:hover { background: var(--ivory-deep); border-color: var(--ink); }\n.home-explore > a:hover svg { transform: translateX(4px); }\n@media (prefers-reduced-motion: no-preference) {\n  .home-connection-drawing path { animation: home-connect 4.2s var(--ease-out) both; }\n  .home-connection-drawing path:nth-child(2) { animation-delay: .2s; }\n  .home-connection-drawing path:nth-child(3) { animation-delay: .4s; }\n}\n@keyframes home-connect { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }\n@media (max-width: 1050px) {\n  .home-masthead { gap: 32px; }\n  .home-masthead-actions { gap: 8px 20px; }\n  .home-issue { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; }\n  .home-publication-cover { flex-basis: 110px; }\n  .home-lead-publication { gap: 20px; }\n}\n@media (max-width: 760px) {\n  .home-masthead { grid-template-columns: minmax(0, 1fr); padding: 32px 0; gap: 28px; }\n  .home-introduction h1 { font-size: clamp(54px, 11vw, 76px); }\n  .home-introduction > p { font-size: 18px; margin-top: 20px; }\n  .home-masthead-actions { margin-top: 20px; }\n  .home-connections svg { min-height: 0; }\n  .home-connection-labels { padding: 0 20px 16px; }\n  .home-issue { grid-template-columns: minmax(0, 1fr); padding: 28px 0 32px; gap: 32px; }\n  .home-release > h2, .home-upcoming > h2 { margin-bottom: 20px; font-size: 23px; }\n  .home-publication-cover { flex-basis: 84px; }\n  .home-lead-publication { gap: 18px; }\n  .home-publication-body h3 { font-size: 22px; }\n  .home-publication-meta { font-size: 11.5px; }\n  .home-publication-actions { gap: 0 16px; margin-top: 10px; }\n  .home-upcoming { padding-top: 28px; border-top: 1px solid var(--rule); }\n  .home-upcoming-list h3 { max-width: none; }\n  .home-explore { gap: 12px; }\n  .home-explore > a { min-height: 96px; padding: 16px; gap: 12px; font-size: 18px; }\n}\n@media (max-width: 480px) {\n  .home-explore { grid-template-columns: minmax(0, 1fr); }\n  .home-explore > a { min-height: 76px; }\n  .home-introduction h1 { font-size: clamp(50px, 14vw, 64px); }\n  .home-publication-cover { flex-basis: 72px; }\n  .home-publication-body h3 { font-size: 20px; }\n}\r\n"
     }
   ],
   "narrative": {
-    "northStar": "The Open Issue",
-    "overview": "Tharros presents independent student research as an open editorial issue: a confident statement, real published work, questions to explore, and evidence to inspect. White space, dark ink, selective blue, asymmetric composition, and precise rules create its contemporary character. Space Grotesk provides the display voice; Schibsted Grotesk keeps the research and its controls readable.\n\nThe identity continues across distinct tasks instead of repeating a hero composition. Home opens into an unboxed publication and project spread; About reads as a project portrait; Methodology operates as an evidence workshop and source directory; policy pages are compact references. Publication covers and source records remain the principal visual material. Two intentionally empty editorial frames reserve space for imagery the owner will supply.",
+    "northStar": "Tharros Canada: clear identity and inspectable research",
+    "overview": "White ground, neutral ink, black broad surfaces and sparse burgundy give independent student research a contemporary presence. Home pairs the Tharros Canada name with a finite Canada–Europe line drawing, then a compact latest report, three separate provisional topics and two direct CTA boxes. About explains About, Mission, Why and Contact. Research areas owns the five subjects, while Methodology keeps the real worked trace and five rules without a public source directory. The earlier Open Questions and The open issue chooser selections remain historical context; the latest direct instructions govern.",
     "keyCharacteristics": [
-      "A white page, dark ink, confident sans-serif type, blue emphasis, and restrained grey grouping.",
-      "Open asymmetric spreads and ruled records rather than repeated boxed editorial panels.",
-      "Native question and subject disclosures, a working evidence trace, and a searchable source register.",
-      "Exactly two owner-controlled editorial image slots, currently empty; real report covers remain visible.",
-      "Task-specific hierarchy, progressive enhancement, and purposeful motion that never gates reading."
+      "White ground, neutral ink and black surfaces with sparse burgundy actions and evidence states.",
+      "A large Tharros Canada identity and one finite connecting-line moment.",
+      "Compact latest research, three visibly draft upcoming topics and two direct homepage destinations.",
+      "Distinct short About, dedicated Research areas and useful evidence trace.",
+      "Real report covers; no rendered empty editorial frames; progressive reading paths."
     ],
     "rules": [
       {
         "name": "The White Ground Rule",
-        "body": "Let the white page and its typography carry the composition; use blue and grey to clarify specific statements, actions, and working states.",
+        "body": "Let white space, dark typography and rules carry the page; burgundy identifies specific actions and states while large emphasis uses neutral ink.",
         "section": "colors"
       },
       {
         "name": "The Reading Measure Rule",
-        "body": "Use the shared 64ch reading measure and local measures suited to summaries and source descriptions; do not stretch prose simply to fill a column.",
+        "body": "Use the shared 64ch measure and purposeful local widths; do not stretch short copy across a column.",
         "section": "typography"
       },
       {
         "name": "The Visible Content Rule",
-        "body": "Reading order and explicit controls provide access to content; hover and motion may reinforce meaning but never provide its only route.",
+        "body": "Reading order and explicit controls provide access; hover and motion never provide the only route.",
         "section": "layout"
       },
       {
         "name": "The Owner Imagery Rule",
-        "body": "Keep the two editorial slots empty until the owner supplies images; a null slot renders its frame without an image or caption.",
+        "body": "Keep supplied covers faithful. Existing null optional imagery is retained but empty Home/About frames are not rendered; add owner imagery only when supplied.",
         "section": "components"
       }
     ],
     "dos": [
-      "**Do** sustain the identity through white ground, confident type, blue emphasis, asymmetric reading structures, and precise rules.",
-      "**Do** use real publication covers, questions, source records, and reference information as the visual material.",
-      "**Do** keep the home and About image slots null until the owner supplies imagery.",
-      "**Do** preserve native disclosures, source-region anchors, complete no-JavaScript records, archive tools, and report controls.",
-      "**Do** keep CSS to one rule per line and update the system record with intentional changes."
+      "Use white ground, neutral ink, sparse burgundy and clear type.",
+      "Preserve real publication covers, supporting sources, Research tools and PDF controls.",
+      "Keep provisional upcoming ideas separate from publications and visibly labelled draft.",
+      "Keep complete no-JavaScript reading and reduced-motion static content.",
+      "Use direct Research wording and keep About short."
     ],
     "donts": [
-      "**Don't** restore the former warm-paper and serif identity or the first revision's repeated coloured chapter bands.",
-      "**Don't** populate the empty frames with generated or stock images, captions, icons, or upload prompts.",
-      "**Don't** invent publications, institutional scale, endorsements, source dates, or decorative data.",
-      "**Don't** alter the owner's PDF or redraw its content to match the website identity.",
-      "**Don't** make evidence, reading controls, or essential destinations depend on hover or motion."
+      "Do not restore removed homepage essays, About reference inventories or the Methodology publisher directory.",
+      "Do not insert stock/generated placeholders or render empty editorial frames.",
+      "Do not invent publications, personal details, affiliations, findings or source dates.",
+      "Do not alter owner PDFs or unasked indexing choices.",
+      "Do not loop the hero animation, reveal essential content through motion or claim unverified QA."
     ]
   }
 }

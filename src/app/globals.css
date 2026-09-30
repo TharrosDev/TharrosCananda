@@ -1,31 +1,31 @@
-/* Tharros Canada: Open questions. An open editorial issue, strong type and restrained colour. */
+/* Tharros Canada: white, neutral ink and restrained burgundy accents. */
 :root {
   --ivory: #ffffff;
-  --ivory-deep: #f0f2f4;
+  --ivory-deep: #f3f3f2;
   --ivory-light: #ffffff;
-  --ink: #17212f;
-  --ink-soft: #3d4b61;
-  --slate: #526079;
-  --rule: rgba(23, 33, 47, 0.15);
-  --rule-strong: rgba(23, 33, 47, 0.35);
-  --soft-black: #162d78;
-  --graphite: #203fa3;
+  --ink: #151515;
+  --ink-soft: #414141;
+  --slate: #606060;
+  --rule: rgba(21, 21, 21, 0.15);
+  --rule-strong: rgba(21, 21, 21, 0.35);
+  --soft-black: #151515;
+  --graphite: #232323;
   --on-dark: #ffffff;
-  --on-dark-soft: #c7d2f5;
+  --on-dark-soft: #e2d9dc;
   --rule-dark: rgba(255, 255, 255, 0.23);
-  --red: #2447dc;
-  --red-dark: #1736b6;
-  --red-on-dark: #c7d2f5;
-  --steel: #3152aa;
-  --steel-on-dark: #b6dff3;
+  --red: #782c3d;
+  --red-dark: #55202c;
+  --red-on-dark: #e2d9dc;
+  --steel: #626262;
+  --steel-on-dark: #ecc0c9;
   --green: #4f6e58;
   --green-on-dark: #9bbfa4;
   --error: #8a312d;
-  --focus: #2447dc;
-  --focus-on-dark: #b6dff3;
-  --blue: #2447dc;
-  --sky: #edf3f8;
-  --accent: #e94d30;
+  --focus: #782c3d;
+  --focus-on-dark: #ecc0c9;
+  --blue: var(--ink);
+  --sky: #f6edf0;
+  --accent: #9e354c;
 
   --display: var(--font-display), "Helvetica Neue", Arial, sans-serif;
   --sans: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
@@ -91,9 +91,9 @@ p { text-wrap: pretty; }
 .nav-links a { position: relative; white-space: nowrap; min-height: 44px; padding: 10px 0; color: var(--ink-soft); font-size: 16px; font-weight: 600; text-decoration: none; transition: color var(--dur-1) var(--ease-out); }
 .nav-links a::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-2) var(--ease-out); }
 .nav-links a:hover { color: var(--blue); }
-.nav-links a::after { background: var(--blue); }
+.nav-links a::after { background: var(--red); }
 .nav-links a:hover::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
-.nav-links a[aria-current="page"] { color: var(--blue); }
+.nav-links a[aria-current="page"] { color: var(--red); }
 .menu-toggle { display: none; flex: none; min-width: 44px; height: 44px; padding: 0 10px; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--rule-strong); background: transparent; cursor: pointer; }
 .menu-toggle-label { font-size: 15px; font-weight: 600; }
 .menu-toggle svg { width: 20px; margin: 0; }
