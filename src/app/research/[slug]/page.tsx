@@ -15,6 +15,7 @@ import { researchLicence } from "@/lib/licence";
 import { isCountedSlug, publicationCounts } from "@/lib/metrics";
 import { ReadTracker } from "@/components/read-tracker";
 import { formatLongDate, jsonLd, pageMetadata, siteUrl } from "@/lib/site";
+import "./report-page.css";
 
 export const generateStaticParams = () => publications.map((p) => ({ slug: p.slug }));
 
@@ -101,8 +102,12 @@ export default async function ReportPage({ params }: Props) {
 
   return (
     <>
-      <header className="report-header">
-        {/* The document's running head: format and area on the left, its reference on the right. */}
+      <header className="report-header report-page-header">
+        <nav className="report-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/research">Research archive</Link>
+          <ArrowIcon />
+          <span aria-current="page">{p.reference}</span>
+        </nav>
         <div className="report-header-bar">
           <p>
             {p.type} ·{" "}
@@ -114,6 +119,16 @@ export default async function ReportPage({ params }: Props) {
           <h1>{p.title}</h1>
           {p.subtitle && <p className="report-header-subtitle">{p.subtitle}</p>}
           <p className="report-header-abstract">{p.summary}</p>
+          <nav className="report-section-links" aria-label="Report sections">
+            {asset && (
+              <a className="report-start-reading" href="#report-reader">
+                Read report <ArrowIcon />
+              </a>
+            )}
+            {sources.length > 0 && <a href="#sources">Sources</a>}
+            {limitations.length > 0 && <a href="#limitations">Limitations</a>}
+            <a href="#cite">Citation</a>
+          </nav>
         </div>
         <div className="report-header-side">
           <dl className="report-header-meta">
@@ -174,10 +189,19 @@ export default async function ReportPage({ params }: Props) {
       ) : (
         <p className="report-pending">The PDF for this report is being prepared.</p>
       )}
-      <section className="report-appendix" aria-labelledby="report-appendix-label">
-        <p className="report-appendix-label" id="report-appendix-label">
-          Sources and citation
-        </p>
+      <section
+        className="report-appendix report-page-appendix"
+        aria-labelledby="report-appendix-label"
+      >
+        <div className="report-details-intro">
+          <h2 id="report-appendix-label">Behind the report</h2>
+          <p>Check the evidence, understand its limits, and cite the work.</p>
+          {asset && (
+            <a className="report-return-reader" href="#report-reader">
+              Return to report <ArrowIcon />
+            </a>
+          )}
+        </div>
         <div className="report-appendix-body">
           {sources.length > 0 && (
             <div className="report-appendix-block" id="sources">

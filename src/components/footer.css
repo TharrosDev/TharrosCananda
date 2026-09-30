@@ -1,0 +1,26 @@
+.journal-footer.site-footer { background: var(--ivory-light); color: var(--ink); border-top: 1px solid var(--rule-strong); --focus: var(--blue); }
+.footer-masthead { width: var(--shell); margin: 0 auto; padding-top: clamp(32px, 5vw, 64px); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.journal-footer .footer-signature { color: var(--blue); font-size: clamp(32px, 5.4vw, 78px); gap: clamp(10px, 1.5vw, 22px); letter-spacing: -.04em; }
+.footer-signature .wordmark-slash { height: 1.05em; width: .04em; min-width: 3px; }
+.journal-footer .footer-shell { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 48px; padding-top: 28px; padding-bottom: 36px; }
+.journal-footer .footer-lead, .journal-footer .footer-links { grid-column: auto; }
+.journal-footer .footer-lead p { max-width: 32ch; margin: 0; color: var(--ink-soft); font-size: 22px; line-height: 1.45; }
+.journal-footer .footer-contact { min-height: 44px; display: inline-flex; align-items: center; gap: 18px; margin-top: 20px; color: var(--blue); font-size: 16px; text-decoration: none; }
+.journal-footer .footer-contact:hover { text-decoration: underline; }
+.journal-footer .footer-contact svg { width: 18px; height: 18px; }
+.journal-footer .footer-heading { margin-bottom: 8px; color: var(--slate); letter-spacing: 0; text-transform: none; font-size: 14px; }
+.journal-footer .footer-links a { min-height: 44px; color: var(--ink); font-size: 15px; }
+.journal-footer .footer-links a:hover { color: var(--blue); }
+.journal-footer .footer-legal { border-top-color: var(--rule); }
+.journal-footer .footer-legal p { color: var(--slate); font-size: 12px; line-height: 1.6; }
+.journal-footer .footer-top { min-height: 44px; display: inline-flex; align-items: center; gap: 12px; color: var(--blue); font-size: 14px; text-decoration: none; }
+.footer-top svg { width: 18px; height: 18px; transform: rotate(-90deg); }
+@media (max-width: 800px) {
+  .journal-footer .footer-shell { grid-template-columns: minmax(0, 1fr); }
+  .footer-masthead { flex-wrap: wrap; gap: 16px; }
+}
+@media (max-width: 640px) {
+  .journal-footer .footer-signature { font-size: clamp(24px, 7.4vw, 42px); gap: 10px; }
+  .journal-footer .footer-shell { padding-top: 24px; }
+  .journal-footer .footer-lead p { font-size: 19px; }
+}

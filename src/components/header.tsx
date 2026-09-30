@@ -5,10 +5,14 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
 
-const links: { href: string; label: string; prefetch?: boolean }[] = [
-  { href: "/research", label: "Research" },
-  { href: "/methodology", label: "Methodology" },
-  { href: "/about", label: "About" },
+const links: { href: string; label: string; description: string; prefetch?: boolean }[] = [
+  { href: "/research", label: "Research", description: "Discover reports and explore the archive" },
+  {
+    href: "/methodology",
+    label: "Methodology",
+    description: "Follow the evidence behind the work",
+  },
+  { href: "/about", label: "About", description: "Meet the project and get in touch" },
 ];
 
 export function Header() {
@@ -32,6 +36,11 @@ export function Header() {
     desktop.addEventListener("change", onResize);
     // Locks page scroll behind the mobile sheet (CSS: html[data-menu-open]).
     document.documentElement.setAttribute("data-menu-open", "");
+    const background = [...document.querySelectorAll<HTMLElement>("main, .site-footer")];
+    const previousInert = background.map((element) => element.inert);
+    background.forEach((element) => {
+      element.inert = true;
+    });
     function onPointerDown(event: PointerEvent) {
       if (!headerRef.current?.contains(event.target as Node)) setOpen(false);
     }
@@ -64,6 +73,9 @@ export function Header() {
       document.removeEventListener("pointerdown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
       desktop.removeEventListener("change", onResize);
+      background.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
     };
   }, [open]);
 
@@ -102,10 +114,14 @@ export function Header() {
                 aria-current={isCurrent(link.href) ? "page" : undefined}
                 onClick={() => setOpen(false)}
               >
-                {link.label}
+                <span>{link.label}</span>
+                <small className="nav-description" aria-hidden="true">
+                  {link.description}
+                </small>
               </Link>
             ))}
           </div>
+          <p className="nav-project-note">Independent student research across Canada and Europe.</p>
         </nav>
       </div>
     </header>

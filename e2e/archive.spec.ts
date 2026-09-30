@@ -102,6 +102,9 @@ test.describe("without JavaScript", () => {
   test("the archive list still links to the report", async ({ page }) => {
     await page.goto("/research");
     await expect(page.getByRole("link", { name: fixtureTitle })).toBeVisible();
+    await expect(
+      page.getByText("Search and filters need JavaScript. All publications are listed below."),
+    ).toBeVisible();
   });
 });
 
@@ -166,6 +169,11 @@ test("the record pane follows the selected result and links matches to their pag
     new RegExp(`${fixturePath}#page=[0-9]+&search=${word}`, "i"),
   );
   await expect(pane.getByRole("heading", { name: "Sources" })).toBeVisible();
+  await pane.getByRole("button", { name: "Close preview" }).click();
+  await expect(pane).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Preview", exact: true })).toBeFocused();
+  await page.reload();
+  await expect(pane).toHaveCount(0);
 });
 
 test("slash jumps to the search field", async ({ page, isMobile }) => {
@@ -211,4 +219,76 @@ test("the not-found page searches the archive", async ({ page }) => {
   await page.getByLabel("Search the research").press("Enter");
   await expect(page).toHaveURL(/\/research\?q=ottawa/);
   await expect(page.getByRole("link", { name: fixtureTitle }).first()).toBeVisible();
+});
+
+test("active filters can be removed individually while the phone filters stay folded", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  const params = new URLSearchParams({
+    q: word,
+    area: fixture.area,
+    type: fixture.type,
+    year: fixture.publishedAt.slice(0, 4),
+  });
+  await page.goto(`/research?${params}`);
+  await expect(page.getByRole("group", { name: "Research area" })).toBeHidden();
+  const active = page.getByRole("group", { name: "Active filters" });
+  await active.getByRole("button", { name: `Remove format filter: ${fixture.type}` }).click();
+  await expect(page).not.toHaveURL(/type=/);
+  await expect(page).toHaveURL(new RegExp(`area=${fixture.area}`));
+  await expect(search(page)).toHaveValue(word);
+  await expect(search(page)).toBeFocused();
+  await expect(fixtureCard(page)).toBeVisible();
+});
+
+test("compact search results show a match and open its page; clearing search keeps the area", async ({
+  page,
+}) => {
+  await page.goto(`/research?q=${word}&area=${fixture.area}`);
+  const card = fixtureCard(page);
+  await expect(card.locator(".archive-summary")).toBeHidden();
+  const match = card.locator(".archive-search-match");
+  await expect(match).toBeVisible();
+  await expect(match.locator("mark").first()).toContainText(new RegExp(word, "i"));
+  await expect(match.getByRole("link", { name: /Open match/ })).toHaveAttribute(
+    "href",
+    new RegExp(`${fixturePath}#page=[0-9]+&search=${word}`, "i"),
+  );
+  await page.getByRole("button", { name: "Clear search", exact: true }).click();
+  await expect(page).not.toHaveURL(/q=/);
+  await expect(page).toHaveURL(new RegExp(`area=${fixture.area}`));
+  await expect(search(page)).toHaveValue("");
+});
+
+test("Enter applies the typed search immediately", async ({ page }) => {
+  await page.goto("/research");
+  await search(page).fill(word);
+  await search(page).press("Enter");
+  expect(new URL(page.url()).searchParams.get("q")).toBe(word);
+  await expect(fixtureCard(page)).toBeVisible();
+});
+
+test("copying the archive link preserves the search and filters, with a manual fallback", async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto(`/research?q=${word}&area=${fixture.area}`);
+  await page.getByRole("button", { name: "Copy archive link", exact: true }).click();
+  const copied = new URL(await page.evaluate(() => navigator.clipboard.readText()));
+  expect(copied.pathname).toBe("/research");
+  expect(copied.searchParams.get("q")).toBe(word);
+  expect(copied.searchParams.get("area")).toBe(fixture.area);
+  await expect(page.getByRole("button", { name: "Archive link copied" })).toBeVisible();
+  await page.evaluate(() => {
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      value: () => Promise.reject(new Error("Unavailable")),
+      configurable: true,
+    });
+  });
+  await page.getByRole("button", { name: "Archive link copied" }).click();
+  await expect(page.getByRole("textbox", { name: "Archive link", exact: true })).toHaveValue(
+    copied.href,
+  );
 });

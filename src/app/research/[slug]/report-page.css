@@ -1,0 +1,57 @@
+/* Report records and evidence destinations share the reader's clear, open research identity. */
+.report-page-header { padding-top: 24px; padding-bottom: 32px; row-gap: 20px; }
+.report-page-header .report-breadcrumb { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--ink-soft); font-size: 14px; }
+.report-breadcrumb a { min-height: 44px; display: inline-flex; align-items: center; color: var(--red); font-weight: 600; text-underline-offset: 4px; }
+.report-breadcrumb svg { width: 16px; height: 16px; }
+.report-breadcrumb [aria-current] { font-variant-numeric: tabular-nums; }
+.report-page-header .report-header-bar { min-height: 40px; padding: 10px 0; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink-soft); font-size: 14px; --focus: var(--blue); }
+.report-page-header .report-header-bar a { color: var(--red); text-decoration-color: currentColor; }
+.report-page-header .report-header-bar p:last-child { color: var(--ink); }
+.report-page-header h1 { max-width: 30ch; margin-bottom: 14px; font-size: clamp(34px, 3.5vw, 54px); font-weight: 600; line-height: 1.08; letter-spacing: -.03em; text-wrap: balance; }
+.report-page-header .report-header-subtitle { max-width: 65ch; font-family: var(--sans); color: var(--ink-soft); font-size: 19px; font-weight: 500; line-height: 1.45; }
+.report-page-header .report-header-abstract { max-width: 70ch; margin-top: 16px; font-size: 17px; line-height: 1.6; }
+.report-page-header .report-header-meta { border-top-color: var(--rule-strong); }
+.report-page-header .report-header-meta > div { padding: 8px 0; }
+.report-page-header .report-header-meta dt { color: var(--ink-soft); font-size: 12px; letter-spacing: .03em; }
+.report-page-header .report-header-meta dd { font-size: 15px; }
+.report-section-links { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; }
+.report-section-links a { min-height: 44px; display: inline-flex; align-items: center; gap: 14px; color: var(--red); font-size: 15px; font-weight: 600; text-underline-offset: 4px; }
+.report-section-links .report-start-reading { padding: 0 18px; background: var(--red); color: var(--on-dark); text-decoration: none; transition: background-color var(--dur-1) var(--ease-out); }
+.report-section-links .report-start-reading:hover { background: var(--red-dark); }
+.report-start-reading svg { width: 18px; height: 18px; }
+.report-page-header .report-actions { margin-top: 16px; }
+.report-page-header .report-actions .button-primary { min-height: 48px; }
+.report-page-appendix { padding-top: 24px; border-top: 1px solid var(--rule-strong); grid-template-columns: minmax(200px, 250px) minmax(0, 1fr); }
+.report-details-intro h2 { margin: 0 0 12px; font-family: var(--display); font-size: clamp(26px, 2.4vw, 34px); font-weight: 600; line-height: 1.12; letter-spacing: -.025em; text-wrap: balance; }
+.report-details-intro p { margin: 0; max-width: 32ch; color: var(--ink-soft); font-size: 16px; line-height: 1.6; }
+.report-return-reader { min-height: 44px; margin-top: 16px; display: inline-flex; align-items: center; gap: 12px; color: var(--red); font-size: 15px; font-weight: 600; text-underline-offset: 4px; }
+.report-return-reader svg { width: 18px; height: 18px; transform: rotate(-90deg); }
+.report-page-appendix .report-appendix-block { border-top: 1px solid var(--rule); }
+.report-page-appendix .report-appendix-block h2 { font-family: var(--display); font-size: 26px; font-weight: 600; letter-spacing: -.02em; }
+.report-page-appendix .report-appendix-sources a, .report-page-appendix .report-appendix-stable a { color: var(--red); text-underline-offset: 4px; }
+.report-page-appendix .report-appendix-sources li { padding: 14px 0; }
+.report-page-appendix .report-appendix-more a { color: var(--red); }
+.report-page-appendix :is(#sources, #limitations, #cite) { scroll-margin-top: calc(var(--header-height) + 24px); }
+@media (max-width: 1180px) {
+  .report-page-header .report-header-main, .report-page-header .report-header-side { grid-column: 1 / -1; }
+  .report-page-header h1 { max-width: 32ch; }
+  .report-page-header .report-header-side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .75fr); gap: var(--col-gap); }
+  .report-page-header .report-actions { margin-top: 0; }
+}
+@media (max-width: 1024px) {
+  .report-page-appendix { display: block; }
+  .report-details-intro { margin-bottom: 24px; }
+  .report-details-intro p { max-width: 65ch; }
+  .report-return-reader { margin-top: 8px; }
+}
+@media (max-width: 640px) {
+  .report-page-header { padding-top: 12px; row-gap: 16px; }
+  .report-page-header h1 { font-size: clamp(32px, 8.7vw, 42px); }
+  .report-page-header .report-header-subtitle { font-size: 18px; }
+  .report-page-header .report-header-side { display: block; }
+  .report-page-header .report-header-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .report-page-header .report-actions { margin-top: 16px; }
+  .report-section-links { gap: 6px 16px; }
+  .report-section-links .report-start-reading { flex-basis: 100%; justify-content: space-between; }
+  .report-page-appendix .report-appendix-body { gap: 28px; }
+}

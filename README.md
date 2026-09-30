@@ -4,7 +4,7 @@ The site for [tharros.ca](https://tharros.ca), an independent student research p
 
 **Stack.**
 - Next.js 16 App Router, React 19, strict TypeScript and native CSS with design tokens.
-- Source Serif 4 and Schibsted Grotesk, self-hosted through `next/font`.
+- Space Grotesk and Schibsted Grotesk, self-hosted through `next/font`.
 - minisearch for archive search and pdf.js for the report viewer.
 - Vercel hosting. Supabase supports readership counts; the retired intake data remains under its retention policy.
 

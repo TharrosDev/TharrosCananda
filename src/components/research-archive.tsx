@@ -14,6 +14,7 @@ import {
   ViewTransition,
 } from "react";
 import { CiteButton } from "@/components/cite-button";
+import { ArrowIcon } from "@/components/icons";
 import {
   type ArchiveDoc,
   type ArchiveState,
@@ -47,6 +48,9 @@ const subscribeView = (listener: () => void) => {
 };
 const readCompact = () => compactChoice ?? readStorage(COMPACT_KEY) !== "0";
 const readPreview = () => previewChoice ?? readStorage(PREVIEW_KEY) === "1";
+const subscribeReady = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
 function setDensity(compact: boolean) {
   compactChoice = compact;
   writeStorage(COMPACT_KEY, compact ? "1" : "0");
@@ -106,7 +110,11 @@ export function ResearchArchive({
 
   const compact = useSyncExternalStore(subscribeView, readCompact, () => true);
   const preview = useSyncExternalStore(subscribeView, readPreview, () => false);
+  // Keep the fallback message as ordinary server-rendered HTML until the tool hydrates.
+  // This also works when a browser blocks scripts without changing its noscript parsing mode.
+  const interactive = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   const toolRef = useRef<HTMLDivElement>(null);
+  const previewToggleRef = useRef<HTMLButtonElement>(null);
   const hasResults = results.length > 0;
 
   // Sticky panels must fit below the header, including after a filter, record or font changes.
@@ -166,8 +174,24 @@ export function ResearchArchive({
   }, [draft, state, onChange]);
   const clearAll = () => {
     setDraft("");
+    setSent("");
     onChange?.(defaultArchiveState);
     // The button that was used disappears with the filters; keep keyboard focus on the page's tool.
+    searchRef.current?.focus();
+  };
+  const applySearch = () => {
+    const q = draft.trim();
+    setSent(q);
+    set({ q, sort: !q ? "newest" : state.q.trim() ? state.sort : "relevance" });
+  };
+  const clearSearch = () => {
+    setDraft("");
+    setSent("");
+    set({ q: "", sort: "newest" });
+    searchRef.current?.focus();
+  };
+  const clearFacets = () => {
+    set({ area: "all", type: "all", year: "all" });
     searchRef.current?.focus();
   };
 
@@ -189,6 +213,21 @@ export function ResearchArchive({
   const areaName = (slug: string) => areas.find((a) => a.slug === slug)?.name;
   const countsFor = (doc: ArchiveDoc) =>
     doc.counted && counts ? formatCounts(counts[doc.slug] ?? NO_COUNTS) : null;
+  const filterTokens = [
+    ...(state.area !== "all"
+      ? [{ key: "area" as const, name: "area", label: areaName(state.area) }]
+      : []),
+    ...(state.type !== "all" ? [{ key: "type" as const, name: "format", label: state.type }] : []),
+    ...(state.year !== "all" ? [{ key: "year" as const, name: "year", label: state.year }] : []),
+  ];
+  const updating = draft.trim() !== state.q.trim();
+  const archiveUrl = `${siteUrl}/research${serializeArchiveState(state)}`;
+  const [archiveCopy, setArchiveCopy] = useState<{ url: string; success: boolean } | null>(null);
+  const currentCopy = archiveCopy?.url === archiveUrl ? archiveCopy : null;
+  const copyArchive = async () => {
+    const success = await copyText(archiveUrl);
+    setArchiveCopy({ url: archiveUrl, success });
+  };
 
   // "/" jumps to the search field from anywhere on the page, unless the visitor is already typing.
   const searchRef = useRef<HTMLInputElement>(null);
@@ -222,22 +261,60 @@ export function ResearchArchive({
       <form
         className="archive-searchbar"
         role="search"
-        onSubmit={(event) => event.preventDefault()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          applySearch();
+        }}
       >
-        <label className="archive-search">
-          <span>Search the archive</span>
-          <input
-            ref={searchRef}
-            type="search"
-            value={draft}
-            maxLength={120}
-            onChange={(event) => setDraft(event.target.value)}
-            placeholder="Title, subject, reference or any word in a report"
-          />
-          <kbd className="archive-search-key" aria-hidden="true">
-            /
-          </kbd>
-        </label>
+        <div className="archive-search">
+          <label htmlFor="archive-query">Search the archive</label>
+          <div className="archive-search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.7"
+              />
+              <path d="m15.5 15.5 5 5" fill="none" stroke="currentColor" strokeWidth="1.7" />
+            </svg>
+            <input
+              id="archive-query"
+              ref={searchRef}
+              type="search"
+              value={draft}
+              maxLength={120}
+              aria-describedby="archive-search-help"
+              onChange={(event) => setDraft(event.target.value)}
+              placeholder="Find a subject, reference or word in a report"
+            />
+            {draft ? (
+              <button
+                type="button"
+                className="archive-search-clear"
+                aria-label="Clear search"
+                onClick={clearSearch}
+              >
+                <CloseIcon />
+              </button>
+            ) : (
+              <kbd className="archive-search-key" aria-hidden="true">
+                /
+              </kbd>
+            )}
+            <button className="archive-search-submit" type="submit">
+              Search <ArrowIcon />
+            </button>
+          </div>
+          <p id="archive-search-help" className="archive-search-help">
+            Search reaches inside every report. Results update as you type.
+          </p>
+          <p className="archive-no-script" hidden={interactive}>
+            Search and filters need JavaScript. All publications are listed below.
+          </p>
+        </div>
       </form>
 
       <div className="archive-controls">
@@ -247,6 +324,9 @@ export function ResearchArchive({
             Filters
             {activeFilters > 0 && <em> · {activeFilters} active</em>}
           </summary>
+          <p className="archive-filter-help">
+            Narrow by subject, format or year. Counts reflect your current search.
+          </p>
           <span className="archive-group-label" aria-hidden="true">
             Research area
           </span>
@@ -324,24 +404,30 @@ export function ResearchArchive({
         </details>
       </div>
 
-      <div className="archive-results">
+      <div className="archive-results" aria-busy={updating}>
         <div className="archive-result-count">
           <span aria-live="polite">
-            {results.length} {results.length === 1 ? "publication" : "publications"}
+            <span>
+              {results.length} {results.length === 1 ? "publication" : "publications"}
+            </span>
+            <span className="sr-only">
+              {state.q.trim() ? ` matching ${state.q.trim()}` : " in the archive"}
+              {activeFilters ? ` with ${activeFilters} active filters` : ""}
+            </span>
           </span>
           <span className="archive-result-tools">
-            {state.q.trim() && (
-              <label>
-                <span>Sort</span>
-                <select
-                  value={state.sort}
-                  onChange={(event) => set({ sort: event.target.value as ArchiveState["sort"] })}
-                >
-                  <option value="relevance">Most relevant</option>
-                  <option value="newest">Newest first</option>
-                </select>
-              </label>
-            )}
+            <label>
+              <span>Sort</span>
+              <select
+                value={state.q.trim() ? state.sort : "newest"}
+                onChange={(event) => set({ sort: event.target.value as ArchiveState["sort"] })}
+              >
+                <option value="newest">Newest first</option>
+                <option value="relevance" disabled={!state.q.trim()}>
+                  Most relevant
+                </option>
+              </select>
+            </label>
             <span className="archive-density" role="group" aria-label="List density">
               <button type="button" aria-pressed={!compact} onClick={() => setDensity(false)}>
                 Expanded
@@ -351,9 +437,11 @@ export function ResearchArchive({
               </button>
             </span>
             <button
+              ref={previewToggleRef}
               type="button"
               className="archive-preview-toggle"
               aria-pressed={preview}
+              title="Show sources, contents and limitations beside the selected publication"
               onClick={() => setPreview(!preview)}
             >
               Preview
@@ -365,6 +453,64 @@ export function ResearchArchive({
             )}
           </span>
         </div>
+
+        <div className="archive-results-context">
+          <p>
+            {updating
+              ? "Updating results…"
+              : state.q.trim()
+                ? `Results for “${state.q.trim()}”`
+                : "Browse the published work."}
+          </p>
+          <button type="button" className="archive-copy-view" onClick={copyArchive}>
+            {currentCopy?.success ? "Archive link copied" : "Copy archive link"}
+          </button>
+          <span className="sr-only" role="status">
+            {currentCopy?.success
+              ? "Archive link copied"
+              : currentCopy
+                ? "Copy failed. The archive link is shown to copy by hand."
+                : ""}
+          </span>
+          {currentCopy && !currentCopy.success && (
+            <input
+              className="archive-link-field"
+              readOnly
+              value={archiveUrl}
+              aria-label="Archive link"
+              onFocus={(event) => event.currentTarget.select()}
+            />
+          )}
+        </div>
+
+        {filtered && (
+          <div className="archive-active-filters" role="group" aria-label="Active filters">
+            {state.q.trim() && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                aria-label={`Remove search: ${state.q.trim()}`}
+              >
+                <span>Search: {state.q.trim()}</span>
+                <CloseIcon />
+              </button>
+            )}
+            {filterTokens.map((filter) => (
+              <button
+                key={filter.key}
+                type="button"
+                aria-label={`Remove ${filter.name} filter: ${filter.label}`}
+                onClick={() => {
+                  set({ [filter.key]: "all" });
+                  searchRef.current?.focus();
+                }}
+              >
+                <span>{filter.label}</span>
+                <CloseIcon />
+              </button>
+            ))}
+          </div>
+        )}
 
         {results.length ? (
           <ol
@@ -385,6 +531,12 @@ export function ResearchArchive({
         ) : (
           <div className="archive-no-results">
             <h2>No publications match.</h2>
+            <p>
+              {state.q.trim()
+                ? "Try fewer words, a broader subject or a report reference."
+                : "Try removing a filter to see more of the archive."}
+              {activeFilters > 0 && " Your selected filters may also be limiting the results."}
+            </p>
             {suggestions.length > 0 && (
               <p>
                 Did you mean{" "}
@@ -406,15 +558,38 @@ export function ResearchArchive({
                 ?
               </p>
             )}
-            <button type="button" className="button-secondary" onClick={clearAll}>
-              Clear all filters
-            </button>
+            <div className="archive-empty-actions">
+              {activeFilters > 0 && state.q.trim() && (
+                <button type="button" className="button-secondary" onClick={clearFacets}>
+                  Keep search, remove filters
+                </button>
+              )}
+              <button type="button" className="button-primary" onClick={clearAll}>
+                Clear all filters
+              </button>
+            </div>
           </div>
         )}
       </div>
 
       {preview && selected && (
         <aside className="archive-record-pane" aria-label="Selected publication">
+          <div className="archive-record-heading">
+            <span>Publication preview</span>
+            <button
+              type="button"
+              aria-label="Close preview"
+              onClick={() => {
+                setPreview(false);
+                previewToggleRef.current?.focus();
+              }}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <p className="archive-preview-help">
+            Select a result to inspect its sources and contents.
+          </p>
           <ArchiveRecord
             doc={selected}
             areaName={areaName(selected.area)}
@@ -442,6 +617,7 @@ function ArchiveCard({
 }) {
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const stableUrl = `${siteUrl}/research/id/${doc.reference}`;
+  const firstMatch = doc.snippet ? pageHits(doc, doc.terms, 1, 75)[0] : null;
   async function copy() {
     setCopied((await copyText(stableUrl)) ? "done" : "failed");
   }
@@ -484,6 +660,21 @@ function ArchiveCard({
           <p className="archive-summary">
             {doc.snippet ? <Highlighted text={doc.snippet} terms={doc.terms} /> : doc.summary}
           </p>
+          {doc.snippet && (
+            <div className="archive-search-match">
+              <p>
+                <Highlighted text={firstMatch?.snippet ?? doc.snippet} terms={doc.terms} />
+              </p>
+              {firstMatch && (
+                <Link
+                  href={`/research/${doc.slug}#page=${firstMatch.page}&search=${encodeURIComponent(firstMatch.term)}`}
+                >
+                  Open match · p. {firstMatch.page}
+                  <ArrowIcon />
+                </Link>
+              )}
+            </div>
+          )}
           {doc.tags.length > 0 && (
             <div className="archive-tags">
               {doc.tags.map((tag) => (
@@ -492,6 +683,9 @@ function ArchiveCard({
             </div>
           )}
           <div className="archive-card-actions">
+            <Link className="archive-read-action" href={`/research/${doc.slug}`}>
+              Read report <ArrowIcon />
+            </Link>
             <CiteButton
               input={{
                 title: doc.title,
@@ -539,6 +733,14 @@ function ArchiveCard({
         </div>
       </article>
     </li>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <path d="m5 5 10 10M15 5 5 15" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
   );
 }
 

@@ -30,10 +30,11 @@ test("the field guide exposes questions, evidence and an honest archive route", 
   await expect(page).toHaveURL(/\/research\?area=defence-security$/);
   const filters = page.locator(".archive-filters > summary");
   if (await filters.isVisible()) await filters.click();
-  await expect(page.getByRole("button", { name: /Defence & Security/ })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
+  await expect(
+    page
+      .getByRole("group", { name: "Research area" })
+      .getByRole("button", { name: /Defence & Security/ }),
+  ).toHaveAttribute("aria-pressed", "true");
 });
 
 test("field disclosures and section links work with keyboard and without JavaScript", async ({

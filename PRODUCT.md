@@ -47,7 +47,7 @@ Primary navigation: Research · Methodology · About. Older service URLs redirec
 
 ## Brand
 
-Warm ivory, graphite and soft black, slate, a muted Canadian red for actions, steel for data, and green for positive states. Source Serif 4 is the editorial voice and Schibsted Grotesk the interface and data voice. The site reads like a rigorous research publication. `DESIGN.md` has the details.
+The open issue is the owner's latest approved identity: white ground, dark ink, selective ultramarine, neutral grey, and small orange details, with Space Grotesk for confident statements and editorial titles and Schibsted Grotesk for prose and controls. Open asymmetric reading structures, real publication records, native question disclosures, and inspectable evidence foreground the student project. Two editorial frames stay empty until the owner supplies imagery. `DESIGN.md` records the implemented visual system and the earlier Open Questions choice history.
 
 ## Product principles
 

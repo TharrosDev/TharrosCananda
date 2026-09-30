@@ -1,80 +1,31 @@
 ---
-version: 2
+version: 1
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
-related_targets: ["src/app/research/page.tsx","src/app/research/[slug]/page.tsx","src/app/research-services/page.tsx","src/app/request-research/page.tsx","src/app/about/page.tsx","src/app/methodology/page.tsx","src/app/how-it-works/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx","src/app/copyright/page.tsx","src/app/not-found.tsx"]
+mode: "persuade"
+related_targets: ["src/app/research/page.tsx","src/app/research/[slug]/page.tsx","src/app/about/page.tsx","src/app/methodology/page.tsx","src/app/privacy/page.tsx","src/app/accessibility/page.tsx","src/app/copyright/page.tsx","src/app/not-found.tsx"]
 ---
 
 ## Scope
 
-This covers the whole public site:
-- **Persuade** on Home and Research Services.
-- **Inform** on Research, report pages, Methodology, About and the documents.
-- **Operate** inside Request Research.
+Whole public site. Home introduces the student project and real work; the archive, report reader, evidence workshop, project portrait, and reference pages support discovery, reading, verification, and editorial contact. Preserve supplied PDFs, publication facts, indexing choices, and archive tools.
 
-**Audience:** businesses and organizations with Canada–Europe questions, and partner firms that need research capacity.
+## Choice history
 
-**Primary action:** read the research, then commission a scoped answer.
-
-**Proof:**
-- real published research;
-- public sources a reader can inspect;
-- explicit limitations;
-- three clearly defined services.
-
-**Constraints:**
-- no invented evidence, people, clients or prices;
-- no implied institutional affiliation. Publishers are named for attribution only;
-- WCAG 2.2 AA;
-- the ivory, graphite, red and steel system;
-- the business is pre-incorporation, so organization details stay empty until verified.
+The owner first selected **Open Questions**, candidate 7, seed `f037cd34`. In a second working chooser, key `e5ea266c`, the owner directly approved **The open issue**, seed `df0d4fa0`, and explicitly required empty image places for imagery they will supply later. The second approval governs this revision.
 
 ## Direction contract
 
-Current as of 2026-09-24. It merges the original ledger direction with the "Evidence Instruments" (2026-09-23) and "Front page / Reading room" (2026-09-24) directions, which the owner chose through structured questions.
+THESIS: The open issue foregrounds independent student research as a contemporary editorial publication. A confident statement, real report spread, native question index, and inspectable evidence make the project recognisable and useful.
 
-THESIS: Prove, don't describe. Tharros is an independent research institute whose interface is an evidence ledger. The proof comes first: the latest real release on Home, and a reading room whose search reaches inside the PDFs and lands on the page it matched. Each supporting page runs one instrument that shows the method working on real records.
+OWN-WORLD: White ground, dark ink, selective ultramarine, neutral grey, restrained pale blue evidence states, and small orange identity details. Space Grotesk display voice and Schibsted Grotesk prose/interface voice. Unboxed asymmetric reading structures, functional records, precise rules, and square controls.
 
-OWN-WORLD: The tokens are unchanged.
-- Ivory-light sheets, with a soft page shadow, sit under dark running-head bars.
-- Steel carries every trace, connector, count, page number and match highlight.
-- Red is for actions only, and green is the received state.
-- Square geometry, one rule per boundary, no cards.
-- The 12-column construction grid shows only behind the Home front page.
+STORY: Recognise Tharros and its Canada–Europe scope; read the latest report and find earlier work; open questions across five fields; trace a real claim and explore its sources; understand the project and contact it.
 
-STORY:
-1. Home: read the latest release, see the five fields on the Atlantic plate, then commission a question.
-2. Research: search or filter in the rail, scan the results, and inspect the record without leaving the page.
-3. Open the report at the exact page.
-4. Methodology proves the method on TC-2026-001.
-5. About shows what exists, what the institute is and what it refuses.
-6. Services shows the deliverable before the ask.
-7. Request writes the brief as the visitor types.
+FIRST VIEWPORT: A full-width research statement leads, with introduction and research/project links below. The next section uses an approximately 8/4 publication/project spread: a real report record, title, cover, full summary, and reading/PDF actions on the larger side; project, evidence, and contact context on the smaller side. One empty 16:9 editorial frame belongs to the publication column. At narrower widths, the spread stacks in reading order.
 
-FIRST VIEWPORT:
-- Home: the H1 and actions (cols 1–6) beside the latest-release sheet (cols 7–12).
-- Research: the slim banner and method line, then the rail, results and record pane from 1180px.
-- Methodology: the H1 and deck (cols 1–4) beside the provenance trace, with one phrase traced by default.
-- About: a statement H1, then the deck beside the Ottawa–Brussels route drawn as the masthead rule.
-- Services: the H1 with the "Private by default." notice, then the specimen shelf led by the flagship cover.
-- Request: a compact dark task hero with the three-step sequence, then the form beside the live brief.
-- Documents: the H1 and deck beside the document's record, then a contents rail beside one sheet of numbered clauses.
+FORM: The open issue, chooser e5ea266c, seed df0d4fa0, directly approved. A native question index follows the spread, then one full-width method invitation. About uses compact purpose, factual ledger/publication-title index, subject disclosures, an independence/principles chapter with one empty 3:2 frame, and operational contact rows. Methodology is a white evidence workshop with visible “Traced to” feedback, five continuous rules, and progressively enhanced source search/region controls with native anchors and all ten publishers available without JavaScript. Policy pages use compact white title/horizontal facts, static chapter links, and title/body rows. The footer is a white signature and compact navigation/contact composition.
 
-FORM:
-- Navigation: Research · Methodology · About, with Commission as the one filled action.
-- Three services: Custom & Partner Research (flagship), Market Assessment and Buyer & Partner Research. No published prices.
-- The five research areas are archive taxonomy and a homepage ledger, never routes.
-- Signature interactions:
-  - the report cover morphing into its first page (React ViewTransition, shared name `cover-<slug>`);
-  - `#page=N&search=word` deep links;
-  - the trace leaders (WAAPI);
-  - the sample cover opening into the reader (View Transitions);
-  - the brief filling live and taking a green "Received" stamp.
-- Motion: section rules draw in on a `view()` timeline, and the rails fill on named view timelines. Nothing is hidden by scroll-linked motion.
-- Every archive tool is preserved: search, facets, URL state, density, sort, suggestions, Cite, PDF, Copy link and the no-JS list.
+IMAGE POLICY: Exactly two editorial-image records, home:null and about:null, in src/data/editorial-images.ts. Home is 16:9; About is 3:2. Null renders no image or caption. Methodology has no editorial slot. Retain supplied report covers. Do not populate the frames before the owner supplies imagery.
 
-FINISH:
-- Unreviewed or undocumented work is unfinished.
-- A build ends with lint, typecheck, unit tests and e2e passing, and with visual baselines refreshed on CI and reviewed.
-- `DESIGN.md` is updated to the shipped state, and new labels are flagged for owner approval in the PR.
-- The finish check is done inline, not by a multi-agent review.
+FINISH: Validate the integrated second revision, inspect its captures, record the independent finish verdict, and update DESIGN.md and its sidecar from final source. Earlier first-pass results are historical evidence only.

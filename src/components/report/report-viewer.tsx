@@ -43,6 +43,21 @@ const highlights = () =>
     ? (CSS as unknown as { highlights: HighlightRegistry }).highlights
     : null;
 
+function ReaderIcon({ name }: { name: "plus" | "minus" | "close" | "up" | "down" }) {
+  const paths = {
+    plus: "M4 10h12M10 4v12",
+    minus: "M4 10h12",
+    close: "m5 5 10 10M15 5 5 15",
+    up: "M10 16V4M5 9l5-5 5 5",
+    down: "M10 4v12M5 11l5 5 5-5",
+  };
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <path d={paths[name]} fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 export function ReportViewer(props: Props) {
   // Navigation to a different report must reset errors, search, zoom and reading anchors together.
   return <ReportViewerDocument key={props.file} {...props} />;
@@ -64,6 +79,7 @@ function ReportViewerDocument({
   const rootRef = useRef<HTMLElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const findRef = useRef<HTMLInputElement>(null);
   const sheetsRef = useRef<HTMLDivElement>(null);
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null);
   const [zoom, setZoom] = useState<number | "fit">("fit");
@@ -211,7 +227,17 @@ function ReportViewerDocument({
     const toolbar = toolbarRef.current;
     const sticky =
       toolbar && getComputedStyle(toolbar).position === "sticky" ? toolbar.offsetHeight : 0;
-    return Math.max(edge, 0) + sticky + 16;
+    const contents = rootRef.current?.querySelector<HTMLElement>(".report-contents");
+    const contentsRow = contents?.querySelector<HTMLElement>(".report-contents-row");
+    // On compact screens the contents row stays available while the tools scroll away.
+    const stickyContents =
+      contents &&
+      contentsRow &&
+      contentsRow.getClientRects().length &&
+      getComputedStyle(contents).position === "sticky"
+        ? contentsRow.offsetHeight
+        : 0;
+    return Math.max(edge, 0) + sticky + stickyContents + 16;
   }, [fullscreen]);
   const scrollByY = useCallback(
     (delta: number, smooth = true) =>
@@ -320,6 +346,14 @@ function ReportViewerDocument({
     setContentsOpen(false);
     scrollToPoint(entry.page, entry.top);
     sheetsRef.current.focus({ preventScroll: true });
+  }
+
+  function openTools() {
+    setContentsOpen(false);
+    const toolbar = toolbarRef.current;
+    if (!toolbar) return;
+    scrollByY(toolbar.getBoundingClientRect().top - readingLine());
+    toolbar.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
   }
 
   // ---------- Full screen ----------
@@ -499,6 +533,12 @@ function ReportViewerDocument({
   );
 
   function onKeyDown(event: KeyboardEvent) {
+    if (event.key === "Escape" && contentsOpen) {
+      event.stopPropagation();
+      setContentsOpen(false);
+      rootRef.current?.querySelector<HTMLButtonElement>(".report-contents-toggle")?.focus();
+      return;
+    }
     // Leave browser shortcuts (Ctrl/Cmd +, Alt combos) and typing in fields alone.
     if (
       event.ctrlKey ||
@@ -523,7 +563,9 @@ function ReportViewerDocument({
     </a>
   );
   const findStatus = !findPattern(query)
-    ? ""
+    ? query.trim()
+      ? "2+ characters"
+      : ""
     : matches.length
       ? `${matchIndex + 1} of ${matches.length}`
       : rendering || searching
@@ -533,6 +575,7 @@ function ReportViewerDocument({
   return (
     <section
       ref={rootRef}
+      id="report-reader"
       className="report-reader"
       aria-label={`${title}: PDF`}
       role={fullscreen === "overlay" ? "dialog" : undefined}
@@ -547,14 +590,14 @@ function ReportViewerDocument({
       <noscript>
         <style>
           {
-            ".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom,.report-viewer-find,.report-viewer-fullscreen,.report-contents-toggle{display:none!important}.report-contents-list{display:block!important}"
+            ".report-viewer-sheets,.report-viewer-pages,.report-viewer-zoom,.report-viewer-find,.report-viewer-fullscreen,.report-contents-row,.report-viewer-state{display:none!important}.report-contents{position:static!important}.report-contents-list{position:static!important;display:block!important;max-height:none!important}.report-contents-heading{display:block!important}"
           }
         </style>
       </noscript>
       {/* Find-in-report colours. Turbopack's CSS parser rejects ::highlight() and warns on every build, so they live here. */}
       <style>
         {
-          "::highlight(report-find){background-color:rgba(158,58,53,.22)}::highlight(report-find-current){background-color:rgba(47,111,174,.45)}"
+          "::highlight(report-find){background-color:rgba(233,77,48,.24)}::highlight(report-find-current){background-color:rgba(36,71,220,.35)}"
         }
       </style>
       {contents.length > 0 && (
@@ -566,15 +609,24 @@ function ReportViewerDocument({
           <h2 id="report-contents-heading" className="report-contents-heading">
             Contents
           </h2>
-          <button
-            type="button"
-            className="report-contents-toggle"
-            aria-expanded={contentsOpen}
-            aria-controls="report-contents-list"
-            onClick={() => setContentsOpen((open) => !open)}
-          >
-            Contents <span aria-hidden="true">{contentsOpen ? "−" : "+"}</span>
-          </button>
+          <div className="report-contents-row">
+            <button
+              type="button"
+              className="report-contents-toggle"
+              aria-expanded={contentsOpen}
+              aria-controls="report-contents-list"
+              onClick={() => setContentsOpen((open) => !open)}
+            >
+              <span>Contents</span>
+              <span className="report-contents-position" aria-hidden="true">
+                p. {current} / {pages}
+              </span>
+              <ReaderIcon name={contentsOpen ? "minus" : "plus"} />
+            </button>
+            <button type="button" className="report-contents-tools" onClick={openTools}>
+              Reading tools
+            </button>
+          </div>
           <ol className="report-contents-list" id="report-contents-list">
             {contents.map((entry, i) => (
               <li key={`${entry.page}-${entry.top}-${entry.title}`}>
@@ -593,6 +645,7 @@ function ReportViewerDocument({
       )}
       <div className="report-viewer" ref={mainRef}>
         <div
+          id="report-tools"
           className="report-viewer-toolbar"
           role="toolbar"
           aria-label="PDF controls"
@@ -617,11 +670,11 @@ function ReportViewerDocument({
           </form>
           <div className="report-viewer-zoom">
             <button type="button" onClick={() => zoomBy(-0.1)} aria-label="Zoom out">
-              −
+              <ReaderIcon name="minus" />
             </button>
             <output aria-live="polite">{Math.round(scale * 100)}%</output>
             <button type="button" onClick={() => zoomBy(0.1)} aria-label="Zoom in">
-              +
+              <ReaderIcon name="plus" />
             </button>
             <button
               type="button"
@@ -637,23 +690,44 @@ function ReportViewerDocument({
             role="search"
             onSubmit={(event) => event.preventDefault()}
           >
-            <input
-              type="search"
-              aria-label="Find in report"
-              placeholder="Find in report"
-              value={query}
-              maxLength={80}
-              onChange={(event) => setQuery(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  stepMatch(event.shiftKey ? -1 : 1);
-                } else if (event.key === "Escape" && query) {
-                  event.stopPropagation();
-                  setQuery("");
-                }
-              }}
-            />
+            <div className="report-viewer-find-field">
+              <input
+                ref={findRef}
+                type="search"
+                aria-label="Find in report"
+                aria-describedby="report-find-help"
+                placeholder="Find in report"
+                value={query}
+                maxLength={80}
+                onChange={(event) => setQuery(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    stepMatch(event.shiftKey ? -1 : 1);
+                  } else if (event.key === "Escape" && query) {
+                    event.stopPropagation();
+                    setQuery("");
+                  }
+                }}
+              />
+              {query && (
+                <button
+                  type="button"
+                  className="report-viewer-find-clear"
+                  aria-label="Clear find query"
+                  onClick={() => {
+                    setQuery("");
+                    findRef.current?.focus();
+                  }}
+                >
+                  <ReaderIcon name="close" />
+                </button>
+              )}
+            </div>
+            <span className="sr-only" id="report-find-help">
+              Enter at least two characters. Enter moves to the next match; Shift and Enter move to
+              the previous match. Escape clears the search.
+            </span>
             <span className="report-viewer-find-status" role="status">
               {findStatus}
             </span>
@@ -663,7 +737,7 @@ function ReportViewerDocument({
               disabled={matches.length < 2}
               aria-label="Previous match"
             >
-              ↑
+              <ReaderIcon name="up" />
             </button>
             <button
               type="button"
@@ -671,7 +745,7 @@ function ReportViewerDocument({
               disabled={matches.length < 2}
               aria-label="Next match"
             >
-              ↓
+              <ReaderIcon name="down" />
             </button>
           </form>
           <button
@@ -684,6 +758,16 @@ function ReportViewerDocument({
           </button>
           {download}
         </div>
+        {!failed && (
+          <p className="report-viewer-state" role="status">
+            {rendering
+              ? renderedKey
+                ? "Updating page view…"
+                : "Loading report…"
+              : `PDF ready · ${pages} pages`}
+            {!rendering && <span>Select text to copy it, or use Find in report.</span>}
+          </p>
+        )}
         {failed ? (
           <div className="report-viewer-error" role="alert">
             <p>The PDF could not be displayed.</p>
