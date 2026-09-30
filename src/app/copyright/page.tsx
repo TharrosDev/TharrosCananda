@@ -54,8 +54,8 @@ export default function CopyrightPage() {
             <h2>What the licence covers</h2>
             <div className="policy-section-body">
               <p>
-                Existing Tharros Canada reports in <Link href="/research">Publications</Link> are
-                licensed under{" "}
+                Existing Tharros Canada reports in the{" "}
+                <Link href="/research">research database</Link> are licensed under{" "}
                 <a href={researchLicence.url} rel="license">
                   {researchLicence.name}
                 </a>
@@ -64,8 +64,8 @@ export default function CopyrightPage() {
               </p>
               <p>
                 Licence, author permissions and publication terms for future undergraduate
-                submissions will be published before intake opens. The existing reports&apos; licence
-                does not establish terms for work that has not been submitted or accepted.
+                submissions will be published before intake opens. The existing reports&apos;
+                licence does not establish terms for work that has not been submitted or accepted.
               </p>
             </div>
           </article>

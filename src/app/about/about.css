@@ -9,6 +9,12 @@
 .about-row h2 { margin: 0; font-size: clamp(25px, 2.5vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
 .about-row > p, .about-contact-body > p { max-width: 68ch; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
 .about-mission > p { max-width: 37ch; color: var(--ink); font-family: var(--display); font-size: clamp(25px, 2.6vw, 36px); font-weight: 500; line-height: 1.35; letter-spacing: -.025em; text-wrap: pretty; }
+.about-platform-body { min-width: 0; }
+.about-platform-list { margin: 0; }
+.about-platform-list > div + div { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--rule); }
+.about-platform-list dt { margin: 0 0 8px; color: var(--ink); font-family: var(--display); font-size: clamp(22px, 2vw, 28px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.about-platform-list dd { max-width: 68ch; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
+.about-platform-actions { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 24px; }
 .about-contact-section.about-row { margin-top: 12px; border-top: 1px solid var(--ink); padding-bottom: 0; }
 .about-contact-body > p { margin-bottom: 20px; }
 .about-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; }
@@ -30,7 +36,7 @@
   .about-masthead { padding-top: 32px; }
   .about-masthead h1 { font-size: clamp(35px, 8.6vw, 49px); }
   .about-deck { margin-top: 18px; font-size: 18px; }
-  .about-row > p, .about-contact-body > p { font-size: 17px; }
+  .about-row > p, .about-contact-body > p, .about-platform-list dd { font-size: 17px; }
   .about-mission > p { font-size: 26px; }
   .about-contact { align-items: start; gap: 0 20px; }
 }

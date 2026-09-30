@@ -7,7 +7,7 @@ import { researchEmail } from "@/lib/contact";
 export const metadata: Metadata = pageMetadata({
   title: "Accessibility",
   description:
-    "Tharros Undergraduate Publishing's accessibility target (WCAG 2.2 AA), current interface practices and how to report a problem.",
+    "Tharros Canada's accessibility target (WCAG 2.2 AA), current interface practices and how to report a problem.",
   path: "/accessibility",
 });
 

@@ -12,7 +12,7 @@ import { jsonLd, siteName, siteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} | Publish your undergraduate work`,
+    default: `${siteName} | Undergraduate research showcase & database`,
     template: `%s | ${siteName}`,
   },
   description: publishing.description,

@@ -7,40 +7,30 @@ import "@/components/publishing-pages.css";
 export const metadata: Metadata = pageMetadata({
   title: "How it works",
   description:
-    "From submission and editorial review to refinement and publication: the planned Tharros Undergraduate Publishing process. Preparing for launch; submissions and pricing are forthcoming.",
+    "Prepare, review, publish and showcase undergraduate work with Tharros Canada. Explore the searchable research database and author profiles.",
   path: "/how-it-works",
 });
 
 const stages = [
   {
-    title: "Submit",
+    title: "Prepare",
     description:
-      "Send your original undergraduate work and basic author information through the submission process when it opens.",
+      "Choose a complete piece of original undergraduate work. Give it a clear title and summary, check your sources and credit every contributor. Submit through the intake process when it opens.",
   },
   {
-    title: "Screening",
+    title: "Review",
     description:
-      "Tharros checks academic quality, citations and sourcing, originality, writing quality, publication suitability and formatting.",
-  },
-  {
-    title: "Decision",
-    description:
-      "Receive an editorial decision: accepted, accepted with revisions or rejected. If revisions are requested, refine the work before it can move forward.",
-  },
-  {
-    title: "Payment",
-    description:
-      "Only accepted authors move to the publication fee. Pricing and any optional services will be announced before submissions open.",
-  },
-  {
-    title: "Preparation",
-    description:
-      "Tharros formats and prepares the accepted work as a professional publication, with its sources and authorship clearly presented.",
+      "Work will be screened for academic quality, sourcing, originality, writing and suitability. Decisions will be accepted, accepted with revisions or rejected; requested revisions come before publication.",
   },
   {
     title: "Publish",
     description:
-      "Share the public publication page and professional PDF, with a stable URL, publication date and recommended citation. An author profile is optional and requires your consent.",
+      "Accepted work will receive a publication page in the searchable public database, with clear authorship, the work itself, a publication date, a shareable URL and a recommended citation.",
+  },
+  {
+    title: "Showcase",
+    description:
+      "Link your work from résumés, applications and professional portfolios. Author profiles connect published works on a simple reference page. For new student contributors, profiles will be optional and require your consent when submissions open.",
   },
 ];
 
@@ -50,13 +40,13 @@ export default function HowItWorksPage() {
       <header className="publishing-masthead">
         <h1>How it works.</h1>
         <p>
-          You have already done the work. Our planned process gives accepted undergraduate research
-          a professional, publicly accessible home.
+          From a classroom project to work you can share. Tharros connects undergraduate research,
+          its authors and its readers in a searchable public database.
         </p>
       </header>
 
       <ol className="publishing-flow" aria-label="Publication journey">
-        {["Submit", "Review", "Refine", "Publish"].map((step, index) => (
+        {["Prepare", "Review", "Publish", "Showcase"].map((step, index) => (
           <li key={step}>
             <span>{step}</span>
             {index < 3 && <ArrowIcon />}
@@ -65,10 +55,12 @@ export default function HowItWorksPage() {
       </ol>
 
       <section className="publishing-launch" aria-labelledby="process-status-title">
-        <h2 id="process-status-title">Preparing for launch</h2>
+        <h2 id="process-status-title">New submissions forthcoming</h2>
         <p>
-          Submissions and publication pricing are forthcoming. The stages below describe the planned
-          service; intake is not open yet.
+          The research database and existing author profiles are available to explore. New student
+          submissions are being prepared; the stages below describe the planned contribution
+          process. Submission requirements and publication terms will be available before intake
+          opens.
         </p>
         <Link className="text-link" href="/submit">
           Prepare your submission <ArrowIcon />
@@ -76,7 +68,7 @@ export default function HowItWorksPage() {
       </section>
 
       <section className="publishing-process" aria-labelledby="stages-title">
-        <h2 id="stages-title">From paper to publication</h2>
+        <h2 id="stages-title">From coursework to a public showcase</h2>
         <ol className="publishing-stages">
           {stages.map((stage, index) => (
             <li key={stage.title}>
@@ -90,21 +82,28 @@ export default function HowItWorksPage() {
         </ol>
       </section>
 
-      <section className="publishing-row" aria-labelledby="share-title">
-        <h2 id="share-title">A piece you can share</h2>
+      <section className="publishing-row" aria-labelledby="database-title">
+        <h2 id="database-title">Explore the database</h2>
         <div className="publishing-row-body">
           <p>
-            A publication lets readers see your work directly. Link it from your résumé, LinkedIn
-            profile or professional portfolio, and use it to show your thinking in applications. The
-            value begins with the quality of the paper you wrote.
+            Search and filter the research database to find published work. Open a publication to
+            read its paper and sources, get a citation, download the PDF or copy a link to share it.
+            Each publication keeps the work and its authorship together.
           </p>
+          <p>
+            Author profiles bring each author’s published works together. Visit the{" "}
+            <Link href="/authors">author directory</Link> to find authors and explore their work.
+          </p>
+          <Link className="text-link" href="/research">
+            Browse the research database <ArrowIcon />
+          </Link>
         </div>
       </section>
 
       <div className="publishing-close">
         <p>Start with the work you are proudest of.</p>
         <Link className="button-primary" href="/submit">
-          See submission guidance <ArrowIcon />
+          Prepare your work <ArrowIcon />
         </Link>
         <Link className="text-link" href="/about#contact">
           Ask a question

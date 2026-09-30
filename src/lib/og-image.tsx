@@ -91,8 +91,8 @@ export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCar
               lineHeight: 1.1,
             }}
           >
-            <span>Undergraduate</span>
-            <span>Publishing</span>
+            <span>Canada</span>
+            <span>Student research</span>
           </span>
         </div>
         <div

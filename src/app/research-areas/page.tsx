@@ -20,7 +20,7 @@ export default function ResearchAreasPage() {
         <h1>Research areas</h1>
         <p>
           These topics organize the existing publication collection. They do not limit the
-          disciplines eligible for undergraduate publishing. Each report sets its own scope, with
+          disciplines eligible for the undergraduate showcase. Each report sets its own scope, with
           published work linked where available.
         </p>
       </header>

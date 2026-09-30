@@ -47,7 +47,9 @@ export function organizationJsonLd(
     description: publishing.description,
     areaServed: ["Canada"],
     knowsAbout: [
-      "Undergraduate publishing",
+      "Undergraduate research",
+      "Research repositories",
+      "Professional portfolios",
       "Academic writing",
       "Research papers",
       "Policy briefs",

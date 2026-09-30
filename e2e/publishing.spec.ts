@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("publishing navigation reaches real launch pages and closes the mobile sheet", async ({
+test("showcase navigation reaches preparation guidance and closes the mobile sheet", async ({
   page,
   isMobile,
 }) => {
@@ -8,7 +8,7 @@ test("publishing navigation reaches real launch pages and closes the mobile shee
   if (isMobile) await page.getByRole("button", { name: "Menu", exact: true }).click();
   await page
     .getByRole("navigation", { name: "Primary" })
-    .getByRole("link", { name: "Submission guidelines", exact: true })
+    .getByRole("link", { name: "Showcase your work", exact: true })
     .click();
   await expect(page).toHaveURL(/\/submit$/);
   await expect(
@@ -17,17 +17,15 @@ test("publishing navigation reaches real launch pages and closes the mobile shee
   await expect(page.locator("html")).not.toHaveAttribute("data-menu-open", /.*/);
   await expect(page.locator("main")).not.toHaveAttribute("inert", "");
   await expect(page.locator("main input[type=file], main form")).toHaveCount(0);
-  await page.getByRole("link", { name: "Read the publication process" }).click();
+  await page.getByRole("link", { name: "See how the showcase works" }).click();
   await expect(page).toHaveURL(/\/how-it-works$/);
   await expect(page.locator(".publishing-stages h3")).toHaveText([
-    "Submit",
-    "Screening",
-    "Decision",
-    "Payment",
-    "Preparation",
+    "Prepare",
+    "Review",
     "Publish",
+    "Showcase",
   ]);
-  await expect(page.locator("main")).toContainText("Only accepted authors");
+  await expect(page.locator("main")).toContainText("New student submissions are being prepared");
 });
 
 test("author links preserve real publications and closed discovery settings", async ({
@@ -56,7 +54,14 @@ test("publishing pages stay usable from phones to ultrawide screens", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name === "mobile", "Viewport loop uses one browser project");
-  for (const route of ["/", "/submit", "/how-it-works", "/about", "/authors/magnus-abdelnour"]) {
+  for (const route of [
+    "/",
+    "/submit",
+    "/how-it-works",
+    "/about",
+    "/authors",
+    "/authors/magnus-abdelnour",
+  ]) {
     await page.goto(route);
     for (const width of [320, 390, 768, 1024, 1440, 3440]) {
       await page.setViewportSize({ width, height: 900 });

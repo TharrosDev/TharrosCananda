@@ -1,6 +1,6 @@
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "Tharros Undergraduate Publishing sources and methodology";
+export const alt = "Tharros Canada sources and methodology";
 export const size = ogSize;
 export const contentType = ogContentType;
 

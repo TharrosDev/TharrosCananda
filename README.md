@@ -1,8 +1,8 @@
 # Tharros Canada
 
-The site for [tharros.ca](https://tharros.ca), where Tharros Undergraduate Publishing is preparing to launch a professional publishing platform for Canadian university undergraduates across disciplines. Visitors can prepare eligible work, understand the planned editorial process, browse existing publications and ask publishing or editorial questions. Submissions and pricing are forthcoming; there is no active upload form or payment flow.
+The site for [tharros.ca](https://tharros.ca), an undergraduate research showcase and searchable public database that gives strong student work a professional home beyond the classroom. Tharros Canada combines a research repository, professional portfolio and simple author profiles displaying authored works. Students can share and reference publications in résumés, applications, LinkedIn profiles and professional portfolios.
 
-The existing Tharros Canada homepage masthead, slash, animation and opening band remain intact at the owner's request. The publishing pivot begins below that opening.
+The database, publication pages and author profiles use real owner-supplied records. Contributions are forthcoming; there is no active upload form, payment flow, self-serve account or profile editor. The existing homepage masthead, slash, animation and opening band remain intact at the owner's request. Updated product content begins below that opening.
 
 **Stack.**
 - Next.js 16 App Router, React 19, strict TypeScript and native CSS with design tokens.
@@ -76,12 +76,13 @@ docs/             operations, publishing launch, report intake, evidence policy 
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Retained Tharros Canada opening, followed by the undergraduate publishing service and launch status. |
-| `/research` | Publications: the existing searchable archive and its citation, PDF and sharing tools. |
+| `/` | Retained Tharros Canada opening, followed by the research showcase, database, author profiles and contribution status. |
+| `/research` | Searchable research database with citation, PDF and sharing tools. |
 | `/research/<slug>` and `/research/id/<reference>` | Existing publication pages and stable reference links. |
+| `/authors` | Directory of real author records and authored work; noindex and excluded from sitemap and llms.txt until approved. |
 | `/authors/magnus-abdelnour` | Existing publications grouped under the supplied byline; no affiliation or biography added, and profile indexing remains disabled. |
-| `/submit` | Eligibility, preparation guidance and forthcoming submissions and pricing. |
-| `/how-it-works` | Planned submission, screening, decision, payment, preparation and publication stages. |
+| `/submit` | Showcase your work: eligibility, preparation guidance and forthcoming contributions. |
+| `/how-it-works` | Prepare, Review, Publish and Showcase. |
 | `/about#contact` | Mission and the real editorial contact. |
 | `/methodology` and `/research-areas` | Existing evidence and subject guides. |
 
@@ -103,7 +104,7 @@ Don't add dummy or placeholder entries to fill the archive.
 
 ## Boundaries
 
-**Tharros is preparing to publish:** accepted original undergraduate papers, essays, policy briefs, data projects, literature reviews and similar work across disciplines. Existing owner-supplied reports retain their stated Canada–Europe subjects, sources and limitations. Submissions are closed and publication pricing is forthcoming.
+**Tharros showcases academic work:** papers, research projects, policy briefs, data work and other original undergraduate work across disciplines. Existing owner-supplied reports retain their stated Canada–Europe subjects, sources and limitations. Contributions are closed while the intake process and terms are prepared. Pricing is undecided; no free-publication claim is made.
 
 **It doesn't give** legal, tax, customs, regulated financial, immigration or compliance advice.
 

@@ -14,7 +14,7 @@ export default function NotFound() {
       <div className="not-found-ways">
         {/* A plain GET form: it reaches the archive search with or without JavaScript. */}
         <form className="not-found-search" action="/research" method="get" role="search">
-          <label htmlFor="not-found-q">Search the research</label>
+          <label htmlFor="not-found-q">Search the research database</label>
           <span>
             <input
               id="not-found-q"
@@ -30,10 +30,10 @@ export default function NotFound() {
         </form>
         <nav className="not-found-links" aria-label="Useful pages">
           <Link href="/research">
-            Research <ArrowIcon />
+            Research database <ArrowIcon />
           </Link>
-          <Link href="/methodology">
-            Methodology <ArrowIcon />
+          <Link href="/authors">
+            Author profiles <ArrowIcon />
           </Link>
           <Link href="/about">
             About Tharros <ArrowIcon />

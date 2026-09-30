@@ -100,7 +100,7 @@ export function pageMetadata({
   };
 }
 
-/** Every static public page, in sitemap order. The sitemap and the e2e route sweep both read this. */
+/** Indexable static pages, in sitemap order. The gated author directory is excluded. */
 export const coreRoutes = [
   "",
   "/research",

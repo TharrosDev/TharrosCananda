@@ -7,16 +7,21 @@ import { MenuIcon } from "@/components/icons";
 import { publishing } from "@/data/publishing";
 
 const links: { href: string; label: string; description: string; prefetch?: boolean }[] = [
-  { href: "/research", label: "Publications", description: "Explore the publication archive" },
+  {
+    href: "/research",
+    label: "Research database",
+    description: "Find, read and reference student work",
+  },
+  { href: "/authors", label: "Authors", description: "Explore profiles and authored works" },
   {
     href: "/how-it-works",
     label: "How it works",
-    description: "From undergraduate work to publication",
+    description: "From classroom work to a shareable portfolio",
   },
   { href: "/about", label: "About", description: "Our mission and how to get in touch" },
   {
     href: "/submit",
-    label: "Submission guidelines",
+    label: "Showcase your work",
     description: "Prepare your work; submissions are forthcoming",
   },
 ];
@@ -100,8 +105,8 @@ export function Header() {
             /
           </span>
           <span className="wordmark-subtitle">
-            <span>Undergraduate</span>
-            <span>Publishing</span>
+            <span>Canada</span>
+            <span>Student research</span>
           </span>
         </Link>
         <button
@@ -137,7 +142,7 @@ export function Header() {
               </Link>
             ))}
           </div>
-          <p className="nav-project-note">Professional publishing for undergraduate work.</p>
+          <p className="nav-project-note">A professional home for strong student work.</p>
         </nav>
       </div>
     </header>
