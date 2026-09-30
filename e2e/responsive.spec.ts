@@ -89,9 +89,9 @@ test.describe("responsive layout matrix", () => {
     await page.setViewportSize({ width: 1440, height: 2400 });
     await expect(pane).toHaveAttribute("data-sticky-fit", "");
     expect(await pane.evaluate((el) => getComputedStyle(el).position)).toBe("sticky");
-    await page.getByRole("searchbox", { name: "Search the archive" }).fill("zzzxxyynothing");
+    await page.getByRole("searchbox", { name: "Search research" }).fill("zzzxxyynothing");
     await expect(pane).toHaveCount(0);
-    await page.getByRole("searchbox", { name: "Search the archive" }).fill("ArcGIS");
+    await page.getByRole("searchbox", { name: "Search research" }).fill("ArcGIS");
     await expect(pane).toHaveAttribute("data-sticky-fit", "");
   });
 

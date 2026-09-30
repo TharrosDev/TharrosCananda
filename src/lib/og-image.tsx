@@ -13,17 +13,17 @@ export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
 
 const colors = {
-  ivory: "#d9eff5",
+  ivory: "#ffffff",
   ivoryLight: "#ffffff",
-  ink: "#2447dc",
-  inkSoft: "#3d4b61",
-  slate: "#526079",
-  softBlack: "#2447dc",
+  ink: "#151515",
+  inkSoft: "#4f4a4b",
+  slate: "#625c5e",
+  softBlack: "#151515",
   onDark: "#ffffff",
-  onDarkSoft: "#c7d2f5",
-  red: "#e94d30",
-  rule: "#b0c7e0",
-  ruleDark: "#6f85e2",
+  onDarkSoft: "#ded9db",
+  red: "#782c3d",
+  rule: "#d9d3d5",
+  ruleDark: "#65565b",
 } as const;
 
 let fontData: { sans: ArrayBuffer } | null = null;

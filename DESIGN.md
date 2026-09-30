@@ -1,32 +1,35 @@
 ---
 name: Tharros Canada
-description: Independent student research across Canada and Europe, presented as The Open Issue.
+description: Independent student research across Canada and Europe, with a clear identity and inspectable evidence.
 colors:
-  blue: "#2447dc"
-  blue-hover: "#1736b6"
-  sky: "#edf3f8"
-  accent: "#e94d30"
+  red: "#782c3d"
+  red-hover: "#55202c"
+  sky: "#f6edf0"
+  accent: "#9e354c"
   ground: "#ffffff"
-  ground-deep: "#f0f2f4"
+  ground-deep: "#f3f3f2"
   white: "#ffffff"
-  ink: "#17212f"
-  ink-soft: "#3d4b61"
-  slate: "#526079"
-  steel: "#3152aa"
-  rule: "rgba(23, 33, 47, 0.15)"
-  rule-strong: "rgba(23, 33, 47, 0.35)"
+  ink: "#151515"
+  ink-soft: "#414141"
+  slate: "#606060"
+  steel: "#626262"
+  blue: "#151515"
+  connection-line: "#d398a4"
+  connection-node: "#f6e7eb"
+  rule: "rgba(21, 21, 21, 0.15)"
+  rule-strong: "rgba(21, 21, 21, 0.35)"
 typography:
   display:
     fontFamily: "Space Grotesk, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(58px, 7.5vw, 96px)"
-    fontWeight: 700
-    lineHeight: 1.03
+    fontSize: "clamp(58px, 6.6vw, 96px)"
+    fontWeight: 650
+    lineHeight: 1
     letterSpacing: "-0.04em"
   section:
     fontFamily: "Space Grotesk, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(38px, 4.2vw, 60px)"
+    fontSize: "clamp(38px, 4.8vw, 66px)"
     fontWeight: 600
-    lineHeight: 1.06
+    lineHeight: 1.1
     letterSpacing: "-0.035em"
   title:
     fontFamily: "Space Grotesk, Helvetica Neue, Arial, sans-serif"
@@ -55,25 +58,25 @@ spacing:
   row: "clamp(16px, 2.5vw, 28px)"
 components:
   button-primary:
-    backgroundColor: "{colors.blue}"
+    backgroundColor: "{colors.red}"
     textColor: "{colors.white}"
     typography: "{typography.control}"
     rounded: "{rounded.square}"
     padding: "12px 20px"
   button-primary-hover:
-    backgroundColor: "{colors.blue-hover}"
+    backgroundColor: "{colors.red-hover}"
     textColor: "{colors.white}"
   button-secondary:
     backgroundColor: "transparent"
-    textColor: "{colors.blue}"
+    textColor: "{colors.ink}"
     typography: "{typography.control}"
     rounded: "{rounded.square}"
     padding: "12px 20px"
   button-secondary-hover:
-    backgroundColor: "{colors.blue}"
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.white}"
   text-link:
-    textColor: "{colors.blue}"
+    textColor: "{colors.ink}"
     typography: "{typography.control}"
     padding: "12px 0"
   facet:
@@ -84,169 +87,109 @@ components:
   facet-selected:
     backgroundColor: "{colors.ground-deep}"
     textColor: "{colors.ink}"
-  publication-record:
+  publication-entry:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
     rounded: "{rounded.square}"
     padding: "26px 0"
-  empty-image-frame:
-    backgroundColor: "{colors.ground-deep}"
-    rounded: "{rounded.square}"
-    width: "100%"
 ---
 
 # Design System: Tharros Canada
 
 ## Overview
 
-**Creative North Star: "The Open Issue"**
+Tharros Canada presents independent student research through a clear name, real published work and evidence readers can inspect. White ground, neutral dark ink, a black map surface and sparse burgundy details give it a contemporary presence. Space Grotesk carries the identity and titles; Schibsted Grotesk carries prose and controls.
 
-Tharros presents independent student research as an open editorial issue: a confident statement, real published work, questions to explore, and evidence to inspect. White space, dark ink, selective blue, asymmetric composition, and precise rules create its contemporary character. Space Grotesk provides the display voice; Schibsted Grotesk keeps the research and its controls readable.
+Home pairs a large Tharros Canada wordmark with a fine-line Canada–Europe diagram. A compact latest report and three draft upcoming topics follow, then two direct destinations. About introduces Tharros through About, Mission, Why and Contact. Methodology retains the worked evidence trace and five research rules. Research areas now has its own route. Supporting research tools and the supplied PDF reader retain their distinct working layouts.
 
-The identity continues across distinct tasks instead of repeating a hero composition. Home opens into an unboxed publication and project spread; About reads as a project portrait; Methodology operates as an evidence workshop and source directory; policy pages are compact references. Publication covers and source records remain the principal visual material. Two intentionally empty editorial frames reserve space for imagery the owner will supply.
+The owner first selected Open Questions, candidate 7, seed `f037cd34`, then The open issue, chooser `e5ea266c`, seed `df0d4fa0`. The latest direct instructions simplify those compositions, replace blue with neutral ink and burgundy, suppress empty imagery frames, and select connecting lines for the homepage animation. This document describes that current system; the earlier choices remain historical context.
 
-**Key Characteristics:**
-
-- A white page, dark ink, confident sans-serif type, blue emphasis, and restrained grey grouping.
-- Open asymmetric spreads and ruled records rather than repeated boxed editorial panels.
-- Native question and subject disclosures, a working evidence trace, and a searchable source register.
-- Exactly two owner-controlled editorial image slots, currently empty; real report covers remain visible.
-- Task-specific hierarchy, progressive enhancement, and purposeful motion that never gates reading.
-
-The owner first selected Open Questions, candidate 7, seed `f037cd34`. The later direct approval of **The open issue**, chooser key `e5ea266c`, seed `df0d4fa0`, establishes the current composition and imagery policy. The surface brief retains this choice history; the tokens and rules here describe the latest built revision.
-
-Runtime values live in `src/app/globals.css`; route and component styles refine them. The frontmatter owns reused primitives. `.impeccable/design.json` adds motion, breakpoints, shadows, and component previews; its tonal ramps are preview metadata, not runtime palette additions.
+Runtime values live in `src/app/globals.css`; route and component styles refine them. Frontmatter describes reused primitives. `.impeccable/design.json` records motion, breakpoints, shadows, preview components and the same direction without claiming completed QA.
 
 ## Colors
 
-The page remains white. Blue identifies an action, selected evidence, a destination, or a deliberate statement; neutral grey groups an instrument without turning the page into a banded poster.
+- **Burgundy** (`red`, `#782c3d`): actions, focus, selected evidence and small identity details.
+- **Deep burgundy** (`red-hover`, `#55202c`): action hover and quieter interaction feedback.
+- **Muted red** (`accent`, `#9e354c`): small separators and disclosure details.
+- **Pale burgundy** (`sky`, `#f6edf0`): selected evidence and the first upcoming topic's status.
+- **White** (`ground`, `white`, `#ffffff`): the page and reading surfaces.
+- **Neutral grey** (`ground-deep`, `#f3f3f2`): grouped controls, tags and the quoted-claim surface.
+- **Ink** (`#151515`), **soft ink** (`#414141`), **slate** (`#606060`) and **steel** (`#626262`): titles, explanatory prose and metadata.
+- `rule` and `rule-strong`: neutral row dividers and meaningful section boundaries.
 
-### Primary
+**The White Ground Rule.** Let white space, dark typography and rules carry the page. Use burgundy for specific actions and states; broad emphasis and dark surfaces use neutral black. The homepage diagram uses a black ground, monochrome coastlines, connection lines in `#d398a4`, nodes in `#f6e7eb` and light labels. These two pale on-dark shades are intentional local diagram colors, not additional broad page accents.
 
-- **Ultramarine** (`blue`): wordmark, statement emphasis, links, actions, selection, trace leaders, and source-map nodes.
-- **Deeper ultramarine** (`blue-hover`): primary-action hover and quieter link feedback.
-- **Pale blue** (`sky`): selected evidence and restrained supporting instrument surfaces.
-
-### Secondary
-
-- **Orange** (`accent`): the slanted wordmark separator and selected disclosure details. It is a small identity accent.
-- **Steel blue** (`steel`): publication references and supporting record information.
-
-### Neutral
-
-- **White ground** (`ground`, `white`): the shared page and reading surfaces.
-- **Neutral grey** (`ground-deep`): empty editorial frames, the published-claim surface, grouped controls, tags, and selected-record feedback.
-- **Ink**, **soft ink**, and **slate** distinguish principal text, explanatory prose, and metadata.
-- `rule` and `rule-strong` distinguish row dividers from instrument and chapter boundaries.
-
-**The White Ground Rule.** Let the white page and its typography carry the composition; use blue and grey to clarify specific statements, actions, and working states.
-
-CSS compatibility names remain: `--red` is blue, `--red-dark` its hover shade, and `--ivory*` the white and grey surfaces. Their old names do not define current colour roles. `--focus` shares the primary blue. Other legacy colour declarations are not a requirement to add dark chapter bands.
+Compatibility names remain in CSS: `--blue` resolves to `var(--ink)`, while `--red` and `--red-dark` now hold burgundy shades. `--ivory*` are white and neutral grey surfaces. `--focus` is burgundy; dark surfaces have a lighter focus token. These names do not justify reintroducing blue.
 
 ## Typography
 
-**Display Font:** Space Grotesk, with Helvetica Neue and Arial sans-serif fallbacks.
+Display: Space Grotesk. Body and controls: Schibsted Grotesk. Both load through `next/font/google` in `src/lib/fonts.ts`, with Helvetica Neue and Arial fallbacks.
 
-**Body Font:** Schibsted Grotesk, with Helvetica Neue and Arial sans-serif fallbacks.
+- **Home identity:** a two-line Tharros Canada wordmark, neutral ink with one burgundy full stop. Desktop reaches 96px; smaller viewports use explicit local sizes.
+- **Page openings:** About and Research areas use concise titles. Methodology uses a compact workshop title. Policy pages remain reference pages.
+- **Section headings:** the homepage Latest release and Upcoming research headings use a compact 24px scale. About pairs quiet section labels with prose; Mission has a larger short statement.
+- **Publication titles:** the compact homepage report uses 22–28px on larger screens and 20px on narrow phones. Research results preserve their own hierarchy.
+- **Body:** global prose starts at 18px and becomes 17px on phones. Evidence fields, topic labels and controls use local scales suited to their task. Screen type stays at least 11.5px, enforced by `tests/css-guard.test.ts`.
+- **Comparable figures:** references, dates, counts, page numbers and zoom values use tabular numerals. Labels identify useful fields rather than adding decorative kickers.
 
-Both families are loaded through `next/font/google` in `src/lib/fonts.ts`. Medium-weight editorial titles and a stronger opening statement give the issue hierarchy; prose and functional labels keep the instruments clear.
+Local screen scales are task-specific rather than a universal fixed ramp: 11.5, 12, 13, 14, 15, 16, 17, 18, 20, 22, 23, 24, 25, 26, 28, 29, 30, 34, 36, 38, 48, 49, 50, 54, 58, 60, 64, 66, 76 and 96px appear as explicit sizes or responsive clamp endpoints. Preserve the purpose of labels, report controls, titles and identity when changing a local scale.
 
-### Hierarchy
-
-- **Opening statement:** Home uses the frontmatter display role, with dark ink followed by a blue line. The maximum measure and responsive size are defined in `home.css`; the narrowest layout uses a smaller explicit size.
-- **Page openings:** About uses a compact purpose statement, Methodology a compact workshop title, and policy pages a reference title. Each has its own measure and scale; they do not inherit the homepage statement's prominence.
-- **Chapter headings:** Home's question index uses the frontmatter section role. About and Methodology use smaller chapter scales where reading is denser.
-- **Publication titles:** the lead homepage report is larger than an archive result. About's publication index uses a quieter weight and more open line spacing. Preserve each task's hierarchy.
-- **Body:** global prose starts at 18px and becomes 17px on phones. Publication summaries, instrument records, contact rows, and source descriptions use local 15–17px sizes. Policy reference prose uses 17px with a generous line height (1.7).
-- **Controls and metadata:** shared actions use 16px semibold type; labels and metadata use task-appropriate 12–15px sizes. Screen type stays at least 11.5px, enforced by `tests/css-guard.test.ts`.
-- **Comparable figures:** references, dates, counts, page numbers, and zoom values use tabular numerals. Labels identify actual fields or groups; they do not add promotional kickers.
-
-**The Reading Measure Rule.** Use the shared 64ch reading measure and local measures suited to summaries and source descriptions; do not stretch prose simply to fill a column.
+**The Reading Measure Rule.** Use the shared 64ch measure and purposeful local widths. Avoid stretching short copy across a column; preserve comfortable measures for method explanations and subject scopes.
 
 ## Layout
 
-The shared shell caps at 1440px and subtracts the larger safe-area-aware edge from both sides. Its base grid uses 12 columns, with the frontmatter gutter and column gap. Major surfaces adapt that grammar to their own task; adjacent sections avoid stacking duplicate full gaps.
+The shared shell caps at 1440px, with safe-area-aware edges and a 12-column base grammar. Local layouts adapt to reading and interaction instead of repeating a banner structure.
 
-Home starts with a full-width statement and supporting introduction/actions. An open spread follows: approximately eight parts publication to four parts project context, with an actual report cover beside its title and one 16:9 editorial frame below the lead publication. Earlier releases remain linked records. The native question index follows, then one full-width invitation to inspect the method. Below 980px the spread stacks; its project column briefly becomes two columns before stacking at 640px.
+Home opens with identity and introduction beside the Canada–Europe diagram. Latest release and Upcoming research form a compact asymmetric pair. The latest report shows its supplied cover, title, type, date and Read/PDF actions. The three numbered upcoming topics are separate draft ideas; only the first carries In progress, and a visible note says titles and scope may change. Two compact outlined CTA boxes lead to Methodology and Research areas. The hero and report/topic pair stack below 760px; the CTA boxes stack below 480px.
 
-About pairs a factual project ledger with a publication-title index, follows with subject disclosures, then pairs independence and principles. Its single 3:2 frame sits within the independence chapter. Operational contact rows close the page. These paired layouts stack at their local responsive thresholds.
+About uses a concise title, introduction and Contact action, followed by About, Mission, Why and Contact. Each row pairs a heading with short copy; below 760px, it becomes one reading column. Contact contains one invitation, the editorial email, copying feedback and a manual fallback. Publication ledgers, subject indexes, independence chapters and separate inquiry categories do not appear here.
 
-Methodology gives the evidence instrument full width before a continuous five-rule reading path. The source directory pairs orientation and native region links with searchable publisher records. Its geographic inset is supporting context, not an editorial image slot. Below 980px the directory stacks and the inset is hidden; below 760px the claim and evidence record stack.
+Research areas (`/research-areas`) holds the five subjects, their scope, questions, evidence to examine and truthful publication availability. Native disclosures keep the first area open by default and permit each area to open independently. Subjects with publications link to the corresponding Research filter; subjects without work say so. This guide is distinct from Home's three provisional upcoming topics.
 
-Policy pages have a compact white title, horizontal facts, a static horizontal chapter rail, and title/body reference rows. Rows stack below 800px; facts and chapters stack on phones. The white footer uses a large typographic signature and compact project/contact and navigation columns.
+Methodology gives the real evidence trace full width, followed by a two-item page index and continuous five-rule reading path. The former publisher directory and source-category section are removed. Below 760px, the quoted claim and supporting evidence stack. Rule examples stay adjacent to their explanation on larger layouts and follow it on smaller screens.
 
-The archive keeps its framed white search instrument, neutral facets, open results, and optional preview distinct. The preview uses a dividing rule instead of a filled panel. The report reader keeps the PDF and its controls central. Their existing desktop, inline-preview, disclosure, narrow-toolbar, and short-height adaptations remain functional requirements.
+Research keeps its white search instrument, neutral facets, open result rows and optional preview. The preview uses a dividing rule. The PDF reader keeps the supplied document and controls central. Existing desktop, inline-preview, disclosure, narrow-toolbar and short-height adaptations remain functional requirements.
 
-**The Visible Content Rule.** Reading order and explicit controls provide access to content; hover and motion may reinforce meaning but never provide its only route.
+Policy pages keep compact titles, horizontal facts, static chapter links and title/body rows. The white footer provides a typographic signature, editorial contact and navigation.
 
-## Elevation & Depth
+**The Visible Content Rule.** Reading order and explicit controls provide access. Hover and motion may reinforce meaning but never provide the only route.
 
-Typography, white space, and rules establish depth. The homepage spread, project portrait, source register, and policy rows remain open and flat. Actual publication covers and PDF pages retain soft shadows to distinguish the document itself. Covers can lift slightly on hover. Density and preview selections use neutral grey rather than elevation. Citation popovers use an overlay shadow that disappears when the panel enters mobile flow.
+## Elevation, shapes and imagery
 
-Do not add a sheet shadow to the open homepage publication and project spread. Exact document and overlay shadows live in the source and sidecar.
+Typography, white space and rules establish depth. Real publication covers and PDF pages retain soft shadows, and covers can lift slightly on hover. Density selections use neutral grey. Citation popovers use a soft overlay shadow that disappears in mobile flow. Open page sections do not receive decorative sheet shadows.
 
-## Shapes
+Controls, fields, facets and the two CTA boxes use square geometry. Native disclosures use consistent drawn plus/minus marks. Covers retain the proportions of the supplied report.
 
-Controls, fields, facets, and editorial frames use square geometry. Dividers follow meaningful rows and chapters. Covers retain their supplied proportions; native disclosures use drawn plus/minus shapes. Empty editorial frames are quiet rectangles with no icon, invitation, placeholder photograph, or caption.
+**The Owner Imagery Rule.** Real report covers remain visible. The existing `home: null` and `about: null` optional-image configuration is retained, but Home and About do not render its empty frames. Add owner imagery only when supplied, with truthful alt text, dimensions and credit. Do not replace absent imagery with stock or generated placeholders.
 
-## Components
+## Actions and navigation
 
-### Actions and navigation
+Primary actions use burgundy with white labels; neutral outlined secondary actions fill with ink on hover. Shared actions have a 48px minimum height. Quieter reading links may use neutral ink, while burgundy identifies stronger actions and feedback. Arrow icons move 4px on hover; a button press moves down 1px. Focus uses a 2px outline and 3px offset.
 
-Shared primary actions are blue with white text; secondary actions are outlined and fill on hover. Standard actions have a 48px minimum height and frontmatter padding. Editorial reading links instead use a stronger blue underline and open horizontal space. Supporting text links may use dark ink when the composition calls for a quieter destination.
+Primary navigation remains Research, Methodology and About. Research areas is reached through its compact homepage CTA. Smaller screens retain the full-height navigation sheet, readable descriptions, scroll lock, inert background, focus containment and Escape handling. No-JavaScript navigation exposes destinations directly.
 
-Arrow icons move on hover (4px), and a button press moves down (1px). A visible focus outline remains distinct (2px outline, 3px offset). Primary navigation contains Research, Methodology, and About, with a blue underline for hover and current-route feedback. On smaller screens it becomes a full-height sheet with descriptions, background scroll lock and inert content, focus containment, and Escape handling. No-JavaScript navigation exposes the destinations directly.
+Public copy calls the publication collection **Research**. Use direct phrases such as “Check out our research,” “Look at the research” and “Back to research.” Avoid decorative Record or Archive labels and avoid referring to Tharros as “the project.” Topical uses of record, such as a dataset's metadata record or procurement records, remain appropriate.
 
-### Publication records and the open question index
+## Research and reading tools
 
-The lead report uses its real reference, type, date, supplied cover, full registry summary, reading action, and PDF metadata. It remains an open record on the page; earlier releases are quieter ruled links. Report-cover view transitions connect discovery with reading.
+Search, clear, research-area options, format/year facets, removable filters, result context, sort, density, suggestions and copying the current view remain one working Research page. Publication rows retain Read, PDF, Cite and Copy link. Wide previews expose metadata, sections, sources and limitations; smaller layouts use inline details. Empty results explain the state and offer recovery. URL state and the complete server-rendered no-JavaScript publication list remain part of `e2e/archive.spec.ts`'s contract; its internal file name is unchanged.
 
-The homepage question index uses native `details` and `summary`. Its collapsed state shows the subject, actual publication status, first question, and disclosure shape. Opening it exposes scope, further questions, and a relevant destination. Fields with no publications say so and link to their About disclosure. About's subject guide uses the same native mechanism at a scale suited to a project portrait.
+The evidence trace uses real TC-2026-001 passages. Selectable phrases highlight supporting fields and draw leaders where the two-column layout permits. Visible “Traced to” feedback explains the selected relationship at every size. All supporting evidence remains readable before interaction; Enter and Space activate phrase controls. Its heading is Supporting evidence.
 
-### Owner-controlled editorial frames
+The reader retains contents, page navigation, zoom and fit, search and matches, fullscreen with overlay fallback, download, visible loading/error states and citation formats. Clipboard actions retain manual selection when copying is unavailable. The owner's PDF is never edited or restyled.
 
-**The Owner Imagery Rule.** Keep the two editorial slots empty until the owner supplies images; a null slot renders its frame without an image or caption.
+## Motion
 
-The configuration is `src/data/editorial-images.ts`: exactly `home: null` and `about: null`. Home has one 16:9 frame; About has one 3:2 frame. There is no Methodology editorial slot. Existing report covers remain actual report artifacts and are not part of this optional-image registry.
+The homepage has one finite authored moment: three Canada–Europe lines draw over 4.2 seconds with the shared ease-out, staggered by 0, .2 and .4 seconds. It runs once, does not loop and is defined only within `prefers-reduced-motion: no-preference`. The default SVG already shows the full diagram; reduced motion receives that static final state. The decorative map is hidden from assistive technology, with the Canada–Europe scope stated in ordinary prose.
 
-`EditorialImageSlot` marks an empty frame as hidden from assistive technology. When an owner-supplied image is configured later, the record provides its source, alt text, intrinsic width and height, and optional credit. A credit caption appears only when that configured image has a credit. The frame's crop uses `object-fit: cover`; select images with those proportions in mind. Do not insert generated imagery, substitute stock photographs, or add caption copy while the entries are null.
+Shared state transitions use `--dur-1` (150ms), `--dur-2` (250ms) and `--ease-out` (`cubic-bezier(0.16, 1, 0.3, 1)`). The cover transition lasts 420ms. Evidence leaders draw only after a changed phrase selection (560ms); initial rendering and resize place them without motion.
 
-### Archive instruments
+Scroll-linked progress and rules remain enhancements behind reduced-motion and feature-detection guards. Keyframes may use only transform, translate, scale or stroke-dashoffset. Reduced motion removes smooth scrolling, collapses ordinary timing, disables view transitions and suppresses animated trace drawing. Report navigation also honours it in JavaScript.
 
-Search, clear, research-area options, format/year facets, individually removable active filters, result context, sort, density, suggestions, and copying the current view form one working archive. Publication rows retain Read, PDF, Cite, Copy link, and record details. A wide-screen preview exposes metadata, sections, sources, and limitations; smaller layouts use inline details. Empty results explain the state and provide useful corrections or clearing actions. URL state and the server-rendered no-JavaScript publication list remain part of the contract.
+## Quality and truth
 
-### Evidence workshop and source register
+Preserve the research tools, report controls, supplied covers and PDFs, indexing choices and no-JavaScript reading paths. Upcoming ideas belong in `src/data/upcoming-research.ts`, separate from verified publications, and remain visibly provisional. A subject taxonomy does not imply completed work.
 
-The worked trace uses real TC-2026-001 passages. Selectable phrases highlight supporting record fields and draw leaders where the two-column layout allows. Its visible “Traced to” feedback names the selected relationship at every size. The source record remains readable and complete; keyboard Enter and Space activate phrase controls.
+Do not invent publications, personal details, institutional affiliation, endorsements, data or source retrieval dates. Keep retired intake and live feeds retired. Do not restore removed homepage field/method essays, the methodology source directory or the long About reference sections without a new owner request.
 
-The source directory progressively enhances the complete publisher register with text search and region selection. Search covers publisher, purpose, access type, and city. Result counts, clearing filters, empty matches, and external-link context remain explicit. Native region anchors and all ten registered publishers remain available without JavaScript. Source-hover or focus can emphasise the corresponding geographic node on suitable layouts.
-
-### References, contact, and report reading
-
-Policy facts and the static chapter rail lead into title/body rows. About contact provides the editorial address, copy feedback and manual fallback, then useful report-question, correction, and contribution routes. The footer repeats compact project/contact and research/utility destinations.
-
-The reader retains contents, page navigation, zoom and fit, search and matches, fullscreen with an overlay fallback, and PDF download. Contents identify current location; loading and errors have visible state areas. Citation tools retain format selection, readable citation text, licence context, and copying with manual selection when necessary. The owner's PDF is not restyled or edited.
-
-### Motion
-
-Shared state transitions use `--dur-1` (150ms), `--dur-2` (250ms), and `--ease-out` (`cubic-bezier(0.16, 1, 0.3, 1)`). The shared cover transition lasts 420ms. Evidence leaders draw after an actual phrase selection (560ms), while initial rendering and resize place them without motion. Source nodes and disclosure marks reinforce user interaction.
-
-Scroll-linked progress and rules are enhancements behind reduced-motion and feature-detection guards. Keyframes may use only transform, translate, scale, or stroke-dashoffset. Reduced motion removes smooth scrolling, collapses ordinary timing, disables view transitions, and suppresses animated trace drawing; report navigation also honours it in JavaScript.
-
-## Do's and Don'ts
-
-### Do:
-
-- **Do** sustain the identity through white ground, confident type, blue emphasis, asymmetric reading structures, and precise rules.
-- **Do** use real publication covers, questions, source records, and reference information as the visual material.
-- **Do** keep the home and About image slots null until the owner supplies imagery.
-- **Do** preserve native disclosures, source-region anchors, complete no-JavaScript records, archive tools, and report controls.
-- **Do** keep CSS to one rule per line and update the system record with intentional changes.
-
-### Don't:
-
-- **Don't** restore the former warm-paper and serif identity or the first revision's repeated coloured chapter bands.
-- **Don't** populate the empty frames with generated or stock images, captions, icons, or upload prompts.
-- **Don't** invent publications, institutional scale, endorsements, source dates, or decorative data.
-- **Don't** alter the owner's PDF or redraw its content to match the website identity.
-- **Don't** make evidence, reading controls, or essential destinations depend on hover or motion.
+CSS remains one rule per line. Run checks against the integrated source and report their actual scope; this design record itself does not establish contrast, accessibility, browser, performance or visual-baseline results.

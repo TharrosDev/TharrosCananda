@@ -102,6 +102,7 @@ export function pageMetadata({
 export const coreRoutes = [
   "",
   "/research",
+  "/research-areas",
   "/about",
   "/methodology",
   "/privacy",

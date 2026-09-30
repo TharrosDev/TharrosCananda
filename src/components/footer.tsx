@@ -21,7 +21,7 @@ export function Footer() {
       </div>
       <div className="footer-shell">
         <div className="footer-lead">
-          <p>An independent student research project across Canada and Europe.</p>
+          <p>Independent research on Canada and Europe.</p>
           <a className="footer-contact" href={`mailto:${contactEmail}`}>
             {contactEmail} <ArrowIcon />
           </a>
@@ -29,12 +29,12 @@ export function Footer() {
         <nav className="footer-links" aria-label="Footer">
           <div>
             <p className="footer-heading">Research</p>
-            <Link href="/research">Research archive</Link>
+            <Link href="/research">Research</Link>
             <Link href="/methodology">Sources &amp; methodology</Link>
             <Link href="/about#contact">Questions &amp; corrections</Link>
           </div>
           <div>
-            <p className="footer-heading">Project</p>
+            <p className="footer-heading">Tharros Canada</p>
             <Link href="/about">About</Link>
             <Link href="/about#contact">Contact</Link>
             <Link href="/privacy">Privacy</Link>

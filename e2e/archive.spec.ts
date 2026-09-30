@@ -13,7 +13,7 @@ const fixtureCard = (page: import("@playwright/test").Page) =>
 const word = fixtureWord.toLowerCase();
 
 const search = (page: import("@playwright/test").Page) =>
-  page.getByRole("searchbox", { name: "Search the archive" });
+  page.getByRole("searchbox", { name: "Search research" });
 /** Narrow screens fold the filters behind a "Filters" disclosure; wide screens always show them. */
 const openFilters = async (page: import("@playwright/test").Page) => {
   const summary = page.locator(".archive-filters > summary");
@@ -197,7 +197,7 @@ test("phones fold the filters, and the record opens under its entry", async ({
   await expect(areas).toBeVisible();
   await expand(page);
   const card = fixtureCard(page);
-  await card.getByText("Record", { exact: true }).click();
+  await card.getByText("Details", { exact: true }).click();
   await expect(card.getByRole("link", { name: /p\. 1/ }).first()).toHaveAttribute(
     "href",
     /#page=1$/,
@@ -275,20 +275,20 @@ test("copying the archive link preserves the search and filters, with a manual f
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto(`/research?q=${word}&area=${fixture.area}`);
-  await page.getByRole("button", { name: "Copy archive link", exact: true }).click();
+  await page.getByRole("button", { name: "Copy research link", exact: true }).click();
   const copied = new URL(await page.evaluate(() => navigator.clipboard.readText()));
   expect(copied.pathname).toBe("/research");
   expect(copied.searchParams.get("q")).toBe(word);
   expect(copied.searchParams.get("area")).toBe(fixture.area);
-  await expect(page.getByRole("button", { name: "Archive link copied" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Research link copied" })).toBeVisible();
   await page.evaluate(() => {
     Object.defineProperty(navigator.clipboard, "writeText", {
       value: () => Promise.reject(new Error("Unavailable")),
       configurable: true,
     });
   });
-  await page.getByRole("button", { name: "Archive link copied" }).click();
-  await expect(page.getByRole("textbox", { name: "Archive link", exact: true })).toHaveValue(
+  await page.getByRole("button", { name: "Research link copied" }).click();
+  await expect(page.getByRole("textbox", { name: "Research link", exact: true })).toHaveValue(
     copied.href,
   );
 });

@@ -104,7 +104,7 @@ export default async function ReportPage({ params }: Props) {
     <>
       <header className="report-header report-page-header">
         <nav className="report-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/research">Research archive</Link>
+          <Link href="/research">Research</Link>
           <ArrowIcon />
           <span aria-current="page">{p.reference}</span>
         </nav>
@@ -259,7 +259,7 @@ export default async function ReportPage({ params }: Props) {
               </li>
               <li>
                 <Link href="/research">
-                  Research archive <ArrowIcon />
+                  Research <ArrowIcon />
                 </Link>
               </li>
             </ul>

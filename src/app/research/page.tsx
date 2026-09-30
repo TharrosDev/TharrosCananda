@@ -12,7 +12,7 @@ import { reportAsset, reportText } from "@/lib/reports";
 import "./research.css";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Research Archive",
+  title: "Research",
   description:
     "Published Tharros Canada research and data notes on trade, defence, energy, industry, technology and public data across Canada and Europe, searchable in full text.",
   path: "/research",
@@ -38,7 +38,7 @@ export default async function ResearchPage() {
           </Link>
         </div>
       </header>
-      <section className="archive-page" aria-label="Research archive">
+      <section className="archive-page" aria-label="Research">
         {/* Without JavaScript (or before hydration) the default view renders; the URL-aware tool takes over after. */}
         <Suspense fallback={<ResearchArchive {...archive} />}>
           <ResearchArchiveWithUrl {...archive} />

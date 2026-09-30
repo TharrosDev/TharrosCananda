@@ -1,54 +1,62 @@
 # Tharros Canada direction contract
 
-Current direction: **The open issue** · chooser key `e5ea266c` · FORM seed `df0d4fa0`
+Current direction: recognisable Tharros Canada identity, compact research discovery and sparse burgundy on white.
 
-The owner directly approved this second visual choice. The earlier Open Questions choice, candidate 7, seed `f037cd34`, records the identity's initial selection; it does not override the latest composition and imagery decision. Current as of 2026-09-29. `PRODUCT.md` governs product truth, `DESIGN.md` records the built system, and the surface brief records its first expression.
+The owner initially selected Open Questions, candidate 7, seed `f037cd34`, then The open issue, chooser `e5ea266c`, seed `df0d4fa0`. The latest direct instructions simplify those compositions and select the Canada–Europe connecting-line hero. PRODUCT governs truth; DESIGN describes the implemented system; surface briefs apply it to the pages. Historical chooser choices do not override the latest instructions.
 
 ## THESIS
 
-An open editorial issue gives independent student research a confident, contemporary presence. A full-width statement introduces Tharros, real reports establish its substance, questions invite exploration, and the evidence remains inspectable. The white page, dark ink, blue emphasis, and asymmetric reading structures sustain the identity through distinct tasks.
+Let the Tharros Canada name and real work establish a contemporary research presence. A restrained animated connection gives Home energy without complicating reading. Dedicated Research, Research areas, Methodology and About pages each answer a different reader need.
 
 ## OWN-WORLD
 
-- White ground, dark blue ink, ultramarine actions and emphasis, neutral grey grouping, restrained pale blue evidence states, and selective orange details.
-- Space Grotesk statements and editorial titles; Schibsted Grotesk prose, controls, and metadata.
-- Open asymmetric spreads, ruled records, compact reference rows, and square working instruments.
-- Native question and subject disclosures, an evidence workshop, and an operational source directory.
-- Real supplied report covers remain visible.
-- Exactly two editorial-image records, home and About, stay null until the owner supplies imagery.
+- White ground, neutral ink `#151515`, soft prose `#414141`, neutral grey grouping and black broad surfaces.
+- Sparse burgundy actions `#782c3d`, deeper hover `#55202c`, muted red details `#9e354c` and pale burgundy states `#f6edf0`.
+- `--blue` remains a CSS compatibility alias for ink; it is not an active blue palette.
+- Space Grotesk identity/titles and Schibsted Grotesk prose, controls and metadata.
+- Open reading structures, compact ruled rows and square working controls.
+- Supplied report covers remain faithful artifacts. Empty Home and About imagery frames are not rendered.
 
 ## STORY
 
-1. Recognise the project and its Canada–Europe scope.
-2. Read the latest real publication and find earlier work.
-3. Open questions across five connected research fields.
-4. Trace a report passage into its evidence and explore public sources.
-5. Understand the student project, its boundaries, and editorial contact routes.
+1. Recognise Tharros Canada and its Canada–Europe interests.
+2. Read the latest real report and find published work in Research.
+3. Glance at three visibly provisional upcoming topics, with the first marked In progress.
+4. Choose Methodology or Research areas through the compact homepage CTAs.
+5. Inspect a real report's supporting evidence, understand the mission and get in touch.
 
 ## FIRST VIEWPORT
 
-- **Home:** a full-width statement, then introduction and direct research/project actions. The next spread is an unboxed publication column beside project and evidence context, with one empty 16:9 frame in the publication column.
-- **Research:** a compact ink heading, framed white search instrument, neutral facets, open results, and optional record preview.
-- **About:** compact project purpose, a factual ledger and publication-title index, followed by subject disclosures and editorial/contact chapters.
-- **Methodology:** a compact workshop introduction and a full-width evidence instrument with visible “Traced to” feedback.
-- **Policy pages:** white reference title and horizontal facts, a static chapter rail, then title/body rows.
-- **Report:** compact record and reading destinations lead into the unchanged supplied PDF and existing controls.
-- **Footer:** white typographic signature, compact navigation, project/contact details, and utility information.
+- **Home:** a large two-line Tharros Canada wordmark and concise introduction beside a black Canada–Europe diagram, with direct Research and About actions.
+- **Research:** a compact heading, white search instrument, neutral facets, result rows and optional preview.
+- **Research areas:** a concise subject guide with five native independent disclosures.
+- **About:** a concise introduction and Contact action, followed by short About/Mission/Why/Contact rows.
+- **Methodology:** a compact introduction and real evidence trace with visible Traced to feedback.
+- **Policy pages:** reference titles, horizontal facts, static chapter links and readable rows.
+- **Report:** direct reading/evidence destinations lead into the unchanged supplied PDF and controls.
 
 ## FORM
 
-- Home's asymmetric publication/project spread gives way to a native open-question index and one full-width method invitation.
-- About pairs independence and principles and reserves one empty 3:2 frame inside that chapter.
-- Methodology follows the worked trace with five continuous rules and a source directory enhanced by search and region filtering. Native region anchors and all ten publishers remain available without JavaScript. It has no editorial image slot.
-- Policy chapter links remain static in layout; active-section feedback is a reading enhancement.
-- Archive tools and reader controls remain intact; white framing adapts them to the issue.
-- Desktop navigation uses underline feedback, and mobile navigation uses a full-height sheet with readable descriptions.
-- Motion supports arrows, covers, trace relationships, disclosure marks, and source nodes. Reduced motion and no-JavaScript reading retain usable paths.
+- Home's compact report and three numbered draft topics lead to two CTA boxes. The former field and methodology essays are removed.
+- Upcoming ideas live separately from publications and are explicitly labelled Draft topics. They do not imply completed work or verified findings.
+- Research areas owns the five subjects, questions, evidence types and truthful publication availability; the first disclosure opens by default.
+- About removes publication and source inventories. Contact is one invitation with the real editorial email, copy feedback and manual recovery.
+- Methodology keeps the worked trace and five rules, without the former public publisher directory or source-category section.
+- Research search/facets/URL state/density/sort/suggestions/Cite/PDF/Copy link and complete no-JavaScript results remain intact. Reader controls remain intact.
+- Public copy calls the collection Research. Avoid decorative Record/Archive headings and the project as a name for Tharros; topical record language remains acceptable.
 
-## IMAGE POLICY
+## MOTION AND IMAGERY
 
-`src/data/editorial-images.ts` configures only `home: null` and `about: null`. Their frames are 16:9 and 3:2 respectively. Null renders no image and no caption. Do not substitute generated imagery, stock images, icons, captions, or upload prompts. The owner will supply imagery later. Existing report covers are separate supplied research artifacts.
+Three Canada–Europe paths draw once over 4.2 seconds, with .2/.4-second staggering, only inside prefers-reduced-motion: no-preference. The static default shows all paths. The decorative map is hidden from assistive technology; adjacent prose explains the scope. There is no loop or content reveal.
+
+Shared state transitions, cover transitions and interaction-triggered evidence leaders remain purposeful enhancements. Reduced motion and no-JavaScript paths retain content and destinations. Scroll-linked motion keeps the guarded property restrictions enforced by CSS tests.
+
+The existing `home: null` and `about: null` optional-image configuration is retained but its empty frames are not mounted on those pages. Add imagery only when the owner supplies it, with truthful alt text, dimensions and credit. Do not substitute placeholders.
 
 ## PRODUCT BOUNDARIES
 
-The project publishes its own research and accepts questions, corrections, and collaboration inquiries; it does not claim a commissioned research service or institutional affiliation. No placeholder reports, fabricated evidence, or unverified scale claims are added. PDFs remain byte-for-byte supplied artifacts. Reports stay `indexable: false` until the owner explicitly approves indexing. Source records have no retrieval or access dates, and retired intake and live feeds remain retired.
+Tharros publishes its own independent student research and accepts questions, corrections and future-topic ideas. No commissioned service, institutional affiliation, placeholder publication or invented evidence is claimed. Owner PDFs remain untouched. Reports remain indexable: false until explicit approval. Source records have no retrieval/access dates; retired intake and removed live feeds stay retired.
+
+## FINISH
+
+Review the actual integrated revision and report scoped evidence. Prior captures, check totals and finish verdicts remain historical only. Direction and quality documents are criteria; they are not validation results.

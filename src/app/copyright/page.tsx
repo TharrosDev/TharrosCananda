@@ -54,8 +54,7 @@ export default function CopyrightPage() {
             <h2>What the licence covers</h2>
             <div className="policy-section-body">
               <p>
-                Publications in the <Link href="/research">Research archive</Link> are licensed
-                under{" "}
+                Publications in <Link href="/research">Research</Link> are licensed under{" "}
                 <a href={researchLicence.url} rel="license">
                   {researchLicence.name}
                 </a>

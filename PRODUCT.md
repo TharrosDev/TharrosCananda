@@ -8,63 +8,71 @@ Web.
 
 ## Readers
 
-People following Canada–Europe policy and industry questions: researchers, students, journalists, practitioners and interested readers. They come to read a report, check its sources and limitations, find related work, and contact the project about a correction or collaboration.
+People following Canada–Europe policy and industry questions: researchers, students, journalists, practitioners and interested readers. They come to read a report, check its sources and limitations, find related work and send editorial questions or corrections.
 
 ## Product purpose
 
-Tharros Canada is an independent student research project. It publishes its own reports on questions connecting Canada and Europe, along with data notes that test whether public evidence is fit for a stated use. The project is not a commissioned research service.
+Tharros Canada is an independent student research initiative. It publishes its own reports on questions connecting Canada and Europe, along with data notes that test whether public evidence is fit for a stated use. It does not offer commissioned research services.
 
 The site makes three things easy:
+
 - read and download real published work;
 - inspect the sources, methods and limitations behind it;
-- find the archive and send editorial questions, corrections or collaboration inquiries.
+- explore research interests and contact Tharros about a question, correction or future topic.
 
 ## Positioning
 
-Tharros is a student research project, not a government body, a legal or regulatory adviser, or a generic consultancy. It does not claim institutional affiliation, fellows, clients, funders, partnerships or policy influence it cannot verify. It names the author of each report without adding a personal profile until verified details are supplied.
+Tharros presents independent student research without claiming government status, legal or regulatory advice, institutional affiliation, fellows, clients, funders, partnerships or policy influence it cannot verify. It names the author of each report without adding a personal profile until verified details are supplied and approved.
 
-Credibility comes from inspectable sources, explicit uncertainty and published work. The current subject scope is Canada–Europe policy and industry broadly; individual reports define their own precise questions. No tighter sector specialty is claimed yet.
+Credibility comes from inspectable sources, explicit uncertainty and published work. The current scope is Canada–Europe policy and industry broadly; each report defines its own precise question. No narrower sector specialty is claimed yet.
 
 ## Current public surfaces
 
-- **Home:** the latest real release, archive subjects and the research method.
-- **Research:** the searchable archive, report pages at `/research/<slug>`, and stable `/research/id/<reference>` URLs.
-- **Methodology:** source selection, human verification, freshness, fitness for use and limitations, shown through a real data note.
-- **About:** what the student project is, what it has published, its principles, boundaries and editorial contact.
+- **Home:** a large Tharros Canada identity and quiet connecting-line diagram, the compact latest real release, three draft upcoming topics and two direct CTAs to Methodology and Research areas.
+- **Research:** searchable publications at `/research`, report pages at `/research/<slug>` and stable `/research/id/<reference>` URLs. Search, facets, URL state, sort, density, suggestions, Cite, PDF, Copy link and the no-JavaScript list stay available.
+- **Research areas:** a dedicated `/research-areas` guide to the five subjects, scope, questions, useful evidence and actual publication availability. Native disclosures work without JavaScript.
+- **Methodology:** source selection, human verification, freshness, fitness for use and limitations, demonstrated through the real worked evidence trace. The public publisher directory and source-category section have been removed.
+- **About:** short About, Mission, Why and Contact sections. The editorial address and copying fallback are available without a publication ledger, source directory or separate inquiry categories.
 - **Documents:** Privacy, Accessibility and Copyright. Public research is licensed CC BY 4.0.
-- **The 404 page:** an archive search and useful research links.
+- **The 404 page:** Research search and useful destinations.
 
-Primary navigation: Research · Methodology · About. Older service URLs redirect to the archive or methodology; the former request API returns 410 and accepts no submissions.
+Primary navigation remains Research · Methodology · About. Research areas is reached through the compact homepage CTA. Older service URLs redirect to Research or Methodology; the former request API returns 410 and accepts no submissions.
 
 ## Evidence commitments
 
-- Publisher, source, reference period, licence and limitations stay visible wherever data or research is shown.
-- When a source is unavailable, the site shows that it is unavailable rather than plausible substitute values.
-- Naming a public institution identifies a source only and never implies endorsement.
-- The archive holds real work only, with no placeholder reports.
+- Publisher, source, reference period, licence and limitations stay visible where research or data is shown.
+- When a source is unavailable, show that it is unavailable rather than plausible substitute values.
+- Naming a public institution identifies a source and never implies endorsement.
+- Published work contains real reports only, with no placeholders.
 - The owner's PDFs are never edited. Metadata and corrections belong in the site record, subject to `docs/REPORT_REQUIREMENTS.md`.
 - Reports remain `indexable: false` until the owner explicitly approves public indexing.
+- No source retrieval or access dates appear in records or public copy. Retired intake and removed live feeds remain retired.
+- Home's upcoming topics are owner-requested draft ideas in `src/data/upcoming-research.ts`, separate from the publication registry. The first shows In progress; a visible note says titles and scope may change. They do not claim completed research, findings, delivery dates or confirmed external activity.
 
-## Brand
+## Brand and language
 
-The open issue is the owner's latest approved identity: white ground, dark ink, selective ultramarine, neutral grey, and small orange details, with Space Grotesk for confident statements and editorial titles and Schibsted Grotesk for prose and controls. Open asymmetric reading structures, real publication records, native question disclosures, and inspectable evidence foreground the student project. Two editorial frames stay empty until the owner supplies imagery. `DESIGN.md` records the implemented visual system and the earlier Open Questions choice history.
+Use white ground, neutral dark ink and black surfaces, with sparse burgundy (`#782c3d`), deep burgundy hover (`#55202c`) and muted red details (`#9e354c`). Space Grotesk carries the identity and titles; Schibsted Grotesk carries prose and controls. The Canada–Europe diagram draws once when motion is permitted and is complete in reduced-motion mode. Real supplied covers remain the principal report imagery; empty Home and About editorial frames are not rendered.
+
+Public wording is Research. Prefer direct actions such as “Check out our research” and “Look at the research.” Do not use Archive, decorative Record headings or “the project” to refer to Tharros. Topical uses of record remain useful for source metadata, procurement evidence and similar contexts.
+
+`DESIGN.md` records the implemented system and a brief history of the earlier Open Questions and The open issue choices. The latest direct owner instructions govern the simplified composition and burgundy palette.
 
 ## Product principles
 
-- Lead with the research and let the work establish the project's credibility.
-- Organize the archive by the question and the evidence, rather than by a claim of institutional scale.
-- Use research and data as the visual material.
-- The five research areas are a homepage summary and archive taxonomy, not a claim that each has published work:
+- Lead with the identity and research; let real work establish credibility.
+- Organize publications by question and evidence rather than institutional scale.
+- Keep About focused on purpose and invitation. Methodology explains verification, Research areas explains subject interests and Research holds published work.
+- Keep the homepage compact after its opening: latest release, three provisional upcoming topics and two navigation boxes.
+- The five research areas describe interest and provide Research taxonomy; each does not imply published work:
   - Trade & Economic Integration
   - Defence & Security
   - Energy, Resources & Industry
   - Technology & Strategic Industries
   - Data Quality & Validity
-- Prefer a narrow real capability over a broad simulated one.
-- Let published work justify any future expansion of the taxonomy or functionality.
+- Let published work justify any future expansion of taxonomy or functionality.
 
 ## Quality targets
 
 - **Accessibility:** WCAG 2.2 AA. Semantic structure, keyboard access, visible focus, contrast, labelled controls, error recovery, reduced motion, HTML equivalents for graphics and purposeful mobile layouts.
 - **Core Web Vitals:** LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1.
-- **Browser tests:** Playwright covers reading, archive search, report access, responsive layout, axe checks and visual regression.
+- **Browser tests:** Playwright covers discovery, research search, report access, responsive layout, axe checks and visual regression. These targets do not imply completed checks for a revision.

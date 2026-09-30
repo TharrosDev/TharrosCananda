@@ -4,7 +4,7 @@
 .report-breadcrumb a { min-height: 44px; display: inline-flex; align-items: center; color: var(--red); font-weight: 600; text-underline-offset: 4px; }
 .report-breadcrumb svg { width: 16px; height: 16px; }
 .report-breadcrumb [aria-current] { font-variant-numeric: tabular-nums; }
-.report-page-header .report-header-bar { min-height: 40px; padding: 10px 0; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink-soft); font-size: 14px; --focus: var(--blue); }
+.report-page-header .report-header-bar { min-height: 40px; padding: 10px 0; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); background: transparent; color: var(--ink-soft); font-size: 14px; --focus: var(--red); }
 .report-page-header .report-header-bar a { color: var(--red); text-decoration-color: currentColor; }
 .report-page-header .report-header-bar p:last-child { color: var(--ink); }
 .report-page-header h1 { max-width: 30ch; margin-bottom: 14px; font-size: clamp(34px, 3.5vw, 54px); font-weight: 600; line-height: 1.08; letter-spacing: -.03em; text-wrap: balance; }

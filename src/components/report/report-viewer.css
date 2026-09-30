@@ -5,21 +5,21 @@
 
 /* Contents: the PDF's own sections, the current one marked as the reader scrolls. */
 .report-contents { position: sticky; top: calc(var(--header-height) + 20px); max-height: calc(100dvh - var(--header-height) - 40px); overflow-y: auto; overscroll-behavior: contain; }
-.report-contents-heading { margin: 0; padding: 14px 0; border-top: 2px solid #2447dc; font-family: var(--display); color: var(--ink); font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+.report-contents-heading { margin: 0; padding: 14px 0; border-top: 2px solid var(--red); font-family: var(--display); color: var(--ink); font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
 .report-contents-row { display: none; }
 .report-contents-list { margin: 0; padding: 0; list-style: none; }
 .report-contents-list a { min-height: 44px; padding: 10px 8px 10px 12px; display: flex; align-items: baseline; gap: 8px; border-left: 1px solid var(--rule); color: var(--ink-soft); font-size: 15px; line-height: 1.4; text-decoration: none; transition: color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out); }
-.report-contents-list a:hover { color: #2447dc; background: #fff; }
-.report-contents-list a[aria-current="location"] { color: #2447dc; border-left-color: #2447dc; background: #fff; font-weight: 600; }
+.report-contents-list a:hover { color: var(--red); background: #fff; }
+.report-contents-list a[aria-current="location"] { color: var(--red); border-left-color: var(--red); background: #fff; font-weight: 600; }
 .report-contents-title { flex: 1; }
 .report-contents-page { color: var(--slate); font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-.report-viewer-toolbar { position: sticky; top: var(--header-height); z-index: 5; padding: 12px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; border-top: 2px solid #2447dc; border-bottom: 1px solid var(--rule-strong); background: #fff; font-size: 15px; scroll-margin-top: calc(var(--header-height) + 72px); }
+.report-viewer-toolbar { position: sticky; top: var(--header-height); z-index: 5; padding: 12px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; border-top: 2px solid var(--red); border-bottom: 1px solid var(--rule-strong); background: #fff; font-size: 15px; scroll-margin-top: calc(var(--header-height) + 72px); }
 .report-viewer-pages, .report-viewer-zoom, .report-viewer-find { display: flex; align-items: center; gap: 8px; }
 .report-viewer-find { flex: 1 1 290px; min-width: 0; }
 .report-viewer-find-field { position: relative; flex: 1 1 150px; min-width: 0; }
 .report-viewer-pages label { font-weight: 600; }
-.report-viewer-pages input, .report-viewer-find input { height: 44px; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink); font: inherit; font-size: 16px; caret-color: #2447dc; }
+.report-viewer-pages input, .report-viewer-find input { height: 44px; border: 1px solid var(--rule-strong); background: #fff; color: var(--ink); font: inherit; font-size: 16px; caret-color: var(--red); }
 .report-viewer-pages input { width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
 .report-viewer-find input { width: 100%; min-width: 0; padding: 0 10px; }
 .report-viewer-find input::-webkit-search-cancel-button { display: none; }
@@ -28,15 +28,15 @@
 .report-viewer-find-status:empty { display: none; }
 .report-viewer-zoom button, .report-viewer-find button, .report-viewer-fullscreen { min-width: 44px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--rule-strong); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
 .report-viewer-find button { padding: 0; }
-.report-viewer-zoom button:hover, .report-viewer-zoom button[aria-pressed="true"], .report-viewer-find button:hover:not(:disabled), .report-viewer-fullscreen:hover, .report-viewer-fullscreen[aria-pressed="true"] { background: #2447dc; color: #fff; border-color: #2447dc; }
+.report-viewer-zoom button:hover, .report-viewer-zoom button[aria-pressed="true"], .report-viewer-find button:hover:not(:disabled), .report-viewer-fullscreen:hover, .report-viewer-fullscreen[aria-pressed="true"] { background: var(--red); color: #fff; border-color: var(--red); }
 .report-viewer-find button:disabled { cursor: default; opacity: .45; }
 .report-viewer-zoom button svg, .report-viewer-find button svg { width: 18px; height: 18px; margin: auto; display: block; }
 .report-viewer-find .report-viewer-find-clear { position: absolute; top: 0; right: 0; width: 44px; border: 0; }
 .report-viewer-zoom output { min-width: 4.5ch; text-align: center; font-variant-numeric: tabular-nums; }
 .report-viewer-fullscreen { font-weight: 600; }
-.report-viewer-download { min-height: 44px; margin-left: auto; display: inline-flex; align-items: center; color: #2447dc; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.report-viewer-download { min-height: 44px; margin-left: auto; display: inline-flex; align-items: center; color: var(--red); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .report-viewer-state { min-height: 40px; margin: 0 0 12px; padding: 10px 0; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
-.report-reader[data-loading] .report-viewer-state { color: #2447dc; }
+.report-reader[data-loading] .report-viewer-state { color: var(--red); }
 .report-viewer-sheets { display: grid; justify-items: center; gap: 32px; overflow-x: auto; padding: 4px 0 12px; }
 .report-viewer-sheets:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
 .report-sheet { position: relative; flex: none; background: #fff center / 100% 100% no-repeat; box-shadow: 0 18px 44px -22px rgba(23, 33, 47, .24); }
@@ -45,9 +45,9 @@
 .report-viewer-error p { margin: 0 0 12px; font-size: 19px; }
 
 /* Full screen: the reader becomes its own scrolling page. The overlay is the fallback where element full screen is unavailable (iPhone). */
-.report-reader:fullscreen { width: 100%; height: 100%; margin: 0; padding: 0 var(--gutter) 40px; overflow-y: auto; background: #d9eff5; }
-.report-reader::backdrop { background: #d9eff5; }
-.report-reader[data-fullscreen="overlay"] { position: fixed; inset: 0; z-index: 100; width: 100%; height: 100dvh; margin: 0; padding: 0 var(--gutter) max(40px, env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; background: #d9eff5; }
+.report-reader:fullscreen { width: 100%; height: 100%; margin: 0; padding: 0 var(--gutter) 40px; overflow-y: auto; background: var(--ivory-deep); }
+.report-reader::backdrop { background: var(--ivory-deep); }
+.report-reader[data-fullscreen="overlay"] { position: fixed; inset: 0; z-index: 100; width: 100%; height: 100dvh; margin: 0; padding: 0 var(--gutter) max(40px, env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; background: var(--ivory-deep); }
 html[data-viewer-overlay] { overflow: hidden; }
 .report-reader[data-fullscreen] .report-viewer-toolbar { top: 0; }
 .report-reader[data-fullscreen] .report-contents { top: 20px; max-height: calc(100dvh - 40px); }
@@ -55,14 +55,14 @@ html[data-viewer-overlay] { overflow: hidden; }
 
 @media (max-width: 1024px) {
   .report-reader { display: block; }
-  .report-contents { position: sticky; top: var(--header-height); z-index: 6; max-height: none; margin-bottom: 16px; overflow: visible; border-top: 2px solid #2447dc; background: #fff; }
+  .report-contents { position: sticky; top: var(--header-height); z-index: 6; max-height: none; margin-bottom: 16px; overflow: visible; border-top: 2px solid var(--red); background: #fff; }
   .report-contents-heading { display: none; }
   .report-contents-row { min-height: 56px; display: flex; align-items: stretch; border-bottom: 1px solid var(--rule); }
   .report-contents-toggle { min-width: 0; min-height: 56px; padding: 10px 12px; flex: 1; display: flex; align-items: center; gap: 12px; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
   .report-contents-toggle svg { width: 18px; height: 18px; flex: 0 0 18px; }
   .report-contents-position { margin-left: auto; color: var(--ink-soft); font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .report-contents-tools { min-height: 44px; padding: 8px 12px; border: 0; border-left: 1px solid var(--rule); background: transparent; color: #2447dc; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .report-contents-toggle:hover, .report-contents-tools:hover { background: #d9eff5; }
+  .report-contents-tools { min-height: 44px; padding: 8px 12px; border: 0; border-left: 1px solid var(--rule); background: transparent; color: var(--red); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .report-contents-toggle:hover, .report-contents-tools:hover { background: var(--ivory-deep); }
   .report-contents-list { position: absolute; top: 100%; right: 0; left: 0; display: none; max-height: min(60dvh, 420px); padding: 8px 0; overflow-y: auto; overscroll-behavior: contain; border-bottom: 1px solid var(--rule-strong); background: #fff; }
   .report-contents[data-open] .report-contents-list { display: block; }
   .report-viewer-toolbar { position: static; }
@@ -102,7 +102,7 @@ html[data-viewer-overlay] { overflow: hidden; }
 .textLayer :is(span, br) { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0% 0%; user-select: text; }
 .textLayer > :not(.markedContent), .textLayer .markedContent span:not(.markedContent) { z-index: 1; --font-height: 0; font-size: calc(var(--text-scale-factor) * var(--font-height)); --scale-x: 1; --rotate: 0deg; transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv)); }
 .textLayer .markedContent { display: contents; }
-.textLayer ::selection { background: rgba(70, 103, 127, .28); color: transparent; }
+.textLayer ::selection { background: rgba(120, 44, 61, .22); color: transparent; }
 .textLayer br::selection { background: transparent; }
 .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: 0; cursor: default; user-select: none; }
 .textLayer.selecting .endOfContent { top: 0; }

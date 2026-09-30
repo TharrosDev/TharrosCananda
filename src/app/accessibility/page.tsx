@@ -58,7 +58,7 @@ export default function AccessibilityPage() {
                 <li>No horizontal scrolling at widths from 320 to 1440 pixels.</li>
                 <li>Touch targets of at least 44 pixels on phones.</li>
                 <li>Consistent, visible keyboard focus on links, buttons and form fields.</li>
-                <li>Keyboard use of the menu, the research archive and the report viewer.</li>
+                <li>Keyboard use of the menu, Research and the report viewer.</li>
               </ul>
               <p>
                 The site also includes a skip link, labelled form fields with clear errors, reduced

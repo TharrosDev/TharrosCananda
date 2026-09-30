@@ -267,7 +267,7 @@ export function ResearchArchive({
         }}
       >
         <div className="archive-search">
-          <label htmlFor="archive-query">Search the archive</label>
+          <label htmlFor="archive-query">Search research</label>
           <div className="archive-search-field">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <circle
@@ -411,7 +411,7 @@ export function ResearchArchive({
               {results.length} {results.length === 1 ? "publication" : "publications"}
             </span>
             <span className="sr-only">
-              {state.q.trim() ? ` matching ${state.q.trim()}` : " in the archive"}
+              {state.q.trim() ? ` matching ${state.q.trim()}` : " in Research"}
               {activeFilters ? ` with ${activeFilters} active filters` : ""}
             </span>
           </span>
@@ -463,13 +463,13 @@ export function ResearchArchive({
                 : "Browse the published work."}
           </p>
           <button type="button" className="archive-copy-view" onClick={copyArchive}>
-            {currentCopy?.success ? "Archive link copied" : "Copy archive link"}
+            {currentCopy?.success ? "Research link copied" : "Copy research link"}
           </button>
           <span className="sr-only" role="status">
             {currentCopy?.success
-              ? "Archive link copied"
+              ? "Research link copied"
               : currentCopy
-                ? "Copy failed. The archive link is shown to copy by hand."
+                ? "Copy failed. The research link is shown to copy by hand."
                 : ""}
           </span>
           {currentCopy && !currentCopy.success && (
@@ -477,7 +477,7 @@ export function ResearchArchive({
               className="archive-link-field"
               readOnly
               value={archiveUrl}
-              aria-label="Archive link"
+              aria-label="Research link"
               onFocus={(event) => event.currentTarget.select()}
             />
           )}
@@ -534,7 +534,7 @@ export function ResearchArchive({
             <p>
               {state.q.trim()
                 ? "Try fewer words, a broader subject or a report reference."
-                : "Try removing a filter to see more of the archive."}
+                : "Try removing a filter to see more research."}
               {activeFilters > 0 && " Your selected filters may also be limiting the results."}
             </p>
             {suggestions.length > 0 && (
@@ -727,7 +727,7 @@ function ArchiveCard({
           </div>
           {/* Where there is no room for the record pane, the record opens under its entry. */}
           <details className="archive-record-inline">
-            <summary>Record</summary>
+            <summary>Details</summary>
             <ArchiveRecord doc={doc} areaName={areaName} counts={counts} inline />
           </details>
         </div>

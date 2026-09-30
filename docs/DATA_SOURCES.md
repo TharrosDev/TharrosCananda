@@ -6,9 +6,9 @@
 - **Canadian publishers:** federal, provincial and municipal. Examples: Statistics Canada, CBSA, CanadaBuys and the Ontario Data Catalogue.
 - **European publishers:** for example Eurostat, TED and Access2Markets.
 - **Where it appears:**
-  - the Methodology source atlas;
-  - the About ledger count;
   - `llms.txt`;
+
+The Methodology publisher directory and About source count were removed in the compact site revision. Report-specific sources remain alongside each report, and the worked Methodology example links to its supporting evidence.
 
 A listing means only that the source is a relevant public research route. It does **not** mean:
 - that Tharros has integrated the source into the site;

@@ -30,7 +30,7 @@ export default function NotFound() {
         </form>
         <nav className="not-found-links" aria-label="Useful pages">
           <Link href="/research">
-            Research archive <ArrowIcon />
+            Research <ArrowIcon />
           </Link>
           <Link href="/methodology">
             Methodology <ArrowIcon />

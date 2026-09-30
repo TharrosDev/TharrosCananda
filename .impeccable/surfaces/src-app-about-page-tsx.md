@@ -3,21 +3,27 @@ version: 1
 slug: "src-app-about-page-tsx"
 primary_target: "src/app/about/page.tsx"
 mode: "read"
-related_targets: ["src/app/about/about.css","src/components/about-contact.tsx","src/components/editorial-image-slot.tsx"]
+related_targets: ["src/app/about/about.css","src/components/about-contact.tsx"]
 ---
 
 ## Scope
-About (`/about`), project portrait and field guide. The owner rejected the first upgrade as a repeated template and requested a deep structural revision. Existing research facts, native disclosures, editorial boundaries and contact behavior remain authoritative. Personal profiles remain absent.
+
+About (`/about`) introduces Tharros Canada, its mission and its reasons for exploring Canada–Europe questions, then offers direct editorial contact. The latest owner request removes the publication ledger, subject index, independence/source chapters and separate inquiry categories. No personal profile or unverified affiliation is added.
 
 ## Direction contract
-THESIS: Understand the project through what is on the record, what it can investigate and how a reader can question the work. The page has its own composition rather than repeating Home or Methodology.
 
-OWN-WORLD: Contemporary Open questions typography on white: Space Grotesk and Schibsted Grotesk, ink prose, blue actions and coral disclosure marks. No pale-blue split hero, metric strip, dark standards band, equal card grid or decorative section numbers.
+THESIS: A reader should understand why Tharros exists and know how to get in touch through a short About page. Detailed reports, subject scope and verification belong on their dedicated pages.
 
-STORY: A compact full-width purpose statement gives immediate research and contact paths. A quiet factual project record sits beside an index of real report titles. The subject index opens into question-led reading bodies. Independence and editorial habits share one chapter. Direct contact and subject-specific email routes close the portrait.
+OWN-WORLD: White ground, neutral ink, Space Grotesk headings and Schibsted Grotesk prose. Burgundy is reserved for Contact, the editorial email and interaction feedback. Rules and reading space carry the structure; no decorative numbers, metric strip, repeated cards or empty imagery frames.
 
-FIRST VIEWPORT: A modest purpose statement and concise explanation, followed by archive/contact actions and static section links. Actual published titles establish the record. Facts are small table rows rather than display metrics.
+STORY: A concise title and student-research introduction lead directly to Contact. About explains curiosity and the form of the work; Mission names clear research and transparent sources; Why explains the Canada–Europe interest; Contact welcomes research questions, corrections and future-topic ideas.
 
-FORM: A publication index, then a subject index. Native independent disclosures open each subject into an indented column of questions; source types and the honest archive route follow below. The first subject opens by default. Keyboard, no-JavaScript and clipboard fallback behavior remain intact. One quiet 3:2 empty editorial image slot is reserved beside the project boundaries. The latest owner instruction is to leave imagery empty for later selection; there is no generated or actual photograph, caption, icon or coming-soon copy.
+FIRST VIEWPORT: About Tharros Canada, one short introduction and a Contact action. The first reading row starts the About explanation rather than a publication inventory.
 
-FINISH: Root batches responsive and visual review at 320px, phone and desktop widths after integration. Focused lint, content contracts and required browser checks apply to this revision. Root updates DESIGN.md. No image is shipped by this surface.
+FORM: Four heading/copy rows: About, Mission, Why and Contact. The Mission statement has a slightly larger scale. Rows stack below 760px. Contact contains one paragraph, the actual editorial email, a copy action, visible result feedback and a manual copying fallback. Native email contact remains available without JavaScript.
+
+IMAGE POLICY: No image or empty optional frame is rendered on About. The existing null imagery configuration is retained for possible future owner-supplied material. Do not add stock or generated placeholders.
+
+COPY: Name Tharros Canada directly; use Contact. Avoid calling it the project, decorative Record/Archive labels or institutional claims. Keep the sections short, factual and open to later owner-supplied details.
+
+FINISH: Root verifies the integrated revision at narrow phone and desktop sizes and checks contact/copy recovery. This brief states review criteria, not completed QA. Earlier About captures and verdicts describe the superseded composition.
