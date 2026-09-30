@@ -6,7 +6,7 @@ import { tracePhrases } from "../src/data/trace-example";
 import { fixturePath } from "./fixture";
 
 // The homepage research block depends on whether real work is published; derived so new reports need no edit.
-const researchHeading = "Latest release";
+const researchHeading = "Inside the database";
 
 const paths = ["/", "/research", fixturePath, "/this-page-does-not-exist"];
 
@@ -69,10 +69,9 @@ test("nested research route keeps Research navigation state", async ({ page, isM
   test.skip(isMobile, "Desktop navigation; mobile nav is behind the menu button");
   await page.goto("/research/not-a-real-publication");
   const primary = page.getByRole("navigation", { name: "Primary" });
-  await expect(primary.getByRole("link", { name: "Publications", exact: true })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
+  await expect(
+    primary.getByRole("link", { name: "Research database", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
 });
 
 for (const path of ["/", "/about", "/research", "/copyright"]) {
@@ -216,20 +215,22 @@ test("focus rings are consistent across links, buttons, chips and inputs", async
 });
 
 test.describe("home flow", () => {
-  test("preserves the hero and introduces undergraduate publishing below it", async ({ page }) => {
+  test("preserves the hero and introduces the undergraduate showcase below it", async ({
+    page,
+  }) => {
     await page.goto("/");
     await expect(page.locator("h1")).toHaveText("TharrosCanada");
     await expect(page.locator(".home-publishing h2")).toHaveText(
-      "Your résumé looks better when you’re published.",
+      "Strong work deserves a life beyond the classroom.",
     );
     await expect(page.locator(".home-upcoming-list > li")).toHaveCount(4);
     await expect(page.locator(".home-upcoming-note")).toContainText(
-      "Screening comes before payment",
+      "connected to its author, sources and publication details",
     );
     await expect(
-      page.getByRole("link", { name: "Prepare your submission", exact: true }),
+      page.locator(".home-explore").getByRole("link", { name: "Showcase your work", exact: true }),
     ).toHaveAttribute("href", "/submit");
-    await page.getByRole("link", { name: "See how publishing works" }).click();
+    await page.getByRole("link", { name: "See how Tharros works" }).click();
     await expect(page).toHaveURL(/\/how-it-works$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("How it works.");
   });
@@ -246,14 +247,12 @@ test.describe("home flow", () => {
 
 test("About gives a short introduction, purpose and contact", async ({ page }) => {
   await page.goto("/about");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "About Tharros Undergraduate Publishing",
-  );
-  await expect(page.locator("main")).toContainText("professional publishing platform");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("About Tharros Canada");
+  await expect(page.locator("main")).toContainText("undergraduate research showcase and database");
   await expect(page.locator("main section h2")).toHaveText([
     "The idea",
     "Mission",
-    "Beyond the classroom",
+    "Your work, connected",
     "Editorial standards",
     "Contact",
   ]);
@@ -359,8 +358,6 @@ test("each page previews as itself when shared", async ({ page }) => {
     const og = (property: string) =>
       page.locator(`meta[property="${property}"]`).getAttribute("content");
     expect(await og("og:url")).toMatch(new RegExp(`${path}$`));
-    expect(await og("og:title")).toBe(
-      (await page.title()).replace(/ \| Tharros Undergraduate Publishing$/, ""),
-    );
+    expect(await og("og:title")).toBe((await page.title()).replace(/ \| Tharros Canada$/, ""));
   }
 });

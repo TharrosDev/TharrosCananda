@@ -1,16 +1,16 @@
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "Tharros Undergraduate Publishing publications";
+export const alt = "Tharros Canada research database";
 export const size = ogSize;
 export const contentType = ogContentType;
 
 export default function OpenGraphImage() {
   return renderOgImage({
     tone: "light",
-    eyebrow: "Publications",
+    eyebrow: "Research database",
     title: "Work worth reading beyond the classroom.",
     description:
-      "Explore the publication archive. Future undergraduate contributions will join the existing research collection after launch and editorial acceptance.",
+      "Find published work, explore its evidence and authors, and use citations, original PDFs and stable links to reference it.",
     meta: [
       { label: "Access", value: "Publication pages & PDFs" },
       { label: "Submissions", value: "Forthcoming" },

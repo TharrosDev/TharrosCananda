@@ -21,8 +21,8 @@ export function Footer() {
             /
           </span>
           <span className="wordmark-subtitle">
-            <span>Undergraduate</span>
-            <span>Publishing</span>
+            <span>Canada</span>
+            <span>Student research</span>
           </span>
         </Link>
         <a className="footer-top" href="#main-content">
@@ -32,17 +32,20 @@ export function Footer() {
       <div className="footer-shell">
         <div className="footer-lead">
           <p>{publishing.slogan}</p>
-          <p className="footer-launch-note">Submissions and pricing are forthcoming.</p>
+          <p className="footer-launch-note">
+            Explore the database and author profiles. New submissions are forthcoming.
+          </p>
           <a className="footer-contact" href={`mailto:${contactEmail}`}>
             {contactEmail} <ArrowIcon />
           </a>
         </div>
         <nav className="footer-links" aria-label="Footer">
           <div>
-            <p className="footer-heading">Publishing</p>
-            <Link href="/research">Publications</Link>
+            <p className="footer-heading">Explore the work</p>
+            <Link href="/research">Research database</Link>
+            <Link href="/authors">Author profiles</Link>
             <Link href="/how-it-works">How it works</Link>
-            <Link href="/submit">Submission guidelines</Link>
+            <Link href="/submit">Showcase your work</Link>
             <Link href="/methodology">Sources &amp; methodology</Link>
             <Link href="/about#contact">Questions &amp; corrections</Link>
           </div>
@@ -62,7 +65,7 @@ export function Footer() {
           {organization.legal?.legalName ?? publishing.name}. Existing research licensed{" "}
           <Link href="/copyright">{researchLicence.short}</Link>.
         </p>
-        <p>Professional publishing for undergraduate work. Starting with Canadian students.</p>
+        <p>Undergraduate research, ready to read, reference and share.</p>
       </div>
     </footer>
   );

@@ -64,20 +64,19 @@ const llms = pages.get("/llms.txt").body;
 const sitemap = pages.get("/sitemap.xml").body;
 check(
   metaContent(home.body, "description").includes(
-    "Tharros Undergraduate Publishing transforms strong undergraduate work",
-  ) && visibleText(home.body).includes("looks better when"),
-  "home publishing identity and value proposition",
+    "Tharros Canada is an undergraduate research showcase and database",
+  ) && visibleText(home.body).includes("Strong work deserves a life beyond the classroom."),
+  "home showcase identity and value proposition",
 );
 check(
   about.includes("Give strong undergraduate work somewhere to go after the grade.") &&
-    about.includes("Canadian university students"),
-  "About publishing mission and initial audience",
+    about.includes("LinkedIn-style referencing profile system displaying authored works"),
+  "About showcase mission and authored-work profiles",
 );
 check(
   submission.includes("Submissions forthcoming") &&
-    submission.includes("Pricing forthcoming") &&
-    submission.includes("Submissions are not open yet"),
-  "submission and pricing forthcoming",
+    submission.includes("New submissions are not open yet"),
+  "student submissions remain forthcoming",
 );
 check(
   !/<form\b/i.test(pages.get("/submit").body) &&
@@ -85,16 +84,16 @@ check(
   "submission guidance has no active intake form or upload",
 );
 check(
-  plannedProcessText.includes("Preparing for launch") &&
-    plannedProcessText.includes("intake is not open yet") &&
-    ["Submit", "Screening", "Decision", "Payment", "Preparation", "Publish"].every((stage) =>
+  plannedProcessText.includes("New submissions forthcoming") &&
+    plannedProcessText.includes("before intake opens") &&
+    ["Prepare", "Review", "Publish", "Showcase"].every((stage) =>
       plannedProcessText.includes(stage),
     ),
   "How it works shows the planned process and closed intake",
 );
 check(
-  llms.startsWith("# Tharros Undergraduate Publishing") &&
-    llms.includes("Submissions and pricing are forthcoming.") &&
+  llms.startsWith("# Tharros Canada") &&
+    llms.includes("New student submissions are forthcoming") &&
     !llms.includes(reportPath) &&
     !llms.includes(pdfPath) &&
     !llms.includes(authorPath),

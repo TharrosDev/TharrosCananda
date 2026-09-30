@@ -4,6 +4,10 @@
 .home-publishing p { max-width: 65ch; margin-bottom: 16px; color: var(--ink-soft); font-size: 17px; }
 .home-publishing .home-publishing-deck { max-width: 38ch; font-size: clamp(21px, 2vw, 27px); line-height: 1.4; color: var(--ink); }
 .home-publishing .home-launch-note { margin: 8px 0 0; font-size: 14px; color: var(--slate); }
+.home-showcase-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 24px 0 16px; }
+.home-showcase-actions .button-primary { font-size: 16px; }
+.home-publication-byline { margin: 12px 0 0; color: var(--ink-soft); font-size: 14px; }
+.home-publication-byline a:hover { color: var(--red); }
 .home-step-detail { max-width: 44ch; margin: 8px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
 .home-work { width: var(--shell); margin: 0 auto; padding: 36px 0 var(--space-section); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 7vw, 104px); border-top: 1px solid var(--rule-strong); }
 .home-work h2 { margin-bottom: 20px; font-size: clamp(30px, 3vw, 44px); line-height: 1.15; }

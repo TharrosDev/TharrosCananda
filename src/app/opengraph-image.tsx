@@ -8,12 +8,13 @@ export const contentType = ogContentType;
 export default function OpenGraphImage() {
   return renderOgImage({
     tone: "dark",
-    eyebrow: "Undergraduate publishing",
+    eyebrow: "Tharros Canada",
     title: publishing.slogan,
-    description: "Turn your strongest undergraduate work into a professional publication.",
+    description:
+      "An undergraduate research showcase, searchable database and professional home for authored work.",
     meta: [
       { label: "For", value: "Canadian undergraduate students" },
-      { label: "Status", value: "Preparing for launch" },
+      { label: "Explore", value: "Research · Author profiles" },
     ],
   });
 }
