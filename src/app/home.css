@@ -1,20 +1,20 @@
-/* One finite Canada–Europe drawing moment; compact release and upcoming topics. */
-.home-masthead { width: var(--shell); margin: 0 auto; padding: clamp(36px, 5vw, 72px) 0 48px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: clamp(28px, 5vw, 72px); }
-.home-introduction h1 { margin: 0; font-size: clamp(58px, 6.6vw, 96px); font-weight: 650; letter-spacing: -.04em; line-height: 1; }
-.home-introduction h1 > span { display: block; }
-.home-title-stop { color: var(--red); }
-.home-introduction > p { max-width: 40ch; margin: 24px 0 0; color: var(--ink-soft); font-size: 20px; line-height: 1.6; }
-.home-masthead-actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
-.home-masthead-actions .button-primary { font-size: 16px; }
-.home-masthead-actions .text-link { font-size: 15px; color: var(--ink); border-color: var(--rule-strong); }
-.home-connections { position: relative; min-width: 0; background: var(--soft-black); overflow: hidden; }
-.home-connections svg { width: 100%; height: auto; min-height: 260px; }
-.home-connections image { opacity: .7; }
-.home-connection-base path, .home-connection-drawing path { fill: none; stroke-width: 1.5; }
-.home-connection-base path { stroke: rgba(255, 255, 255, .18); }
-.home-connection-drawing path { stroke: #d398a4; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.home-connection-node { fill: #f6e7eb; stroke: var(--soft-black); stroke-width: 2; }
-.home-connection-labels { display: flex; justify-content: space-between; gap: 16px; padding: 0 24px 20px; color: var(--on-dark); font-size: 14px; }
+/* A kinetic typographic masthead; the slash belongs to the existing wordmark. */
+.home-masthead { margin: 0 0 48px; }
+.home-hero-stage { position: relative; width: var(--shell); margin: 0 auto; padding: clamp(40px, 4.2vw, 64px) 0 clamp(48px, 5.5vw, 80px); }
+.home-hero-stage h1 { position: relative; z-index: 1; margin: 0; font-size: clamp(100px, 16.5vw, 248px); font-weight: 650; letter-spacing: -.04em; line-height: .94; text-wrap: nowrap; }
+.home-title-line { display: flex; overflow: clip; padding: .03em 0 .06em; }
+.home-title-line-canada { justify-content: flex-end; }
+.home-title-word { display: block; }
+.home-hero-slash { position: absolute; left: 8%; bottom: clamp(58px, 6.5vw, 96px); width: clamp(44px, 5.8vw, 86px); height: clamp(100px, 15vw, 224px); }
+.home-hero-slash span { display: block; width: 100%; height: 100%; background: var(--red); transform: skewX(-18deg); transform-origin: 50% 100%; }
+.home-hero-band { background: var(--soft-black); color: var(--on-dark); }
+.home-hero-band-inner { width: var(--shell); margin: 0 auto; padding: 32px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 32px clamp(32px, 6vw, 96px); }
+.home-hero-band-inner > p { max-width: 44ch; margin: 0; color: var(--on-dark-soft); font-size: clamp(18px, 1.55vw, 22px); line-height: 1.5; text-wrap: pretty; }
+.home-masthead-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px 24px; }
+.home-masthead-actions .button-primary { min-height: 56px; padding: 16px 24px; font-size: 16px; }
+.home-masthead-actions .text-link { min-height: 48px; font-size: 15px; color: var(--on-dark); border-color: var(--rule-dark); }
+.home-masthead-actions :is(a, button):focus-visible { outline-color: var(--focus-on-dark); }
+.home-masthead-actions .text-link:hover { color: var(--on-dark-soft); border-color: var(--on-dark); }
 .home-issue { width: var(--shell); margin: 0 auto; padding: 32px 0 40px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); border-top: 1px solid var(--ink); }
 .home-release, .home-upcoming { min-width: 0; }
 .home-release > h2, .home-upcoming > h2 { margin: 0 0 24px; font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
@@ -47,25 +47,28 @@
 .home-explore > a:hover { background: var(--ivory-deep); border-color: var(--ink); }
 .home-explore > a:hover svg { transform: translateX(4px); }
 @media (prefers-reduced-motion: no-preference) {
-  .home-connection-drawing path { animation: home-connect 4.2s var(--ease-out) both; }
-  .home-connection-drawing path:nth-child(2) { animation-delay: .2s; }
-  .home-connection-drawing path:nth-child(3) { animation-delay: .4s; }
+  .home-title-word { animation: home-type-enter 900ms var(--ease-out) both; }
+  .home-title-line-canada .home-title-word { animation-name: home-type-return; animation-delay: 120ms; }
+  .home-hero-slash span { animation: home-slash-unfold 1100ms var(--ease-out) 180ms both; }
 }
-@keyframes home-connect { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes home-type-enter { from { clip-path: inset(0 100% 0 0); transform: translateX(-32px); } to { clip-path: inset(0); transform: translateX(0); } }
+@keyframes home-type-return { from { clip-path: inset(0 0 0 100%); transform: translateX(32px); } to { clip-path: inset(0); transform: translateX(0); } }
+@keyframes home-slash-unfold { from { transform: skewX(-18deg) scaleY(.08); } to { transform: skewX(-18deg) scaleY(1); } }
 @media (max-width: 1050px) {
-  .home-masthead { gap: 32px; }
-  .home-masthead-actions { gap: 8px 20px; }
+  .home-hero-band-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+  .home-masthead-actions { justify-content: flex-start; gap: 8px 20px; }
   .home-issue { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; }
   .home-publication-cover { flex-basis: 110px; }
   .home-lead-publication { gap: 20px; }
 }
 @media (max-width: 760px) {
-  .home-masthead { grid-template-columns: minmax(0, 1fr); padding: 32px 0; gap: 28px; }
-  .home-introduction h1 { font-size: clamp(54px, 11vw, 76px); }
-  .home-introduction > p { font-size: 18px; margin-top: 20px; }
-  .home-masthead-actions { margin-top: 20px; }
-  .home-connections svg { min-height: 0; }
-  .home-connection-labels { padding: 0 20px 16px; }
+  .home-masthead { margin-bottom: 32px; }
+  .home-hero-stage { padding: 36px 0 44px; }
+  .home-hero-stage h1 { font-size: clamp(76px, 16.5vw, 124px); }
+  .home-hero-slash { left: 7%; bottom: 52px; width: 6vw; height: 15vw; }
+  .home-hero-band-inner { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 28px 0; }
+  .home-hero-band-inner > p { max-width: 42ch; font-size: 18px; }
+  .home-masthead-actions { justify-content: flex-start; }
   .home-issue { grid-template-columns: minmax(0, 1fr); padding: 28px 0 32px; gap: 32px; }
   .home-release > h2, .home-upcoming > h2 { margin-bottom: 20px; font-size: 23px; }
   .home-publication-cover { flex-basis: 84px; }
@@ -81,7 +84,14 @@
 @media (max-width: 480px) {
   .home-explore { grid-template-columns: minmax(0, 1fr); }
   .home-explore > a { min-height: 76px; }
-  .home-introduction h1 { font-size: clamp(50px, 14vw, 64px); }
+  .home-hero-stage { padding: 32px 0 36px; }
+  .home-hero-stage h1 { font-size: clamp(64px, 17.7vw, 84px); }
+  .home-title-line-canada { margin-top: 8px; }
+  .home-hero-slash { left: 8%; bottom: 44px; width: 20px; height: 56px; }
+  .home-hero-band-inner { padding: 24px 0; gap: 20px; }
+  .home-hero-band-inner > p { font-size: 17px; }
+  .home-masthead-actions { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .home-masthead-actions .button-primary { padding: 14px 18px; font-size: 15px; }
   .home-publication-cover { flex-basis: 72px; }
   .home-publication-body h3 { font-size: 20px; }
 }

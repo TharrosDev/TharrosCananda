@@ -4,8 +4,8 @@ Each fact lives in one doc; the others link to it. Update a doc in the same PR a
 
 | Doc | Covers | Read it when |
 | --- | --- | --- |
-| [`README.md`](../README.md) | Setup, checks, environment variables, repo layout, publishing a report | You are starting out or running the checks |
-| [`AGENTS.md`](../AGENTS.md) | Map of the code, gotchas, content-truth rules, workflow (`CLAUDE.md` imports it) | You are a coding agent, or a check failed unexpectedly |
+| [`README.md`](../README.md) | Setup, proportional checks, environment variables, repo layout, publishing a report | You are starting out or selecting checks for a change |
+| [`AGENTS.md`](../AGENTS.md) | Map of the code, proportional-check policy, gotchas, content-truth rules, workflow (`CLAUDE.md` imports it) | You are a coding agent, or a check failed unexpectedly |
 | [`PRODUCT.md`](../PRODUCT.md) | Readers, purpose, positioning, surfaces, evidence commitments | You are changing copy, pages or product scope |
 | [`DESIGN.md`](../DESIGN.md) | Tokens, typography, layout, every page, components, motion | You are changing anything visible |
 | [`OPERATIONS.md`](OPERATIONS.md) | Vercel, Supabase, DNS, readership, legacy intake retirement and runbooks | You are touching infrastructure or deploying |

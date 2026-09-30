@@ -16,7 +16,6 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:visual:update": "playwright test e2e/visual.spec.ts --update-snapshots",
     "smoke": "node scripts/smoke.mjs",
     "report:pdf": "node scripts/report-pdf.mjs",
     "postinstall": "node -e \"const fs=require('node:fs');fs.mkdirSync('public',{recursive:true});fs.copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs','public/pdf.worker.min.mjs')\""

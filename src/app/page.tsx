@@ -27,44 +27,32 @@ export default function HomePage() {
   return (
     <>
       <section className="home-masthead" aria-labelledby="home-title">
-        <div className="home-introduction">
+        <div className="home-hero-stage">
+          <div className="home-hero-slash" aria-hidden="true">
+            <span />
+          </div>
           <h1 id="home-title">
-            Tharros
-            <span>
-              Canada<span className="home-title-stop">.</span>
+            <span className="home-title-line">
+              <span className="home-title-word">Tharros</span>
+            </span>
+            <span className="home-title-line home-title-line-canada">
+              <span className="home-title-word">Canada</span>
             </span>
           </h1>
-          <p>
-            Independent research on the policies, industries and ideas connecting Canada and Europe.
-          </p>
-          <div className="home-masthead-actions">
-            <Link className="button-primary" href="/research">
-              Check out our research <ArrowIcon />
-            </Link>
-            <Link className="text-link" href="/about">
-              About Tharros <ArrowIcon />
-            </Link>
-          </div>
         </div>
-        <div className="home-connections" aria-hidden="true">
-          <svg viewBox="0 0 720 420" focusable="false">
-            <image href="/atlantic-map.svg" width="720" height="420" />
-            <g className="home-connection-base">
-              <path d="M67 235 C240 80 470 80 616 186" />
-              <path d="M67 235 C240 185 470 170 616 186" />
-              <path d="M67 235 C240 315 470 290 616 186" />
-            </g>
-            <g className="home-connection-drawing">
-              <path pathLength="1" d="M67 235 C240 80 470 80 616 186" />
-              <path pathLength="1" d="M67 235 C240 185 470 170 616 186" />
-              <path pathLength="1" d="M67 235 C240 315 470 290 616 186" />
-            </g>
-            <circle className="home-connection-node" cx="67" cy="235" r="5" />
-            <circle className="home-connection-node" cx="616" cy="186" r="5" />
-          </svg>
-          <div className="home-connection-labels">
-            <span>Canada</span>
-            <span>Europe</span>
+        <div className="home-hero-band">
+          <div className="home-hero-band-inner">
+            <p>
+              Independent research on the policies, industries and ideas connecting Canada and Europe.
+            </p>
+            <div className="home-masthead-actions">
+              <Link className="button-primary" href="/research">
+                Check out our research <ArrowIcon />
+              </Link>
+              <Link className="text-link" href="/about">
+                About Tharros <ArrowIcon />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

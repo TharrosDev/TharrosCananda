@@ -22,20 +22,27 @@ The site runs without env vars. Readership counts stay hidden when their server 
 
 ## Checks
 
+Keep checks proportional to the change. For small copy, layout or CSS fixes, inspect the source and diff and run targeted lint when relevant; the owner reviews appearance and reports tweaks or bugs. Do not add tests, take automated screenshots, run whole suites or build by default for these fixes. Behavior, routing, data and security changes need meaningful checks for the affected paths and a build when warranted. Full browser runs are reserved for an explicit request or a significant functional change.
+
+Available checks, selected as needed:
+
 ```bash
-npm run lint && npm run typecheck && npm test         # fast gate
-npm run build
-npx playwright install chromium && npm run test:e2e   # functional, axe and visual tests on a production build
-npm run smoke -- https://tharros.ca                   # post-deploy smoke test (includes one rejected POST)
+npx eslint src/app/page.tsx                          # example: lint an affected TS/TSX file
+npx vitest run tests/publications.test.ts             # example: a relevant contract test
+npm run lint && npm run typecheck && npm test         # broader code checks when warranted
+npm run build                                       # when production compilation matters
+npx playwright install chromium && npm run test:e2e  # opt-in behavior and accessibility checks
+npm run smoke -- https://tharros.ca                   # post-deploy smoke check (includes one rejected POST)
 ```
 
 - **Playwright builds and serves the site itself**, on port 3100.
   - It refuses to reuse a server already running on that port, so stop any dev server there and delete `.next` before a run.
   - Set `PLAYWRIGHT_BASE_URL` to test a deployed URL instead.
-- **CI** (`.github/workflows/ci.yml`) runs two jobs, and both must pass to merge into `main`:
+- **CI** (`.github/workflows/ci.yml`):
   - `verify`: lint, typecheck, Vitest, `npm audit` and `deno check` on the Edge Function.
-  - `browser`: the whole Playwright suite.
-- **Visual baselines are Linux screenshots.** After an intended visual change, refresh them with a commit whose message contains `[update-baselines]`, or run the **Update visual baselines** workflow. Then review the images in the PR.
+  - `browser`: the retained Playwright behavior and accessibility suite, run only through manual CI dispatch; routine pushes and PRs skip it.
+  - The required `verify` check must pass before merge. Small fixes do not need its whole gate repeated locally.
+- Appearance is reviewed by the owner. Automated screenshot comparisons and visual-baseline update workflows have been removed.
 
 ## Environment
 

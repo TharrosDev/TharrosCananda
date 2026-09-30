@@ -28,7 +28,7 @@ Credibility comes from inspectable sources, explicit uncertainty and published w
 
 ## Current public surfaces
 
-- **Home:** a large Tharros Canada identity and quiet connecting-line diagram, the compact latest real release, three draft upcoming topics and two direct CTAs to Methodology and Research areas.
+- **Home:** an oversized, staggered Tharros Canada identity and burgundy wordmark slash above a full-width black introduction and action band, the compact latest real release, three draft upcoming topics and two direct CTAs to Methodology and Research areas.
 - **Research:** searchable publications at `/research`, report pages at `/research/<slug>` and stable `/research/id/<reference>` URLs. Search, facets, URL state, sort, density, suggestions, Cite, PDF, Copy link and the no-JavaScript list stay available.
 - **Research areas:** a dedicated `/research-areas` guide to the five subjects, scope, questions, useful evidence and actual publication availability. Native disclosures work without JavaScript.
 - **Methodology:** source selection, human verification, freshness, fitness for use and limitations, demonstrated through the real worked evidence trace. The public publisher directory and source-category section have been removed.
@@ -51,7 +51,7 @@ Primary navigation remains Research · Methodology · About. Research areas is r
 
 ## Brand and language
 
-Use white ground, neutral dark ink and black surfaces, with sparse burgundy (`#782c3d`), deep burgundy hover (`#55202c`) and muted red details (`#9e354c`). Space Grotesk carries the identity and titles; Schibsted Grotesk carries prose and controls. The Canada–Europe diagram draws once when motion is permitted and is complete in reduced-motion mode. Real supplied covers remain the principal report imagery; empty Home and About editorial frames are not rendered.
+Use white ground, neutral dark ink and black surfaces, with sparse burgundy (`#782c3d`), deep burgundy hover (`#55202c`) and muted red details (`#9e354c`). Space Grotesk carries the identity and titles; Schibsted Grotesk carries prose and controls. The homepage gives the name an expressive scale and uses the existing wordmark slash; its opposing text reveals and slash unfold run once when motion is permitted. Reduced motion shows the complete composition. Real supplied covers remain the principal report imagery; empty Home and About editorial frames are not rendered.
 
 Public wording is Research. Prefer direct actions such as “Check out our research” and “Look at the research.” Do not use Archive, decorative Record headings or “the project” to refer to Tharros. Topical uses of record remain useful for source metadata, procurement evidence and similar contexts.
 
