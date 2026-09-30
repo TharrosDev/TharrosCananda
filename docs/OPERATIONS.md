@@ -45,6 +45,8 @@ The migration `20260929160000_targeted_publication_dedupe.sql` refreshes only th
 
 ## Runbooks
 
+**Choose proportionate checks.** Small copy, spacing, typography, color and animation tweaks use owner visual review and targeted source checks. Do not add screenshot comparisons or run a full build/browser suite by default for these changes. CI keeps its fast `verify` job; `browser` is skipped on ordinary pull requests and pushes. Run the functional/accessibility browser suite only when explicitly requested or when a substantial behavior change warrants it, using `gh workflow run ci.yml --ref <branch>` or the local Playwright command. Automatic visual baselines and their refresh workflow have been removed. Existing screenshot files are passive references.
+
 **Check a production deploy.** Vercel occasionally misses a merge.
 1. After merging, run `vercel ls`.
 2. If no new Production build appeared, run `vercel deploy --prod --yes` from an up-to-date `main`.

@@ -18,6 +18,13 @@ The site of an independent student research project publishing reports across Ca
 
 This file describes how the project works **today** and why, not how it must always work. If a better approach fits the product, change the code, its tests and the relevant doc together, in the same PR. Every doc is listed in `docs/README.md`.
 
+## Proportional checks
+
+- **Small copy, layout and CSS fixes:** inspect the source and diff, and use targeted lint when relevant. The owner reviews the appearance and reports visual tweaks or bugs. Do not add tests, take automated screenshots, run whole suites or rebuild by default for these changes.
+- **Behavior, routing, data and security changes:** run meaningful tests for the affected behavior and a build when the change needs compilation or production verification. Keep the checks proportional to the risk.
+- **Full browser runs:** use only when explicitly requested or when a significant functional change warrants them. Screenshot comparisons and visual-baseline refreshes are no longer part of the workflow.
+- **CI:** the required `verify` check still runs for PRs. Do not repeat its whole gate locally for a small fix just to duplicate CI.
+
 ## Commands
 
 The everyday checks are in `README.md` (Checks). Commands you will also need:
@@ -39,21 +46,18 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 | `src/lib/` | Domain logic: citation, archive search (minisearch), metrics, `site.ts` (siteUrl, `pageMetadata()`, JSON-LD, locale-free dates). |
 | `src/components/report/` | Report viewer (pdf.js) and toolbar. |
 | `supabase/` | Migrations and legacy `research-intake` Edge Function source pending deployed retirement. Keep earlier request retention intact. |
-| `e2e/` | Playwright functional, axe and visual tests, with Linux baselines in `visual.spec.ts-snapshots/`. |
+| `e2e/` | Opt-in Playwright behavior and accessibility tests. |
 | `tests/` | Vitest unit and contract tests, including the guard tests described below. |
 
 ## Things that will bite you
 
 **Tests and CI**
 - **E2E doesn't grow with the archive.** Report and archive tests run against one fixed report, `TC-2026-001` (`e2e/fixture.ts`), and the accessibility sweep covers the core routes plus that report. Don't loop e2e tests over every publication; per-report checks go in the file-only unit tests (`tests/report-pdf.test.ts`, `tests/publications.test.ts`).
-- **Visual baselines are Linux-only.** Any visible change fails CI `browser` until the baselines are refreshed.
-  - Push a branch commit whose message contains `[update-baselines]`, or run `gh workflow run "Update visual baselines" --ref <branch>`.
-  - Then review the committed images.
-  - The baselines workflow starts CI on its own commit, so no empty commit is needed.
+- **Browser CI is opt-in.** Routine pushes and PRs run `verify`; the `browser` job runs only through manual CI dispatch. Use the owner's visual review for appearance changes.
 - **`e2e/archive.spec.ts` is the contract for `/research`**, the most important page. It must never lose a tool: search, facets, URL state, density, sort, suggestions, Cite, PDF, Copy link and the no-JS list.
 - **No invented data.** Tests cover publication facts and the owner-supplied PDFs; do not add placeholder reports.
 - **Playwright requires its own production server.** Locally, it serves on port 3100 and refuses to reuse an existing server. Stop any server there and delete `.next` before e2e runs.
-  - Playwright's webServer also rebuilds `.next`, so rebuild before taking manual screenshots.
+  - Playwright's webServer rebuilds `.next`; reserve this setup for a warranted browser run.
 - **`tests/css-guard.test.ts` enforces the motion and type rules.** Update the guard if the design changes on purpose.
   - It checks the motion tokens `--dur-1` and `--dur-2`.
   - Scroll-linked `animation-timeline` is allowed only behind `prefers-reduced-motion: no-preference`, and only for transform, translate, scale or stroke-dashoffset keyframes (see DESIGN.md, Motion).
@@ -88,7 +92,7 @@ npx -y deno@2 check supabase/functions/research-intake/index.ts
 
 ## Workflow
 
-- **`main` is protected.** The CI checks `verify` and `browser` must pass, so land changes through a PR.
+- **`main` is protected.** Land changes through a PR with the required `verify` check passing. Browser tests are opt-in; routine PRs skip that job.
 - **The repo is public.** Commit messages and PR text stay neutral, with no AI attribution.
 - **Deploys.** Vercel deploys `main` automatically but occasionally misses a merge. For the check and the fix, see `docs/OPERATIONS.md` (Runbooks).
 - **Backend changes** to Supabase SQL or the Edge Function are deployed separately after merge, also covered in `docs/OPERATIONS.md`.

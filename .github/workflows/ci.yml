@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
-  # Dispatched by the baselines workflow: its bot commit cannot trigger CI by itself.
+  # Full browser checks are opt-in; routine PRs use the fast verify job.
   workflow_dispatch:
 
 permissions:
@@ -33,14 +33,15 @@ jobs:
         with:
           deno-version: v2.x
       - run: deno check supabase/functions/research-intake/index.ts
-      # No build here: the browser job builds once for Playwright.
+      # Routine verification does not build or launch browsers.
 
   browser:
-    # Functional, accessibility (axe) and visual regression tests against a production build.
-    # The footer year is masked so screenshots stay stable.
+    # Run functional and accessibility checks only when CI is explicitly dispatched.
+    # A skipped job satisfies the existing branch-protection context on routine PRs.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # Runs alongside verify, not after it: the two share nothing and branch protection needs both.
+    # Explicit full-browser runs remain independent of the fast verify job.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7

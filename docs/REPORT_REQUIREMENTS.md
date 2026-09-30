@@ -69,7 +69,7 @@ Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 
 ## Hard checks (CI)
 
-The tests read their expectations from `src/data/publications.ts`. Adding a report needs no test edits and no new visual baselines: the visual snapshots hide the homepage research list, the archive year chips and About's latest line, and they filter the archive to the fixture report.
+The file-only tests read their expectations from `src/data/publications.ts`, so adding a report needs no test edits. Browser tests use the fixed fixture report. Screenshot comparisons are no longer part of CI; the owner reviews appearance directly.
 
 **The e2e suite does not grow with the archive.** Browser tests run against one fixed report, `TC-2026-001` (`e2e/fixture.ts`), plus the core routes. Don't loop e2e tests over every publication; per-report checks belong in the file-only unit tests below, which stay fast however many reports there are.
 
