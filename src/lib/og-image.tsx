@@ -13,25 +13,24 @@ export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
 
 const colors = {
-  ivory: "#f4f1ea",
-  ivoryLight: "#faf8f3",
-  ink: "#1c1d1f",
-  inkSoft: "#45484d",
-  slate: "#5d6166",
-  softBlack: "#161719",
-  onDark: "#ece8df",
-  onDarkSoft: "#aeaba3",
-  red: "#9e3a35",
-  rule: "#d9d3c4",
-  ruleDark: "#33353a",
+  ivory: "#d9eff5",
+  ivoryLight: "#ffffff",
+  ink: "#2447dc",
+  inkSoft: "#3d4b61",
+  slate: "#526079",
+  softBlack: "#2447dc",
+  onDark: "#ffffff",
+  onDarkSoft: "#c7d2f5",
+  red: "#e94d30",
+  rule: "#b0c7e0",
+  ruleDark: "#6f85e2",
 } as const;
 
-let fontData: { serif: ArrayBuffer; sans: ArrayBuffer } | null = null;
+let fontData: { sans: ArrayBuffer } | null = null;
 
 function loadOgFonts() {
   if (!fontData) {
     fontData = {
-      serif: readFontFile("../assets/og-fonts/source-serif-4.ttf"),
       sans: readFontFile("../assets/og-fonts/schibsted-grotesk.ttf"),
     };
   }
@@ -49,7 +48,7 @@ export type OgCardProps = {
 };
 
 export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCardProps) {
-  const { serif, sans } = loadOgFonts();
+  const { sans } = loadOgFonts();
   const dark = tone === "dark";
   const bg = dark ? colors.softBlack : colors.ivory;
   const fg = dark ? colors.onDark : colors.ink;
@@ -72,7 +71,7 @@ export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCar
       }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", fontSize: 24, letterSpacing: 5, fontWeight: 700 }}>
+        <div style={{ display: "flex", fontSize: 28, letterSpacing: -0.8, fontWeight: 700 }}>
           THARROS<span style={{ color: colors.red, margin: "0 12px" }}>/</span>CANADA
         </div>
         <div
@@ -93,7 +92,8 @@ export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCar
         <div
           style={{
             display: "flex",
-            fontFamily: "Source Serif 4",
+            fontFamily: "Schibsted Grotesk",
+            fontWeight: 700,
             fontSize: title.length > 40 ? 60 : 74,
             lineHeight: 1.04,
             letterSpacing: -1.5,
@@ -141,10 +141,7 @@ export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCar
     </div>,
     {
       ...ogSize,
-      fonts: [
-        { name: "Source Serif 4", data: serif, style: "normal", weight: 400 },
-        { name: "Schibsted Grotesk", data: sans, style: "normal", weight: 700 },
-      ],
+      fonts: [{ name: "Schibsted Grotesk", data: sans, style: "normal", weight: 700 }],
     },
   );
 }

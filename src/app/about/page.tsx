@@ -3,6 +3,7 @@ import Link from "next/link";
 import { formatLongDate, pageMetadata } from "@/lib/site";
 import { ArrowIcon } from "@/components/icons";
 import { AboutContact } from "@/components/about-contact";
+import { EditorialImageSlot } from "@/components/editorial-image-slot";
 import { organization } from "@/data/organization";
 import { publications } from "@/data/publications";
 import { publicSources } from "@/data/sources";
@@ -44,11 +45,39 @@ const principles = [
   },
 ];
 
+const sections = [
+  { id: "fields", label: "Research fields" },
+  { id: "principles", label: "Research principles" },
+  { id: "independence", label: "Independence" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+const contactRoutes = [
+  {
+    title: "Ask about the research",
+    body: "Name the report or research question you would like to discuss.",
+    subject: "Research question",
+    action: "Email a question",
+  },
+  {
+    title: "Flag a correction",
+    body: "Include the report reference, page or passage, and a source for the correction.",
+    subject: "Research correction",
+    action: "Email a correction",
+  },
+  {
+    title: "Explore a collaboration",
+    body: "Describe the topic, your proposed contribution and the evidence available.",
+    subject: "Research collaboration",
+    action: "Email about collaboration",
+  },
+];
+
 export default function AboutPage() {
   const contactEmail = researchEmail();
   const { lead, legal, profiles } = organization;
   const hasAccountability = Boolean(lead || legal || profiles.length);
-  const latest = [...publications].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
+  const published = [...publications].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   const profileLinks = (items: { label: string; url: string }[]) => (
     <p className="about-links">
       {items.map((link, index) => (
@@ -64,88 +93,96 @@ export default function AboutPage() {
   );
 
   return (
-    <>
+    <div className="about-portrait">
       <header className="about-masthead">
-        <h1>
-          A student research project.
-          <br />
-          Canada and Europe,
-          <br />
-          question by question.
-        </h1>
-        <div className="about-introduction">
-          <p className="about-deck">
-            Tharros Canada is an independent student research project. It publishes reports on the
-            policies and industries connecting Canada and Europe, and examines the public evidence
-            behind them.
-          </p>
-          <div className="about-opening-actions">
-            <Link className="button-primary" href="/research">
-              Read the research <ArrowIcon />
-            </Link>
-            <a className="about-check" href="#fields">
-              Explore the questions <ArrowIcon />
-            </a>
-          </div>
+        <h1>A student research project. Following Canada–Europe questions.</h1>
+        <p className="about-deck">
+          Tharros Canada publishes independent research on the policies and industries connecting
+          Canada and Europe, and examines the public evidence behind them.
+        </p>
+        <div className="about-opening-actions">
+          <Link className="button-primary" href="/research">
+            Read the research <ArrowIcon />
+          </Link>
+          <a className="about-check" href="#contact">
+            Contact the project <ArrowIcon />
+          </a>
         </div>
-        <dl className="about-ledger" aria-label="The project on the record">
-          <div>
-            <dt>Published research</dt>
-            <dd className="about-count" data-volatile="">
-              {publications.length}
-            </dd>
-            <dd data-volatile="">
-              {latest ? (
-                <>
-                  Latest: <Link href={`/research/${latest.slug}`}>{latest.reference}</Link> ·{" "}
-                  {formatLongDate(latest.publishedAt)}
-                </>
-              ) : (
-                "No publications yet."
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt>Research areas</dt>
-            <dd className="about-count">{researchAreas.length}</dd>
-            <dd>
-              <a href="#fields">Explore the fields below</a>
-            </dd>
-          </div>
-          <div>
-            <dt>Sources in the register</dt>
-            <dd className="about-count">{publicSources.length}</dd>
-            <dd>
-              <Link href="/methodology#atlas-title">Inspect the public-source register</Link>
-            </dd>
-          </div>
-        </dl>
+        <nav className="about-contents" aria-label="About sections">
+          <ul>
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a href={`#${section.id}`}>{section.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </header>
 
-      <nav className="about-contents" aria-label="About sections">
-        <span>On this page</span>
-        <ul>
-          <li>
-            <a href="#fields">Research fields</a>
-          </li>
-          <li>
-            <a href="#principles">Research principles</a>
-          </li>
-          <li>
-            <a href="#independence">Independence</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
-      </nav>
+      <section className="about-on-record" aria-labelledby="about-record-title">
+        <div className="about-project-record">
+          <h2 id="about-record-title">The project on the record.</h2>
+          <dl className="about-ledger">
+            <div>
+              <dt>Published research</dt>
+              <dd data-volatile="">
+                <Link href="/research">
+                  {publications.length} published {publications.length === 1 ? "report" : "reports"}
+                </Link>
+              </dd>
+            </div>
+            <div>
+              <dt>Research areas</dt>
+              <dd>
+                <a href="#fields">{researchAreas.length} fields of inquiry</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Sources in the register</dt>
+              <dd>
+                <Link href="/methodology#atlas-title">
+                  {publicSources.length} public publishers
+                </Link>
+              </dd>
+            </div>
+          </dl>
+          <p className="about-record-note">
+            Each report credits its author and identifies its sources, methods and material
+            limitations. The work establishes the project&rsquo;s record.
+          </p>
+        </div>
+        <div className="about-published" data-volatile="">
+          <h2>Published so far.</h2>
+          {published.length > 0 ? (
+            <ol className="about-publication-index">
+              {published.map((publication) => (
+                <li key={publication.reference}>
+                  <h3>
+                    <Link href={`/research/${publication.slug}`}>
+                      {publication.title} <ArrowIcon />
+                    </Link>
+                  </h3>
+                  <p className="about-publication-record">
+                    {publication.reference}{" "}
+                    <span>
+                      · {publication.type} · {formatLongDate(publication.publishedAt)}
+                    </span>
+                  </p>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p>No publications yet.</p>
+          )}
+        </div>
+      </section>
 
-      <section className="about-section about-fields" id="fields" aria-labelledby="fields-title">
-        <div className="about-section-head">
+      <section className="about-fields" id="fields" aria-labelledby="fields-title">
+        <div className="about-field-guide-head">
           <h2 id="fields-title">The questions behind the research.</h2>
           <p>
-            Five fields, each with its own questions and evidence. Open a field to explore what it
-            can investigate.
+            Select a subject to explore its questions and evidence. These fields describe the
+            project&rsquo;s scope; each one shows whether work has been published yet.
           </p>
         </div>
         <div className="about-field-register">
@@ -162,7 +199,11 @@ export default function AboutPage() {
               >
                 <summary>
                   <h3>{area.name}</h3>
-                  <p>{area.scope}</p>
+                  <span className="about-field-status" data-volatile="">
+                    {count > 0
+                      ? `${count} published ${count === 1 ? "report" : "reports"}`
+                      : "No published reports yet"}
+                  </span>
                   <span className="about-disclosure" aria-hidden="true">
                     <svg viewBox="0 0 20 20">
                       <path d="M3 10h14" />
@@ -171,6 +212,7 @@ export default function AboutPage() {
                   </span>
                 </summary>
                 <div className="about-field-body">
+                  <p className="about-field-scope">{area.scope}</p>
                   <div className="about-field-questions">
                     <h4>Questions this field can investigate</h4>
                     <ul>
@@ -210,23 +252,45 @@ export default function AboutPage() {
           })}
         </div>
         <p className="about-register-note">
-          These fields describe the project&rsquo;s scope. Published work is counted from the
-          archive; an open research question is not a claim that a report already exists.
+          Published work is counted from the archive. An open research question is not a claim that
+          a report already exists.
         </p>
       </section>
 
-      <section className="about-standards band" id="principles" aria-labelledby="principles-title">
-        <div className="about-standards-inner">
-          <div className="about-standards-lead">
-            <h2 id="principles-title">Research you can inspect.</h2>
-            <p>
-              Research principles matter when a reader can see them in the work. Each one has a
-              route back to the evidence, the method or the report.
-            </p>
-            <Link className="about-check" href="/methodology">
-              Read the methodology <ArrowIcon />
-            </Link>
+      <section className="about-editorial" aria-labelledby="independence-title">
+        <div className="about-independence" id="independence">
+          <h2 id="independence-title">Independent from the sources it studies.</h2>
+          <p>
+            Tharros Canada is an independent student research project, not a government body. Naming
+            a public source identifies it; it never implies endorsement or affiliation.
+          </p>
+          <div className="about-boundaries">
+            <div>
+              <h3>What Tharros publishes</h3>
+              <ul>
+                <li>Reports on Canada–Europe policy and industry questions</li>
+                <li>Data notes on the fitness of public evidence</li>
+                <li>Sources, methods and material limitations alongside each report</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Outside the boundary</h3>
+              <ul>
+                <li>Legal, tax, regulatory, lobbying or investment advice</li>
+                <li>Endorsement by, or affiliation with, the sources it names</li>
+              </ul>
+            </div>
           </div>
+          <Link className="about-check" href="/methodology#source-selection">
+            Inspect the source-selection rules <ArrowIcon />
+          </Link>
+          <EditorialImageSlot slot="about" className="about-editorial-image" />
+        </div>
+        <div className="about-standards" id="principles">
+          <h2 id="principles-title">Research you can inspect.</h2>
+          <p className="about-standards-intro">
+            Four principles, with a route back to the evidence, the method or the report.
+          </p>
           <ol className="about-principles">
             {principles.map((principle, index) => (
               <li key={principle.title} id={index === 0 ? "method" : undefined}>
@@ -241,72 +305,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section
-        className="about-section about-independence"
-        id="independence"
-        aria-labelledby="independence-title"
-      >
-        <div className="about-independence-lead">
-          <h2 id="independence-title">Independent from the sources it studies.</h2>
-          <p>
-            Tharros Canada is an independent student research project, not a government body. Naming
-            a public source identifies it; it never implies endorsement or affiliation.
-          </p>
-        </div>
-        <div className="about-boundaries">
-          <div>
-            <h3>What Tharros publishes</h3>
-            <ul>
-              <li>Reports on Canada–Europe policy and industry questions</li>
-              <li>Data notes on the fitness of public evidence</li>
-              <li>Sources, methods and material limitations alongside each report</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Outside the boundary</h3>
-            <ul>
-              <li>Legal, tax, regulatory, lobbying or investment advice</li>
-              <li>Endorsement by, or affiliation with, the sources it names</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="about-section about-contact-section"
-        id="contact"
-        aria-labelledby="contact-title"
-      >
-        <div className="about-contact-lead">
+      <section className="about-contact-section" id="contact" aria-labelledby="contact-title">
+        <header className="about-contact-lead">
           <h2 id="contact-title">An open line to the project.</h2>
           <p>
-            Questions, corrections and collaboration belong in the same conversation as the
-            research.
+            Ask a question, identify an error or propose a contribution. Write directly to the
+            editorial contact, or choose a subject below.
           </p>
           <AboutContact email={contactEmail} />
-        </div>
-        <div className="about-contact-routes">
-          {[
-            {
-              title: "Ask about the research",
-              body: "Name the report or research question you would like to discuss.",
-              subject: "Research question",
-              action: "Email a question",
-            },
-            {
-              title: "Flag a correction",
-              body: "Include the report reference, page or passage, and a source for the correction.",
-              subject: "Research correction",
-              action: "Email a correction",
-            },
-            {
-              title: "Explore a collaboration",
-              body: "Describe the topic, your proposed contribution and the evidence available.",
-              subject: "Research collaboration",
-              action: "Email about collaboration",
-            },
-          ].map((route) => (
-            <div key={route.title}>
+        </header>
+        <ul className="about-contact-routes">
+          {contactRoutes.map((route) => (
+            <li key={route.title}>
               <h3>{route.title}</h3>
               <p>{route.body}</p>
               <a
@@ -315,9 +325,9 @@ export default function AboutPage() {
               >
                 {route.action} <ArrowIcon />
               </a>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
         {hasAccountability && (
           <div className="about-accountability">
             <h3>Project accountability</h3>
@@ -359,6 +369,6 @@ export default function AboutPage() {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 }

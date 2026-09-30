@@ -1,66 +1,54 @@
 # Tharros Canada direction contract
 
-FORM seed key: `86f14bb5`
+Current direction: **The open issue** · chooser key `e5ea266c` · FORM seed `df0d4fa0`
 
-Current as of 2026-09-24. `DESIGN.md` is the detailed visual system and `PRODUCT.md` the product intent. This file is the short contract they both serve.
+The owner directly approved this second visual choice. The earlier Open Questions choice, candidate 7, seed `f037cd34`, records the identity's initial selection; it does not override the latest composition and imagery decision. Current as of 2026-09-29. `PRODUCT.md` governs product truth, `DESIGN.md` records the built system, and the surface brief records its first expression.
 
 ## THESIS
 
-An independent research institute working across Canada and Europe, presented as an evidence ledger. It is small enough to be explicit about what exists, and rigorous enough that every public claim can be traced to a source. Published research comes first, and commissioning is always one clear step away.
+An open editorial issue gives independent student research a confident, contemporary presence. A full-width statement introduces Tharros, real reports establish its substance, questions invite exploration, and the evidence remains inspectable. The white page, dark ink, blue emphasis, and asymmetric reading structures sustain the identity through distinct tasks.
 
 ## OWN-WORLD
 
-The visual world comes from research artifacts:
-- report covers and pages;
-- source registers;
-- procurement and customs records;
-- public datasets and source annotations.
-
-**Colour:**
-- warm ivory carries graphite ink;
-- ivory-light sheets hold documents and instruments;
-- dark bars and bands mark hierarchy;
-- red is for actions only;
-- steel is for data;
-- green is for received and positive states.
-
-**Type:** Source Serif 4 speaks editorially, and Schibsted Grotesk operates the interface.
-
-No generic consultancy imagery and no invented proof.
+- White ground, dark blue ink, ultramarine actions and emphasis, neutral grey grouping, restrained pale blue evidence states, and selective orange details.
+- Space Grotesk statements and editorial titles; Schibsted Grotesk prose, controls, and metadata.
+- Open asymmetric spreads, ruled records, compact reference rows, and square working instruments.
+- Native question and subject disclosures, an evidence workshop, and an operational source directory.
+- Real supplied report covers remain visible.
+- Exactly two editorial-image records, home and About, stay null until the owner supplies imagery.
 
 ## STORY
 
-1. **Home:** read the latest real release, then see the five research areas on the Atlantic field plate, then commission a question.
-2. **Research:** search or filter the reading room, inspect a record (matches by page, contents, sources, limitations), and open the report at the exact page.
-3. **Methodology, About, Research Services and Request Research** each prove their point with one working instrument:
-   - Methodology: the provenance trace;
-   - About: the on-the-record ledger;
-   - Research Services: the specimen shelf;
-   - Request Research: the live brief.
+1. Recognise the project and its Canada–Europe scope.
+2. Read the latest real publication and find earlier work.
+3. Open questions across five connected research fields.
+4. Trace a report passage into its evidence and explore public sources.
+5. Understand the student project, its boundaries, and editorial contact routes.
 
 ## FIRST VIEWPORT
 
-- **Home:** an ivory front page, with the H1 and actions beside the latest-release sheet.
-- **Research:** a slim banner, then the rail, results and record pane.
-- **Instrument pages:** a light opening with the instrument in view.
-- **Request Research:** a compact dark task hero.
-- **How it works, Privacy, Accessibility and Copyright:** light document headers over one sheet of numbered clauses.
+- **Home:** a full-width statement, then introduction and direct research/project actions. The next spread is an unboxed publication column beside project and evidence context, with one empty 16:9 frame in the publication column.
+- **Research:** a compact ink heading, framed white search instrument, neutral facets, open results, and optional record preview.
+- **About:** compact project purpose, a factual ledger and publication-title index, followed by subject disclosures and editorial/contact chapters.
+- **Methodology:** a compact workshop introduction and a full-width evidence instrument with visible “Traced to” feedback.
+- **Policy pages:** white reference title and horizontal facts, a static chapter rail, then title/body rows.
+- **Report:** compact record and reading destinations lead into the unchanged supplied PDF and existing controls.
+- **Footer:** white typographic signature, compact navigation, project/contact details, and utility information.
 
 ## FORM
 
-- **Navigation:** Research · Methodology · About, with Commission as the one filled action.
-- **Research areas:** five of them, used as archive taxonomy and a homepage ledger, never as pages.
-- **Dense, flat layouts:** no cards, no empty bands, no floating side text. Short lists sit two-up.
-- **Rules:** one per meaningful boundary.
-- **Signature interactions:**
-  - the report cover morphing into the first page;
-  - the trace leaders;
-  - the sample cover opening into the reader;
-  - the brief writing itself.
-- **Motion:** it may draw or move things, but never reveal them, and it collapses under reduced motion.
+- Home's asymmetric publication/project spread gives way to a native open-question index and one full-width method invitation.
+- About pairs independence and principles and reserves one empty 3:2 frame inside that chapter.
+- Methodology follows the worked trace with five continuous rules and a source directory enhanced by search and region filtering. Native region anchors and all ten publishers remain available without JavaScript. It has no editorial image slot.
+- Policy chapter links remain static in layout; active-section feedback is a reading enhancement.
+- Archive tools and reader controls remain intact; white framing adapts them to the issue.
+- Desktop navigation uses underline feedback, and mobile navigation uses a full-height sheet with readable descriptions.
+- Motion supports arrows, covers, trace relationships, disclosure marks, and source nodes. Reduced motion and no-JavaScript reading retain usable paths.
 
-## COMMERCIAL MODEL
+## IMAGE POLICY
 
-- **Three services** (`src/lib/services.ts`): Custom & Partner Research (the flagship), Market Assessment, and Buyer & Partner Research.
-- **No published prices.** Every engagement is scoped and priced per case, in writing.
-- **Private by default.** Commissioned work stays private unless the client asks to publish it (`commissionPrivacy`).
+`src/data/editorial-images.ts` configures only `home: null` and `about: null`. Their frames are 16:9 and 3:2 respectively. Null renders no image and no caption. Do not substitute generated imagery, stock images, icons, captions, or upload prompts. The owner will supply imagery later. Existing report covers are separate supplied research artifacts.
+
+## PRODUCT BOUNDARIES
+
+The project publishes its own research and accepts questions, corrections, and collaboration inquiries; it does not claim a commissioned research service or institutional affiliation. No placeholder reports, fabricated evidence, or unverified scale claims are added. PDFs remain byte-for-byte supplied artifacts. Reports stay `indexable: false` until the owner explicitly approves indexing. Source records have no retrieval or access dates, and retired intake and live feeds remain retired.

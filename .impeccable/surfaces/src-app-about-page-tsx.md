@@ -2,21 +2,22 @@
 version: 1
 slug: "src-app-about-page-tsx"
 primary_target: "src/app/about/page.tsx"
-related_targets: ["src/app/about/about.css","src/components/about-contact.tsx"]
+mode: "read"
+related_targets: ["src/app/about/about.css","src/components/about-contact.tsx","src/components/editorial-image-slot.tsx"]
 ---
 
 ## Scope
-About (`/about`), Read mode. Visitors understand the independent student project, explore its research fields and inspect its editorial boundaries. Existing facts, records, branding and contact anchors are preserved. The owner selected `question-field-guide` on the local decision page, code-led, without steering.
+About (`/about`), project portrait and field guide. The owner rejected the first upgrade as a repeated template and requested a deep structural revision. Existing research facts, native disclosures, editorial boundaries and contact behavior remain authoritative. Personal profiles remain absent.
 
 ## Direction contract
-THESIS: Understand Tharros through the questions it investigates. Replace disconnected statements with an expandable field guide grounded in the existing research-area registry.
+THESIS: Understand the project through what is on the record, what it can investigate and how a reader can question the work. The page has its own composition rather than repeating Home or Methodology.
 
-OWN-WORLD: Inherit warm ivory, graphite, Source Serif 4, Schibsted Grotesk, square controls and single ruled boundaries. Red marks actions. A dark editorial-standards chapter gives the long page a deliberate change of density.
+OWN-WORLD: Contemporary Open questions typography on white: Space Grotesk and Schibsted Grotesk, ink prose, blue actions and coral disclosure marks. No pale-blue split hero, metric strip, dark standards band, equal card grid or decorative section numbers.
 
-STORY: Identify the student project, inspect its live record, expand a field to read its questions and evidence, then follow the actual archive or methodology. Close with independence and purposeful editorial contact.
+STORY: A compact full-width purpose statement gives immediate research and contact paths. A quiet factual project record sits beside an index of real report titles. The subject index opens into question-led reading bodies. Independence and editorial habits share one chapter. Direct contact and subject-specific email routes close the portrait.
 
-FIRST VIEWPORT: A large three-line identity statement on the left, a concise purpose and archive action on the right, with a compact full-width live record below. Plain section links lead directly to the five-field register. The first field opens by default; each row exposes questions, evidence and the field’s publication state.
+FIRST VIEWPORT: A modest purpose statement and concise explanation, followed by archive/contact actions and static section links. Actual published titles establish the record. Facts are small table rows rather than display metrics.
 
-FORM: Question-led field guide, candidate 2 of seven, seed 0634007c. Signature interaction: native independent disclosures open a field into a two-column question/evidence sheet, retaining keyboard and no-JavaScript operation. The plus changes to minus with token-timed rotation; reduced motion disables transitions. Contact has intent-specific mail links and an enhanced copy-email control with a selectable fallback.
+FORM: A publication index, then a subject index. Native independent disclosures open each subject into an indented column of questions; source types and the honest archive route follow below. The first subject opens by default. Keyboard, no-JavaScript and clipboard fallback behavior remain intact. One quiet 3:2 empty editorial image slot is reserved beside the project boundaries. The latest owner instruction is to leave imagery empty for later selection; there is no generated or actual photograph, caption, icon or coming-soon copy.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+FINISH: Root batches responsive and visual review at 320px, phone and desktop widths after integration. Focused lint, content contracts and required browser checks apply to this revision. Root updates DESIGN.md. No image is shipped by this surface.

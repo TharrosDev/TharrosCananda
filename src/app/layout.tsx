@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f4f1ea",
+  themeColor: "#2447dc",
   colorScheme: "light",
 };
 
@@ -59,6 +59,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to main content
         </a>
         <Header />
+        <noscript>
+          <style>
+            {
+              "@media(max-width:1020px){.menu-toggle{display:none!important}.main-nav{position:static!important;display:flex!important;height:auto!important;padding:0!important;border:0!important}.nav-shell{flex-wrap:wrap;padding-block:16px}.nav-links{display:flex!important;flex-wrap:wrap;gap:4px}.nav-links a{font-size:16px!important;min-height:44px}.nav-description,.nav-project-note{display:none!important}}"
+            }
+          </style>
+        </noscript>
         <main id="main-content">{children}</main>
         <Footer />
         <SiteAnalytics />

@@ -40,9 +40,8 @@ function segments(text: string, list: TracePhrase[], all: TracePhrase[]): Segmen
 }
 
 /**
- * A worked provenance trace: select a phrase from a published sentence and a steel leader draws from its line to
- * the record fields it rests on. Without JavaScript (or on narrow screens) the record reads on its own and the
- * active fields are named under the claim instead.
+ * A worked provenance trace: select a phrase from a published sentence and a leader connects it to the
+ * supporting source record. The complete passages and record also remain readable without JavaScript.
  */
 export function ProvenanceTrace({ passages, phrases, record }: Props) {
   const [active, setActive] = useState(0);
@@ -126,6 +125,7 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
           className="trace-phrase"
           data-phrase={segment.phrase}
           aria-pressed={segment.phrase === active}
+          aria-controls="trace-source-record"
           onClick={() => choose(segment.phrase!)}
           onKeyDown={(event) => {
             if (event.key !== "Enter" && event.key !== " ") return;
@@ -141,6 +141,10 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
   return (
     <div className="trace" ref={root}>
       <div className="trace-claim">
+        <div className="trace-column-head">
+          <h3>Published claim</h3>
+          <p>Select an underlined phrase to inspect its evidence.</p>
+        </div>
         {passages.map((passage, index) => (
           <blockquote
             key={passage.source}
@@ -159,42 +163,48 @@ export function ProvenanceTrace({ passages, phrases, record }: Props) {
           Traced to <strong>{[...activeFields].map(labelFor).filter(Boolean).join(" and ")}</strong>
         </p>
       </div>
-      <dl className="trace-record">
-        {record.map((row) => (
-          <div key={row.field} data-active={activeFields.has(row.field) || undefined}>
-            <dt>
-              {row.label} <span>{row.definition}</span>
-            </dt>
-            <dd>
-              {row.url ? (
-                <a href={row.url} target="_blank" rel="noreferrer">
-                  {row.value}
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              ) : (
-                row.value
-              )}
-              {row.items && (
-                <ul>
-                  {row.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              )}
-              {row.more && (
-                <span className="trace-more">
-                  {row.more.map((link) => (
-                    <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
-                      {link.label}
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </a>
-                  ))}
-                </span>
-              )}
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <div className="trace-evidence">
+        <div className="trace-column-head">
+          <h3>Evidence record</h3>
+          <p>The highlighted field supports the selected phrase.</p>
+        </div>
+        <dl className="trace-record" id="trace-source-record">
+          {record.map((row) => (
+            <div key={row.field} data-active={activeFields.has(row.field) || undefined}>
+              <dt>
+                {row.label} <span>{row.definition}</span>
+              </dt>
+              <dd>
+                {row.url ? (
+                  <a href={row.url} target="_blank" rel="noreferrer">
+                    {row.value}
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                ) : (
+                  row.value
+                )}
+                {row.items && (
+                  <ul>
+                    {row.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                {row.more && (
+                  <span className="trace-more">
+                    {row.more.map((link) => (
+                      <a key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                        {link.label}
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    ))}
+                  </span>
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       <svg className="trace-leaders" aria-hidden="true" focusable="false">
         {paths.map((d) => (
           <path key={d} d={d} pathLength={1} />

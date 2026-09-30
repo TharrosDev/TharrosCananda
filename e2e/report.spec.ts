@@ -47,6 +47,23 @@ test("search results belong to the current query", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Next match" })).toBeDisabled();
 });
 
+test("find explains short queries and its clear control keeps focus in search", async ({
+  page,
+}) => {
+  await page.goto(fixturePath);
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const field = page.getByRole("searchbox", { name: "Find in report" });
+  await field.fill("O");
+  await expect(viewer.locator(".report-viewer-find-status")).toHaveText("2+ characters");
+  await field.fill("Ottawa");
+  await expect(viewer.locator(".report-viewer-find-status")).toHaveText(/\d+ of \d+/);
+  await page.getByRole("button", { name: "Clear find query" }).click();
+  await expect(field).toHaveValue("");
+  await expect(field).toBeFocused();
+  await expect(page.getByRole("button", { name: "Next match" })).toBeDisabled();
+});
+
 test("viewer draws every PDF page as a sheet with selectable text", async ({ page }) => {
   await page.goto(fixturePath);
   const viewer = page.locator("[data-report-viewer]");
@@ -245,6 +262,41 @@ test("contents jump to a section and mark it as current", async ({ page, isMobil
   await link.click();
   await expect(page.locator('.report-sheet[data-page="2"]')).toBeInViewport();
   if (!isMobile) await expect(link).toHaveAttribute("aria-current", "location");
+});
+
+test("mobile contents and reading tools stay reachable after a section jump", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "Compact reading controls");
+  await page.goto(fixturePath);
+  const viewer = page.locator("[data-report-viewer]");
+  await expect(viewer).not.toHaveAttribute("data-loading", /.*/, { timeout: 15_000 });
+  const contents = page.getByRole("navigation", { name: "Contents" });
+  const toggle = contents.getByRole("button", { name: /Contents/ });
+  await toggle.click();
+  await contents.getByRole("link", { name: /Limitations/ }).click();
+  await expect(toggle).toBeInViewport({ ratio: 1 });
+  await toggle.click();
+  await expect(contents.getByRole("link", { name: /Limitations/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await expect(toggle).toBeFocused();
+  await contents.getByRole("button", { name: "Reading tools" }).click();
+  await expect(page.getByLabel("Page", { exact: true })).toBeFocused();
+  await expect(page.getByLabel("Page", { exact: true })).toBeInViewport();
+});
+
+test("report sections connect reading with evidence and a return to the PDF", async ({ page }) => {
+  await page.goto(fixturePath);
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText(ref);
+  const sections = page.getByRole("navigation", { name: "Report sections" });
+  await sections.getByRole("link", { name: "Sources", exact: true }).click();
+  await expect(page).toHaveURL(/#sources$/);
+  await expect(page.locator("#sources")).toBeInViewport();
+  await page.getByRole("link", { name: "Return to report" }).click();
+  await expect(page).toHaveURL(/#report-reader$/);
+  await expect(page.locator("#report-reader")).toBeInViewport();
 });
 
 test("find in report counts, steps through and clears matches", async ({ page }) => {

@@ -27,13 +27,16 @@ export default async function ResearchPage() {
   return (
     <>
       <header className="research-banner">
-        <h1>Published Research</h1>
-        <p>
-          Every report records its sources and limitations.{" "}
-          <Link href="/methodology">
-            Methodology <ArrowIcon />
+        <h1>Published research.</h1>
+        <div className="research-banner-deck">
+          <p>
+            Find a question. Follow its evidence. Search the reports and explore the sources and
+            limitations behind each one.
+          </p>
+          <Link href="/methodology" className="research-method-link">
+            How the research is made <ArrowIcon />
           </Link>
-        </p>
+        </div>
       </header>
       <section className="archive-page" aria-label="Research archive">
         {/* Without JavaScript (or before hydration) the default view renders; the URL-aware tool takes over after. */}

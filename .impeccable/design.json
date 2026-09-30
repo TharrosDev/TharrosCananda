@@ -1,415 +1,325 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-21T21:15:04.2102540-04:00",
+  "generatedAt": "2026-09-30T02:53:47Z",
   "title": "Design System: Tharros Canada",
   "extensions": {
     "colorMeta": {
-      "ivory": {
-        "role": "neutral",
-        "displayName": "Warm Ivory",
-        "canonical": "#f4f1ea",
+      "blue": {
+        "role": "primary",
+        "displayName": "Ultramarine",
         "tonalRamp": [
-          "#272625",
-          "#41403e",
-          "#5a5957",
-          "#74736f",
-          "#9b9994",
-          "#c2bfba",
-          "#e1ded7",
-          "#f5f2ec"
+          "oklch(15% 0.2284 266.4)",
+          "oklch(26% 0.2284 266.4)",
+          "oklch(38% 0.2284 266.4)",
+          "oklch(50% 0.2284 266.4)",
+          "oklch(62% 0.2284 266.4)",
+          "oklch(74% 0.2284 266.4)",
+          "oklch(86% 0.2284 266.4)",
+          "oklch(95% 0.2284 266.4)"
         ]
       },
-      "ivory-deep": {
-        "role": "neutral",
-        "displayName": "Ivory Deep",
-        "canonical": "#ebe6db",
+      "blue-hover": {
+        "role": "primary",
+        "displayName": "Deeper Ultramarine",
         "tonalRamp": [
-          "#272624",
-          "#41403d",
-          "#5b5955",
-          "#75736d",
-          "#9c9992",
-          "#c3bfb6",
-          "#e2ded3",
-          "#f5f2ec"
+          "oklch(15% 0.2027 265.9)",
+          "oklch(26% 0.2027 265.9)",
+          "oklch(38% 0.2027 265.9)",
+          "oklch(50% 0.2027 265.9)",
+          "oklch(62% 0.2027 265.9)",
+          "oklch(74% 0.2027 265.9)",
+          "oklch(86% 0.2027 265.9)",
+          "oklch(95% 0.2027 265.9)"
         ]
       },
-      "ivory-light": {
-        "role": "neutral",
-        "displayName": "Ivory Light",
-        "canonical": "#faf8f3",
+      "sky": {
+        "role": "primary",
+        "displayName": "Pale Evidence Blue",
         "tonalRamp": [
-          "#272625",
-          "#40403e",
-          "#5a5957",
-          "#747370",
-          "#9a9996",
-          "#c1bfbb",
-          "#e0ded9",
-          "#f4f2ed"
+          "oklch(15% 0.0093 242.8)",
+          "oklch(26% 0.0093 242.8)",
+          "oklch(38% 0.0093 242.8)",
+          "oklch(50% 0.0093 242.8)",
+          "oklch(62% 0.0093 242.8)",
+          "oklch(74% 0.0093 242.8)",
+          "oklch(86% 0.0093 242.8)",
+          "oklch(95% 0.0093 242.8)"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Orange",
+        "tonalRamp": [
+          "oklch(15% 0.1972 32.7)",
+          "oklch(26% 0.1972 32.7)",
+          "oklch(38% 0.1972 32.7)",
+          "oklch(50% 0.1972 32.7)",
+          "oklch(62% 0.1972 32.7)",
+          "oklch(74% 0.1972 32.7)",
+          "oklch(86% 0.1972 32.7)",
+          "oklch(95% 0.1972 32.7)"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "White Ground",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.9)",
+          "oklch(26% 0.0000 89.9)",
+          "oklch(38% 0.0000 89.9)",
+          "oklch(50% 0.0000 89.9)",
+          "oklch(62% 0.0000 89.9)",
+          "oklch(74% 0.0000 89.9)",
+          "oklch(86% 0.0000 89.9)",
+          "oklch(95% 0.0000 89.9)"
+        ]
+      },
+      "ground-deep": {
+        "role": "neutral",
+        "displayName": "Neutral Grey",
+        "tonalRamp": [
+          "oklch(15% 0.0034 247.9)",
+          "oklch(26% 0.0034 247.9)",
+          "oklch(38% 0.0034 247.9)",
+          "oklch(50% 0.0034 247.9)",
+          "oklch(62% 0.0034 247.9)",
+          "oklch(74% 0.0034 247.9)",
+          "oklch(86% 0.0034 247.9)",
+          "oklch(95% 0.0034 247.9)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White Reading Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.9)",
+          "oklch(26% 0.0000 89.9)",
+          "oklch(38% 0.0000 89.9)",
+          "oklch(50% 0.0000 89.9)",
+          "oklch(62% 0.0000 89.9)",
+          "oklch(74% 0.0000 89.9)",
+          "oklch(86% 0.0000 89.9)",
+          "oklch(95% 0.0000 89.9)"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Graphite Ink",
-        "canonical": "#1c1d1f",
+        "displayName": "Ink",
         "tonalRamp": [
-          "#252628",
-          "#3f4042",
-          "#59595b",
-          "#727374",
-          "#99999a",
-          "#bfbfc0",
-          "#dedede",
-          "#f2f2f2"
+          "oklch(15% 0.0305 256.9)",
+          "oklch(26% 0.0305 256.9)",
+          "oklch(38% 0.0305 256.9)",
+          "oklch(50% 0.0305 256.9)",
+          "oklch(62% 0.0305 256.9)",
+          "oklch(74% 0.0305 256.9)",
+          "oklch(86% 0.0305 256.9)",
+          "oklch(95% 0.0305 256.9)"
         ]
       },
       "ink-soft": {
         "role": "neutral",
         "displayName": "Soft Ink",
-        "canonical": "#45484d",
         "tonalRamp": [
-          "#252629",
-          "#3d4044",
-          "#575a5e",
-          "#717377",
-          "#98999c",
-          "#bebfc1",
-          "#dddedf",
-          "#f2f2f3"
+          "oklch(15% 0.0413 259.3)",
+          "oklch(26% 0.0413 259.3)",
+          "oklch(38% 0.0413 259.3)",
+          "oklch(50% 0.0413 259.3)",
+          "oklch(62% 0.0413 259.3)",
+          "oklch(74% 0.0413 259.3)",
+          "oklch(86% 0.0413 259.3)",
+          "oklch(95% 0.0413 259.3)"
         ]
       },
       "slate": {
         "role": "neutral",
-        "displayName": "Annotation Slate",
-        "canonical": "#5d6166",
+        "displayName": "Slate",
         "tonalRamp": [
-          "#252628",
-          "#3e4043",
-          "#565a5e",
-          "#707378",
-          "#97999d",
-          "#bec0c2",
-          "#dddedf",
-          "#f2f2f3"
-        ]
-      },
-      "rule": {
-        "role": "neutral",
-        "displayName": "Rule",
-        "canonical": "rgba(28, 29, 31, 0.13)"
-      },
-      "rule-strong": {
-        "role": "neutral",
-        "displayName": "Rule Strong",
-        "canonical": "rgba(28, 29, 31, 0.32)"
-      },
-      "soft-black": {
-        "role": "neutral",
-        "displayName": "Soft Black",
-        "canonical": "#161719",
-        "tonalRamp": [
-          "#252628",
-          "#3f4041",
-          "#59595b",
-          "#727374",
-          "#99999a",
-          "#bfbfc0",
-          "#dedede",
-          "#f2f2f2"
-        ]
-      },
-      "graphite": {
-        "role": "neutral",
-        "displayName": "Graphite Band",
-        "canonical": "#232528",
-        "tonalRamp": [
-          "#252729",
-          "#3e4043",
-          "#58595c",
-          "#727375",
-          "#98999b",
-          "#bfbfc0",
-          "#dedede",
-          "#f2f2f2"
-        ]
-      },
-      "atlas-black": {
-        "role": "neutral",
-        "displayName": "Atlas Black",
-        "canonical": "#191b1d",
-        "tonalRamp": [
-          "#191b1d",
-          "#303336",
-          "#4a4d50",
-          "#66696c",
-          "#8d8f91",
-          "#b6b7b8",
-          "#d8d9d9",
-          "#f1f1f1"
-        ]
-      },
-      "on-dark": {
-        "role": "neutral",
-        "displayName": "On-Dark Ivory",
-        "canonical": "#ece8df",
-        "tonalRamp": [
-          "#272625",
-          "#41403d",
-          "#5b5956",
-          "#75736e",
-          "#9c9993",
-          "#c2bfb8",
-          "#e2ded5",
-          "#f4f2ed"
-        ]
-      },
-      "on-dark-soft": {
-        "role": "neutral",
-        "displayName": "On-Dark Soft",
-        "canonical": "#aeaba3",
-        "tonalRamp": [
-          "#272624",
-          "#41403d",
-          "#5b5955",
-          "#75736d",
-          "#9c9992",
-          "#c2bfb9",
-          "#dfdedb",
-          "#f3f2f1"
-        ]
-      },
-      "rule-dark": {
-        "role": "neutral",
-        "displayName": "Rule Dark",
-        "canonical": "rgba(236, 232, 223, 0.14)"
-      },
-      "red": {
-        "role": "primary",
-        "displayName": "Muted Canadian Red",
-        "canonical": "#9e3a35",
-        "tonalRamp": [
-          "#451917",
-          "#732a27",
-          "#9f3c37",
-          "#ae5a56",
-          "#c48784",
-          "#dab4b2",
-          "#ecd8d7",
-          "#f8f0f0"
-        ]
-      },
-      "red-dark": {
-        "role": "primary",
-        "displayName": "Deep Oxide",
-        "canonical": "#7f2c28",
-        "tonalRamp": [
-          "#471916",
-          "#762925",
-          "#8d4440",
-          "#9f605d",
-          "#b98c8a",
-          "#d3b7b6",
-          "#e8dad9",
-          "#f6f1f0"
+          "oklch(15% 0.0439 261.9)",
+          "oklch(26% 0.0439 261.9)",
+          "oklch(38% 0.0439 261.9)",
+          "oklch(50% 0.0439 261.9)",
+          "oklch(62% 0.0439 261.9)",
+          "oklch(74% 0.0439 261.9)",
+          "oklch(86% 0.0439 261.9)",
+          "oklch(95% 0.0439 261.9)"
         ]
       },
       "steel": {
         "role": "secondary",
-        "displayName": "Survey Steel",
-        "canonical": "#46677f",
+        "displayName": "Steel Blue",
         "tonalRamp": [
-          "#1c2933",
-          "#2f4454",
-          "#416076",
-          "#5c798e",
-          "#889ead",
-          "#b5c2cc",
-          "#d8dfe4",
-          "#f0f3f5"
+          "oklch(15% 0.1465 265.5)",
+          "oklch(26% 0.1465 265.5)",
+          "oklch(38% 0.1465 265.5)",
+          "oklch(50% 0.1465 265.5)",
+          "oklch(62% 0.1465 265.5)",
+          "oklch(74% 0.1465 265.5)",
+          "oklch(86% 0.1465 265.5)",
+          "oklch(95% 0.1465 265.5)"
         ]
       },
-      "steel-on-dark": {
-        "role": "secondary",
-        "displayName": "Survey Steel on Dark",
-        "canonical": "#8fb0c7",
-        "tonalRamp": [
-          "#20282d",
-          "#36424b",
-          "#4c5d69",
-          "#617887",
-          "#82a0b4",
-          "#acc5d6",
-          "#d4e1e9",
-          "#eef3f7"
-        ]
-      },
-      "green": {
-        "role": "tertiary",
-        "displayName": "Ledger Green",
-        "canonical": "#4f6e58",
-        "tonalRamp": [
-          "#1f2b22",
-          "#334739",
-          "#486450",
-          "#627d6a",
-          "#8ca192",
-          "#b7c4bb",
-          "#dae0dc",
-          "#f1f3f1"
-        ]
-      },
-      "green-on-dark": {
-        "role": "tertiary",
-        "displayName": "Ledger Green on Dark",
-        "canonical": "#9bbfa4",
-        "tonalRamp": [
-          "#212923",
-          "#38453b",
-          "#4e6053",
-          "#647c6a",
-          "#86a58e",
-          "#adcbb4",
-          "#d4e4d8",
-          "#eff5f0"
-        ]
-      },
-      "error": {
+      "rule": {
         "role": "neutral",
-        "displayName": "Error Oxide",
-        "canonical": "#8a312d",
+        "displayName": "Quiet Rule",
         "tonalRamp": [
-          "#461917",
-          "#752a26",
-          "#93413d",
-          "#a45e5b",
-          "#bd8a88",
-          "#d6b6b5",
-          "#e9d9d8",
-          "#f7f0f0"
+          "oklch(15% 0.0305 256.9)",
+          "oklch(26% 0.0305 256.9)",
+          "oklch(38% 0.0305 256.9)",
+          "oklch(50% 0.0305 256.9)",
+          "oklch(62% 0.0305 256.9)",
+          "oklch(74% 0.0305 256.9)",
+          "oklch(86% 0.0305 256.9)",
+          "oklch(95% 0.0305 256.9)"
         ]
       },
-      "focus": {
+      "rule-strong": {
         "role": "neutral",
-        "displayName": "Focus Blue",
-        "canonical": "#2f6fae",
+        "displayName": "Strong Rule",
         "tonalRamp": [
-          "#122b43",
-          "#1e4770",
-          "#2a649d",
-          "#447eb6",
-          "#77a1ca",
-          "#aac4de",
-          "#d3e0ee",
-          "#eef3f8"
-        ]
-      },
-      "focus-on-dark": {
-        "role": "neutral",
-        "displayName": "Focus Blue on Dark",
-        "canonical": "#8fb8e0",
-        "tonalRamp": [
-          "#1f2831",
-          "#344351",
-          "#485d71",
-          "#5d7892",
-          "#7ca0c2",
-          "#a4c5e6",
-          "#d0e1f2",
-          "#edf3fa"
+          "oklch(15% 0.0305 256.9)",
+          "oklch(26% 0.0305 256.9)",
+          "oklch(38% 0.0305 256.9)",
+          "oklch(50% 0.0305 256.9)",
+          "oklch(62% 0.0305 256.9)",
+          "oklch(74% 0.0305 256.9)",
+          "oklch(86% 0.0305 256.9)",
+          "oklch(95% 0.0305 256.9)"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Display",
-        "purpose": "Statement-scale home and inner-page headings; the home hero reaches clamp(58px, 7.5vw, 116px)."
+        "displayName": "Opening Statement",
+        "purpose": "Full-width Home statement; supporting titles use task-specific scales."
       },
-      "headline": {
-        "displayName": "Headline",
-        "purpose": "Section and band h2s."
+      "section": {
+        "displayName": "Question Index Chapter",
+        "purpose": "Home question-index heading; denser chapters have quieter scales."
       },
       "title": {
-        "displayName": "Title",
-        "purpose": "Service names, process steps, policy and index entry headings."
-      },
-      "entry-figure": {
-        "displayName": "Entry Figure",
-        "purpose": "HS heading readout in the Explorer; tabular lining numerals."
+        "displayName": "Publication Title",
+        "purpose": "Archive results; Home and About have their own title hierarchy."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running copy, controls and readouts; 16px under 640px."
+        "purpose": "Global prose with purposeful local measures and sizes."
       },
-      "label": {
-        "displayName": "Field Label",
-        "purpose": "Uppercase slate label naming a datum; never above a heading."
+      "control": {
+        "displayName": "Control",
+        "purpose": "Shared primary and secondary actions."
       }
     },
-    "shadows": [],
+    "shadows": [
+      {
+        "name": "home-publication-cover",
+        "value": "0 10px 24px -14px rgba(23, 33, 47, .4)",
+        "purpose": "Actual report cover beside the lead title."
+      },
+      {
+        "name": "archive-cover",
+        "value": "0 10px 24px -14px color-mix(in srgb, var(--ink) 40%, transparent)",
+        "purpose": "Actual supplied cover in an archive row."
+      },
+      {
+        "name": "pdf-sheet",
+        "value": "0 18px 44px -22px rgba(23, 33, 47, .24)",
+        "purpose": "PDF canvas page in the reader."
+      },
+      {
+        "name": "citation-overlay",
+        "value": "0 18px 40px -24px rgba(0, 0, 0, .5)",
+        "purpose": "Citation overlay; removed in mobile reading flow."
+      }
+    ],
     "motion": [
       {
         "name": "ease-out",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Every transition and the chart registration."
+        "purpose": "Shared state easing."
       },
       {
-        "name": "state-transition",
-        "value": "160ms",
-        "purpose": "Colour, background and border changes on hover."
+        "name": "dur-1",
+        "value": "150ms",
+        "purpose": "Colour, background and border state changes."
       },
       {
-        "name": "underline-scale",
-        "value": "240ms",
-        "purpose": "Nav underline and arrow nudge; 280ms for the sample-picker underline."
+        "name": "dur-2",
+        "value": "250ms",
+        "purpose": "Underlines, arrows, covers, disclosure marks and source-node emphasis."
       },
       {
-        "name": "register-graticule",
-        "value": "register-in 500ms",
-        "purpose": "Chart graticule fades in first."
+        "name": "cover-transition",
+        "value": "420ms",
+        "purpose": "Real report cover transition into reading."
       },
       {
-        "name": "register-line",
-        "value": "register-draw 1100ms, 180ms delay",
-        "purpose": "Trend line draws via stroke-dashoffset (pathLength 1)."
-      },
-      {
-        "name": "register-series",
-        "value": "register-in 700ms, 1000ms delay",
-        "purpose": "Area wash and points fade in after the line."
-      },
-      {
-        "name": "register-bar",
-        "value": "register-bar 1100ms, 500ms delay",
-        "purpose": "Province bars scale in from the left."
-      },
-      {
-        "name": "atlas-route",
-        "value": "atlas-draw 1600ms, 220ms delay",
-        "purpose": "The Canada-Europe evidence route draws once into an already-readable atlas plate."
+        "name": "trace-selection-draw",
+        "value": "560ms",
+        "purpose": "After a changed phrase selection; initial render and resize do not animate."
       },
       {
         "name": "reduced-motion",
-        "value": "animation and transition 0.01ms, delay 0",
-        "purpose": "All motion disabled under prefers-reduced-motion."
+        "value": ".01ms ordinary timing; no smooth scroll, view transition or trace drawing",
+        "purpose": "Keeps content and native disclosure paths available."
+      },
+      {
+        "name": "scroll-enhancement",
+        "value": "transform, translate, scale, stroke-dashoffset only",
+        "purpose": "Progress/rule enhancements behind reduced-motion and feature guards."
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-desktop",
+        "name": "wide-archive-preview",
         "value": "1180px"
       },
       {
-        "name": "tablet",
+        "name": "reader-contents-disclosure",
+        "value": "1024px"
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "1020px"
+      },
+      {
+        "name": "home-spread-and-source-directory-stack",
         "value": "980px"
       },
       {
-        "name": "flagship-compact",
-        "value": "700px"
+        "name": "policy-rows-and-footer-stack",
+        "value": "800px"
       },
       {
-        "name": "mobile",
+        "name": "trace-and-about-chapters-stack",
+        "value": "760px"
+      },
+      {
+        "name": "phone",
         "value": "640px"
+      },
+      {
+        "name": "reader-toolbar-rows",
+        "value": "560px"
+      },
+      {
+        "name": "narrow-phone",
+        "value": "420px"
+      },
+      {
+        "name": "narrow-home-refinement",
+        "value": "360px"
+      },
+      {
+        "name": "short-reader-height",
+        "value": "600px"
+      },
+      {
+        "name": "short-source-directory-height",
+        "value": "760px"
+      },
+      {
+        "name": "sticky-archive-minimum-height",
+        "value": "820px"
       }
     ]
   },
@@ -418,134 +328,123 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Red action with trailing arrow.",
-      "html": "<a class=\"ds-btn-primary\" href=\"#\">Request research <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
-      "css": ".ds-btn-primary{display:inline-flex;min-height:50px;align-items:center;gap:14px;padding:12px 22px;border:1px solid var(--red,#9e3a35);background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;border-radius:0;transition:background 160ms cubic-bezier(0.16,1,0.3,1),border-color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary:hover{background:var(--red-dark,#7f2c28);border-color:var(--red-dark,#7f2c28)}.ds-btn-primary:hover svg{transform:translateX(4px)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+      "description": "The main destination or action, with a blue fill and white label.",
+      "html": "<button type=\"button\" class=\"ds-primary\">Read the research <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--red,#2447dc);background:var(--red,#2447dc);color:var(--ivory-light,#fff)}.ds-primary:hover{background:var(--red-dark,#1736b6);border-color:var(--red-dark,#1736b6)}.ds-primary:active{transform:translateY(1px)}.ds-primary:disabled{cursor:progress;opacity:.6}.ds-primary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-primary:hover svg{transform:translateX(4px)}.ds-primary:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-primary svg{transition:none}}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Ink-stroked quiet action that inverts on hover.",
-      "html": "<a class=\"ds-btn-secondary\" href=\"#\">See how research works <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
-      "css": ".ds-btn-secondary{display:inline-flex;min-height:50px;align-items:center;gap:14px;padding:12px 22px;border:1px solid var(--ink,#1c1d1f);background:transparent;color:var(--ink,#1c1d1f);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;text-decoration:none;border-radius:0;transition:background 160ms cubic-bezier(0.16,1,0.3,1),color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-secondary svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-secondary:hover{background:var(--ink,#1c1d1f);color:var(--ivory-light,#faf8f3)}.ds-btn-secondary:hover svg{transform:translateX(4px)}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+      "description": "A blue outlined action that fills on hover.",
+      "html": "<button type=\"button\" class=\"ds-secondary\">Read the report <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:12px 20px;border-radius:0;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;line-height:1.25;text-decoration:none;cursor:pointer;transition:background var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1)),border-color var(--dur-1,150ms) var(--ease-out,cubic-bezier(.16,1,.3,1));border:1px solid var(--blue,#2447dc);background:transparent;color:var(--blue,#2447dc)}.ds-secondary:hover{background:var(--blue,#2447dc);color:var(--ivory-light,#fff)}.ds-secondary:active{transform:translateY(1px)}.ds-secondary svg{width:18px;height:18px;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-secondary:hover svg{transform:translateX(4px)}.ds-secondary:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-secondary,.ds-secondary svg{transition:none}}"
     },
     {
-      "name": "Text Link",
-      "kind": "button",
-      "description": "Underruled sample link beside the primary action.",
-      "html": "<a class=\"ds-text-link\" href=\"#\">See a sample analysis <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M4 12h15M13 6l6 6-6 6\"/></svg></a>",
-      "css": ".ds-text-link{display:inline-flex;min-height:50px;align-items:center;gap:14px;border-bottom:1px solid var(--ink,#1c1d1f);color:var(--ink,#1c1d1f);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);font-size:16px;font-weight:600;text-decoration:none}.ds-text-link svg{width:18px;height:18px;transition:transform 240ms cubic-bezier(0.16,1,0.3,1)}.ds-text-link:hover svg{transform:translateX(4px)}.ds-text-link:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
-    },
-    {
-      "name": "Text Field",
+      "name": "Archive Search",
       "kind": "input",
-      "refersTo": "field",
-      "description": "Square white field with a rule-strong stroke.",
-      "html": "<label class=\"ds-field\"><span>Product or HS code <em>Required</em></span><input placeholder=\"e.g. LED luminaires, 9405.11\"></label>",
-      "css": ".ds-field{display:grid;gap:8px;font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-field>span{display:flex;gap:10px;align-items:baseline;font-size:15px;font-weight:600}.ds-field em{color:var(--red,#9e3a35);font-size:12px;font-style:normal;font-weight:600;letter-spacing:.06em;text-transform:uppercase}.ds-field input{height:52px;padding:0 14px;border:1px solid var(--rule-strong,rgba(28,29,31,.32));border-radius:0;background:#fff;color:var(--ink,#1c1d1f);font:inherit;font-size:17px;transition:border-color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-field input::placeholder{color:#6e7176}.ds-field input:hover{border-color:var(--ink-soft,#45484d)}.ds-field input:focus{border-color:var(--focus,#2f6fae)}.ds-field input:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+      "description": "A labelled white search instrument and explicit submit action within open white framing.",
+      "html": "<form class=\"ds-search\"><label for=\"ds-query\">Search the research</label><div><input id=\"ds-query\" type=\"search\" placeholder=\"Title, subject or keyword\"><button type=\"submit\">Search <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button></div><p>Search titles, summaries, tags and report text.</p></form>",
+      "css": ".ds-search{display:grid;gap:12px;padding:0 0 24px;border-bottom:1px solid var(--rule,rgba(23,33,47,.15));background:transparent;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-search label{font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:17px;font-weight:600;line-height:1.4}.ds-search>div{display:flex;gap:12px;align-items:center;padding:8px 8px 8px 18px;background:var(--ivory-light,#fff);border:1px solid var(--rule-strong,rgba(23,33,47,.35))}.ds-search input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:18px;caret-color:var(--red,#2447dc)}.ds-search input::placeholder{color:var(--slate,#526079)}.ds-search button{display:inline-flex;align-items:center;gap:20px;min-height:48px;padding:0 22px;border:0;background:var(--red,#2447dc);color:var(--on-dark,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:16px;font-weight:600;cursor:pointer;transition:background var(--dur-1,150ms)}.ds-search button:hover{background:var(--red-dark,#1736b6)}.ds-search button svg{width:20px;height:20px}.ds-search :is(input,button):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-search p{margin:0;font-size:15px;line-height:1.5}@media(max-width:420px){.ds-search>div{flex-wrap:wrap}.ds-search input{font-size:18px}.ds-search button{width:100%;justify-content:center}}@media(prefers-reduced-motion:reduce){.ds-search button{transition:none}}"
     },
     {
-      "name": "Navigation",
+      "name": "Primary Navigation",
       "kind": "nav",
-      "refersTo": "nav-action",
-      "description": "76px ruled bar with commercial-first destinations, labelled mobile Menu control and one red Commission research action.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-wordmark\" href=\"#\">THARROS<span class=\"ds-slash\"></span>CANADA</a><div class=\"ds-links\"><a href=\"#\">Services</a><a href=\"#\">Research</a><a href=\"#\">Methodology</a><a href=\"#\">About</a></div><a class=\"ds-nav-action\" href=\"#\">Commission research</a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:76px;border-bottom:1px solid var(--rule,rgba(28,29,31,.13));background:var(--ivory,#f4f1ea);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif);color:var(--ink,#1c1d1f)}.ds-wordmark{display:inline-flex;align-items:center;gap:12px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:23px;font-weight:500;letter-spacing:.16em;text-decoration:none;color:inherit}.ds-slash{width:1px;height:22px;background:var(--red,#9e3a35);transform:skewX(-18deg)}.ds-links{display:flex;gap:24px}.ds-links a{position:relative;padding:26px 0 25px;color:var(--ink-soft,#45484d);font-size:16px;font-weight:500;text-decoration:none}.ds-nav-action{min-height:44px;display:inline-flex;align-items:center;padding:0 18px;background:var(--red,#9e3a35);color:var(--ivory-light,#faf8f3);font-size:16px;font-weight:600;text-decoration:none}"
+      "description": "Research, Methodology and About with blue underline feedback for hover and the current route.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><a href=\"/research\" aria-current=\"page\">Research</a><a href=\"/methodology\">Methodology</a><a href=\"/about\">About</a></nav>",
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;gap:32px;background:var(--ivory-light,#fff);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:10px 0;color:var(--ink-soft,#3d4b61);font-size:16px;font-weight:600;text-decoration:none;transition:color var(--dur-1,150ms)}.ds-nav a::after{content:\"\";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--blue,#2447dc);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-2,250ms) var(--ease-out,cubic-bezier(.16,1,.3,1))}.ds-nav a:hover,.ds-nav a[aria-current=page]{color:var(--blue,#2447dc)}.ds-nav a:hover::after,.ds-nav a[aria-current=page]::after{transform:scaleX(1)}.ds-nav a:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-nav a,.ds-nav a::after{transition:none}}"
     },
     {
-      "name": "Evidence Atlas",
-      "kind": "custom",
-      "description": "The homepage evidence plate: a semantic Canada-Europe route and four inspectable source classes.",
-      "html": "<section class=\"ds-atlas\"><header><span>Evidence route</span><span>CA ↔ EU</span></header><svg viewBox=\"0 0 520 180\" aria-label=\"Canada to Europe evidence route\"><path d=\"M55 115C175 28 316 35 465 108\"/><circle cx=\"55\" cy=\"115\" r=\"5\"/><circle cx=\"465\" cy=\"108\" r=\"5\"/></svg><div><span>01 Official data</span><span>02 Procurement</span><span>03 Company records</span><span>04 Policy documents</span></div></section>",
-      "css": ".ds-atlas{color:var(--on-dark,#ece8df);background:var(--atlas-black,#191b1d);border-top:1px solid var(--rule-dark,rgba(236,232,223,.14));border-bottom:1px solid var(--rule-dark,rgba(236,232,223,.14));font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-atlas header{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid var(--rule-dark,rgba(236,232,223,.14));color:var(--on-dark-soft,#aeaba3);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.ds-atlas svg{display:block;width:100%;height:auto}.ds-atlas path{fill:none;stroke:#e0a39c;stroke-width:1.5}.ds-atlas circle{fill:#e0a39c}.ds-atlas>div{display:grid;grid-template-columns:1fr 1fr}.ds-atlas>div span{padding:11px 14px;border-top:1px solid var(--rule-dark,rgba(236,232,223,.14));color:var(--on-dark-soft,#aeaba3);font-size:12px}"
+      "name": "Archive Facet",
+      "kind": "chip",
+      "refersTo": "facet",
+      "description": "Square format/year facets with a neutral grey selected state.",
+      "html": "<div class=\"ds-facets\" role=\"group\" aria-label=\"Publication type\"><button type=\"button\" aria-pressed=\"true\">Data Note</button><button type=\"button\" aria-pressed=\"false\">Research Report</button></div>",
+      "css": ".ds-facets{display:flex;flex-wrap:wrap;gap:8px}.ds-facets button{min-height:44px;padding:8px 12px;border:1px solid var(--rule-strong,rgba(23,33,47,.35));border-radius:0;background:transparent;color:var(--ink-soft,#3d4b61);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:14px;line-height:1.35;font-variant-numeric:tabular-nums;cursor:pointer;transition:background var(--dur-1,150ms),color var(--dur-1,150ms),border-color var(--dur-1,150ms)}.ds-facets button:hover:not(:disabled){border-color:var(--red,#2447dc);color:var(--red,#2447dc)}.ds-facets button[aria-pressed=\"true\"]{border-color:var(--ink,#17212f);background:var(--ivory-deep,#f0f2f4);color:var(--ink,#17212f);font-weight:600}.ds-facets button:disabled{border-color:var(--rule,rgba(23,33,47,.15));color:var(--slate,#526079);cursor:default}.ds-facets button:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-facets button{transition:none}}"
     },
     {
-      "name": "Archive Controls",
-      "kind": "custom",
-      "description": "Square search and taxonomy controls for title, summary, tag, area, format and publication year.",
-      "html": "<form class=\"ds-archive\"><label><span>Search archive</span><input placeholder=\"Title, subject or keyword\"></label><label><span>Research area</span><select><option>All areas</option></select></label><label><span>Publication type</span><select><option>All formats</option></select></label><label><span>Publication year</span><select><option>All dates</option></select></label></form>",
-      "css": ".ds-archive{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:18px;padding:20px 0;border-top:1px solid var(--ink,#1c1d1f);border-bottom:1px solid var(--rule,rgba(28,29,31,.13));font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-archive label{display:grid;gap:7px}.ds-archive label>span{font-size:13px;font-weight:600}.ds-archive input,.ds-archive select{height:48px;padding:0 12px;border:1px solid var(--rule-strong,rgba(28,29,31,.32));border-radius:0;background:#fff;color:var(--ink,#1c1d1f);font:inherit}.ds-archive input:focus-visible,.ds-archive select:focus-visible{outline:2px solid var(--focus,#2f6fae);outline-offset:3px}"
+      "name": "Publication Record",
+      "kind": "card",
+      "description": "A flat archive row using a real publication title and reference; the preview omits its cover.",
+      "html": "<article class=\"ds-record\"><p>TC-2026-002 · Research Report · September 2026</p><h2><a href=\"/research/canada-inside-safe\">Canada Inside SAFE: What Access to Europe’s €150B Defence Initiative Has Cost, and Who’s Gained So Far</a></h2><a class=\"ds-record-read\" href=\"/research/canada-inside-safe\">Read the report</a></article>",
+      "css": ".ds-record{padding:26px 0;border-top:1px solid var(--rule,rgba(23,33,47,.15));background:transparent;color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif)}.ds-record>p{margin:0 0 10px;color:var(--slate,#526079);font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}.ds-record h2{max-width:42ch;margin:0 0 12px;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(23px,2vw,29px);font-weight:600;line-height:1.22;letter-spacing:-.02em}.ds-record h2 a{color:var(--ink,#17212f);text-decoration:none}.ds-record h2 a:hover{color:var(--red,#2447dc);text-decoration:underline;text-underline-offset:5px}.ds-record-read{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;background:var(--red,#2447dc);color:var(--on-dark,#fff);border:1px solid var(--red,#2447dc);font-size:14px;font-weight:600;text-decoration:none}.ds-record-read:hover{background:var(--red-dark,#1736b6);border-color:var(--red-dark,#1736b6)}.ds-record a:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}",
+      "refersTo": "publication-record"
     },
     {
-      "name": "Research Scope Desk",
+      "name": "Open Question Disclosure",
       "kind": "custom",
-      "description": "The light commissioning sheet with explicit progress and written-scope expectations.",
-      "html": "<section class=\"ds-scope\"><header>Research scope desk</header><div><span>Step 1 of 3</span><strong>Who is the research for?</strong><p>No account is created and no sales call is required.</p></div></section>",
-      "css": ".ds-scope{background:var(--ivory-light,#faf8f3);color:var(--ink,#1c1d1f);box-shadow:0 20px 70px rgba(28,29,31,.08);font-family:var(--sans,'Schibsted Grotesk Variable',Arial,sans-serif)}.ds-scope header{height:34px;padding:0 18px;display:flex;align-items:center;background:var(--ivory-deep,#ebe6db);color:var(--slate,#5d6166);font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.ds-scope>div{padding:34px 40px}.ds-scope span{display:block;color:var(--slate,#5d6166);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.ds-scope strong{display:block;margin-top:18px;font-family:var(--display,'Source Serif 4 Variable',Georgia,serif);font-size:34px;font-weight:400}.ds-scope p{color:var(--ink-soft,#45484d)}"
+      "description": "Native field disclosure with a real question, scope and useful destination.",
+      "html": "<details class=\"ds-question\"><summary><h3>Trade &amp; Economic Integration</h3><p>Where is Canada–EU trade growing for a given product or sector?</p><svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h14\"/><path class=\"ds-question-vertical\" d=\"M10 3v14\"/></svg></summary><div><p>Trade, investment, CETA, market access, digital trade and supply chains.</p><ul><li>How does CETA treatment affect a specific route to market?</li><li>Which supply chains link Canadian and European producers?</li></ul><a href=\"/about#field-trade-economic-integration\">Explore the field <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></a></div></details>",
+      "css": ".ds-question{border-top:1px solid var(--ink,#17212f);border-bottom:1px solid var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-question summary{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr) 24px;column-gap:28px;min-height:136px;padding:28px 0;align-items:start;list-style:none;cursor:pointer}.ds-question summary::-webkit-details-marker{display:none}.ds-question h3{margin:0;font-size:17px;font-weight:600;line-height:1.4}.ds-question summary>p{margin:-3px 0 0;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(24px,2.4vw,34px);font-weight:500;letter-spacing:-.025em;line-height:1.22}.ds-question summary>svg{width:24px;height:24px;color:var(--blue,#2447dc)}.ds-question summary>svg path{fill:none;stroke:currentColor;stroke-width:1.5}.ds-question[open] .ds-question-vertical{display:none}.ds-question summary:hover>p,.ds-question[open] summary>p{color:var(--blue,#2447dc)}.ds-question :is(summary,a):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-question>div{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr) 24px;column-gap:28px;padding-bottom:28px}.ds-question>div>p{margin:0;color:var(--ink-soft,#3d4b61);font-size:15px;line-height:1.65}.ds-question ul{grid-column:2;margin:0;padding:0;list-style:none}.ds-question li{padding:12px 0;border-top:1px solid var(--rule,rgba(23,33,47,.15));font-size:17px;line-height:1.5}.ds-question>div>a{grid-column:2;display:inline-flex;align-items:center;gap:20px;min-height:44px;margin-top:12px;color:var(--blue,#2447dc);font-size:15px;font-weight:600;text-decoration:none}.ds-question>div>a:hover{text-decoration:underline}.ds-question a svg{width:18px;height:18px}@media(max-width:640px){.ds-question summary{min-height:0;grid-template-columns:1fr 24px;gap:18px 20px}.ds-question summary>p{grid-column:1/-1;grid-row:2;font-size:27px}.ds-question summary>svg{grid-column:2;grid-row:1}.ds-question>div{grid-template-columns:1fr;row-gap:18px}.ds-question ul,.ds-question>div>a{grid-column:1}}"
+    },
+    {
+      "name": "Evidence Trace",
+      "kind": "custom",
+      "description": "Faithful TC-2026-001 fragments, visible Traced to feedback, and the supporting period record.",
+      "html": "<div class=\"ds-trace\"><div class=\"ds-trace-claim\"><h3>Published claim</h3><p>Select an underlined phrase to inspect its evidence.</p><div class=\"ds-trace-phrases\"><span role=\"button\" tabindex=\"0\" aria-pressed=\"false\">the City of Ottawa</span><span role=\"button\" tabindex=\"0\" aria-pressed=\"true\">between 2017-2024 (excluding 2023)</span></div><p class=\"ds-traced\" aria-live=\"polite\">Traced to <strong>Period</strong></p></div><div class=\"ds-trace-evidence\"><h3>Evidence record</h3><dl><div><dt>Publisher</dt><dd>City of Ottawa</dd></div><div data-active><dt>Period</dt><dd>2017–2024, excluding 2023</dd></div></dl></div></div>",
+      "css": ".ds-trace{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:60px;font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-trace-claim{padding:24px 24px 22px;background:var(--ivory-deep,#f0f2f4)}.ds-trace h3{margin:0 0 5px;font-size:15px;font-weight:700;line-height:1.4}.ds-trace-claim>p:first-of-type{margin:0 0 18px;color:var(--slate,#526079);font-size:14px;line-height:1.5}.ds-trace-phrases{font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:clamp(20px,1.55vw,23px);font-weight:500;line-height:1.55;letter-spacing:-.015em}.ds-trace-phrases span{display:inline;padding:1px 0;text-decoration:underline dotted var(--blue,#2447dc);text-underline-offset:.2em;cursor:pointer;box-decoration-break:clone}.ds-trace-phrases span+span{margin-left:10px}.ds-trace-phrases span:hover{color:var(--blue,#2447dc);text-decoration-style:solid}.ds-trace-phrases span[aria-pressed=true]{background:var(--sky,#edf3f8);color:var(--blue,#2447dc);text-decoration:underline solid var(--blue,#2447dc);text-decoration-thickness:2px}.ds-trace-phrases span:focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-traced{margin:20px 0 0;padding-top:12px;border-top:1px solid var(--rule,rgba(23,33,47,.15));color:var(--slate,#526079);font-size:14px;line-height:1.5}.ds-traced strong{color:var(--blue,#2447dc);font-weight:650}.ds-trace-evidence>h3{padding:0 14px 12px;margin:0}.ds-trace dl{margin:0;border-top:1px solid var(--rule-strong,rgba(23,33,47,.35))}.ds-trace dl>div{padding:12px 14px;border-bottom:1px solid var(--rule,rgba(23,33,47,.15))}.ds-trace [data-active]{background:var(--sky,#edf3f8)}.ds-trace dt{font-size:14px;font-weight:700;line-height:1.5}.ds-trace [data-active] dt{color:var(--blue,#2447dc)}.ds-trace dd{margin:5px 0 0;font-size:16px;line-height:1.5}@media(max-width:760px){.ds-trace{grid-template-columns:1fr;gap:28px}}"
+    },
+    {
+      "name": "Source Register",
+      "kind": "custom",
+      "description": "Labelled source search and region controls above an actual registered publisher record.",
+      "html": "<section class=\"ds-sources\"><form><label>Search the source register<input type=\"search\" placeholder=\"Publisher, subject or access type\"></label><label>Region<select><option>All regions</option><option>Canada</option><option>Provincial &amp; municipal</option><option>Europe</option></select></label><p>Search publisher names, source descriptions, cities and access types.</p></form><h3>Canada</h3><a href=\"https://www.statcan.gc.ca/en/developers/wds\" target=\"_blank\" rel=\"noreferrer\"><div><strong>Statistics Canada</strong><span>Aggregate trade, industry, economic and demographic data; WDS provides machine-readable series and metadata.</span></div><div><span>API</span><small>Ottawa <svg viewBox=\"0 0 20 20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3 10h13M11 5l5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></small></div></a></section>",
+      "css": ".ds-sources{font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);color:var(--ink,#17212f)}.ds-sources form{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,.6fr);gap:8px 16px;margin-bottom:16px}.ds-sources label{display:block;font-size:14px;font-weight:650;line-height:1.4}.ds-sources input,.ds-sources select{display:block;width:100%;min-width:0;min-height:48px;margin-top:8px;padding:10px 12px;border:1px solid var(--rule-strong,rgba(23,33,47,.35));border-radius:0;background:var(--ivory-light,#fff);color:var(--ink,#17212f);font-family:var(--sans,'Schibsted Grotesk','Helvetica Neue',Arial,sans-serif);font-size:15px;line-height:1.4;caret-color:var(--blue,#2447dc)}.ds-sources input::placeholder{color:var(--slate,#526079)}.ds-sources :is(input,select,a):focus-visible{outline:2px solid var(--focus,#2447dc);outline-offset:3px}.ds-sources form>p{grid-column:1/-1;margin:0;color:var(--slate,#526079);font-size:13px;line-height:1.5}.ds-sources h3{margin:20px 0 12px;font-family:var(--display,'Space Grotesk','Helvetica Neue',Arial,sans-serif);font-size:22px;font-weight:600;line-height:1.3;letter-spacing:-.02em}.ds-sources>a{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.3fr);gap:20px;padding:16px 0 18px;border-top:1px solid var(--rule,rgba(23,33,47,.15));border-bottom:1px solid var(--rule,rgba(23,33,47,.15));color:inherit;text-decoration:none}.ds-sources>a>div{display:grid;align-content:start;gap:7px}.ds-sources strong{font-size:17px;font-weight:650;line-height:1.35}.ds-sources>a>div:first-child>span{color:var(--ink-soft,#3d4b61);font-size:15px;line-height:1.6}.ds-sources>a>div:last-child>span{color:var(--blue,#2447dc);font-size:13px;font-weight:600;line-height:1.45}.ds-sources small{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--slate,#526079);font-size:13px;line-height:1.5}.ds-sources small svg{width:16px;height:16px;color:var(--blue,#2447dc)}.ds-sources>a:hover strong{color:var(--blue,#2447dc);text-decoration:underline;text-underline-offset:4px}@media(max-width:640px){.ds-sources form,.ds-sources>a{grid-template-columns:1fr}}"
+    },
+    {
+      "name": "Empty Editorial Frames",
+      "kind": "custom",
+      "refersTo": "empty-image-frame",
+      "description": "The null owner-controlled home/About slots: 16:9 and 3:2, without images, captions or prompts.",
+      "html": "<div class=\"ds-image-slots\"><figure class=\"ds-image-slot\" data-editorial-slot=\"home\"><div class=\"ds-image-frame\" data-empty aria-hidden=\"true\"></div></figure><figure class=\"ds-image-slot\" data-editorial-slot=\"about\"><div class=\"ds-image-frame\" data-empty aria-hidden=\"true\"></div></figure></div>",
+      "css": ".ds-image-slots{display:grid;grid-template-columns:1fr 1fr;gap:24px}.ds-image-slot{min-width:0;margin:0}.ds-image-frame{aspect-ratio:16/9;overflow:hidden;background:var(--ivory-deep,#f0f2f4)}.ds-image-slot[data-editorial-slot=about] .ds-image-frame{aspect-ratio:3/2}@media(max-width:640px){.ds-image-slots{grid-template-columns:1fr}}"
     }
   ],
   "narrative": {
-    "northStar": "The Evidence Ledger",
-    "overview": "Tharros Canada is an evidence-led commercial research house. Warm ivory carries graphite ink, dark bands mark major commercial and task moments, and statement-scale editorial compositions give each major surface its own hierarchy. The visual material comes from real research artifacts, official-source data and the semantic evidence atlas rather than stock photography or generic dashboard cards.\\n\\nThe homepage follows the evidence route from Canada to Europe, starts from the client decision, summarizes the four research areas, then opens into services and the research archive. Public research remains visibly empty until verified work exists.",
+    "northStar": "The Open Issue",
+    "overview": "Tharros presents independent student research as an open editorial issue: a confident statement, real published work, questions to explore, and evidence to inspect. White space, dark ink, selective blue, asymmetric composition, and precise rules create its contemporary character. Space Grotesk provides the display voice; Schibsted Grotesk keeps the research and its controls readable.\n\nThe identity continues across distinct tasks instead of repeating a hero composition. Home opens into an unboxed publication and project spread; About reads as a project portrait; Methodology operates as an evidence workshop and source directory; policy pages are compact references. Publication covers and source records remain the principal visual material. Two intentionally empty editorial frames reserve space for imagery the owner will supply.",
     "keyCharacteristics": [
-      "Ivory ground, graphite ink, dark bands used selectively rather than on every route.",
-      "Services · Research · Methodology · About primary navigation.",
-      "Evidence-atlas homepage opening plus distinct statement, task and document compositions.",
-      "Four research areas remain a homepage summary and archive taxonomy, not a standalone route.",
-      "Research archive supports title, summary and tag search plus area, format and year filters while remaining honest when empty.",
-      "Visible provenance and limitations on every source; no synthetic fallback.",
-      "Ruled registers and 12-column layouts instead of cards.",
-      "Red for action, steel for data, green for source state and confirmation.",
-      "Source Serif 4 editorial voice and Schibsted Grotesk interface voice."
+      "A white page, dark ink, confident sans-serif type, blue emphasis, and restrained grey grouping.",
+      "Open asymmetric spreads and ruled records rather than repeated boxed editorial panels.",
+      "Native question and subject disclosures, a working evidence trace, and a searchable source register.",
+      "Exactly two owner-controlled editorial image slots, currently empty; real report covers remain visible.",
+      "Task-specific hierarchy, progressive enhancement, and purposeful motion that never gates reading."
     ],
     "rules": [
       {
-        "name": "The Red Means Act Rule",
-        "body": "Red marks something the visitor can do. It never tints a surface, never colours a datum, and never decorates a heading.",
+        "name": "The White Ground Rule",
+        "body": "Let the white page and its typography carry the composition; use blue and grey to clarify specific statements, actions, and working states.",
         "section": "colors"
       },
       {
-        "name": "The Data Channel Rule",
-        "body": "Steel carries series and magnitudes, and green carries positive change and confirmation. Neither is used for action or ornament.",
-        "section": "colors"
-      },
-      {
-        "name": "The Band Rule",
-        "body": "Dark tones appear as full-bleed chapter bands, the footer and the evidence-atlas plate. They are never generic card surfaces on the ivory ground. Inside a dark surface, every colour switches to its on-dark partner, including focus.",
-        "section": "colors"
-      },
-      {
-        "name": "The Context Label Rule",
-        "body": "Compact uppercase labels identify either a datum or the operating context of a statement-scale page opening. They remain descriptive, never promotional decoration.",
+        "name": "The Reading Measure Rule",
+        "body": "Use the shared 64ch reading measure and local measures suited to summaries and source descriptions; do not stretch prose simply to fill a column.",
         "section": "typography"
       },
       {
-        "name": "The Meaningful Numeral Rule",
-        "body": "Numbering (01–05, 1–3, the success-step counter) is used only where the sequence carries meaning: the five-question index, process and request steps, and HS headings. Numerals are always tabular and slate.",
-        "section": "typography"
-      },
-      {
-        "name": "The Tabular Rule",
-        "body": "Every figure a reader compares (chart labels, shares, prices, change readouts, progress) uses tabular numerals.",
-        "section": "typography"
-      },
-      {
-        "name": "The One Rule Per Boundary Rule",
-        "body": "Each boundary gets exactly one rule. A strong 1px ink (or 2px on entry heads and sidebars) opens a list or entry, and hairline rules divide its rows. Never double a rule with padding boxes or borders on both sides.",
+        "name": "The Visible Content Rule",
+        "body": "Reading order and explicit controls provide access to content; hover and motion may reinforce meaning but never provide its only route.",
         "section": "layout"
       },
       {
-        "name": "The Printed Plate Rule",
-        "body": "Surfaces never lift or float. Hover changes colour, underline or arrow position, never elevation.",
-        "section": "elevation"
+        "name": "The Owner Imagery Rule",
+        "body": "Keep the two editorial slots empty until the owner supplies images; a null slot renders its frame without an image or caption.",
+        "section": "components"
       }
     ],
     "dos": [
-      "**Do** use official source metadata and real research artifacts as visual content.",
-      "**Do** keep publisher, period, retrieval/release context and limitations near quantitative claims.",
-      "**Do** keep the research archive empty until verified work exists.",
-      "**Do** use light document headers for editorial and policy pages.",
-      "**Do** retain accessible table/text equivalents for charts.",
-      "**Do** fail closed when a source is unavailable."
+      "**Do** sustain the identity through white ground, confident type, blue emphasis, asymmetric reading structures, and precise rules.",
+      "**Do** use real publication covers, questions, source records, and reference information as the visual material.",
+      "**Do** keep the home and About image slots null until the owner supplies imagery.",
+      "**Do** preserve native disclosures, source-region anchors, complete no-JavaScript records, archive tools, and report controls.",
+      "**Do** keep CSS to one rule per line and update the system record with intentional changes."
     ],
     "donts": [
-      "**Don't** fabricate reports, clients, experts, partnerships, awards, images or findings.",
-      "**Don't** substitute synthetic data when a source fails.",
-      "**Don't** use government logos or marks to imply affiliation.",
-      "**Don't** add decorative dashboard cards, stock photography or ornamental charts.",
-      "**Don't** use a large dark hero on every page.",
-      "**Don't** let indicative price ranges become the main brand proposition."
+      "**Don't** restore the former warm-paper and serif identity or the first revision's repeated coloured chapter bands.",
+      "**Don't** populate the empty frames with generated or stock images, captions, icons, or upload prompts.",
+      "**Don't** invent publications, institutional scale, endorsements, source dates, or decorative data.",
+      "**Don't** alter the owner's PDF or redraw its content to match the website identity.",
+      "**Don't** make evidence, reading controls, or essential destinations depend on hover or motion."
     ]
   }
 }

@@ -47,94 +47,110 @@ export default function CopyrightPage() {
           { label: "Contact", value: <a href={`mailto:${contactEmail}`}>{contactEmail}</a> },
         ]}
       />
-      <div className="document-body">
+      <div className="document-body policy-body">
         <MethodRail items={sections} label="Sections" />
         <div className="document-sheet">
           <article id="covers">
             <h2>What the licence covers</h2>
-            <p>
-              Publications in the <Link href="/research">Research archive</Link> are licensed under{" "}
-              <a href={researchLicence.url} rel="license">
-                {researchLicence.name}
-              </a>
-              , unless a publication states otherwise. This includes the text, charts and tables
-              Tharros produces for them, in both the web page and the PDF.
-            </p>
+            <div className="policy-section-body">
+              <p>
+                Publications in the <Link href="/research">Research archive</Link> are licensed
+                under{" "}
+                <a href={researchLicence.url} rel="license">
+                  {researchLicence.name}
+                </a>
+                , unless a publication states otherwise. This includes the text, charts and tables
+                Tharros produces for them, in both the web page and the PDF.
+              </p>
+            </div>
           </article>
           <article id="can">
             <h2>What you can do</h2>
-            <ul>
-              <li>
-                <strong>Share:</strong> copy and redistribute the research in any medium or format.
-              </li>
-              <li>
-                <strong>Adapt:</strong> quote, translate, remix, transform and build on it.
-              </li>
-              <li>
-                <strong>For any purpose,</strong> including commercial use.
-              </li>
-            </ul>
+            <div className="policy-section-body">
+              <ul>
+                <li>
+                  <strong>Share:</strong> copy and redistribute the research in any medium or
+                  format.
+                </li>
+                <li>
+                  <strong>Adapt:</strong> quote, translate, remix, transform and build on it.
+                </li>
+                <li>
+                  <strong>For any purpose,</strong> including commercial use.
+                </li>
+              </ul>
+            </div>
           </article>
           <article id="must">
             <h2>What you must do</h2>
-            <ul>
-              <li>Credit {owner} and the publication title.</li>
-              <li>Link to the publication and to the licence.</li>
-              <li>Say whether you made changes.</li>
-              <li>Do not suggest that Tharros endorses you or your use.</li>
-              <li>
-                Do not add legal terms or technical measures that stop others doing what the licence
-                allows.
-              </li>
-            </ul>
+            <div className="policy-section-body">
+              <ul>
+                <li>Credit {owner} and the publication title.</li>
+                <li>Link to the publication and to the licence.</li>
+                <li>Say whether you made changes.</li>
+                <li>Do not suggest that Tharros endorses you or your use.</li>
+                <li>
+                  Do not add legal terms or technical measures that stop others doing what the
+                  licence allows.
+                </li>
+              </ul>
+            </div>
           </article>
           <article id="credit">
             <h2>How to credit</h2>
-            <p>A credit line can be as simple as:</p>
-            <p className="policy-example">
-              “[Publication title]” by {owner}, {siteUrl.replace(/^https?:\/\//, "")}
-              /research/[publication], licensed under {researchLicence.short}. Changes: [describe,
-              or “none”].
-            </p>
-            <p>
-              Every report also has a Cite panel with ready-made APA, MLA, Chicago and Harvard
-              citations.
-            </p>
+            <div className="policy-section-body">
+              <p>A credit line can be as simple as:</p>
+              <p className="policy-example">
+                “[Publication title]” by {owner}, {siteUrl.replace(/^https?:\/\//, "")}
+                /research/[publication], licensed under {researchLicence.short}. Changes: [describe,
+                or “none”].
+              </p>
+              <p>
+                Every report also has a Cite panel with ready-made APA, MLA, Chicago and Harvard
+                citations.
+              </p>
+            </div>
           </article>
           <article id="not-covered">
             <h2>What is not covered</h2>
-            <ul>
-              <li>
-                <strong>Name and brand.</strong> The Tharros Canada name, logo and wordmark are not
-                licensed for reuse.
-              </li>
-              <li>
-                <strong>Third-party sources.</strong> Data and documents from publishers such as
-                Statistics Canada, Eurostat or the City of Ottawa keep their own publishers&apos;
-                terms. The licence covers Tharros&apos;s analysis, not the source material. Each
-                report lists its sources.
-              </li>
-              <li>
-                <strong>This website.</strong> The site&apos;s code, design and other pages are not
-                covered.
-              </li>
-            </ul>
+            <div className="policy-section-body">
+              <ul>
+                <li>
+                  <strong>Name and brand.</strong> The Tharros Canada name, logo and wordmark are
+                  not licensed for reuse.
+                </li>
+                <li>
+                  <strong>Third-party sources.</strong> Data and documents from publishers such as
+                  Statistics Canada, Eurostat or the City of Ottawa keep their own publishers&apos;
+                  terms. The licence covers Tharros&apos;s analysis, not the source material. Each
+                  report lists its sources.
+                </li>
+                <li>
+                  <strong>This website.</strong> The site&apos;s code, design and other pages are
+                  not covered.
+                </li>
+              </ul>
+            </div>
           </article>
           <article id="copyright">
             <h2>Copyright</h2>
-            <p>© {owner}. All rights not granted by the licence are reserved.</p>
-            <p>
-              This page is a summary, not the licence itself. The{" "}
-              <a href={`${researchLicence.url}legalcode`}>{researchLicence.short} legal code</a>{" "}
-              sets out the binding terms, including its disclaimer of warranties.
-            </p>
+            <div className="policy-section-body">
+              <p>© {owner}. All rights not granted by the licence are reserved.</p>
+              <p>
+                This page is a summary, not the licence itself. The{" "}
+                <a href={`${researchLicence.url}legalcode`}>{researchLicence.short} legal code</a>{" "}
+                sets out the binding terms, including its disclaimer of warranties.
+              </p>
+            </div>
           </article>
           <article id="permissions">
             <h2>Questions and permissions</h2>
-            <p>
-              For uses the licence does not cover, write to{" "}
-              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
-            </p>
+            <div className="policy-section-body">
+              <p>
+                For uses the licence does not cover, write to{" "}
+                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+              </p>
+            </div>
           </article>
         </div>
       </div>

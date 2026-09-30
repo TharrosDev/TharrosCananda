@@ -14,4 +14,5 @@ Each fact lives in one doc; the others link to it. Update a doc in the same PR a
 | [`SECURITY.md`](../SECURITY.md) | Reporting a vulnerability | You found a security issue |
 | [`AUDIT-2026-09-29.md`](AUDIT-2026-09-29.md) | Codebase findings, fixes and scoped validation evidence | You are reviewing the September 29 audit changes |
 | [`RESPONSIVE-AUDIT-2026-09-29.md`](RESPONSIVE-AUDIT-2026-09-29.md) | Spacing, breakpoint and UX findings, implemented corrections and screen coverage | You are reviewing responsive behavior or adding a layout |
+| [`UX-OVERHAUL-2026-09-29.md`](UX-OVERHAUL-2026-09-29.md) | Open Questions identity, discovery and reading changes, and scoped local validation | You are reviewing the September 29 UX overhaul |
 | [`.impeccable/`](../.impeccable/) | Design direction contract and quality bar for design work | You are running a design pass |

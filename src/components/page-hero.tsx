@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import "./policy-page.css";
 
 export type HeroIndexItem = { label: string; href?: string; note?: string };
 export type HeroRecordItem = { label: string; value: ReactNode };
 export type PageHeroVariant = "home" | "standard" | "task" | "document";
 
-/** Shared dark hero with deliberately different density for home, editorial and task pages. */
+/** Page openings adapt their structure to the task. */
 export function PageHero({
   title,
   description,
@@ -24,6 +25,27 @@ export function PageHero({
   record?: readonly HeroRecordItem[];
   children?: ReactNode;
 }) {
+  if (variant === "document") {
+    return (
+      <header className="policy-header">
+        <div className="policy-header-title">
+          <h1>{title}</h1>
+          <p>{description}</p>
+          {children}
+        </div>
+        {record && (
+          <dl className="policy-record">
+            {record.map((item) => (
+              <div key={item.label}>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </header>
+    );
+  }
   const hasLinkedItems = index?.some((item) => Boolean(item.href)) ?? false;
 
   const indexContents =
@@ -41,7 +63,7 @@ export function PageHero({
       </ol>
     ) : null;
 
-  const surfaceClass = variant === "document" ? "" : "band band-dark";
+  const surfaceClass = "band band-dark";
 
   return (
     <section className={`page-hero page-hero-${variant} ${surfaceClass}`.trim()}>
