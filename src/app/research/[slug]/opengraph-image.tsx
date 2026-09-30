@@ -2,7 +2,7 @@ import { publications, publicationBySlug } from "@/data/publications";
 import { researchAreas } from "@/lib/research-areas";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "Tharros Canada research report";
+export const alt = "Tharros Undergraduate Publishing research report";
 export const size = ogSize;
 export const contentType = ogContentType;
 export const dynamicParams = false;
@@ -18,8 +18,8 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ slu
 
   return renderOgImage({
     tone: "light",
-    eyebrow: "Research",
-    title: publication?.title ?? "Tharros Canada research",
+    eyebrow: "Publication",
+    title: publication?.title ?? "Tharros Undergraduate Publishing",
     description: publication?.summary,
     meta: [
       { label: "Format", value: publication?.type ?? "Report" },

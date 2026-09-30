@@ -12,9 +12,9 @@ import { reportAsset, reportText } from "@/lib/reports";
 import "./research.css";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Research",
+  title: "Publications",
   description:
-    "Published Tharros Canada research and data notes on trade, defence, energy, industry, technology and public data across Canada and Europe, searchable in full text.",
+    "Explore published work at Tharros Undergraduate Publishing. Search full-text publications, inspect their sources and download the original PDFs.",
   path: "/research",
 });
 
@@ -27,14 +27,15 @@ export default async function ResearchPage() {
   return (
     <>
       <header className="research-banner">
-        <h1>Published research.</h1>
+        <h1>Publications.</h1>
         <div className="research-banner-deck">
           <p>
-            Find a question. Follow its evidence. Search the reports and explore the sources and
-            limitations behind each one.
+            Read the work. Follow its evidence. Search full-text publications and explore the
+            sources and limitations behind each one. Our existing reports remain available as we
+            prepare to welcome undergraduate work across disciplines.
           </p>
-          <Link href="/methodology" className="research-method-link">
-            How the research is made <ArrowIcon />
+          <Link href="/submit" className="research-method-link">
+            Prepare your own work <ArrowIcon />
           </Link>
         </div>
       </header>

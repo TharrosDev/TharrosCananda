@@ -9,7 +9,7 @@ import "./research-areas.css";
 export const metadata: Metadata = pageMetadata({
   title: "Research areas",
   description:
-    "Explore Tharros Canada's research areas: trade, security, energy, technology and the quality of public evidence.",
+    "Explore the topics in Tharros's existing publication collection. Future undergraduate submissions will welcome work across disciplines.",
   path: "/research-areas",
 });
 
@@ -19,8 +19,9 @@ export default function ResearchAreasPage() {
       <header className="areas-masthead">
         <h1>Research areas</h1>
         <p>
-          Five areas guide the questions Tharros Canada explores. Each report sets its own scope;
-          these subjects describe areas of interest, with published work linked where available.
+          These topics organize the existing publication collection. They do not limit the
+          disciplines eligible for undergraduate publishing. Each report sets its own scope, with
+          published work linked where available.
         </p>
       </header>
 
@@ -84,9 +85,9 @@ export default function ResearchAreasPage() {
       </div>
 
       <footer className="areas-footer">
-        <p>Follow a question through its sources and limitations.</p>
-        <Link className="areas-link" href="/methodology">
-          Check out our methodology <ArrowIcon />
+        <p>Preparing undergraduate work from another discipline?</p>
+        <Link className="areas-link" href="/submit#eligible-work">
+          Read the submission guidelines <ArrowIcon />
         </Link>
       </footer>
     </div>

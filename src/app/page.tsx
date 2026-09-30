@@ -4,22 +4,30 @@ import Link from "next/link";
 import { ViewTransition } from "react";
 import { ArrowIcon } from "@/components/icons";
 import { publications } from "@/data/publications";
-import { upcomingResearch } from "@/data/upcoming-research";
+import { eligibleWork, publishing } from "@/data/publishing";
 import { reportAsset } from "@/lib/reports";
 import { formatLongDate, pageMetadata } from "@/lib/site";
 import "./home.css";
 
-const homeTitle = "Tharros Canada | Independent research across Canada and Europe";
+const homeTitle = `${publishing.name} | Publish beyond the classroom`;
 export const metadata: Metadata = {
   ...pageMetadata({
     title: homeTitle,
-    description:
-      "Independent research across Canada and Europe. Read sourced reports on policy, trade, defence, industry and the public data behind them.",
+    description: publishing.description,
     path: "/",
   }),
   title: { absolute: homeTitle },
 };
 const keepRanges = (title: string) => title.replace(/(\d)-(\d)/g, "$1‑$2");
+const process = [
+  { title: "Submit", detail: "Start with original undergraduate work you’re proud of." },
+  { title: "Review", detail: "An editorial decision considers quality, sourcing and suitability." },
+  { title: "Refine", detail: "Complete any requested revisions. Payment follows acceptance." },
+  {
+    title: "Publish",
+    detail: "Give your work a publication page, a PDF and a citation you can share.",
+  },
+];
 
 export default function HomePage() {
   const lead = [...publications].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
@@ -43,7 +51,8 @@ export default function HomePage() {
         <div className="home-hero-band">
           <div className="home-hero-band-inner">
             <p>
-              Independent research on the policies, industries and ideas connecting Canada and Europe.
+              Independent research on the policies, industries and ideas connecting Canada and
+              Europe.
             </p>
             <div className="home-masthead-actions">
               <Link className="button-primary" href="/research">
@@ -56,7 +65,24 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="home-issue" aria-label="Latest and upcoming research">
+      <section className="home-publishing" aria-labelledby="publishing-heading">
+        <h2 id="publishing-heading">{publishing.slogan}</h2>
+        <div>
+          <p className="home-publishing-deck">{publishing.supportingLine}</p>
+          <p>
+            Tharros is preparing to publish strong undergraduate work across disciplines, starting
+            with Canadian university students. Give a paper a place in your portfolio, on LinkedIn,
+            or alongside a résumé, internship or graduate-school application.
+          </p>
+          <Link className="home-read-link" href="/submit">
+            Submission guidelines <ArrowIcon />
+          </Link>
+          <p className="home-launch-note">
+            Submissions opening soon. Publication fee to be announced.
+          </p>
+        </div>
+      </section>
+      <section className="home-issue" aria-label="Published work and the publication process">
         <div className="home-release">
           <h2 id="release-heading">Latest release</h2>
           {lead ? (
@@ -103,31 +129,64 @@ export default function HomePage() {
             <p>No research has been published yet.</p>
           )}
         </div>
-        <aside className="home-upcoming" aria-labelledby="upcoming-heading">
-          <h2 id="upcoming-heading">Upcoming research</h2>
+        <aside className="home-upcoming" aria-labelledby="process-heading">
+          <h2 id="process-heading">From paper to publication</h2>
           <ol className="home-upcoming-list">
-            {upcomingResearch.map((topic, index) => (
-              <li key={topic.id}>
+            {process.map((step, index) => (
+              <li key={step.title}>
                 <span className="home-topic-number" aria-hidden="true">
                   {index + 1}
                 </span>
                 <div>
-                  {topic.status && <span className="home-topic-status">{topic.status}</span>}
-                  <h3>{topic.title}</h3>
+                  <h3>{step.title}</h3>
+                  <p className="home-step-detail">{step.detail}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <p className="home-upcoming-note">Draft topics. Titles and scope may change.</p>
+          <p className="home-upcoming-note">
+            Planned process. Screening comes before payment; submission does not guarantee
+            acceptance.
+          </p>
         </aside>
       </section>
+      <section className="home-work" aria-label="Eligible work and the publication package">
+        <div>
+          <h2>Work worth sharing.</h2>
+          <p>
+            Political science, economics, history, philosophy, business, science, communications,
+            environmental studies and beyond. The starting point is genuine undergraduate work with
+            a clear argument and sound sources.
+          </p>
+          <ul className="home-work-types">
+            {eligibleWork.map((type) => (
+              <li key={type}>{type}</li>
+            ))}
+          </ul>
+          <Link className="home-read-link" href="/submit#eligible-work">
+            Check the requirements <ArrowIcon />
+          </Link>
+        </div>
+        <div className="home-package">
+          <h2>A publication you can point to.</h2>
+          <p>The planned publication package gives accepted work a professional home:</p>
+          <ul>
+            <li>A dedicated publication page and stable URL</li>
+            <li>A professionally prepared PDF</li>
+            <li>Your author name and publication date</li>
+            <li>An abstract, references and recommended citation</li>
+            <li>A shareable page for your portfolio</li>
+            <li>An author profile with the details you choose to provide</li>
+          </ul>
+        </div>
+      </section>
       <section className="home-explore" aria-label="Explore Tharros">
-        <Link href="/methodology">
-          <span>Check out our methodology</span>
+        <Link href="/submit">
+          <span>Prepare your submission</span>
           <ArrowIcon />
         </Link>
-        <Link href="/research-areas">
-          <span>Check out our research areas</span>
+        <Link href="/how-it-works">
+          <span>See how publishing works</span>
           <ArrowIcon />
         </Link>
       </section>

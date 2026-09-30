@@ -1,4 +1,18 @@
 /* A kinetic typographic masthead; the slash belongs to the existing wordmark. */
+.home-publishing { width: var(--shell); margin: 0 auto; padding: 16px 0 var(--space-section); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 88px); }
+.home-publishing h2 { max-width: 18ch; margin: 0; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.1; color: var(--red); }
+.home-publishing p { max-width: 65ch; margin-bottom: 16px; color: var(--ink-soft); font-size: 17px; }
+.home-publishing .home-publishing-deck { max-width: 38ch; font-size: clamp(21px, 2vw, 27px); line-height: 1.4; color: var(--ink); }
+.home-publishing .home-launch-note { margin: 8px 0 0; font-size: 14px; color: var(--slate); }
+.home-step-detail { max-width: 44ch; margin: 8px 0 0; color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
+.home-work { width: var(--shell); margin: 0 auto; padding: 36px 0 var(--space-section); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 7vw, 104px); border-top: 1px solid var(--rule-strong); }
+.home-work h2 { margin-bottom: 20px; font-size: clamp(30px, 3vw, 44px); line-height: 1.15; }
+.home-work p { max-width: 62ch; margin-bottom: 20px; color: var(--ink-soft); font-size: 17px; }
+.home-work-types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 0 0 16px; padding: 0; list-style: none; }
+.home-work-types li { padding: 10px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+.home-package ul { margin: 0; padding-left: 20px; }
+.home-package li { padding: 6px 0; color: var(--ink-soft); font-size: 16px; }
+.home-package li::marker { color: var(--red); }
 .home-masthead { margin: 0 0 48px; }
 .home-hero-stage { position: relative; width: var(--shell); margin: 0 auto; padding: clamp(40px, 4.2vw, 64px) 0 clamp(48px, 5.5vw, 80px); }
 .home-hero-stage h1 { position: relative; z-index: 1; margin: 0; font-size: clamp(100px, 16.5vw, 248px); font-weight: 650; letter-spacing: -.04em; line-height: .94; text-wrap: nowrap; }
@@ -62,6 +76,7 @@
   .home-lead-publication { gap: 20px; }
 }
 @media (max-width: 760px) {
+  .home-publishing, .home-work { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .home-masthead { margin-bottom: 32px; }
   .home-hero-stage { padding: 36px 0 44px; }
   .home-hero-stage h1 { font-size: clamp(76px, 16.5vw, 124px); }
@@ -82,6 +97,7 @@
   .home-explore > a { min-height: 96px; padding: 16px; gap: 12px; font-size: 18px; }
 }
 @media (max-width: 480px) {
+  .home-work-types { grid-template-columns: minmax(0, 1fr); }
   .home-explore { grid-template-columns: minmax(0, 1fr); }
   .home-explore > a { min-height: 76px; }
   .home-hero-stage { padding: 32px 0 36px; }

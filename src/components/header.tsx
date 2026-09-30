@@ -4,15 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "@/components/icons";
+import { publishing } from "@/data/publishing";
 
 const links: { href: string; label: string; description: string; prefetch?: boolean }[] = [
-  { href: "/research", label: "Research", description: "Look at the published research" },
+  { href: "/research", label: "Publications", description: "Explore the publication archive" },
   {
-    href: "/methodology",
-    label: "Methodology",
-    description: "Follow the evidence behind the work",
+    href: "/how-it-works",
+    label: "How it works",
+    description: "From undergraduate work to publication",
   },
-  { href: "/about", label: "About", description: "About Tharros Canada and how to get in touch" },
+  { href: "/about", label: "About", description: "Our mission and how to get in touch" },
+  {
+    href: "/submit",
+    label: "Submission guidelines",
+    description: "Prepare your work; submissions are forthcoming",
+  },
 ];
 
 export function Header() {
@@ -84,10 +90,19 @@ export function Header() {
   return (
     <header className="site-header" ref={headerRef}>
       <div className="nav-shell">
-        <Link className="wordmark" href="/" aria-label="Tharros Canada home">
+        <Link
+          className="wordmark wordmark-publishing"
+          href="/"
+          aria-label={`${publishing.name} home`}
+        >
           <span>THARROS</span>
-          <span className="wordmark-slash">/</span>
-          <span>CANADA</span>
+          <span className="wordmark-slash" aria-hidden="true">
+            /
+          </span>
+          <span className="wordmark-subtitle">
+            <span>Undergraduate</span>
+            <span>Publishing</span>
+          </span>
         </Link>
         <button
           ref={toggleRef}
@@ -110,6 +125,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                className={link.href === "/submit" ? "nav-submit" : undefined}
                 prefetch={link.prefetch}
                 aria-current={isCurrent(link.href) ? "page" : undefined}
                 onClick={() => setOpen(false)}
@@ -121,7 +137,7 @@ export function Header() {
               </Link>
             ))}
           </div>
-          <p className="nav-project-note">Independent student research across Canada and Europe.</p>
+          <p className="nav-project-note">Professional publishing for undergraduate work.</p>
         </nav>
       </div>
     </header>

@@ -1,19 +1,19 @@
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "Tharros Canada Research";
+export const alt = "Tharros Undergraduate Publishing publications";
 export const size = ogSize;
 export const contentType = ogContentType;
 
 export default function OpenGraphImage() {
   return renderOgImage({
     tone: "light",
-    eyebrow: "Research",
-    title: "Independent research, published as it is finished.",
+    eyebrow: "Publications",
+    title: "Work worth reading beyond the classroom.",
     description:
-      "Trade, defence, energy, industry, technology and public data across Canada and Europe.",
+      "Explore the publication archive. Future undergraduate contributions will join the existing research collection after launch and editorial acceptance.",
     meta: [
-      { label: "Scope", value: "Canada & Europe" },
-      { label: "Format", value: "Reports & data notes" },
+      { label: "Access", value: "Publication pages & PDFs" },
+      { label: "Submissions", value: "Forthcoming" },
     ],
   });
 }

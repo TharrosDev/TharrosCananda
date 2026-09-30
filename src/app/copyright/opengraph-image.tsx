@@ -1,6 +1,6 @@
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og-image";
 
-export const alt = "Tharros Canada copyright and licence";
+export const alt = "Tharros Undergraduate Publishing copyright and licence";
 export const size = ogSize;
 export const contentType = ogContentType;
 
@@ -9,10 +9,11 @@ export default function OpenGraphImage() {
     tone: "light",
     eyebrow: "Copyright",
     title: "Copyright and licence.",
-    description: "Tharros public research is open to reuse under CC BY 4.0.",
+    description:
+      "Existing research keeps its stated licence. Author terms for future submissions are forthcoming.",
     meta: [
-      { label: "Licence", value: "CC BY 4.0" },
-      { label: "Scope", value: "Public research" },
+      { label: "Existing research", value: "CC BY 4.0" },
+      { label: "Author terms", value: "Forthcoming" },
     ],
   });
 }

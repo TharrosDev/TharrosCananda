@@ -2,12 +2,20 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { researchAreas } from "../src/lib/research-areas";
 
-test("About introduces Tharros Canada with a concise purpose and one contact section", async ({
+test("About introduces undergraduate publishing with a concise purpose and one contact section", async ({
   page,
 }) => {
   await page.goto("/about");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("About Tharros Canada");
-  for (const name of ["About", "Mission", "Why", "Contact"]) {
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "About Tharros Undergraduate Publishing",
+  );
+  for (const name of [
+    "The idea",
+    "Mission",
+    "Beyond the classroom",
+    "Editorial standards",
+    "Contact",
+  ]) {
     await expect(page.getByRole("heading", { level: 2, name, exact: true })).toBeVisible();
   }
   await expect(

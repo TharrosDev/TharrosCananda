@@ -1,6 +1,8 @@
 # Tharros Canada
 
-The site for [tharros.ca](https://tharros.ca), an independent student research project publishing sourced reports on Canada–Europe questions. Visitors read the research archive, inspect the methodology and contact the project about questions, corrections or collaboration.
+The site for [tharros.ca](https://tharros.ca), where Tharros Undergraduate Publishing is preparing to launch a professional publishing platform for Canadian university undergraduates across disciplines. Visitors can prepare eligible work, understand the planned editorial process, browse existing publications and ask publishing or editorial questions. Submissions and pricing are forthcoming; there is no active upload form or payment flow.
+
+The existing Tharros Canada homepage masthead, slash, animation and opening band remain intact at the owner's request. The publishing pivot begins below that opening.
 
 **Stack.**
 - Next.js 16 App Router, React 19, strict TypeScript and native CSS with design tokens.
@@ -60,19 +62,36 @@ Which variables are set in which Vercel environment: `docs/OPERATIONS.md`.
 ```text
 src/app/          routes, llms.txt; api/research-request (retired), api/research-event (readership)
 src/components/   UI; report/ holds the pdf.js viewer and the print document
-src/data/         publications, source register, organization details, generated report JSON
+src/data/         publications, publishing launch status, source register, organization details, generated report JSON
 src/lib/          citation, archive search, metrics, site/SEO helpers
 supabase/         migrations and the legacy research-intake Edge Function pending retirement
 scripts/          report-pdf.mjs (report PDF, cover and text), smoke.mjs
 e2e/, tests/      Playwright and Vitest
-docs/             operations, report intake, evidence policy (index: docs/README.md)
+docs/             operations, publishing launch, report intake, evidence policy (index: docs/README.md)
 ```
 
 `PRODUCT.md` holds the product intent and `DESIGN.md` the visual system. `AGENTS.md` has notes for coding agents, including the checks that commonly fail. `docs/README.md` lists every doc.
 
+## Public routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Retained Tharros Canada opening, followed by the undergraduate publishing service and launch status. |
+| `/research` | Publications: the existing searchable archive and its citation, PDF and sharing tools. |
+| `/research/<slug>` and `/research/id/<reference>` | Existing publication pages and stable reference links. |
+| `/authors/magnus-abdelnour` | Existing publications grouped under the supplied byline; no affiliation or biography added, and profile indexing remains disabled. |
+| `/submit` | Eligibility, preparation guidance and forthcoming submissions and pricing. |
+| `/how-it-works` | Planned submission, screening, decision, payment, preparation and publication stages. |
+| `/about#contact` | Mission and the real editorial contact. |
+| `/methodology` and `/research-areas` | Existing evidence and subject guides. |
+
+See `docs/PUBLISHING-LAUNCH.md` for the current launch boundary and requirements before opening intake.
+
 ## Publishing a report
 
 Every report is a PDF the owner supplies, served unchanged and never edited. Follow `docs/REPORT_REQUIREMENTS.md`; no build is needed.
+
+This existing report workflow preserves original references, slugs, dates, facts, citations, licences and indexing settings. Future contributed manuscripts require owner-supplied material and approved submission and publication terms before intake opens. Author profiles are optional and require consent; `organization.lead` remains `null`.
 
 **Indexable reports get:**
 - Google Scholar `citation_*` tags;
@@ -84,7 +103,7 @@ Don't add dummy or placeholder entries to fill the archive.
 
 ## Boundaries
 
-**Tharros publishes:** independently produced reports and data notes on Canada–Europe questions.
+**Tharros is preparing to publish:** accepted original undergraduate papers, essays, policy briefs, data projects, literature reviews and similar work across disciplines. Existing owner-supplied reports retain their stated Canada–Europe subjects, sources and limitations. Submissions are closed and publication pricing is forthcoming.
 
 **It doesn't give** legal, tax, customs, regulated financial, immigration or compliance advice.
 

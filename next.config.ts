@@ -61,7 +61,6 @@ const nextConfig: NextConfig = {
       },
       { source: "/research-services", destination: "/research", permanent: true },
       { source: "/request-research", destination: "/research", permanent: true },
-      { source: "/how-it-works", destination: "/methodology", permanent: true },
     ];
   },
   async headers() {

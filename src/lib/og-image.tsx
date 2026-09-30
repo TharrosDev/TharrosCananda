@@ -71,8 +71,29 @@ export function renderOgImage({ tone, eyebrow, title, description, meta }: OgCar
       }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", fontSize: 28, letterSpacing: -0.8, fontWeight: 700 }}>
-          THARROS<span style={{ color: colors.red, margin: "0 12px" }}>/</span>CANADA
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: 28,
+            letterSpacing: -0.8,
+            fontWeight: 700,
+          }}
+        >
+          THARROS<span style={{ color: colors.red, margin: "0 12px" }}>/</span>
+          <span
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+              fontSize: 16,
+              letterSpacing: -0.2,
+              lineHeight: 1.1,
+            }}
+          >
+            <span>Undergraduate</span>
+            <span>Publishing</span>
+          </span>
         </div>
         <div
           style={{

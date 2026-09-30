@@ -1,6 +1,6 @@
 # Report requirements
 
-This guide is for adding a research report the owner supplies as a PDF, which is the only way reports reach the site. It covers what every site tool needs from that report, where to find each value in the PDF, and the checks that block a merge when something is missing.
+This guide is for adding a publication the owner supplies as a finished PDF, the current way publications reach the site. Future undergraduate manuscript preparation will need its own approved workflow before intake opens; see `PUBLISHING-LAUNCH.md`. This guide covers what every site tool needs from a finished report, where to find each value in the PDF, and the checks that block a merge when something is missing.
 
 ## Rule #1: never edit the document
 
@@ -29,6 +29,7 @@ Copy the title, authors, date and sources exactly as the PDF gives them. The `su
 |---|---|---|
 | `title`, `subtitle` | Page header, citations, OG image, JSON-LD, search | Cover or first heading. Copy exactly, since the title must match the text |
 | `authors` | Citations, JSON-LD, Scholar tags | Byline, cover, "Prepared by", "About the author" |
+| `publisher` | Citations, JSON-LD, Scholar tags | The publisher of the specific edition. Existing reports retain `Tharros Canada`; future records must name their actual approved publisher. A brand change does not rewrite an older edition |
 | `publishedAt` (`YYYY-MM-DD`) | Citations, sitemap, archive year facet | Date on the cover, colophon or footer |
 | `summary` | Page lede, meta description, OG image, llms.txt, search | Executive summary, Summary, Abstract, Overview, Key findings, Introduction. Use its opening paragraph or two |
 | `limitations` | Limitations panel | Limitations, Caveats, Constraints, Scope and limitations, "What this report does not cover" |
@@ -58,7 +59,7 @@ Never invent findings, data, sources or authors (see `AGENTS.md` Content truth).
 2. Add a record to `publications` in `src/data/publications.ts` with the fields above. Keep `indexable: false` until the owner explicitly approves public indexing, even for verified, published work.
 3. Run `npm run report:pdf -- <slug>`. It reads the PDF and writes the cover JPEG, extracted text, bookmarks, page size and file hash to `src/data/report-*.json`. It needs no build or server.
 4. Run `npm run lint && npm run typecheck && npm test`, then check `/research/<slug>` in `npm run dev`: viewer, Contents, Limitations, Sources, Cite and archive search.
-5. Open a PR with the drafted-metadata list. Merge once `verify` and `browser` are green and the owner has approved the drafted values.
+5. Open a PR with the drafted-metadata list. Merge once the required `verify` check passes and the owner has approved the drafted values. Browser checks are opt-in; run affected behavior checks when warranted under `AGENTS.md`.
 6. Only after explicit owner approval of public indexing and deployment with `indexable: true`, submit the page to IndexNow. Never submit a non-indexable report. The key file is `public/89cf8d3fe454283021685da5dd58be1b.txt`:
 
    ```sh

@@ -1,0 +1,45 @@
+/* Launch guidance uses the same ruled rows and reading measure as About. */
+.publishing-page { width: var(--shell); margin: 0 auto; padding-bottom: var(--space-page); }
+.publishing-masthead { padding: clamp(40px, 5vw, 72px) 0 clamp(32px, 4vw, 52px); border-bottom: 1px solid var(--ink); }
+.publishing-masthead h1 { max-width: 22ch; margin: 0; font-size: clamp(38px, 4.8vw, 66px); font-weight: 600; letter-spacing: -.035em; line-height: 1.1; text-wrap: balance; }
+.publishing-masthead > p { max-width: 58ch; margin: 20px 0 0; color: var(--ink-soft); font-size: clamp(18px, 1.7vw, 22px); line-height: 1.55; }
+.publishing-launch { padding: clamp(28px, 4vw, 44px) 0; border-bottom: 1px solid var(--rule); }
+.publishing-launch h2 { margin: 0 0 12px; color: var(--red); font-size: clamp(25px, 2.5vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.publishing-launch > p { max-width: 68ch; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
+.publishing-launch > .text-link { margin-top: 12px; }
+.publishing-row { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.6fr); gap: 20px clamp(32px, 6vw, 96px); padding: clamp(28px, 4vw, 48px) 0; border-bottom: 1px solid var(--rule); }
+.publishing-row > h2 { margin: 0; font-size: clamp(25px, 2.5vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.publishing-row-body { min-width: 0; }
+.publishing-row-body > p { max-width: 68ch; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
+.publishing-row-body > p + p, .publishing-row-body > .text-link { margin-top: 18px; }
+.publishing-work-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 28px; margin: 22px 0 0; padding-left: 20px; color: var(--ink); font-size: 17px; line-height: 1.5; }
+.publishing-work-list > li { padding-left: 4px; overflow-wrap: anywhere; }
+.publishing-checklist { max-width: 68ch; display: grid; gap: 12px; margin: 0 0 20px; padding-left: 20px; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
+.publishing-checklist > li { padding-left: 4px; }
+.publishing-flow { display: flex; flex-wrap: wrap; gap: 18px 28px; margin: 0; padding: clamp(24px, 3vw, 36px) 0; border-bottom: 1px solid var(--rule); list-style: none; }
+.publishing-flow > li { display: flex; align-items: center; gap: clamp(18px, 3vw, 40px); font-family: var(--display); font-size: clamp(21px, 2.5vw, 32px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.publishing-flow svg { width: 22px; height: 22px; color: var(--red); flex: 0 0 22px; }
+.publishing-process { padding-top: clamp(32px, 4vw, 48px); }
+.publishing-process > h2 { margin: 0 0 28px; font-size: clamp(25px, 2.5vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.publishing-stages { margin: 0; padding: 0; list-style: none; }
+.publishing-stages > li { display: grid; grid-template-columns: 32px minmax(0, .7fr) minmax(0, 1.6fr); gap: 12px clamp(24px, 5vw, 76px); padding: clamp(24px, 3vw, 36px) 0; border-top: 1px solid var(--rule); }
+.publishing-stage-number { color: var(--slate); font-size: 18px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.publishing-stages h3 { margin: 0; font-size: clamp(22px, 2vw, 28px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+.publishing-stages p { max-width: 68ch; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.65; }
+.publishing-close { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding-top: clamp(28px, 4vw, 48px); }
+.publishing-close > p { flex-basis: 100%; margin: 0; font-family: var(--display); font-size: clamp(25px, 2.5vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.25; }
+@media (max-width: 760px) {
+  .publishing-row { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .publishing-stages > li { grid-template-columns: 24px minmax(0, 1fr); gap: 12px 18px; }
+  .publishing-stages p { grid-column: 2; }
+}
+@media (max-width: 640px) {
+  .publishing-masthead { padding-top: 32px; }
+  .publishing-masthead h1 { font-size: clamp(35px, 8.6vw, 49px); }
+  .publishing-masthead > p { margin-top: 18px; font-size: 18px; }
+  .publishing-row-body > p, .publishing-launch > p, .publishing-checklist, .publishing-stages p { font-size: 17px; }
+  .publishing-work-list { grid-template-columns: minmax(0, 1fr); }
+  .publishing-flow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .publishing-flow > li { flex-direction: column; align-items: start; gap: 14px; font-size: 23px; }
+  .publishing-flow svg { width: 18px; height: 18px; flex-basis: 18px; transform: rotate(90deg); }
+}

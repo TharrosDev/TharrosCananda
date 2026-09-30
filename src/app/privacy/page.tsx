@@ -8,7 +8,7 @@ import { researchEmail } from "@/lib/contact";
 export const metadata: Metadata = pageMetadata({
   title: "Privacy",
   description:
-    "What Tharros Canada collects through readership counts and cookie-free site measurement, how earlier research requests are retained, and how to ask for access or deletion.",
+    "What Tharros collects through readership counts and cookie-free site measurement, how earlier research requests are retained, and how to ask for access or deletion.",
   path: "/privacy",
 });
 
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
         title="Privacy."
         description="What the site collects, where it is kept, for how long, and how to ask for it back."
         record={[
-          { label: "Updated", value: "September 29, 2026" },
+          { label: "Updated", value: "September 30, 2026" },
           ...(organization.intakeRetention
             ? [{ label: "Requests kept", value: organization.intakeRetention }]
             : []),
@@ -48,6 +48,10 @@ export default function PrivacyPage() {
                 <li>Earlier research requests remain subject to the stated retention period.</li>
                 <li>Readership counts keep a one-way code, never your IP address.</li>
                 <li>A Global Privacy Control signal turns off measurement and counting.</li>
+                <li>
+                  Undergraduate submissions are not open; this site has no manuscript upload or
+                  payment form.
+                </li>
               </ul>
             </div>
           </article>
